@@ -1,70 +1,141 @@
+/* ===========================================================
+   RISHABH ❤️ ANANYA
+   WEDDING INVITATION
+   STYLE.CSS
+=========================================================== */
+
+:root{
+
+--background:#0B0B0B;
+--paper:#F8F3EC;
+--gold:#C7A25B;
+--gold-light:#E3C98A;
+--text:#2B2B2B;
+--white:#ffffff;
+--shadow:0 20px 60px rgba(0,0,0,.25);
+
+}
+
 *{
+
 margin:0;
 padding:0;
 box-sizing:border-box;
+
 }
 
 html{
+
 scroll-behavior:smooth;
+
 }
 
 body{
 
+background:var(--background);
+
 font-family:'Poppins',sans-serif;
-
-background:#0f0f0f;
-
-color:white;
 
 overflow-x:hidden;
 
+color:white;
+
 }
 
-.background{
+/* ===========================
+Container
+=========================== */
+
+.container{
+
+width:min(1180px,92%);
+
+margin:auto;
+
+}
+
+/* ===========================
+Loader
+=========================== */
+
+#loader{
 
 position:fixed;
 
-top:0;
-left:0;
+inset:0;
 
-width:100%;
-height:100%;
-
-background:
-
-linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.75)),
-
-url("https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1800&auto=format&fit=crop");
-
-background-size:cover;
-background-position:center;
-
-z-index:-2;
-
-}
-
-.overlay{
-
-position:fixed;
-
-width:100%;
-height:100%;
-
-background:
-
-radial-gradient(circle,transparent 0%,rgba(0,0,0,.6) 100%);
-
-z-index:-1;
-
-}
-
-.hero{
-
-min-height:100vh;
+background:#050505;
 
 display:flex;
 
-flex-direction:column;
+align-items:center;
+
+justify-content:center;
+
+z-index:99999;
+
+transition:.8s;
+
+}
+
+.loader-content{
+
+text-align:center;
+
+}
+
+.loader-ring{
+
+width:90px;
+height:90px;
+
+border-radius:50%;
+
+border:3px solid rgba(255,255,255,.08);
+
+border-top:3px solid var(--gold);
+
+margin:auto;
+
+animation:spin 1.2s linear infinite;
+
+}
+
+.loader-content h2{
+
+margin-top:30px;
+
+font-family:'Cinzel',serif;
+
+letter-spacing:4px;
+
+font-size:34px;
+
+}
+
+.loader-content p{
+
+margin-top:15px;
+
+opacity:.7;
+
+font-size:15px;
+
+letter-spacing:2px;
+
+}
+
+/* ===========================
+Hero
+=========================== */
+
+#hero{
+
+height:100vh;
+
+position:relative;
+
+display:flex;
 
 justify-content:center;
 
@@ -72,148 +143,242 @@ align-items:center;
 
 text-align:center;
 
-padding:40px;
+overflow:hidden;
 
 }
 
-.welcome{
+.hero-background{
+
+position:absolute;
+
+inset:0;
+
+background:
+
+radial-gradient(circle at center,#2d2214 0%,#120d08 45%,#050505 100%);
+
+z-index:1;
+
+}
+
+.hero-overlay{
+
+position:absolute;
+
+inset:0;
+
+background:
+
+linear-gradient(to bottom,
+
+rgba(0,0,0,.2),
+
+rgba(0,0,0,.55));
+
+z-index:2;
+
+}
+
+.hero-content{
+
+position:relative;
+
+z-index:5;
+
+max-width:900px;
+
+padding:20px;
+
+}
+
+.hero-family{
 
 font-family:'Cormorant Garamond',serif;
 
-font-size:30px;
+font-size:34px;
 
-font-weight:400;
+letter-spacing:3px;
 
-letter-spacing:2px;
+color:var(--gold-light);
 
-color:#f3d48a;
-
-margin-bottom:20px;
+margin-bottom:30px;
 
 }
 
-.names{
+.hero-title{
 
 font-family:'Cinzel',serif;
 
-font-size:72px;
+font-size:92px;
 
-font-weight:700;
+font-weight:600;
 
 line-height:1.2;
 
 }
 
-.names span{
+.hero-title span{
 
 display:block;
 
-font-size:42px;
+font-size:52px;
 
-margin:12px;
+margin:18px 0;
 
-color:#d4af37;
+color:var(--gold);
 
 }
 
-.invite{
+.hero-text{
 
-margin-top:30px;
+margin-top:35px;
 
 font-size:22px;
 
-max-width:650px;
+line-height:1.9;
 
-line-height:1.8;
+opacity:.88;
 
-color:#eeeeee;
+max-width:720px;
 
-}
-
-.date-box{
-
-margin-top:50px;
-
-padding:25px 50px;
-
-border:1px solid rgba(212,175,55,.6);
-
-border-radius:20px;
-
-backdrop-filter:blur(12px);
-
-background:rgba(255,255,255,.05);
+margin-inline:auto;
 
 }
 
-.date{
+/* ===========================
+Wax Seal
+=========================== */
 
-font-size:30px;
+#waxButton{
 
-font-family:'Cinzel',serif;
-
-color:#d4af37;
-
-}
-
-.time{
-
-margin-top:15px;
-
-font-size:20px;
-
-}
-
-button{
-
-margin-top:60px;
-
-padding:18px 55px;
-
-font-size:18px;
-
-border:none;
-
-border-radius:50px;
+margin-top:90px;
 
 cursor:pointer;
 
-background:#d4af37;
+display:inline-flex;
 
-color:black;
+flex-direction:column;
+
+align-items:center;
+
+gap:20px;
+
+}
+
+.wax-glow{
+
+position:absolute;
+
+width:140px;
+
+height:140px;
+
+border-radius:50%;
+
+background:rgba(199,162,91,.15);
+
+filter:blur(30px);
+
+animation:pulse 3s infinite;
+
+}
+
+.wax-seal{
+
+position:relative;
+
+width:110px;
+
+height:110px;
+
+border-radius:50%;
+
+background:
+
+radial-gradient(circle,
+
+#b51f1f,
+
+#7f0d0d);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-family:'Cinzel',serif;
+
+font-size:34px;
 
 font-weight:700;
 
-transition:.3s;
+color:white;
+
+box-shadow:
+
+0 20px 60px rgba(0,0,0,.35);
 
 }
 
-button:hover{
+#waxButton p{
 
-transform:scale(1.05);
+letter-spacing:3px;
 
-background:white;
+font-size:14px;
 
-}
+text-transform:uppercase;
 
-@media(max-width:768px){
-
-.names{
-
-font-size:46px;
+opacity:.75;
 
 }
 
-.invite{
+/* ===========================
+Section Headings
+=========================== */
 
-font-size:18px;
+.section-title{
+
+text-align:center;
+
+margin-bottom:70px;
 
 }
 
-.date{
+.section-title .subtitle{
 
-font-size:22px;
+display:block;
+
+color:var(--gold);
+
+letter-spacing:4px;
+
+font-size:14px;
+
+text-transform:uppercase;
+
+margin-bottom:18px;
 
 }
+
+.section-title h2{
+
+font-family:'Cinzel',serif;
+
+font-size:52px;
+
+color:var(--text);
+
+}
+
+.divider{
+
+width:110px;
+
+height:2px;
+
+background:var(--gold);
+
+margin:30px auto;
 
 }
