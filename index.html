@@ -3,29 +3,53 @@
 
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<title>Rishabh & Ananya | Wedding Invitation</title>
+    <title>Rishabh & Ananya | Wedding Invitation</title>
 
-<meta name="theme-color" content="#0B0B0B">
+    <meta name="theme-color" content="#0B0B0B" />
+    <meta name="description"
+        content="Wedding Invitation of Rishabh Chattopadhyay & Ananya Dash (Acharya)" />
 
-<meta name="description" content="Wedding Invitation of Rishabh Chattopadhyay & Ananya Dash (Acharya)">
+    <meta property="og:title"
+        content="Rishabh & Ananya | Wedding Invitation">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta property="og:description"
+        content="Together with our families, we cordially invite you to celebrate our wedding.">
 
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <meta property="og:type"
+        content="website">
 
-<link rel="stylesheet" href="style.css">
+    <meta property="og:image"
+        content="assets/images/cover.jpg">
+
+    <meta name="apple-mobile-web-app-capable"
+        content="yes">
+
+    <meta name="apple-mobile-web-app-status-bar-style"
+        content="black-translucent">
+
+    <link rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="style.css">
 
 </head>
 
 <body>
 
-<!-- ========================= -->
-<!-- LOADER -->
-<!-- ========================= -->
+<!-- ==========================================================
+PRELOADER
+=========================================================== -->
 
 <div id="loader">
 
@@ -33,33 +57,7 @@
 
         <div class="loader-ring"></div>
 
-        <h2>Rishabh &amp; Ananya</h2>
-
-        <p>Preparing your invitation...</p>
-
-    </div>
-
-</div>
-
-<!-- ========================= -->
-<!-- HERO -->
-<!-- ========================= -->
-
-<header id="hero">
-
-    <div class="hero-background"></div>
-
-    <div class="hero-overlay"></div>
-
-    <div class="hero-content">
-
-        <p class="hero-family">
-
-            Together with our families
-
-        </p>
-
-        <h1 class="hero-title">
+        <h1>
 
             Rishabh
 
@@ -69,39 +67,88 @@
 
         </h1>
 
-        <p class="hero-text">
+        <p>
 
-           Together with our families, we cordially invite you to celebrate our wedding and bless us as we begin this new chapter of our lives.
+            Preparing Your Invitation
 
         </p>
 
-        <div id="waxButton">
+    </div>
 
-            <div class="wax-glow"></div>
+</div>
 
-            <div class="wax-seal">
+<!-- ==========================================================
+BACKGROUND PARTICLES
+=========================================================== -->
+
+<div id="particles"></div>
+
+<!-- ==========================================================
+HERO
+=========================================================== -->
+
+<header id="hero">
+
+    <div class="hero-background"></div>
+
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+
+        <span class="hero-family">
+
+            Together with our families
+
+        </span>
+
+        <h1 class="hero-title">
+
+            Rishabh
+
+            <span class="ampersand">&</span>
+
+            Ananya
+
+        </h1>
+
+        <p class="hero-description">
+
+            We cordially invite you to celebrate our wedding and bless us as we begin this beautiful new chapter together.
+
+        </p>
+
+        <!-- Wax Seal -->
+
+        <button
+            id="waxButton"
+            type="button"
+            aria-label="Open Invitation">
+
+            <span class="wax-glow"></span>
+
+            <span class="wax-seal">
 
                 RA
 
-            </div>
+            </span>
 
-            <p>
+            <span class="wax-text">
 
-                Touch to Begin
+                Tap to Continue
 
-            </p>
+            </span>
 
-        </div>
+        </button>
 
     </div>
 
 </header>
 
-<!-- ========================= -->
-<!-- COLLAGE -->
-<!-- ========================= -->
+<!-- ==========================================================
+COLLAGE
+=========================================================== -->
 
-<section id="gallery" style="display:none;">
+<section id="collage">
 
     <div class="container">
 
@@ -126,21 +173,19 @@
         <div class="collage-frame">
 
             <img
-
-            id="heroCollage"
-
-            src="my-collage.png"
-
-            alt="Rishabh and Ananya">
+                src="assets/images/collage.jpg"
+                id="heroCollage"
+                alt="Rishabh and Ananya">
 
         </div>
 
     </div>
 
 </section>
-<!-- ========================================= -->
-<!-- INVITATION -->
-<!-- ========================================= -->
+
+<!-- ==========================================================
+INVITATION
+=========================================================== -->
 
 <section id="invitation">
 
@@ -156,7 +201,7 @@ Wedding Celebration
 
 <h2>
 
-You're Invited
+The Beginning Of Our Forever
 
 </h2>
 
@@ -164,19 +209,17 @@ You're Invited
 
 </div>
 
+<div class="paper">
+
 <div class="invitation-card">
 
 <p class="invite-text">
 
-With the blessings of our parents,
+With immense joy in our hearts and the blessings of our parents,
 
-and with immense joy in our hearts,
+we invite you to grace our wedding celebration
 
-we request the pleasure of your gracious company
-
-as we celebrate one of the most cherished
-
-moments of our lives.
+with your love, blessings and presence.
 
 </p>
 
@@ -270,510 +313,449 @@ Aparna Dash
 
 </div>
 
+</div>
+
 </section>
 
-<!-- ========================================= -->
-<!-- CELEBRATION DETAILS -->
-<!-- ========================================= -->
+<!-- END PART 1 -->
+    <!-- ==========================================================
+CELEBRATION
+=========================================================== -->
 
 <section id="celebration">
 
-<div class="container">
+    <div class="container">
 
-<div class="section-title">
+        <div class="section-title">
 
-<span class="subtitle">
+            <span class="subtitle">
 
-Celebration Details
+                Celebration Details
 
-</span>
+            </span>
 
-<h2>
+            <h2>
 
-Friday • 11 December 2026
+                Friday • 11 December 2026
 
-</h2>
+            </h2>
 
-<div class="divider"></div>
+            <div class="divider"></div>
 
-</div>
+        </div>
 
-<div class="details-grid">
+        <div class="details-grid">
 
-<div class="detail-card">
+            <article class="detail-card">
 
-<h3>
+                <h3>
 
-Guest Arrival
+                    Guest Arrival
 
-</h3>
+                </h3>
 
-<h4>
+                <h4>
 
-7:30 PM onwards
+                    7:30 PM Onwards
 
-</h4>
+                </h4>
 
-<p>
+                <p>
 
-We warmly welcome you
+                    Join us as the evening begins with warmth,
+                    conversations and joyful reunions before the celebrations unfold.
 
-to join us
+                </p>
 
-for an evening of celebration.
+            </article>
 
-</p>
+            <article class="detail-card">
 
-</div>
+                <h3>
 
-<div class="detail-card">
+                    Dinner
 
-<h3>
+                </h3>
 
-Dinner
+                <h4>
 
-</h3>
+                    A Royal Feast
 
-<h4>
+                </h4>
 
-With Love
+                <p>
 
-</h4>
+                    Enjoy an elaborate dinner specially prepared
+                    to celebrate this memorable occasion with family and friends.
 
-<p>
+                </p>
 
-Dinner will be served
+            </article>
 
-throughout the evening.
+            <article class="detail-card">
 
-</p>
+                <h3>
 
-</div>
+                    Wedding Celebration
 
-<div class="detail-card">
+                </h3>
 
-<h3>
+                <h4>
 
-Wedding Celebration
+                    Forever Begins
 
-</h3>
+                </h4>
 
-<h4>
+                <p>
 
-Together Forever
+                    Witness the beginning of our beautiful journey
+                    and bless us with your love and good wishes.
 
-</h4>
+                </p>
 
-<p>
+            </article>
 
-Celebrate this beautiful occasion
+        </div>
 
-with us
-
-as our new journey begins.
-
-</p>
-
-</div>
-
-</div>
-
-</div>
+    </div>
 
 </section>
 
-<!-- ========================================= -->
-<!-- TIMELINE -->
-<!-- ========================================= -->
+<!-- ==========================================================
+TIMELINE
+=========================================================== -->
 
 <section id="timeline">
 
-<div class="container">
+    <div class="container">
 
-<div class="section-title">
+        <div class="section-title">
 
-<span class="subtitle">
+            <span class="subtitle">
 
-Celebration Timeline
+                Celebration Timeline
 
-</span>
+            </span>
 
-<h2>
+            <h2>
 
-The Evening
+                The Evening
 
-</h2>
+            </h2>
 
-<div class="divider"></div>
+            <div class="divider"></div>
 
-</div>
+        </div>
 
-<div class="timeline">
+        <div class="timeline">
 
-<div class="timeline-item">
+            <div class="timeline-item">
 
-<div class="timeline-time">
+                <div class="timeline-time">
 
-7:30 PM
+                    7:30 PM
 
-</div>
+                </div>
 
-<div class="timeline-content">
+                <div class="timeline-content">
 
-<h3>
+                    <h3>
 
-Welcome
+                        Welcome
 
-</h3>
+                    </h3>
 
-<p>
+                    <p>
 
-Arrival of Guests
+                        Arrival of our guests.
 
-</p>
+                    </p>
 
-</div>
+                </div>
 
-</div>
+            </div>
 
-<div class="timeline-item">
+            <div class="timeline-item">
 
-<div class="timeline-time">
+                <div class="timeline-time">
 
-8:00 PM
+                    8:00 PM
 
-</div>
+                </div>
 
-<div class="timeline-content">
+                <div class="timeline-content">
 
-<h3>
+                    <h3>
 
-Dinner
+                        Dinner
 
-</h3>
+                    </h3>
 
-<p>
+                    <p>
 
-An evening filled with
+                        Celebrate with delicious food,
+                        conversations and laughter.
 
-love, laughter and togetherness.
+                    </p>
 
-</p>
+                </div>
 
-</div>
+            </div>
 
-</div>
+            <div class="timeline-item">
 
-<div class="timeline-item">
+                <div class="timeline-time">
 
-<div class="timeline-time">
+                    Celebration
 
-Celebration
+                </div>
 
-</div>
+                <div class="timeline-content">
 
-<div class="timeline-content">
+                    <h3>
 
-<h3>
+                        Wedding Ceremony
 
-Wedding Celebration
+                    </h3>
 
-</h3>
+                    <p>
 
-<p>
+                        Bless us as we begin our journey together.
 
-Celebrate our union
+                    </p>
 
-with your blessings.
+                </div>
 
-</p>
+            </div>
 
-</div>
+        </div>
 
-</div>
-
-</div>
-
-</div>
+    </div>
 
 </section>
 
-<!-- ========================================= -->
-<!-- VENUE -->
-<!-- ========================================= -->
+<!-- ==========================================================
+VENUE
+=========================================================== -->
 
 <section id="venue">
 
-<div class="container">
+    <div class="container">
 
-<div class="section-title">
+        <div class="section-title">
 
-<span class="subtitle">
+            <span class="subtitle">
 
-Venue
+                Venue
 
-</span>
+            </span>
 
-<h2>
+            <h2>
 
-The Circle Club
+                The Circle Club
 
-</h2>
+            </h2>
 
-<div class="divider"></div>
+            <div class="divider"></div>
 
-</div>
+        </div>
 
-<div class="venue-card">
+        <div class="venue-card">
 
-<h3>
+            <h3>
 
-The Circle Club
+                The Circle Club
 
-</h3>
+            </h3>
 
-<p>
+            <p>
 
-VIP Road
+                VIP Road<br>
 
-<br>
+                Opposite Charnock Hospital<br>
 
-Opposite Charnock Hospital
+                Tegharia, Airport<br>
 
-<br>
+                Kolkata, West Bengal 700052
 
-Tegharia
+            </p>
 
-<br>
+            <a
 
-Airport
+                class="venue-button"
 
-<br>
+                href="https://share.google/iW4sqslhAZiIqsoIi"
 
-Kolkata, West Bengal 700052
+                target="_blank"
 
-</p>
+                rel="noopener">
 
-<a
+                View on Google Maps
 
-class="venue-button"
+            </a>
 
-href="https://share.google/iW4sqslhAZiIqsoIi"
+        </div>
 
-target="_blank">
-
-Open Google Maps
-
-</a>
-
-</div>
-
-</div>
+    </div>
 
 </section>
 
-<!-- ========================================= -->
-<!-- GALLERY -->
-<!-- ========================================= -->
+<!-- ==========================================================
+GALLERY
+=========================================================== -->
 
 <section id="gallery">
 
-<div class="container">
+    <div class="container">
 
-<div class="section-title">
+        <div class="section-title">
 
-<span class="subtitle">
+            <span class="subtitle">
 
-Our Memories
+                Memories
 
-</span>
+            </span>
 
-<h2>
+            <h2>
 
-Every Picture Tells A Story
+                Every Picture Tells A Story
 
-</h2>
+            </h2>
 
-<div class="divider"></div>
+            <div class="divider"></div>
 
-</div>
+        </div>
 
-<div class="gallery-grid">
+        <div id="galleryGrid" class="gallery-grid">
 
-<img src="photos/photo1.jpg" alt="Memory 1">
+            <!-- JavaScript will automatically load images -->
 
-<img src="photos/photo2.jpg" alt="Memory 2">
+        </div>
 
-<img src="photos/photo3.jpg" alt="Memory 3">
-
-<img src="photos/photo4.jpg" alt="Memory 4">
-
-<img src="photos/photo5.jpg" alt="Memory 5">
-
-<img src="photos/photo6.jpg" alt="Memory 6">
-
-</div>
-
-</div>
+    </div>
 
 </section>
 
-<!-- ========================================= -->
-<!-- BLESSINGS -->
-<!-- ========================================= -->
+<!-- ==========================================================
+BLESSINGS
+=========================================================== -->
 
 <section id="blessings">
 
-<div class="container">
+    <div class="container">
 
-<div class="section-title">
+        <div class="section-title">
 
-<span class="subtitle">
+            <span class="subtitle">
 
-With Gratitude
+                With Gratitude
 
-</span>
+            </span>
 
-<h2>
+            <h2>
 
-Your Presence Is Our Greatest Gift
+                Your Presence Is Our Greatest Gift
 
-</h2>
+            </h2>
 
-<div class="divider"></div>
+            <div class="divider"></div>
 
-</div>
+        </div>
 
-<p class="blessing-text">
+        <p class="blessing-text">
 
-Your love,
+            Your love, blessings and presence
+            will make this celebration truly unforgettable.
+            We look forward to creating beautiful memories
+            with all of you.
 
-blessings,
+        </p>
 
-good wishes
-
-and presence
-
-will make our celebration
-
-truly unforgettable.
-
-We look forward
-
-to celebrating
-
-this special day
-
-with you.
-
-</p>
-
-</div>
+    </div>
 
 </section>
-<!-- ========================================= -->
-<!-- FOOTER -->
-<!-- ========================================= -->
+
+<!-- ==========================================================
+FOOTER
+=========================================================== -->
 
 <footer id="footer">
 
-<div class="container">
+    <div class="container">
 
-<div class="footer-card">
+        <div class="footer-card">
 
-<h2>
+            <h2>
 
-We Can't Wait To Celebrate
+                We Look Forward To Celebrating With You
 
-With You
+            </h2>
 
-</h2>
+            <p>
 
-<p>
+                Thank you for being part of our journey.
+                Your love, blessings and presence
+                mean the world to us.
 
-Thank you for being a part
+            </p>
 
-of our journey.
+            <div class="footer-divider"></div>
 
-Your blessings,
+            <h3>
 
-love and presence
+                Rishabh ♡ Ananya
 
-mean the world to us.
+            </h3>
 
-</p>
+            <p>
 
-<div class="footer-divider"></div>
+                11 December 2026
 
-<h3>
+            </p>
 
-Rishabh
+        </div>
 
-♡
-
-Ananya
-
-</h3>
-
-<p>
-
-11 December 2026
-
-</p>
-
-</div>
-
-</div>
+    </div>
 
 </footer>
 
-<!-- ========================================= -->
-<!-- MUSIC BUTTON -->
-<!-- ========================================= -->
+<!-- ==========================================================
+MUSIC
+=========================================================== -->
 
 <button
-    id="musicButton"
-    style="display:none;"
-    aria-label="Music">
-    ♫
-</button>
 
-<!-- ========================================= -->
-<!-- BACKGROUND MUSIC -->
-<!-- ========================================= -->
+    id="musicButton"
+
+    aria-label="Toggle Music">
+
+    ♫
+
+</button>
 
 <audio
 
-id="bgMusic"
+    id="bgMusic"
 
-loop
+    loop
 
-preload="auto">
+    preload="auto">
 
-<source
+    <source
 
-src="music/music.mp3"
+        src="assets/music/music.mp3"
 
-type="audio/mpeg">
+        type="audio/mpeg">
 
 </audio>
 
-<!-- ========================================= -->
-<!-- HIDDEN EVENT DATA -->
-<!-- (used later by script.js) -->
-<!-- ========================================= -->
+<div
 
-<div id="eventData"
+    id="eventData"
 
-data-mode="wedding"
+    data-mode="wedding"
 
-data-reception="false"
-
-data-mehendi="false"
-
-data-sangeet="false"
-
-hidden>
+    hidden>
 
 </div>
 
