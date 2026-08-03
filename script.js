@@ -1,20 +1,47 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const btn = document.getElementById("openInvite");
+    // Hide Loader
+    const loader = document.getElementById("loader");
 
-    if(btn){
+    if (loader) {
 
-        btn.addEventListener("click", () => {
+        setTimeout(() => {
 
-            btn.innerHTML="Opening...";
+            loader.style.opacity = "0";
 
-            btn.style.transform="scale(.95)";
+            setTimeout(() => {
 
-            setTimeout(()=>{
+                loader.style.display = "none";
 
-                window.location.href="invite.html";
+            }, 700);
 
-            },700);
+        }, 1800);
+
+    }
+
+    // Music Button
+    const music = document.getElementById("bgMusic");
+    const musicBtn = document.getElementById("musicButton");
+
+    if (musicBtn && music) {
+
+        let playing = false;
+
+        musicBtn.addEventListener("click", () => {
+
+            if (!playing) {
+
+                music.play().catch(() => {});
+                musicBtn.textContent = "❚❚";
+                playing = true;
+
+            } else {
+
+                music.pause();
+                musicBtn.textContent = "♫";
+                playing = false;
+
+            }
 
         });
 
