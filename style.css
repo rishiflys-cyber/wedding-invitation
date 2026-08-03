@@ -1080,3 +1080,69 @@ opacity:.45;
 }
 
 }
+/* ===========================
+Mobile
+=========================== */
+
+@media (max-width:768px){
+
+.hero-title{
+font-size:54px;
+}
+
+.hero-family{
+font-size:24px;
+}
+
+.hero-text{
+font-size:18px;
+line-height:1.6;
+}
+
+.section-title h2{
+font-size:34px;
+}
+
+.parents-grid{
+grid-template-columns:1fr;
+}
+
+.details-grid{
+grid-template-columns:1fr;
+}
+
+.timeline::before{
+left:18px;
+}
+
+.timeline-item{
+grid-template-columns:1fr;
+padding-left:40px;
+}
+
+.timeline-time{
+text-align:left;
+margin-bottom:15px;
+}
+
+.gallery-grid{
+grid-template-columns:1fr;
+}
+
+.paper{
+padding:40px 25px;
+}
+
+.venue-card{
+padding:35px 25px;
+}
+
+.couple-card h2{
+font-size:34px;
+}
+
+.footer-card h2{
+font-size:32px;
+}
+
+}
