@@ -15,7 +15,41 @@ document.addEventListener("DOMContentLoaded", () => {
             loader.style.display = "none";
         }, 700);
     }
+let autoScrolling = false;
+let pauseScrolling = false;
 
+function startAutoScroll() {
+
+    if (autoScrolling) return;
+
+    autoScrolling = true;
+
+    const speed = 0.7;
+
+    function animate() {
+
+        if (!autoScrolling) return;
+
+        if (!pauseScrolling) {
+
+            window.scrollBy(0, speed);
+
+        }
+
+        if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
+
+            autoScrolling = false;
+            return;
+
+        }
+
+        requestAnimationFrame(animate);
+
+    }
+
+    animate();
+
+}
     if (waxButton) {
 
         waxButton.addEventListener("click", () => {
