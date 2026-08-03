@@ -1,47 +1,34 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    // Hide Loader
     const loader = document.getElementById("loader");
+    const waxButton = document.getElementById("waxButton");
+    const music = document.getElementById("bgMusic");
 
-    if (loader) {
+    let started = false;
+
+    function hideLoader() {
+        if (!loader) return;
+
+        loader.style.opacity = "0";
 
         setTimeout(() => {
-
-            loader.style.opacity = "0";
-
-            setTimeout(() => {
-
-                loader.style.display = "none";
-
-            }, 700);
-
-        }, 1800);
-
+            loader.style.display = "none";
+        }, 700);
     }
 
-    // Music Button
-    const music = document.getElementById("bgMusic");
-    const musicBtn = document.getElementById("musicButton");
+    if (waxButton) {
 
-    if (musicBtn && music) {
+        waxButton.addEventListener("click", () => {
 
-        let playing = false;
+            if (started) return;
 
-        musicBtn.addEventListener("click", () => {
+            started = true;
 
-            if (!playing) {
+            music.play().catch(() => {});
 
-                music.play().catch(() => {});
-                musicBtn.textContent = "❚❚";
-                playing = true;
+            hideLoader();
 
-            } else {
-
-                music.pause();
-                musicBtn.textContent = "♫";
-                playing = false;
-
-            }
+            startAutoScroll();
 
         });
 
