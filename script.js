@@ -1,21 +1,38 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
 
     const loader = document.getElementById("loader");
+    const waxButton = document.getElementById("waxButton");
 
-    setTimeout(function () {
+    let started = false;
 
-        if (loader) {
+    // Hide the loader
+    function hideLoader() {
 
-            loader.style.opacity = "0";
+        if (!loader) return;
 
-            setTimeout(function () {
+        loader.style.opacity = "0";
 
-                loader.style.display = "none";
+        setTimeout(() => {
+            loader.style.display = "none";
+        }, 800);
 
-            }, 700);
+    }
 
-        }
+    // Start the invitation
+    if (waxButton) {
 
-    }, 2000);
+        waxButton.addEventListener("click", () => {
+
+            if (started) return;
+
+            started = true;
+
+            hideLoader();
+
+            waxButton.classList.add("opened");
+
+        });
+
+    }
 
 });
