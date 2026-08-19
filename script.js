@@ -2,12 +2,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const loader = document.getElementById("loader");
     const waxButton = document.getElementById("waxButton");
+    const bgMusic = document.getElementById("bgMusic");
 
     let started = false;
     let autoScrolling = false;
     let userInteracting = false;
     let animationFrame = null;
     let resumeTimer = null;
+
 
     // ==========================================
     // HIDE LOADER
@@ -32,6 +34,46 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ==========================================
+    // MUSIC
+    // ==========================================
+
+    function startMusic() {
+
+        if (!bgMusic) {
+            console.log("Music element not found");
+            return;
+        }
+
+        // Make absolutely sure the correct MP3 is being used
+        bgMusic.src = "sahilmadan-wedding-invitation-421393.mp3";
+
+        bgMusic.loop = true;
+        bgMusic.preload = "auto";
+
+        bgMusic.volume = 1.0;
+
+        const playPromise = bgMusic.play();
+
+        if (playPromise !== undefined) {
+
+            playPromise
+                .then(function () {
+
+                    console.log("Wedding music started");
+
+                })
+                .catch(function (error) {
+
+                    console.log("Music could not start:", error);
+
+                });
+
+        }
+
+    }
+
+
+    // ==========================================
     // AUTO SCROLL
     // iPHONE / SAFARI SAFE
     // ==========================================
@@ -52,17 +94,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             // Stop at bottom
+
             if (currentPosition >= maxPosition - 2) {
 
                 autoScrolling = false;
+
                 return;
 
             }
 
 
-            // IMPORTANT:
-            // Use a whole pixel.
-            // Safari can ignore fractional scrolling.
+            // One whole pixel at a time
+            // Works better on iPhone Safari
 
             window.scrollTo(
                 0,
@@ -89,10 +132,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
         started = true;
 
-        // Turn OFF CSS smooth scrolling.
-        // This is important for iPhone Safari.
+
+        // Disable CSS smooth scrolling
+        // for reliable iPhone scrolling
 
         document.documentElement.style.scrollBehavior = "auto";
+
+
+        // Open wax seal
 
         if (waxButton) {
 
@@ -100,8 +147,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
         }
 
-        // Give the tap a moment to finish,
-        // then start the journey.
+
+        // ======================================
+        // START MUSIC IMMEDIATELY
+        // ======================================
+
+        startMusic();
+
+
+        // ======================================
+        // START AUTO SCROLL
+        // ======================================
 
         setTimeout(function () {
 
@@ -118,7 +174,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ==========================================
-    // WAX SEAL
+    // WAX SEAL — CLICK
     // ==========================================
 
     if (waxButton) {
@@ -135,7 +191,9 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-        // iPhone Safari
+        // ======================================
+        // iPHONE / SAFARI TOUCH
+        // ======================================
 
         waxButton.addEventListener(
             "touchend",
@@ -153,33 +211,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ==========================================
-    // USER TOUCH
-    // ==========================================
-
-    function pauseForUser() {
-
-        if (!started) {
-            return;
-        }
-
-        userInteracting = true;
-
-        clearTimeout(resumeTimer);
-
-    }
-
-
-    // ==========================================
-    // TOUCH START
+    // USER TOUCH START
     // ==========================================
 
     window.addEventListener(
         "touchstart",
         function () {
 
-            if (!started) return;
+            if (!started) {
+                return;
+            }
 
-            pauseForUser();
+            userInteracting = true;
+
+            clearTimeout(resumeTimer);
 
         },
         { passive: true }
@@ -187,16 +232,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ==========================================
-    // TOUCH MOVE
+    // USER TOUCH MOVE
     // ==========================================
 
     window.addEventListener(
         "touchmove",
         function () {
 
-            if (!started) return;
+            if (!started) {
+                return;
+            }
 
-            pauseForUser();
+            userInteracting = true;
+
+            clearTimeout(resumeTimer);
 
         },
         { passive: true }
@@ -204,14 +253,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ==========================================
-    // TOUCH END
+    // USER LETS GO
+    // RESUME AUTO SCROLL
     // ==========================================
 
     window.addEventListener(
         "touchend",
         function () {
 
-            if (!started) return;
+            if (!started) {
+                return;
+            }
 
             clearTimeout(resumeTimer);
 
@@ -220,8 +272,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     userInteracting = false;
 
+                    cancelAnimationFrame(animationFrame);
+
+                    animationFrame =
+                        requestAnimationFrame(autoScroll);
+
                 },
-                500
+                100
             );
 
         },
@@ -230,14 +287,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ==========================================
-    // DESKTOP WHEEL
+    // DESKTOP MOUSE / TRACKPAD
     // ==========================================
 
     window.addEventListener(
         "wheel",
         function () {
 
-            if (!started) return;
+            if (!started) {
+                return;
+            }
 
             userInteracting = true;
 
@@ -248,12 +307,65 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     userInteracting = false;
 
+                    cancelAnimationFrame(animationFrame);
+
+                    animationFrame =
+                        requestAnimationFrame(autoScroll);
+
                 },
-                500
+                100
             );
 
         },
         { passive: true }
+    );
+
+
+    // ==========================================
+    // MOUSE DRAG / CLICK INTERACTION
+    // ==========================================
+
+    window.addEventListener(
+        "mousedown",
+        function () {
+
+            if (!started) {
+                return;
+            }
+
+            userInteracting = true;
+
+            clearTimeout(resumeTimer);
+
+        }
+    );
+
+
+    window.addEventListener(
+        "mouseup",
+        function () {
+
+            if (!started) {
+                return;
+            }
+
+            clearTimeout(resumeTimer);
+
+            resumeTimer = setTimeout(
+                function () {
+
+                    userInteracting = false;
+
+                    cancelAnimationFrame(animationFrame);
+
+                    animationFrame =
+                        requestAnimationFrame(autoScroll);
+
+                },
+                100
+            );
+
+        }
     );
 
 });
