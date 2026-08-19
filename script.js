@@ -3,6 +3,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const loader = document.getElementById("loader");
     const waxButton = document.getElementById("waxButton");
     const bgMusic = document.getElementById("bgMusic");
+    const weddingCard = document.getElementById("weddingCard");
+    const glitterContainer = document.getElementById("glitterContainer");
+    const hero = document.getElementById("hero");
 
     let started = false;
     let autoScrolling = false;
@@ -23,11 +26,8 @@ document.addEventListener("DOMContentLoaded", function () {
         loader.style.pointerEvents = "none";
 
         setTimeout(function () {
-
             loader.style.display = "none";
-
         }, 800);
-
     }
 
     setTimeout(hideLoader, 1800);
@@ -52,42 +52,24 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
         revealElements.forEach(function (element) {
-
             element.classList.add("reveal-element");
-
         });
 
-
         if (!("IntersectionObserver" in window)) {
-
             revealElements.forEach(function (element) {
-
                 element.classList.add("reveal-visible");
-
             });
-
             return;
-
         }
-
 
         const observer = new IntersectionObserver(
             function (entries) {
-
                 entries.forEach(function (entry) {
-
                     if (entry.isIntersecting) {
-
-                        entry.target.classList.add(
-                            "reveal-visible"
-                        );
-
+                        entry.target.classList.add("reveal-visible");
                         observer.unobserve(entry.target);
-
                     }
-
                 });
-
             },
             {
                 threshold: 0.12,
@@ -95,15 +77,10 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         );
 
-
         revealElements.forEach(function (element) {
-
             observer.observe(element);
-
         });
-
     }
-
 
     setupRevealAnimations();
 
@@ -115,46 +92,152 @@ document.addEventListener("DOMContentLoaded", function () {
     function startMusic() {
 
         if (!bgMusic) {
-
             console.log("Music element not found");
-
             return;
-
         }
 
-
-        // Current wedding music
         bgMusic.src = "Ranjha.mp3";
-
         bgMusic.loop = true;
         bgMusic.preload = "auto";
         bgMusic.volume = 1.0;
 
-
         const playPromise = bgMusic.play();
 
-
         if (playPromise !== undefined) {
-
             playPromise
                 .then(function () {
-
-                    console.log(
-                        "Wedding music started"
-                    );
-
+                    console.log("Wedding music started");
                 })
                 .catch(function (error) {
-
-                    console.log(
-                        "Music could not start:",
-                        error
-                    );
-
+                    console.log("Music could not start:", error);
                 });
+        }
+    }
 
+
+    // ==========================================
+    // GOLD GLITTER BURST
+    // ==========================================
+
+    function createGlitter() {
+
+        if (!glitterContainer) return;
+
+        glitterContainer.innerHTML = "";
+
+        const particleCount = 64;
+
+        for (let i = 0; i < particleCount; i++) {
+
+            const particle = document.createElement("span");
+            const isStar = Math.random() < 0.18;
+
+            particle.className = isStar ? "glitter star" : "glitter";
+
+            if (isStar) {
+                particle.textContent = "✦";
+            }
+
+            const startX = 50 + (Math.random() - 0.5) * 7;
+            const startY = 50 + (Math.random() - 0.5) * 9;
+
+            particle.style.left = startX + "%";
+            particle.style.top = startY + "%";
+
+            const angle = Math.random() * Math.PI * 2;
+            const distance = 80 + Math.random() * 300;
+
+            particle.style.setProperty("--x", Math.cos(angle) * distance + "px");
+            particle.style.setProperty("--y", Math.sin(angle) * distance + "px");
+
+            if (!isStar) {
+                const size = 2 + Math.random() * 4.5;
+                particle.style.width = size + "px";
+                particle.style.height = size + "px";
+            }
+
+            particle.style.animationDelay = (Math.random() * 0.22) + "s";
+            glitterContainer.appendChild(particle);
         }
 
+        setTimeout(function () {
+            if (glitterContainer) {
+                glitterContainer.innerHTML = "";
+            }
+        }, 2300);
+    }
+
+
+    // ==========================================
+    // OPEN THE ROYAL WEDDING CARD
+    // ==========================================
+
+    function startInvitation() {
+
+        if (started) return;
+
+        started = true;
+
+        document.documentElement.style.scrollBehavior = "auto";
+
+        // The tap is the user gesture: start music here.
+        startMusic();
+
+        // Press/break the seal.
+        if (waxButton) {
+            waxButton.classList.add("opened");
+        }
+
+        // Begin the physical card opening.
+        setTimeout(function () {
+            if (weddingCard) {
+                weddingCard.classList.add("opening");
+            }
+        }, 160);
+
+        // Glitter fires immediately after the leaves begin opening.
+        setTimeout(function () {
+            createGlitter();
+        }, 520);
+
+        // Reveal the invitation underneath.
+        setTimeout(function () {
+            if (hero) {
+                hero.classList.add("card-revealed");
+            }
+        }, 1050);
+
+        // Remove the cover only after the opening has visually completed.
+        setTimeout(function () {
+            if (weddingCard) {
+                weddingCard.classList.add("opened");
+            }
+        }, 1650);
+
+        // Preserve the proven iPhone/Safari-safe auto-scroll.
+        setTimeout(function () {
+            autoScrolling = true;
+            cancelAnimationFrame(animationFrame);
+            animationFrame = requestAnimationFrame(autoScroll);
+        }, 2050);
+    }
+
+
+    // ==========================================
+    // WAX SEAL — CLICK
+    // ==========================================
+
+    if (waxButton) {
+
+        waxButton.addEventListener("click", function (event) {
+            event.preventDefault();
+            startInvitation();
+        });
+
+        waxButton.addEventListener("touchend", function (event) {
+            event.preventDefault();
+            startInvitation();
+        }, { passive: false });
     }
 
 
@@ -165,12 +248,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function autoScroll() {
 
-        if (!autoScrolling) {
-
-            return;
-
-        }
-
+        if (!autoScrolling) return;
 
         if (!userInteracting) {
 
@@ -180,319 +258,124 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.documentElement.scrollHeight -
                 window.innerHeight;
 
-
-            // Stop at bottom
-
             if (currentPosition >= maxPosition - 2) {
-
                 autoScrolling = false;
-
                 return;
-
             }
 
-
-            // Whole pixel movement.
-            // Preserves iPhone Safari behaviour.
-
-            window.scrollTo(
-                0,
-                currentPosition + 1
-            );
-
+            window.scrollTo(0, currentPosition + 1);
         }
 
-
-        animationFrame =
-            requestAnimationFrame(autoScroll);
-
+        animationFrame = requestAnimationFrame(autoScroll);
     }
 
 
     // ==========================================
-    // START INVITATION
+    // TOUCH START
     // ==========================================
 
-    function startInvitation() {
+    window.addEventListener("touchstart", function () {
 
-        if (started) {
+        if (!started) return;
 
-            return;
+        userInteracting = true;
+        clearTimeout(resumeTimer);
 
-        }
-
-        started = true;
-
-
-        // Disable CSS smooth scrolling
-        // for reliable iPhone scrolling.
-
-        document.documentElement.style.scrollBehavior =
-            "auto";
+    }, { passive: true });
 
 
-        // Open wax seal
+    // ==========================================
+    // TOUCH MOVE
+    // ==========================================
 
-        if (waxButton) {
+    window.addEventListener("touchmove", function () {
 
-            waxButton.classList.add("opened");
+        if (!started) return;
 
-        }
+        userInteracting = true;
+        clearTimeout(resumeTimer);
 
-
-        // Start music
-
-        startMusic();
+    }, { passive: true });
 
 
-        // Start auto-scroll
+    // ==========================================
+    // TOUCH END — RESUME
+    // ==========================================
 
-        setTimeout(function () {
+    window.addEventListener("touchend", function () {
 
-            autoScrolling = true;
+        if (!started) return;
+
+        clearTimeout(resumeTimer);
+
+        resumeTimer = setTimeout(function () {
+
+            userInteracting = false;
 
             cancelAnimationFrame(animationFrame);
+            animationFrame = requestAnimationFrame(autoScroll);
 
-            animationFrame =
-                requestAnimationFrame(autoScroll);
+        }, 100);
 
-        }, 300);
-
-    }
+    }, { passive: true });
 
 
     // ==========================================
-    // WAX SEAL — CLICK
+    // DESKTOP WHEEL / TRACKPAD
     // ==========================================
 
-    if (waxButton) {
+    window.addEventListener("wheel", function () {
 
-        waxButton.addEventListener(
-            "click",
-            function (event) {
+        if (!started) return;
 
-                event.preventDefault();
+        userInteracting = true;
+        clearTimeout(resumeTimer);
 
-                startInvitation();
+        resumeTimer = setTimeout(function () {
 
-            }
-        );
+            userInteracting = false;
 
+            cancelAnimationFrame(animationFrame);
+            animationFrame = requestAnimationFrame(autoScroll);
 
-        // iPhone / Safari
+        }, 100);
 
-        waxButton.addEventListener(
-            "touchend",
-            function (event) {
-
-                event.preventDefault();
-
-                startInvitation();
-
-            },
-            {
-                passive: false
-            }
-        );
-
-    }
-
-
-    // ==========================================
-    // USER TOUCH START
-    // ==========================================
-
-    window.addEventListener(
-        "touchstart",
-        function () {
-
-            if (!started) {
-
-                return;
-
-            }
-
-            userInteracting = true;
-
-            clearTimeout(resumeTimer);
-
-        },
-        {
-            passive: true
-        }
-    );
-
-
-    // ==========================================
-    // USER TOUCH MOVE
-    // ==========================================
-
-    window.addEventListener(
-        "touchmove",
-        function () {
-
-            if (!started) {
-
-                return;
-
-            }
-
-            userInteracting = true;
-
-            clearTimeout(resumeTimer);
-
-        },
-        {
-            passive: true
-        }
-    );
-
-
-    // ==========================================
-    // USER LETS GO
-    // ==========================================
-
-    window.addEventListener(
-        "touchend",
-        function () {
-
-            if (!started) {
-
-                return;
-
-            }
-
-            clearTimeout(resumeTimer);
-
-
-            resumeTimer = setTimeout(
-                function () {
-
-                    userInteracting = false;
-
-                    cancelAnimationFrame(
-                        animationFrame
-                    );
-
-                    animationFrame =
-                        requestAnimationFrame(
-                            autoScroll
-                        );
-
-                },
-                100
-            );
-
-        },
-        {
-            passive: true
-        }
-    );
-
-
-    // ==========================================
-    // DESKTOP MOUSE / TRACKPAD
-    // ==========================================
-
-    window.addEventListener(
-        "wheel",
-        function () {
-
-            if (!started) {
-
-                return;
-
-            }
-
-            userInteracting = true;
-
-            clearTimeout(resumeTimer);
-
-
-            resumeTimer = setTimeout(
-                function () {
-
-                    userInteracting = false;
-
-                    cancelAnimationFrame(
-                        animationFrame
-                    );
-
-                    animationFrame =
-                        requestAnimationFrame(
-                            autoScroll
-                        );
-
-                },
-                100
-            );
-
-        },
-        {
-            passive: true
-        }
-    );
+    }, { passive: true });
 
 
     // ==========================================
     // MOUSE DOWN
     // ==========================================
 
-    window.addEventListener(
-        "mousedown",
-        function () {
+    window.addEventListener("mousedown", function () {
 
-            if (!started) {
+        if (!started) return;
 
-                return;
+        userInteracting = true;
+        clearTimeout(resumeTimer);
 
-            }
-
-            userInteracting = true;
-
-            clearTimeout(resumeTimer);
-
-        }
-    );
+    });
 
 
     // ==========================================
     // MOUSE UP
     // ==========================================
 
-    window.addEventListener(
-        "mouseup",
-        function () {
+    window.addEventListener("mouseup", function () {
 
-            if (!started) {
+        if (!started) return;
 
-                return;
+        clearTimeout(resumeTimer);
 
-            }
+        resumeTimer = setTimeout(function () {
 
-            clearTimeout(resumeTimer);
+            userInteracting = false;
 
+            cancelAnimationFrame(animationFrame);
+            animationFrame = requestAnimationFrame(autoScroll);
 
-            resumeTimer = setTimeout(
-                function () {
+        }, 100);
 
-                    userInteracting = false;
-
-                    cancelAnimationFrame(
-                        animationFrame
-                    );
-
-                    animationFrame =
-                        requestAnimationFrame(
-                            autoScroll
-                        );
-
-                },
-                100
-            );
-
-        }
-    );
-
+    });
 
 });
