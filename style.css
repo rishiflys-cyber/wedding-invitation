@@ -2913,3 +2913,122 @@ section {
     transform: translateY(var(--micro-shift));
     transition-delay: var(--reveal-delay, 0ms);
 }
+
+
+/* ============================================================
+   FINAL MOBILE-FIRST OPENING FIX
+   The invitation MUST remain invisible until RA is pressed.
+   ============================================================ */
+
+#hero > .hero-content,
+#hero:not(.card-revealed) > .hero-content {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transform: translate3d(0, 28px, 0) scale(.985) !important;
+    filter: blur(8px) !important;
+}
+
+#hero.card-revealed > .hero-content {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: translate3d(0, 0, 0) scale(1) !important;
+    filter: blur(0) !important;
+}
+
+/* Prevent the old hero animation rules from leaking through before opening. */
+#hero:not(.card-revealed) .hero-family,
+#hero:not(.card-revealed) .hero-title,
+#hero:not(.card-revealed) .hero-name,
+#hero:not(.card-revealed) .ampersand,
+#hero:not(.card-revealed) .hero-description {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    animation: none !important;
+}
+
+/* Mobile browsers get a hardware-friendly 2D fold instead of depending on
+   rotateX/3D perspective. It still reads as the triangular envelope flap. */
+@media (max-width: 768px) {
+    #weddingCard {
+        height: 100dvh;
+        min-height: 100svh;
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+    }
+
+    #weddingCard .envelope-shell,
+    #weddingCard .envelope-flap,
+    #weddingCard #waxButton,
+    #glitterContainer {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+    }
+
+    #weddingCard .envelope-flap {
+        height: 56%;
+        transform-origin: 50% 0%;
+        transform: translate3d(0,0,0) scaleY(1);
+        transition:
+            transform 1.25s cubic-bezier(.18,.72,.18,1),
+            opacity .45s ease;
+        -webkit-transition:
+            -webkit-transform 1.25s cubic-bezier(.18,.72,.18,1),
+            opacity .45s ease;
+        will-change: transform;
+        backface-visibility: visible;
+        -webkit-backface-visibility: visible;
+    }
+
+    #weddingCard.opening .envelope-flap {
+        transform: translate3d(0,-39vh,0) scaleY(.12);
+        filter: brightness(.88);
+        opacity: .98;
+    }
+
+    #weddingCard #waxButton {
+        top: 56%;
+        width: 132px;
+        height: 132px;
+        will-change: transform, opacity;
+    }
+
+    #weddingCard #waxButton .wax-seal {
+        width: 104px;
+        height: 104px;
+    }
+
+    #weddingCard #waxButton.opened {
+        transform: translate(-50%,-50%) scale(1.18) !important;
+        opacity: 0 !important;
+    }
+
+    #glitterContainer {
+        z-index: 999 !important;
+        overflow: visible;
+    }
+
+    .glitter {
+        width: 4px !important;
+        height: 4px !important;
+        box-shadow: 0 0 8px rgba(240,217,158,1), 0 0 20px rgba(240,217,158,.75);
+        will-change: transform, opacity;
+    }
+
+    .glitter.star {
+        font-size: 16px !important;
+        text-shadow: 0 0 12px rgba(240,217,158,1);
+    }
+}
+
+/* If the device advertises reduced motion, do NOT kill the essential
+   envelope reveal. Only ambient background motion is reduced. */
+@media (prefers-reduced-motion: reduce) {
+    #weddingCard .envelope-flap {
+        transition-duration: .9s !important;
+    }
+    #hero.card-revealed > .hero-content {
+        transition-duration: .9s !important;
+    }
+}
