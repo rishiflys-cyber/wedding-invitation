@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // Make absolutely sure the correct MP3 is being used
-        bgMusic.src = "sahilmadan-wedding-invitation-421393.mp3";
+        bgMusic.src = "Ranjha.mp3";
 
         bgMusic.loop = true;
         bgMusic.preload = "auto";
