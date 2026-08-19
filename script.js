@@ -24,7 +24,6 @@ document.addEventListener("DOMContentLoaded", function () {
         <div class="ev4-envelope">
           <div class="ev4-letter" aria-hidden="true">
             <div class="ev4-letter-content">
-              <span class="small">Together with our families</span>
               <div class="names">Rishabh</div>
               <div class="and">&amp;</div>
               <div class="names">Ananya</div>
