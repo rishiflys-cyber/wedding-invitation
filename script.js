@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const loader = document.getElementById("loader");
     const waxButton = document.getElementById("waxButton");
     const bgMusic = document.getElementById("bgMusic");
-    const envelope = document.getElementById("weddingEnvelope");
+    const weddingCard = document.getElementById("weddingCard");
     const glitterContainer = document.getElementById("glitterContainer");
     const hero = document.getElementById("hero");
 
@@ -13,169 +13,398 @@ document.addEventListener("DOMContentLoaded", function () {
     let animationFrame = null;
     let resumeTimer = null;
 
+
+    // ==========================================
+    // HIDE LOADER
+    // ==========================================
+
     function hideLoader() {
+
         if (!loader) return;
+
         loader.style.opacity = "0";
         loader.style.pointerEvents = "none";
-        setTimeout(function () { loader.style.display = "none"; }, 800);
+
+        setTimeout(function () {
+            loader.style.display = "none";
+        }, 800);
     }
+
     setTimeout(hideLoader, 1800);
 
+
+    // ==========================================
+    // CINEMATIC REVEAL SYSTEM
+    // ==========================================
+
     function setupRevealAnimations() {
+
         const revealElements = document.querySelectorAll(
-            ".section-title, .collage-frame, .invitation-card, .detail-card, .timeline-item, .venue-card, .gallery-item, .blessing-text, .footer-card"
+            ".section-title, " +
+            ".collage-frame, " +
+            ".invitation-card, " +
+            ".detail-card, " +
+            ".timeline-item, " +
+            ".venue-card, " +
+            ".gallery-item, " +
+            ".blessing-text, " +
+            ".footer-card"
         );
-        revealElements.forEach(function (element) { element.classList.add("reveal-element"); });
+
+        revealElements.forEach(function (element) {
+            element.classList.add("reveal-element");
+        });
+
         if (!("IntersectionObserver" in window)) {
-            revealElements.forEach(function (element) { element.classList.add("reveal-visible"); });
+            revealElements.forEach(function (element) {
+                element.classList.add("reveal-visible");
+            });
             return;
         }
-        const observer = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add("reveal-visible");
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
-        revealElements.forEach(function (element) { observer.observe(element); });
+
+        const observer = new IntersectionObserver(
+            function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("reveal-visible");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            {
+                threshold: 0.12,
+                rootMargin: "0px 0px -8% 0px"
+            }
+        );
+
+        revealElements.forEach(function (element) {
+            observer.observe(element);
+        });
     }
+
     setupRevealAnimations();
 
+
+    // ==========================================
+    // MUSIC
+    // ==========================================
+
     function startMusic() {
-        if (!bgMusic) return;
+
+        if (!bgMusic) {
+            console.log("Music element not found");
+            return;
+        }
+
         bgMusic.src = "Ranjha.mp3";
         bgMusic.loop = true;
         bgMusic.preload = "auto";
         bgMusic.volume = 1.0;
+
         const playPromise = bgMusic.play();
+
         if (playPromise !== undefined) {
-            playPromise.catch(function (error) {
-                console.log("Music could not start:", error);
-            });
+            playPromise
+                .then(function () {
+                    console.log("Wedding music started");
+                })
+                .catch(function (error) {
+                    console.log("Music could not start:", error);
+                });
         }
     }
+
+
+    // ==========================================
+    // LUXURY GOLD GLITTER SHOWER
+    // ==========================================
 
     function createGlitter() {
+
         if (!glitterContainer) return;
+
         glitterContainer.innerHTML = "";
-        glitterContainer.classList.add("active");
 
-        const count = 95;
-        const centerX = window.innerWidth / 2;
-        const centerY = window.innerHeight * 0.48;
+        const particleCount = 150;
 
-        for (let i = 0; i < count; i++) {
-            const p = document.createElement("span");
-            p.className = Math.random() < 0.2 ? "glitter-particle star" : "glitter-particle";
+        for (let i = 0; i < particleCount; i++) {
 
-            const angle = Math.random() * Math.PI * 2;
-            const distance = 120 + Math.random() * Math.max(window.innerWidth, window.innerHeight) * 0.55;
-            const driftX = Math.cos(angle) * distance;
-            const driftY = Math.sin(angle) * distance + 80 + Math.random() * 180;
+            const particle = document.createElement("span");
+            const isStar = Math.random() < 0.16;
 
-            p.style.left = centerX + (Math.random() - 0.5) * 28 + "px";
-            p.style.top = centerY + (Math.random() - 0.5) * 24 + "px";
-            p.style.setProperty("--dx", driftX + "px");
-            p.style.setProperty("--dy", driftY + "px");
-            p.style.setProperty("--rot", (Math.random() * 720 - 360) + "deg");
-            p.style.setProperty("--delay", (Math.random() * 0.28) + "s");
-            p.style.setProperty("--duration", (1.55 + Math.random() * 1.1) + "s");
-            p.style.setProperty("--size", (2 + Math.random() * 5) + "px");
+            particle.className = isStar ? "glitter star" : "glitter";
 
-            if (p.classList.contains("star")) p.textContent = "✦";
-            glitterContainer.appendChild(p);
+            if (isStar) {
+                particle.setAttribute("aria-hidden", "true");
+            }
+
+            const spread = 62 + Math.random() * 34;
+            const x = (Math.random() - 0.5) * spread;
+            const y = 20 + Math.random() * 92;
+            const drift = (Math.random() - 0.5) * 20;
+
+            particle.style.setProperty("--x", `calc(${x}vw + ${drift}px)`);
+            particle.style.setProperty("--y", `${y}vh`);
+            particle.style.setProperty("--delay", `${Math.random() * 0.42}s`);
+            particle.style.setProperty("--duration", `${1.9 + Math.random() * 1.65}s`);
+            particle.style.setProperty("--scale", `${0.45 + Math.random() * 1.25}`);
+            particle.style.setProperty("--rotate", `${180 + Math.random() * 420}deg`);
+
+            if (isStar) {
+                particle.style.setProperty("--star-size", `${9 + Math.random() * 12}px`);
+            } else {
+                const size = 2 + Math.random() * 4.5;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+            }
+
+            glitterContainer.appendChild(particle);
         }
+
+        // A second, smaller wave gives the reveal a lingering magical shower.
+        setTimeout(function () {
+
+            if (!glitterContainer) return;
+
+            for (let i = 0; i < 45; i++) {
+
+                const particle = document.createElement("span");
+                const isStar = Math.random() < 0.28;
+
+                particle.className = isStar ? "glitter star" : "glitter";
+
+                particle.style.setProperty("--x", `${(Math.random() - 0.5) * 75}vw`);
+                particle.style.setProperty("--y", `${35 + Math.random() * 75}vh`);
+                particle.style.setProperty("--delay", `${Math.random() * 0.25}s`);
+                particle.style.setProperty("--duration", `${2 + Math.random() * 1.3}s`);
+                particle.style.setProperty("--scale", `${0.4 + Math.random() * .9}`);
+
+                if (isStar) {
+                    particle.style.setProperty("--star-size", `${8 + Math.random() * 9}px`);
+                } else {
+                    const size = 1.5 + Math.random() * 3.5;
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+                }
+
+                glitterContainer.appendChild(particle);
+            }
+
+        }, 420);
 
         setTimeout(function () {
-            glitterContainer.classList.remove("active");
-            glitterContainer.innerHTML = "";
-        }, 3300);
+            if (glitterContainer) glitterContainer.innerHTML = "";
+        }, 5000);
     }
 
-    function autoScroll() {
-        if (!autoScrolling) return;
-        if (!userInteracting) {
-            const currentPosition = window.scrollY;
-            const maxPosition = document.documentElement.scrollHeight - window.innerHeight;
-            if (currentPosition >= maxPosition - 2) {
-                autoScrolling = false;
-                return;
-            }
-            window.scrollTo(0, currentPosition + 1);
-        }
-        animationFrame = requestAnimationFrame(autoScroll);
-    }
+
+    // ==========================================
+    // OPEN THE ROYAL WEDDING CARD
+    // ==========================================
 
     function startInvitation() {
+
         if (started) return;
+
         started = true;
         document.documentElement.style.scrollBehavior = "auto";
 
-        if (waxButton) {
-            waxButton.classList.add("pressed");
-            waxButton.disabled = true;
-        }
-
+        // The seal press is the user gesture, so music can start reliably on iPhone/Safari.
         startMusic();
 
-        // Seal breaks, then envelope opens.
-        setTimeout(function () {
-            if (envelope) envelope.classList.add("opening");
-        }, 220);
+        // 1. Tiny seal reaction.
+        if (waxButton) {
+            waxButton.classList.add("opened");
+        }
 
-        // Glitter erupts exactly as the envelope begins to open.
+        // 2. Envelope begins opening immediately.
+        setTimeout(function () {
+            if (weddingCard) {
+                weddingCard.classList.add("opening");
+            }
+        }, 120);
+
+        // 3. Glitter erupts as the flap clears the seal.
         setTimeout(function () {
             createGlitter();
-        }, 720);
+        }, 520);
 
-        // Let the opened envelope clear the entire screen before revealing hero.
+        // 4. Let the invitation emerge underneath the opening envelope.
         setTimeout(function () {
-            if (envelope) envelope.classList.add("opened");
-            if (hero) hero.classList.add("card-revealed");
+            if (hero) {
+                hero.classList.add("card-revealed");
+            }
+        }, 1180);
+
+        // 5. Remove the envelope only after the physical opening has finished.
+        setTimeout(function () {
+            if (weddingCard) {
+                weddingCard.classList.add("opened");
+            }
         }, 1900);
 
-        // Start the existing invitation journey after the reveal is complete.
+        // 6. Existing iPhone/Safari-safe auto-scroll continues after reveal.
         setTimeout(function () {
             autoScrolling = true;
             cancelAnimationFrame(animationFrame);
             animationFrame = requestAnimationFrame(autoScroll);
-        }, 2350);
+        }, 2300);
     }
 
+
+    // ==========================================
+    // WAX SEAL — CLICK
+    // ==========================================
+
     if (waxButton) {
+
         waxButton.addEventListener("click", function (event) {
             event.preventDefault();
             startInvitation();
         });
+
         waxButton.addEventListener("touchend", function (event) {
             event.preventDefault();
             startInvitation();
         }, { passive: false });
     }
 
-    function pauseUser() {
-        if (!started) return;
-        userInteracting = true;
-        clearTimeout(resumeTimer);
-    }
-    function resumeUser() {
-        if (!started) return;
-        clearTimeout(resumeTimer);
-        resumeTimer = setTimeout(function () {
-            userInteracting = false;
-            cancelAnimationFrame(animationFrame);
-            animationFrame = requestAnimationFrame(autoScroll);
-        }, 100);
+
+    // ==========================================
+    // AUTO SCROLL
+    // iPHONE / SAFARI SAFE
+    // ==========================================
+
+    function autoScroll() {
+
+        if (!autoScrolling) return;
+
+        if (!userInteracting) {
+
+            const currentPosition = window.scrollY;
+
+            const maxPosition =
+                document.documentElement.scrollHeight -
+                window.innerHeight;
+
+            if (currentPosition >= maxPosition - 2) {
+                autoScrolling = false;
+                return;
+            }
+
+            window.scrollTo(0, currentPosition + 1);
+        }
+
+        animationFrame = requestAnimationFrame(autoScroll);
     }
 
-    window.addEventListener("touchstart", pauseUser, { passive: true });
-    window.addEventListener("touchmove", pauseUser, { passive: true });
-    window.addEventListener("touchend", resumeUser, { passive: true });
-    window.addEventListener("wheel", function () {
-        pauseUser();
-        resumeUser();
+
+    // ==========================================
+    // TOUCH START
+    // ==========================================
+
+    window.addEventListener("touchstart", function () {
+
+        if (!started) return;
+
+        userInteracting = true;
+        clearTimeout(resumeTimer);
+
     }, { passive: true });
-    window.addEventListener("mousedown", pauseUser);
-    window.addEventListener("mouseup", resumeUser);
+
+
+    // ==========================================
+    // TOUCH MOVE
+    // ==========================================
+
+    window.addEventListener("touchmove", function () {
+
+        if (!started) return;
+
+        userInteracting = true;
+        clearTimeout(resumeTimer);
+
+    }, { passive: true });
+
+
+    // ==========================================
+    // TOUCH END — RESUME
+    // ==========================================
+
+    window.addEventListener("touchend", function () {
+
+        if (!started) return;
+
+        clearTimeout(resumeTimer);
+
+        resumeTimer = setTimeout(function () {
+
+            userInteracting = false;
+
+            cancelAnimationFrame(animationFrame);
+            animationFrame = requestAnimationFrame(autoScroll);
+
+        }, 100);
+
+    }, { passive: true });
+
+
+    // ==========================================
+    // DESKTOP WHEEL / TRACKPAD
+    // ==========================================
+
+    window.addEventListener("wheel", function () {
+
+        if (!started) return;
+
+        userInteracting = true;
+        clearTimeout(resumeTimer);
+
+        resumeTimer = setTimeout(function () {
+
+            userInteracting = false;
+
+            cancelAnimationFrame(animationFrame);
+            animationFrame = requestAnimationFrame(autoScroll);
+
+        }, 100);
+
+    }, { passive: true });
+
+
+    // ==========================================
+    // MOUSE DOWN
+    // ==========================================
+
+    window.addEventListener("mousedown", function () {
+
+        if (!started) return;
+
+        userInteracting = true;
+        clearTimeout(resumeTimer);
+
+    });
+
+
+    // ==========================================
+    // MOUSE UP
+    // ==========================================
+
+    window.addEventListener("mouseup", function () {
+
+        if (!started) return;
+
+        clearTimeout(resumeTimer);
+
+        resumeTimer = setTimeout(function () {
+
+            userInteracting = false;
+
+            cancelAnimationFrame(animationFrame);
+            animationFrame = requestAnimationFrame(autoScroll);
+
+        }, 100);
+
+    });
+
 });
