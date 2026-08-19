@@ -5,13 +5,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let started = false;
     let autoScrolling = false;
+    let userInteracting = false;
     let animationFrame = null;
     let resumeTimer = null;
-    let userInteracting = false;
+    let startingGesture = false;
 
-    // --------------------------------
+    // -----------------------------
     // HIDE LOADER
-    // --------------------------------
+    // -----------------------------
 
     setTimeout(() => {
 
@@ -28,32 +29,34 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 1800);
 
 
-    // --------------------------------
+    // -----------------------------
     // AUTO SCROLL
-    // --------------------------------
+    // -----------------------------
 
     function autoScroll() {
 
-        if (!autoScrolling) {
-            return;
-        }
+        if (!autoScrolling) return;
 
         if (!userInteracting) {
 
-            const current = window.scrollY;
+            const currentPosition = window.scrollY;
 
-            const maximum =
+            const maximumPosition =
                 document.documentElement.scrollHeight -
                 window.innerHeight;
 
-            if (current >= maximum - 2) {
+            if (currentPosition >= maximumPosition) {
 
                 autoScrolling = false;
                 return;
 
             }
 
-            window.scrollBy(0, 1);
+            // Slow cinematic movement
+            window.scrollTo(
+                0,
+                currentPosition + 0.8
+            );
 
         }
 
@@ -62,17 +65,27 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    // --------------------------------
-    // START THE JOURNEY
-    // --------------------------------
+    // -----------------------------
+    // START JOURNEY
+    // -----------------------------
 
-    function startJourney() {
+    function startJourney(event) {
+
+        if (event) {
+            event.preventDefault();
+        }
 
         if (started) return;
 
         started = true;
 
-        waxButton.classList.add("opened");
+        // Ignore the touch that opened the invitation
+        startingGesture = true;
+        userInteracting = false;
+
+        if (waxButton) {
+            waxButton.classList.add("opened");
+        }
 
         autoScrolling = true;
 
@@ -80,75 +93,96 @@ document.addEventListener("DOMContentLoaded", () => {
 
         animationFrame = requestAnimationFrame(autoScroll);
 
+        // After the opening gesture is finished,
+        // normal touch interaction becomes active again.
+        setTimeout(() => {
+            startingGesture = false;
+        }, 700);
+
     }
 
 
-    // --------------------------------
+    // -----------------------------
     // WAX SEAL
-    // --------------------------------
+    // -----------------------------
 
     if (waxButton) {
 
-        waxButton.addEventListener("click", startJourney);
+        waxButton.addEventListener(
+            "click",
+            startJourney
+        );
 
-        waxButton.addEventListener("touchend", startJourney);
-
-    }
-
-
-    // --------------------------------
-    // USER TOUCH / SWIPE
-    // --------------------------------
-
-    function userStartedInteracting() {
-
-        if (!started) return;
-
-        userInteracting = true;
-
-        clearTimeout(resumeTimer);
+        waxButton.addEventListener(
+            "touchend",
+            startJourney,
+            { passive: false }
+        );
 
     }
 
 
-    function userStoppedInteracting() {
+    // -----------------------------
+    // PHONE TOUCH CONTROL
+    // -----------------------------
 
-        if (!started) return;
-
-        clearTimeout(resumeTimer);
-
-        resumeTimer = setTimeout(() => {
-
-            userInteracting = false;
-
-        }, 1000);
-
-    }
-
-
-    // Touch
     window.addEventListener(
         "touchstart",
-        userStartedInteracting,
+        () => {
+
+            if (!started || startingGesture) return;
+
+            userInteracting = true;
+
+            clearTimeout(resumeTimer);
+
+        },
         { passive: true }
     );
+
 
     window.addEventListener(
         "touchend",
-        userStoppedInteracting,
+        () => {
+
+            if (!started || startingGesture) return;
+
+            clearTimeout(resumeTimer);
+
+            // Resume one second after
+            // the guest releases the screen.
+            resumeTimer = setTimeout(() => {
+
+                userInteracting = false;
+
+            }, 1000);
+
+        },
         { passive: true }
     );
 
-    // Mouse wheel / trackpad
-    window.addEventListener(
-        "wheel",
-        userStartedInteracting,
-        { passive: true }
-    );
+
+    // -----------------------------
+    // LAPTOP / MOUSE CONTROL
+    // -----------------------------
 
     window.addEventListener(
         "wheel",
-        userStoppedInteracting,
+        () => {
+
+            if (!started) return;
+
+            userInteracting = true;
+
+            clearTimeout(resumeTimer);
+
+            resumeTimer = setTimeout(() => {
+
+                userInteracting = false;
+
+            }, 1000);
+
+        },
         { passive: true }
     );
 
