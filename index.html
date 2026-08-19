@@ -8,7 +8,7 @@
 
     <title>Rishabh & Ananya | Wedding Invitation</title>
 
-    <meta name="theme-color" content="#0B0B0B" />
+    <meta name="theme-color" content="#641A27" />
     <meta name="description"
         content="Wedding Invitation of Rishabh Chattopadhyay & Ananya Dash (Acharya)" />
 
@@ -92,45 +92,63 @@ HERO
     <div class="hero-background"></div>
     <div class="hero-overlay"></div>
 
-    <!-- FULL-SCREEN WEDDING ENVELOPE OPENING -->
-    <div id="weddingEnvelope" aria-label="Wedding invitation envelope">
+    <!-- ======================================================
+         FULL-SCREEN ROYAL ENVELOPE
+         ====================================================== -->
+    <div id="weddingCard" aria-label="Open wedding invitation">
 
-        <div class="envelope-back"></div>
+        <div class="envelope-shell">
 
-        <div class="envelope-front">
-            <div class="envelope-border"></div>
+            <div class="envelope-border" aria-hidden="true"></div>
 
-            <div class="envelope-content">
-                <span class="envelope-kicker">Together with our families</span>
-                <h1>Rishabh <span>&amp;</span> Ananya</h1>
-                <div class="envelope-date">11 • 12 • 2026</div>
-            </div>
-        </div>
+            <div class="envelope-inner" aria-hidden="true"></div>
 
-        <div class="envelope-flap"></div>
+            <!-- The invitation is intentionally text-free until the envelope opens. -->
+            <div class="envelope-flap" aria-hidden="true"></div>
 
-        <div class="envelope-seal-wrap">
-            <span class="envelope-seal-glow"></span>
-            <button id="waxButton" type="button" aria-label="Break the RA wax seal and open invitation">
-                <span class="wax-seal">RA</span>
-                <span class="wax-text">Break the Seal</span>
+            <div class="envelope-pocket" aria-hidden="true"></div>
+
+            <div class="envelope-ornament ornament-top" aria-hidden="true"></div>
+            <div class="envelope-ornament ornament-bottom" aria-hidden="true"></div>
+
+            <button
+                id="waxButton"
+                type="button"
+                aria-label="Open the wedding invitation">
+
+                <span class="wax-glow"></span>
+
+                <span class="wax-seal">
+                    <span class="wax-monogram">RA</span>
+                </span>
+
             </button>
+
+            <div id="glitterContainer" aria-hidden="true"></div>
+
         </div>
 
-        <div id="glitterContainer" aria-hidden="true"></div>
     </div>
 
-    <!-- ORIGINAL HERO CONTENT REVEALED AFTER ENVELOPE OPENS -->
+    <!-- ======================================================
+         ORIGINAL HERO — REVEALED AFTER CARD OPENS
+         ====================================================== -->
     <div class="hero-content">
-        <span class="hero-family">Together with our families</span>
+
+        <span class="hero-family">
+            Together with our families
+        </span>
+
         <h1 class="hero-title">
             Rishabh
             <span class="ampersand">&amp;</span>
             Ananya
         </h1>
+
         <p class="hero-description">
             We cordially invite you to celebrate our wedding and bless us as we begin this beautiful new chapter together.
         </p>
+
     </div>
 
 </header>
@@ -750,7 +768,7 @@ MUSIC
 
 </div>
 
-<script src="script.js?v=3"></script>
+<script src="script.js?v=4"></script>
 
 </body>
 
