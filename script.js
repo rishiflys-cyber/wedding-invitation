@@ -5,20 +5,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let started = false;
 
-    // Hide the loader
-    function hideLoader() {
+    // Let the page finish loading first
+    setTimeout(() => {
 
-        if (!loader) return;
+        if (loader) {
+            loader.style.opacity = "0";
 
-        loader.style.opacity = "0";
+            setTimeout(() => {
+                loader.style.display = "none";
+            }, 800);
+        }
 
-        setTimeout(() => {
-            loader.style.display = "none";
-        }, 800);
+    }, 1800);
 
-    }
 
-    // Start the invitation
+    // Touch to Begin
     if (waxButton) {
 
         waxButton.addEventListener("click", () => {
@@ -26,8 +27,6 @@ document.addEventListener("DOMContentLoaded", () => {
             if (started) return;
 
             started = true;
-
-            hideLoader();
 
             waxButton.classList.add("opened");
 
