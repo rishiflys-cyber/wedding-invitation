@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const loader = document.getElementById("loader");
     const waxButton = document.getElementById("waxButton");
     const bgMusic = document.getElementById("bgMusic");
-    const weddingCard = document.getElementById("weddingCard");
+    const envelope = document.getElementById("weddingEnvelope");
     const glitterContainer = document.getElementById("glitterContainer");
     const hero = document.getElementById("hero");
 
@@ -13,369 +13,169 @@ document.addEventListener("DOMContentLoaded", function () {
     let animationFrame = null;
     let resumeTimer = null;
 
-
-    // ==========================================
-    // HIDE LOADER
-    // ==========================================
-
     function hideLoader() {
-
         if (!loader) return;
-
         loader.style.opacity = "0";
         loader.style.pointerEvents = "none";
-
-        setTimeout(function () {
-            loader.style.display = "none";
-        }, 800);
+        setTimeout(function () { loader.style.display = "none"; }, 800);
     }
-
     setTimeout(hideLoader, 1800);
 
-
-    // ==========================================
-    // CINEMATIC REVEAL SYSTEM
-    // ==========================================
-
     function setupRevealAnimations() {
-
         const revealElements = document.querySelectorAll(
-            ".section-title, " +
-            ".collage-frame, " +
-            ".invitation-card, " +
-            ".detail-card, " +
-            ".timeline-item, " +
-            ".venue-card, " +
-            ".gallery-item, " +
-            ".blessing-text, " +
-            ".footer-card"
+            ".section-title, .collage-frame, .invitation-card, .detail-card, .timeline-item, .venue-card, .gallery-item, .blessing-text, .footer-card"
         );
-
-        revealElements.forEach(function (element) {
-            element.classList.add("reveal-element");
-        });
-
+        revealElements.forEach(function (element) { element.classList.add("reveal-element"); });
         if (!("IntersectionObserver" in window)) {
-            revealElements.forEach(function (element) {
-                element.classList.add("reveal-visible");
-            });
+            revealElements.forEach(function (element) { element.classList.add("reveal-visible"); });
             return;
         }
-
-        const observer = new IntersectionObserver(
-            function (entries) {
-                entries.forEach(function (entry) {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add("reveal-visible");
-                        observer.unobserve(entry.target);
-                    }
-                });
-            },
-            {
-                threshold: 0.12,
-                rootMargin: "0px 0px -8% 0px"
-            }
-        );
-
-        revealElements.forEach(function (element) {
-            observer.observe(element);
-        });
+        const observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("reveal-visible");
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+        revealElements.forEach(function (element) { observer.observe(element); });
     }
-
     setupRevealAnimations();
 
-
-    // ==========================================
-    // MUSIC
-    // ==========================================
-
     function startMusic() {
-
-        if (!bgMusic) {
-            console.log("Music element not found");
-            return;
-        }
-
+        if (!bgMusic) return;
         bgMusic.src = "Ranjha.mp3";
         bgMusic.loop = true;
         bgMusic.preload = "auto";
         bgMusic.volume = 1.0;
-
         const playPromise = bgMusic.play();
-
         if (playPromise !== undefined) {
-            playPromise
-                .then(function () {
-                    console.log("Wedding music started");
-                })
-                .catch(function (error) {
-                    console.log("Music could not start:", error);
-                });
+            playPromise.catch(function (error) {
+                console.log("Music could not start:", error);
+            });
         }
     }
-
-
-    // ==========================================
-    // GOLD GLITTER BURST
-    // ==========================================
 
     function createGlitter() {
-
         if (!glitterContainer) return;
-
         glitterContainer.innerHTML = "";
+        glitterContainer.classList.add("active");
 
-        const particleCount = 64;
+        const count = 95;
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight * 0.48;
 
-        for (let i = 0; i < particleCount; i++) {
-
-            const particle = document.createElement("span");
-            const isStar = Math.random() < 0.18;
-
-            particle.className = isStar ? "glitter star" : "glitter";
-
-            if (isStar) {
-                particle.textContent = "✦";
-            }
-
-            const startX = 50 + (Math.random() - 0.5) * 7;
-            const startY = 50 + (Math.random() - 0.5) * 9;
-
-            particle.style.left = startX + "%";
-            particle.style.top = startY + "%";
+        for (let i = 0; i < count; i++) {
+            const p = document.createElement("span");
+            p.className = Math.random() < 0.2 ? "glitter-particle star" : "glitter-particle";
 
             const angle = Math.random() * Math.PI * 2;
-            const distance = 80 + Math.random() * 300;
+            const distance = 120 + Math.random() * Math.max(window.innerWidth, window.innerHeight) * 0.55;
+            const driftX = Math.cos(angle) * distance;
+            const driftY = Math.sin(angle) * distance + 80 + Math.random() * 180;
 
-            particle.style.setProperty("--x", Math.cos(angle) * distance + "px");
-            particle.style.setProperty("--y", Math.sin(angle) * distance + "px");
+            p.style.left = centerX + (Math.random() - 0.5) * 28 + "px";
+            p.style.top = centerY + (Math.random() - 0.5) * 24 + "px";
+            p.style.setProperty("--dx", driftX + "px");
+            p.style.setProperty("--dy", driftY + "px");
+            p.style.setProperty("--rot", (Math.random() * 720 - 360) + "deg");
+            p.style.setProperty("--delay", (Math.random() * 0.28) + "s");
+            p.style.setProperty("--duration", (1.55 + Math.random() * 1.1) + "s");
+            p.style.setProperty("--size", (2 + Math.random() * 5) + "px");
 
-            if (!isStar) {
-                const size = 2 + Math.random() * 4.5;
-                particle.style.width = size + "px";
-                particle.style.height = size + "px";
-            }
-
-            particle.style.animationDelay = (Math.random() * 0.22) + "s";
-            glitterContainer.appendChild(particle);
+            if (p.classList.contains("star")) p.textContent = "✦";
+            glitterContainer.appendChild(p);
         }
 
         setTimeout(function () {
-            if (glitterContainer) {
-                glitterContainer.innerHTML = "";
-            }
-        }, 2300);
+            glitterContainer.classList.remove("active");
+            glitterContainer.innerHTML = "";
+        }, 3300);
     }
 
-
-    // ==========================================
-    // OPEN THE ROYAL WEDDING CARD
-    // ==========================================
+    function autoScroll() {
+        if (!autoScrolling) return;
+        if (!userInteracting) {
+            const currentPosition = window.scrollY;
+            const maxPosition = document.documentElement.scrollHeight - window.innerHeight;
+            if (currentPosition >= maxPosition - 2) {
+                autoScrolling = false;
+                return;
+            }
+            window.scrollTo(0, currentPosition + 1);
+        }
+        animationFrame = requestAnimationFrame(autoScroll);
+    }
 
     function startInvitation() {
-
         if (started) return;
-
         started = true;
-
         document.documentElement.style.scrollBehavior = "auto";
 
-        // The tap is the user gesture: start music here.
-        startMusic();
-
-        // Press/break the seal.
         if (waxButton) {
-            waxButton.classList.add("opened");
+            waxButton.classList.add("pressed");
+            waxButton.disabled = true;
         }
 
-        // Begin the physical card opening.
-        setTimeout(function () {
-            if (weddingCard) {
-                weddingCard.classList.add("opening");
-            }
-        }, 160);
+        startMusic();
 
-        // Glitter fires immediately after the leaves begin opening.
+        // Seal breaks, then envelope opens.
+        setTimeout(function () {
+            if (envelope) envelope.classList.add("opening");
+        }, 220);
+
+        // Glitter erupts exactly as the envelope begins to open.
         setTimeout(function () {
             createGlitter();
-        }, 520);
+        }, 720);
 
-        // Reveal the invitation underneath.
+        // Let the opened envelope clear the entire screen before revealing hero.
         setTimeout(function () {
-            if (hero) {
-                hero.classList.add("card-revealed");
-            }
-        }, 1050);
+            if (envelope) envelope.classList.add("opened");
+            if (hero) hero.classList.add("card-revealed");
+        }, 1900);
 
-        // Remove the cover only after the opening has visually completed.
-        setTimeout(function () {
-            if (weddingCard) {
-                weddingCard.classList.add("opened");
-            }
-        }, 1650);
-
-        // Preserve the proven iPhone/Safari-safe auto-scroll.
+        // Start the existing invitation journey after the reveal is complete.
         setTimeout(function () {
             autoScrolling = true;
             cancelAnimationFrame(animationFrame);
             animationFrame = requestAnimationFrame(autoScroll);
-        }, 2050);
+        }, 2350);
     }
 
-
-    // ==========================================
-    // WAX SEAL — CLICK
-    // ==========================================
-
     if (waxButton) {
-
         waxButton.addEventListener("click", function (event) {
             event.preventDefault();
             startInvitation();
         });
-
         waxButton.addEventListener("touchend", function (event) {
             event.preventDefault();
             startInvitation();
         }, { passive: false });
     }
 
-
-    // ==========================================
-    // AUTO SCROLL
-    // iPHONE / SAFARI SAFE
-    // ==========================================
-
-    function autoScroll() {
-
-        if (!autoScrolling) return;
-
-        if (!userInteracting) {
-
-            const currentPosition = window.scrollY;
-
-            const maxPosition =
-                document.documentElement.scrollHeight -
-                window.innerHeight;
-
-            if (currentPosition >= maxPosition - 2) {
-                autoScrolling = false;
-                return;
-            }
-
-            window.scrollTo(0, currentPosition + 1);
-        }
-
-        animationFrame = requestAnimationFrame(autoScroll);
+    function pauseUser() {
+        if (!started) return;
+        userInteracting = true;
+        clearTimeout(resumeTimer);
+    }
+    function resumeUser() {
+        if (!started) return;
+        clearTimeout(resumeTimer);
+        resumeTimer = setTimeout(function () {
+            userInteracting = false;
+            cancelAnimationFrame(animationFrame);
+            animationFrame = requestAnimationFrame(autoScroll);
+        }, 100);
     }
 
-
-    // ==========================================
-    // TOUCH START
-    // ==========================================
-
-    window.addEventListener("touchstart", function () {
-
-        if (!started) return;
-
-        userInteracting = true;
-        clearTimeout(resumeTimer);
-
-    }, { passive: true });
-
-
-    // ==========================================
-    // TOUCH MOVE
-    // ==========================================
-
-    window.addEventListener("touchmove", function () {
-
-        if (!started) return;
-
-        userInteracting = true;
-        clearTimeout(resumeTimer);
-
-    }, { passive: true });
-
-
-    // ==========================================
-    // TOUCH END — RESUME
-    // ==========================================
-
-    window.addEventListener("touchend", function () {
-
-        if (!started) return;
-
-        clearTimeout(resumeTimer);
-
-        resumeTimer = setTimeout(function () {
-
-            userInteracting = false;
-
-            cancelAnimationFrame(animationFrame);
-            animationFrame = requestAnimationFrame(autoScroll);
-
-        }, 100);
-
-    }, { passive: true });
-
-
-    // ==========================================
-    // DESKTOP WHEEL / TRACKPAD
-    // ==========================================
-
+    window.addEventListener("touchstart", pauseUser, { passive: true });
+    window.addEventListener("touchmove", pauseUser, { passive: true });
+    window.addEventListener("touchend", resumeUser, { passive: true });
     window.addEventListener("wheel", function () {
-
-        if (!started) return;
-
-        userInteracting = true;
-        clearTimeout(resumeTimer);
-
-        resumeTimer = setTimeout(function () {
-
-            userInteracting = false;
-
-            cancelAnimationFrame(animationFrame);
-            animationFrame = requestAnimationFrame(autoScroll);
-
-        }, 100);
-
+        pauseUser();
+        resumeUser();
     }, { passive: true });
-
-
-    // ==========================================
-    // MOUSE DOWN
-    // ==========================================
-
-    window.addEventListener("mousedown", function () {
-
-        if (!started) return;
-
-        userInteracting = true;
-        clearTimeout(resumeTimer);
-
-    });
-
-
-    // ==========================================
-    // MOUSE UP
-    // ==========================================
-
-    window.addEventListener("mouseup", function () {
-
-        if (!started) return;
-
-        clearTimeout(resumeTimer);
-
-        resumeTimer = setTimeout(function () {
-
-            userInteracting = false;
-
-            cancelAnimationFrame(animationFrame);
-            animationFrame = requestAnimationFrame(autoScroll);
-
-        }, 100);
-
-    });
-
+    window.addEventListener("mousedown", pauseUser);
+    window.addEventListener("mouseup", resumeUser);
 });
