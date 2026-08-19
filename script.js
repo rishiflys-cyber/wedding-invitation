@@ -305,6 +305,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
         document.documentElement.style.scrollBehavior = "auto";
 
+        // Mobile browsers get a dedicated 2D envelope animation fallback.
+        // This is more reliable than depending on 3D rotateX compositing.
+        if (window.matchMedia && window.matchMedia("(max-width: 768px)").matches) {
+            if (weddingCard) {
+                weddingCard.classList.add("mobile-opening");
+            }
+        }
+
         /*
            The RA press is the direct user gesture.
            Start music immediately so iPhone/Safari permits playback.
@@ -335,7 +343,7 @@ document.addEventListener("DOMContentLoaded", function () {
         */
         setTimeout(function () {
             createGlitter();
-        }, 760);
+        }, (window.matchMedia && window.matchMedia("(max-width: 768px)").matches) ? 560 : 760);
 
         /*
            1450ms — invitation fades through naturally.
@@ -346,7 +354,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 hero.classList.add("card-revealed");
             }
 
-        }, 1450);
+        }, (window.matchMedia && window.matchMedia("(max-width: 768px)").matches) ? 1180 : 1450);
 
         /*
            1950ms — remove the envelope layer.
@@ -358,7 +366,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 weddingCard.classList.add("opened");
             }
 
-        }, 1950);
+        }, (window.matchMedia && window.matchMedia("(max-width: 768px)").matches) ? 1750 : 1950);
 
         /*
            2250ms — resume the existing gentle auto-scroll.
