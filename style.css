@@ -2212,645 +2212,274 @@ section {
 }
 
 /* ============================================================
-   23 — ROYAL WEDDING CARD OPENING
+   23 — FULL-SCREEN ROYAL ENVELOPE REVEAL
    ============================================================ */
 
 #weddingCard {
-    position: absolute;
-    inset: 0;
-    z-index: 30;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    perspective: 1800px;
-    pointer-events: auto;
-    transition: opacity 1s ease, visibility 0s linear 1.9s;
-}
-
-.card-cover {
-    position: relative;
-    width: min(88vw, 540px);
-    height: min(82svh, 720px);
-    overflow: hidden;
-    background:
-        radial-gradient(circle at 50% 38%, rgba(255,255,255,.98) 0%, rgba(252,248,240,.98) 46%, #ead9bb 100%);
-    border: 1px solid rgba(148,115,53,.45);
-    box-shadow: 0 45px 120px rgba(35,5,14,.52), 0 0 0 1px rgba(255,255,255,.12) inset;
-    transform-style: preserve-3d;
-}
-
-.card-border {
-    position: absolute;
-    inset: 14px;
-    border: 1px solid rgba(148,115,53,.38);
-    pointer-events: none;
-    z-index: 1;
-}
-
-.card-border::after {
-    content: "";
-    position: absolute;
-    inset: 8px;
-    border: 1px solid rgba(200,164,93,.16);
-}
-
-.card-cover::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background:
-        radial-gradient(circle at 50% 50%, rgba(200,164,93,.09), transparent 43%),
-        linear-gradient(90deg, rgba(120,80,30,.05), transparent 18%, transparent 82%, rgba(120,80,30,.05));
-    pointer-events: none;
-    z-index: 0;
-}
-
-.card-cover-content {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 70px 30px;
-    color: var(--burgundy);
-    transition: opacity .5s ease, transform .7s ease;
-}
-
-.card-kicker {
-    color: var(--gold-dark);
-    font-family: var(--sans);
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    margin-bottom: 34px;
-}
-
-.card-names {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: var(--burgundy);
-    font-family: var(--display);
-    font-size: clamp(42px, 8vw, 70px);
-    font-weight: 500;
-    line-height: .98;
-    letter-spacing: 1px;
-    text-shadow: 0 8px 30px rgba(100,26,39,.08);
-}
-
-.card-names small {
-    margin: 14px 0;
-    color: var(--gold-dark);
-    font-family: var(--serif);
-    font-size: .48em;
-    font-weight: 400;
-}
-
-.card-rule {
-    width: 110px;
-    height: 1px;
-    margin: 30px auto 22px;
-    background: linear-gradient(90deg, transparent, var(--gold), transparent);
-}
-
-.card-date {
-    color: var(--brown-soft);
-    font-family: var(--serif);
-    font-size: 18px;
-    letter-spacing: 4px;
-}
-
-.card-instruction {
-    position: absolute;
-    bottom: 46px;
-    color: rgba(118,91,85,.82);
-    font-family: var(--sans);
-    font-size: 9px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-}
-
-.card-ornament {
-    position: absolute;
-    left: 50%;
-    width: 170px;
-    height: 1px;
-    transform: translateX(-50%);
-    background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    z-index: 3;
-}
-
-.card-ornament::after {
-    content: "✦";
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    padding: 0 10px;
-    color: var(--gold);
-    background: var(--cream);
-    font-size: 10px;
-}
-
-.card-ornament-top { top: 58px; }
-.card-ornament-bottom { bottom: 58px; }
-
-/* Physical opening leaves */
-.card-panel {
-    position: absolute;
-    top: 0;
-    width: 50.5%;
-    height: 100%;
-    z-index: 8;
-    background:
-        linear-gradient(135deg, #fffaf0 0%, #f7eedc 55%, #ead9bb 100%);
-    border-top: 1px solid rgba(148,115,53,.45);
-    border-bottom: 1px solid rgba(148,115,53,.45);
-    box-shadow: 0 25px 80px rgba(50,8,17,.20);
-    backface-visibility: hidden;
-    transform-style: preserve-3d;
-    transition: transform 1.5s cubic-bezier(.77,0,.18,1), box-shadow 1.5s ease;
-}
-
-.card-panel::after {
-    content: "";
-    position: absolute;
-    top: 15px;
-    bottom: 15px;
-    width: 1px;
-    background: linear-gradient(to bottom, transparent, rgba(148,115,53,.35), transparent);
-}
-
-.card-panel-left {
-    left: 0;
-    transform-origin: left center;
-    border-left: 1px solid rgba(148,115,53,.45);
-    border-right: 1px solid rgba(148,115,53,.18);
-}
-
-.card-panel-left::after { right: 7px; }
-
-.card-panel-right {
-    right: 0;
-    transform-origin: right center;
-    border-right: 1px solid rgba(148,115,53,.45);
-    border-left: 1px solid rgba(148,115,53,.18);
-}
-
-.card-panel-right::after { left: 7px; }
-
-/* Wax seal */
-#weddingCard #waxButton {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    z-index: 12;
-    width: 132px;
-    height: 132px;
-    margin: 0;
-    padding: 0;
-    transform: translate(-50%, -50%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    border-radius: 50%;
-    transition: transform .22s ease, opacity .45s ease;
-}
-
-#weddingCard #waxButton .wax-glow {
-    position: absolute;
-    width: 170px;
-    height: 170px;
-    border-radius: 50%;
-    background: rgba(240,217,158,.18);
-    filter: blur(34px);
-    animation: pulse 3s infinite;
-}
-
-#weddingCard #waxButton .wax-seal {
-    width: 112px;
-    height: 112px;
-    flex: 0 0 auto;
-    border-radius: 50%;
-    color: #fff6e7;
-    font-family: var(--display);
-    font-size: 31px;
-    font-weight: 600;
-    background: radial-gradient(circle at 35% 28%, #c34a55, #8e2432 48%, #56121f 100%);
-    border: 3px solid rgba(148,115,53,.62);
-    box-shadow: inset 0 0 0 5px rgba(255,255,255,.035), 0 18px 55px rgba(58,10,20,.38);
-    transition: transform .22s ease, box-shadow .35s ease;
-}
-
-#weddingCard #waxButton .wax-seal::before {
-    content: "";
-    position: absolute;
-    inset: 11px;
-    border: 1px solid rgba(240,217,158,.55);
-    border-radius: 50%;
-}
-
-#weddingCard #waxButton .wax-seal::after {
-    content: "✦";
-    position: absolute;
-    top: 13px;
-    right: 21px;
-    color: rgba(255,255,255,.65);
-    font-size: 8px;
-}
-
-#weddingCard #waxButton:active {
-    transform: translate(-50%, -50%) scale(.86);
-}
-
-/* Opening choreography */
-#weddingCard.opening .card-panel-left {
-    transform: rotateY(-108deg);
-    box-shadow: 0 20px 80px rgba(50,8,17,.08);
-}
-
-#weddingCard.opening .card-panel-right {
-    transform: rotateY(108deg);
-    box-shadow: 0 20px 80px rgba(50,8,17,.08);
-}
-
-#weddingCard.opening .card-cover-content {
-    opacity: 0;
-    transform: scale(.97);
-}
-
-#weddingCard.opening #waxButton {
-    transform: translate(-50%, -50%) scale(1.12);
-    opacity: 0;
-}
-
-#weddingCard.opened {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-}
-
-/* Glitter */
-#glitterContainer {
-    position: absolute;
-    inset: 0;
-    z-index: 14;
-    overflow: hidden;
-    pointer-events: none;
-}
-
-.glitter {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: var(--gold-light);
-    box-shadow: 0 0 7px rgba(240,217,158,.95), 0 0 15px rgba(240,217,158,.45);
-    opacity: 0;
-    animation: glitterBurst 1.8s cubic-bezier(.15,.75,.3,1) forwards;
-}
-
-.glitter.star {
-    width: auto;
-    height: auto;
-    background: transparent;
-    box-shadow: none;
-    color: var(--gold-bright);
-    font-size: 12px;
-    line-height: 1;
-    animation-name: glitterStar;
-}
-
-@keyframes glitterBurst {
-    0% { opacity: 0; transform: translate(0,0) scale(.2) rotate(0deg); }
-    10% { opacity: 1; }
-    65% { opacity: .8; }
-    100% { opacity: 0; transform: translate(var(--x),var(--y)) scale(.45) rotate(140deg); }
-}
-
-@keyframes glitterStar {
-    0% { opacity: 0; transform: translate(0,0) scale(.2) rotate(0deg); }
-    12% { opacity: 1; }
-    100% { opacity: 0; transform: translate(var(--x),var(--y)) scale(.7) rotate(220deg); }
-}
-
-/* Hero stays behind the card until the opening is complete */
-#hero > .hero-content {
-    opacity: 0;
-    transform: translateY(25px);
-    pointer-events: none;
-    animation: none;
-    transition: opacity 1.05s ease .85s, transform 1.15s cubic-bezier(.22,.61,.36,1) .85s;
-}
-
-#hero.card-revealed > .hero-content {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-}
-
-@media (max-width: 768px) {
-    .card-cover {
-        width: 88vw;
-        height: 80svh;
-    }
-
-    .card-kicker {
-        font-size: 8px;
-        letter-spacing: 3px;
-    }
-
-    .card-names {
-        font-size: 47px;
-    }
-
-    .card-date {
-        font-size: 16px;
-        letter-spacing: 3px;
-    }
-
-    .card-ornament-top { top: 45px; }
-    .card-ornament-bottom { bottom: 45px; }
-
-    #weddingCard #waxButton {
-        width: 116px;
-        height: 116px;
-    }
-
-    #weddingCard #waxButton .wax-seal {
-        width: 96px;
-        height: 96px;
-        font-size: 28px;
-    }
-
-    .card-instruction {
-        bottom: 34px;
-        font-size: 8px;
-        letter-spacing: 2.5px;
-    }
-}
-
-@media (max-width: 480px) {
-    .card-cover {
-        width: 89vw;
-        height: 80svh;
-    }
-
-    .card-cover-content {
-        padding: 55px 20px;
-    }
-
-    .card-names {
-        font-size: 42px;
-    }
-
-    .card-rule {
-        margin-top: 25px;
-    }
-}
-
-/* ============================================================
-   FULL-SCREEN ROYAL ENVELOPE OPENING
-   ============================================================ */
-
-#weddingEnvelope {
     position: fixed;
     inset: 0;
-    z-index: 5000;
+    z-index: 100;
+    width: 100vw;
+    height: 100svh;
     overflow: hidden;
-    background: #f5ead8;
-    perspective: 1800px;
-    transition: opacity .9s ease, visibility 0s linear 1.2s;
+    display: block;
+    pointer-events: auto;
+    background: #4b111d;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity .9s cubic-bezier(.22,.61,.36,1), visibility 0s linear .95s;
 }
 
-.envelope-back {
+.envelope-shell {
     position: absolute;
     inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    isolation: isolate;
     background:
-        radial-gradient(circle at 50% 42%, rgba(231,211,156,.20), transparent 28%),
-        linear-gradient(145deg, #fffaf0 0%, #f4e8d4 46%, #e5cfaa 100%);
+        radial-gradient(circle at 50% 45%, rgba(139,45,55,.96) 0%, rgba(100,26,39,.98) 48%, #48121d 100%);
 }
 
-.envelope-front {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    background:
-        linear-gradient(135deg, rgba(255,255,255,.28), transparent 32%),
-        linear-gradient(315deg, rgba(143,107,47,.10), transparent 38%),
-        #f8f0e2;
-    transform-origin: center bottom;
-    transition: transform 1.35s cubic-bezier(.77,0,.18,1), opacity .8s ease;
-}
-
-.envelope-front::before,
-.envelope-front::after {
+/* Handmade-paper texture without any text or imagery. */
+.envelope-shell::before {
     content: "";
     position: absolute;
+    inset: 0;
+    z-index: 0;
+    opacity: .28;
+    background:
+        repeating-linear-gradient(0deg, rgba(255,255,255,.025) 0 1px, transparent 1px 4px),
+        repeating-linear-gradient(90deg, rgba(255,255,255,.018) 0 1px, transparent 1px 5px),
+        radial-gradient(circle at 20% 20%, rgba(255,220,170,.07), transparent 30%),
+        radial-gradient(circle at 80% 75%, rgba(0,0,0,.12), transparent 32%);
     pointer-events: none;
 }
 
-.envelope-front::before {
-    inset: 28px;
-    border: 1px solid rgba(143,107,47,.45);
-}
-
-.envelope-front::after {
-    inset: 40px;
-    border: 1px solid rgba(200,161,90,.22);
+.envelope-shell::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: radial-gradient(circle at 50% 50%, transparent 35%, rgba(27,3,10,.24) 100%);
+    pointer-events: none;
 }
 
 .envelope-border {
     position: absolute;
-    inset: 56px;
-    border: 1px solid rgba(200,161,90,.15);
+    inset: clamp(16px, 2.5vw, 36px);
+    z-index: 7;
+    border: 1px solid rgba(230,207,154,.78);
+    box-shadow: inset 0 0 0 1px rgba(200,164,93,.14);
+    pointer-events: none;
 }
 
-.envelope-content {
+.envelope-border::before,
+.envelope-border::after {
+    content: "";
     position: absolute;
-    left: 50%;
-    top: 46%;
-    width: min(90vw, 760px);
-    transform: translate(-50%, -50%);
-    text-align: center;
-    color: #6e1828;
+    inset: 10px;
+    border: 1px solid rgba(230,207,154,.20);
 }
 
-.envelope-kicker {
-    display: block;
-    margin-bottom: 28px;
-    color: #8f6b2f;
-    font-family: 'Poppins', sans-serif;
-    font-size: clamp(9px, 1.3vw, 12px);
-    letter-spacing: 5px;
-    text-transform: uppercase;
+.envelope-inner {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background:
+        linear-gradient(145deg, rgba(255,255,255,.025), transparent 35%, rgba(0,0,0,.08)),
+        radial-gradient(ellipse at 50% 30%, rgba(226,176,113,.10), transparent 45%);
 }
 
-.envelope-content h1 {
-    font-family: 'Cinzel', serif;
-    font-weight: 500;
-    font-size: clamp(48px, 8vw, 92px);
-    line-height: 1;
-    letter-spacing: 1px;
+/* Envelope pocket — the V seams make it read as a real envelope. */
+.envelope-pocket {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    background:
+        linear-gradient(135deg, transparent 49.7%, rgba(230,207,154,.62) 49.9%, transparent 50.15%),
+        linear-gradient(225deg, transparent 49.7%, rgba(230,207,154,.62) 49.9%, transparent 50.15%),
+        linear-gradient(180deg, rgba(255,255,255,.02), rgba(38,3,10,.13));
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    pointer-events: none;
 }
 
-.envelope-content h1 span {
-    display: inline-block;
-    margin: 0 15px;
-    color: #c8a15a;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: .65em;
-}
-
-.envelope-date {
-    margin-top: 30px;
-    color: #765b55;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(18px, 2.2vw, 27px);
-    letter-spacing: 6px;
-}
-
+/* The flap is the hero: it lifts away from the seal like a physical envelope. */
 .envelope-flap {
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
-    height: 56%;
-    z-index: 6;
-    background:
-        linear-gradient(135deg, rgba(255,255,255,.30), transparent 45%),
-        linear-gradient(225deg, rgba(143,107,47,.10), transparent 55%),
-        #f1e2ca;
-    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    height: 58%;
+    z-index: 10;
     transform-origin: 50% 0%;
-    transition: transform 1.15s cubic-bezier(.77,0,.18,1), opacity .7s ease;
-    filter: drop-shadow(0 15px 30px rgba(60,20,15,.12));
+    transform: rotateX(0deg);
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    background:
+        linear-gradient(180deg, rgba(255,255,255,.045), transparent 48%),
+        linear-gradient(135deg, #731f2c 0%, #641a27 48%, #50131f 100%);
+    border-bottom: 1px solid rgba(230,207,154,.72);
+    box-shadow: 0 20px 60px rgba(20,2,8,.28);
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+    transition: transform 1.35s cubic-bezier(.77,0,.18,1), filter 1.35s ease;
+    pointer-events: none;
+}
+
+.envelope-flap::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        repeating-linear-gradient(0deg, rgba(255,255,255,.018) 0 1px, transparent 1px 4px),
+        radial-gradient(circle at 50% 20%, rgba(235,190,126,.08), transparent 35%);
 }
 
 .envelope-flap::after {
     content: "";
     position: absolute;
     left: 50%;
-    top: 14%;
-    width: 55%;
-    height: 60%;
+    top: 11%;
+    width: min(38vw, 480px);
+    height: min(38vw, 480px);
     transform: translateX(-50%);
-    border-top: 1px solid rgba(143,107,47,.25);
-    opacity: .55;
+    border: 1px solid rgba(230,207,154,.13);
+    border-radius: 50%;
 }
 
-.envelope-seal-wrap {
+.envelope-ornament {
+    position: absolute;
+    z-index: 6;
+    width: min(38vw, 440px);
+    height: 1px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(90deg, transparent, rgba(230,207,154,.62), transparent);
+    opacity: .82;
+}
+
+.envelope-ornament::after {
+    content: "✦";
     position: absolute;
     left: 50%;
     top: 50%;
-    z-index: 12;
-    transform: translate(-50%, -50%);
-    text-align: center;
+    transform: translate(-50%,-50%);
+    color: rgba(230,207,154,.85);
+    background: #641a27;
+    padding: 0 12px;
+    font-size: 11px;
 }
 
-.envelope-seal-glow {
+.ornament-top { top: clamp(55px, 8vh, 90px); }
+.ornament-bottom { bottom: clamp(55px, 8vh, 90px); }
+
+/* RA seal: no names, no instruction, no cheap copy. */
+#weddingCard #waxButton {
     position: absolute;
     left: 50%;
-    top: 47%;
-    width: 180px;
-    height: 180px;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(200,161,90,.25), transparent 67%);
-    animation: envelopeSealGlow 3s ease-in-out infinite;
-}
-
-@keyframes envelopeSealGlow {
-    0%,100% { opacity: .55; transform: translate(-50%,-50%) scale(.92); }
-    50% { opacity: 1; transform: translate(-50%,-50%) scale(1.06); }
-}
-
-#weddingEnvelope #waxButton {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 17px;
+    top: 58%;
+    z-index: 20;
+    width: 138px;
+    height: 138px;
+    transform: translate(-50%,-50%);
+    border: 0;
+    padding: 0;
+    margin: 0;
     background: transparent;
-}
-
-#weddingEnvelope .wax-seal {
-    position: relative;
-    width: 118px;
-    height: 118px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     border-radius: 50%;
-    color: #fff5e4;
-    font-family: 'Cinzel', serif;
-    font-size: 34px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    background: radial-gradient(circle at 34% 25%, #c44c59 0%, #8e2432 48%, #54111e 100%);
-    border: 3px solid rgba(143,107,47,.7);
-    box-shadow: inset 0 0 0 6px rgba(255,255,255,.035), 0 20px 65px rgba(58,10,20,.38), 0 0 35px rgba(240,217,158,.12);
-    transition: transform .28s ease, opacity .35s ease, filter .35s ease;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform .22s ease, opacity .5s ease;
 }
 
-#weddingEnvelope .wax-seal::before {
+#weddingCard #waxButton .wax-glow {
+    position: absolute;
+    width: 190px;
+    height: 190px;
+    border-radius: 50%;
+    background: rgba(230,207,154,.20);
+    filter: blur(35px);
+    animation: sealPulse 3s ease-in-out infinite;
+}
+
+#weddingCard #waxButton .wax-seal {
+    position: relative;
+    width: 112px;
+    height: 112px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 34% 28%, #b94a56 0%, #8e2432 43%, #55131f 100%);
+    border: 3px solid rgba(230,207,154,.72);
+    box-shadow:
+        inset 0 0 0 4px rgba(255,255,255,.045),
+        inset 0 0 0 7px rgba(48,7,15,.24),
+        0 18px 55px rgba(28,3,10,.46),
+        0 0 0 1px rgba(255,255,255,.08);
+    transition: transform .25s ease, box-shadow .25s ease;
+}
+
+#weddingCard #waxButton .wax-seal::before {
     content: "";
     position: absolute;
     inset: 11px;
-    border: 1px solid rgba(240,217,158,.55);
+    border: 1px solid rgba(240,217,158,.72);
     border-radius: 50%;
 }
 
-#weddingEnvelope .wax-seal::after {
-    content: "✦";
+#weddingCard #waxButton .wax-seal::after {
+    content: "";
     position: absolute;
-    top: 14px;
-    right: 18px;
-    color: rgba(255,255,255,.65);
-    font-size: 9px;
+    inset: 17px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.08);
 }
 
-#weddingEnvelope .wax-text {
-    color: #765b55;
-    font-family: 'Poppins', sans-serif;
-    font-size: 10px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
+.wax-monogram {
+    position: relative;
+    z-index: 2;
+    color: #fff5df;
+    font-family: var(--serif);
+    font-size: 36px;
+    font-weight: 600;
+    letter-spacing: -2px;
+    text-shadow: 0 2px 5px rgba(48,5,12,.35);
 }
 
-#weddingEnvelope #waxButton.pressed .wax-seal {
-    transform: scale(.72);
-    filter: brightness(1.18);
+#weddingCard #waxButton:hover .wax-seal,
+#weddingCard #waxButton:focus-visible .wax-seal {
+    transform: scale(1.045);
+    box-shadow:
+        inset 0 0 0 4px rgba(255,255,255,.045),
+        inset 0 0 0 7px rgba(48,7,15,.24),
+        0 20px 62px rgba(28,3,10,.50),
+        0 0 30px rgba(230,207,154,.18);
+}
+
+#weddingCard #waxButton:active {
+    transform: translate(-50%,-50%) scale(.91);
+}
+
+/* Seal breaks, then the flap starts its physical opening. */
+#weddingCard.opening #waxButton {
+    transform: translate(-50%,-50%) scale(1.16);
     opacity: 0;
+    pointer-events: none;
 }
 
-#weddingEnvelope.opening .envelope-flap {
-    transform: rotateX(175deg);
-    opacity: .2;
+#weddingCard.opening .envelope-flap {
+    transform: rotateX(178deg);
+    filter: brightness(.78);
 }
 
-#weddingEnvelope.opening .envelope-front {
-    transform: scale(1.035) translateY(2%);
-    opacity: .05;
+#weddingCard.opening .envelope-pocket {
+    filter: brightness(.92);
 }
 
-#weddingEnvelope.opening .envelope-content {
-    opacity: 0;
-    transition: opacity .35s ease;
-}
-
-#weddingEnvelope.opening .envelope-seal-wrap {
-    opacity: 0;
-    transition: opacity .4s ease .05s;
-}
-
-#weddingEnvelope.opened {
+#weddingCard.opened {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
@@ -2861,86 +2490,98 @@ section {
    ============================================================ */
 
 #glitterContainer {
-    position: fixed;
+    position: absolute;
     inset: 0;
-    z-index: 30;
-    pointer-events: none;
+    z-index: 40;
     overflow: hidden;
-    opacity: 0;
-}
-
-#glitterContainer.active {
+    pointer-events: none;
     opacity: 1;
 }
 
-.glitter-particle {
+.glitter {
     position: absolute;
-    width: var(--size);
-    height: var(--size);
+    left: 50%;
+    top: 58%;
+    width: 4px;
+    height: 4px;
     border-radius: 50%;
-    background: #e7d39c;
-    box-shadow: 0 0 8px rgba(231,211,156,.95), 0 0 18px rgba(200,161,90,.55);
+    background: var(--gold-bright);
+    box-shadow: 0 0 7px rgba(240,217,158,.98), 0 0 18px rgba(240,217,158,.50);
     opacity: 0;
-    animation: luxuryGlitter var(--duration) cubic-bezier(.16,.72,.28,1) var(--delay) forwards;
+    will-change: transform, opacity;
+    animation: glitterShower var(--duration, 2.4s) cubic-bezier(.15,.55,.24,1) var(--delay,0s) forwards;
 }
 
-.glitter-particle.star {
-    width: 18px;
-    height: 18px;
+.glitter.star {
+    width: auto;
+    height: auto;
     background: transparent;
     box-shadow: none;
-    color: #f4dfa4;
-    font-size: 16px;
-    line-height: 18px;
-    text-align: center;
+    color: var(--gold-bright);
+    font-size: var(--star-size, 14px);
+    line-height: 1;
+    border-radius: 0;
 }
 
-@keyframes luxuryGlitter {
+.glitter.star::after {
+    content: "✦";
+}
+
+@keyframes glitterShower {
     0% {
         opacity: 0;
-        transform: translate3d(0,0,0) scale(.15) rotate(0deg);
+        transform: translate3d(-50%,-50%,0) scale(.15) rotate(0deg);
     }
-    10% { opacity: 1; }
-    32% { opacity: 1; }
+    8% { opacity: 1; }
+    30% { opacity: .98; }
     100% {
         opacity: 0;
-        transform: translate3d(var(--dx),var(--dy),0) scale(.45) rotate(var(--rot));
+        transform: translate3d(calc(-50% + var(--x)), calc(-50% + var(--y)), 0) scale(var(--scale, .65)) rotate(var(--rotate, 240deg));
     }
 }
 
-/* ============================================================
-   HERO REVEAL AFTER ENVELOPE
-   ============================================================ */
-
+/* Invitation stays hidden until the envelope has actually opened. */
 #hero > .hero-content {
     opacity: 0;
-    transform: translateY(24px);
+    transform: translateY(26px) scale(.985);
     pointer-events: none;
-    transition: opacity 1s ease .1s, transform 1.15s cubic-bezier(.22,.61,.36,1) .1s;
+    animation: none;
+    transition: opacity 1.1s ease .15s, transform 1.2s cubic-bezier(.22,.61,.36,1) .15s;
 }
 
 #hero.card-revealed > .hero-content {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
     pointer-events: auto;
 }
 
+@keyframes sealPulse {
+    0%,100% { transform: scale(.94); opacity: .72; }
+    50% { transform: scale(1.08); opacity: 1; }
+}
+
 @media (max-width: 768px) {
-    .envelope-front::before { inset: 18px; }
-    .envelope-front::after { inset: 28px; }
-    .envelope-border { inset: 39px; }
-    .envelope-content { top: 43%; }
-    .envelope-content h1 { font-size: 48px; }
-    .envelope-content h1 span { margin: 0 8px; }
-    .envelope-date { font-size: 17px; letter-spacing: 4px; }
-    .envelope-kicker { font-size: 8px; letter-spacing: 3px; }
-    #weddingEnvelope .wax-seal { width: 94px; height: 94px; font-size: 27px; }
-    .envelope-seal-glow { width: 150px; height: 150px; }
+    #weddingCard { height: 100svh; }
+    .envelope-border { inset: 12px; }
+    .envelope-border::before { inset: 7px; }
+    .envelope-border::after { inset: 13px; }
+    .envelope-flap { height: 57%; }
+    #weddingCard #waxButton {
+        width: 126px;
+        height: 126px;
+        top: 57%;
+    }
+    #weddingCard #waxButton .wax-seal {
+        width: 100px;
+        height: 100px;
+    }
+    .wax-monogram { font-size: 32px; }
+    .envelope-ornament { width: 58vw; }
 }
 
 @media (max-width: 480px) {
-    .envelope-content h1 { font-size: 40px; }
-    .envelope-content h1 span { margin: 0 5px; }
-    .envelope-date { margin-top: 22px; font-size: 15px; }
-    .envelope-flap { height: 59%; }
+    .envelope-flap { height: 55%; }
+    #weddingCard #waxButton { top: 55%; }
+    .envelope-ornament { width: 62vw; }
 }
+
