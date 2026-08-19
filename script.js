@@ -5,12 +5,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let started = false;
     let autoScrolling = false;
+    let animationFrame = null;
+    let resumeTimer = null;
     let userInteracting = false;
-    let animationFrame;
 
-    // -----------------------------
-    // Hide loader
-    // -----------------------------
+    // --------------------------------
+    // HIDE LOADER
+    // --------------------------------
 
     setTimeout(() => {
 
@@ -27,98 +28,128 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 1800);
 
 
-    // -----------------------------
+    // --------------------------------
     // AUTO SCROLL
-    // -----------------------------
+    // --------------------------------
 
     function autoScroll() {
 
-        if (!autoScrolling) return;
-
-        if (userInteracting) {
-            animationFrame = requestAnimationFrame(autoScroll);
+        if (!autoScrolling) {
             return;
         }
 
-        const currentPosition = window.scrollY;
-        const maxPosition =
-            document.documentElement.scrollHeight - window.innerHeight;
+        if (!userInteracting) {
 
-        if (currentPosition >= maxPosition - 2) {
+            const current = window.scrollY;
 
-            autoScrolling = false;
-            return;
+            const maximum =
+                document.documentElement.scrollHeight -
+                window.innerHeight;
+
+            if (current >= maximum - 2) {
+
+                autoScrolling = false;
+                return;
+
+            }
+
+            window.scrollBy(0, 1);
 
         }
-
-        window.scrollBy(0, 0.7);
 
         animationFrame = requestAnimationFrame(autoScroll);
 
     }
 
 
-    // -----------------------------
-    // START INVITATION
-    // -----------------------------
+    // --------------------------------
+    // START THE JOURNEY
+    // --------------------------------
 
-    if (waxButton) {
+    function startJourney() {
 
-        waxButton.addEventListener("click", () => {
+        if (started) return;
 
-            if (started) return;
+        started = true;
 
-            started = true;
+        waxButton.classList.add("opened");
 
-            // Visual feedback
-            waxButton.classList.add("opened");
+        autoScrolling = true;
 
-            // Start automatic scrolling
-            autoScrolling = true;
+        cancelAnimationFrame(animationFrame);
 
-            cancelAnimationFrame(animationFrame);
-
-            animationFrame = requestAnimationFrame(autoScroll);
-
-        });
+        animationFrame = requestAnimationFrame(autoScroll);
 
     }
 
 
-    // -----------------------------
-    // USER TOUCH / MANUAL CONTROL
-    // -----------------------------
+    // --------------------------------
+    // WAX SEAL
+    // --------------------------------
 
-    let interactionTimer;
+    if (waxButton) {
 
-    function pauseForUser() {
+        waxButton.addEventListener("click", startJourney);
+
+        waxButton.addEventListener("touchend", startJourney);
+
+    }
+
+
+    // --------------------------------
+    // USER TOUCH / SWIPE
+    // --------------------------------
+
+    function userStartedInteracting() {
 
         if (!started) return;
 
         userInteracting = true;
 
-        clearTimeout(interactionTimer);
-
-        interactionTimer = setTimeout(() => {
-
-            userInteracting = false;
-
-        }, 1200);
+        clearTimeout(resumeTimer);
 
     }
 
-    window.addEventListener("touchstart", pauseForUser, { passive: true });
 
-    window.addEventListener("touchmove", pauseForUser, { passive: true });
-
-    window.addEventListener("wheel", pauseForUser, { passive: true });
-
-    window.addEventListener("scroll", () => {
+    function userStoppedInteracting() {
 
         if (!started) return;
 
-        pauseForUser();
+        clearTimeout(resumeTimer);
 
-    }, { passive: true });
+        resumeTimer = setTimeout(() => {
+
+            userInteracting = false;
+
+        }, 1000);
+
+    }
+
+
+    // Touch
+    window.addEventListener(
+        "touchstart",
+        userStartedInteracting,
+        { passive: true }
+    );
+
+    window.addEventListener(
+        "touchend",
+        userStoppedInteracting,
+        { passive: true }
+    );
+
+    // Mouse wheel / trackpad
+    window.addEventListener(
+        "wheel",
+        userStartedInteracting,
+        { passive: true }
+    );
+
+    window.addEventListener(
+        "wheel",
+        userStoppedInteracting,
+        { passive: true }
+    );
 
 });
