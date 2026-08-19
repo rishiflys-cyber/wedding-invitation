@@ -30,6 +30,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 800);
     }
 
+    setTimeout(hideLoader, 1800);
+
 
 
 
@@ -275,55 +277,53 @@ document.addEventListener("DOMContentLoaded", function () {
     function startInvitation() {
 
         if (started) return;
-
         started = true;
         document.documentElement.style.scrollBehavior = "auto";
 
-        // The seal press is the user gesture, so music can start reliably on iPhone/Safari.
+        // The tap is the trusted gesture on iPhone/Safari.
         startMusic();
 
-        // 1. Physically press the RA wax seal.
         if (waxButton) {
-            waxButton.classList.add("opened");
+            waxButton.classList.add("pressed");
         }
 
-        // 2. Let the seal compress for a moment, then release the envelope flap.
+        // Let the wax physically compress before it releases.
         setTimeout(function () {
-            if (weddingCard) {
-                weddingCard.classList.add("opening");
-            }
-        }, 220);
+            if (waxButton) waxButton.classList.remove("pressed");
+            if (waxButton) waxButton.classList.add("opened");
+        }, 170);
 
-        // 3. Glitter begins only after the flap has visibly started moving.
+        // Envelope opens as one continuous cinematic movement.
+        setTimeout(function () {
+            if (weddingCard) weddingCard.classList.add("opening");
+        }, 300);
+
+        // Gold burst happens after the seal releases, not before.
         setTimeout(function () {
             createGlitter();
-        }, 720);
+        }, 760);
 
-        // 4. A second, smaller sparkle wave lands near the end of the opening.
+        // Second, softer wave as the letter rises.
         setTimeout(function () {
             createGlitter();
-        }, 1120);
+        }, 1180);
 
-        // 5. IMPORTANT: names become visible ONLY after the envelope is open.
+        // IMPORTANT: names remain completely hidden until the physical envelope
+        // has finished opening.
         setTimeout(function () {
-            if (hero) {
-                hero.classList.add("card-revealed");
-            }
-        }, 1680);
+            if (hero) hero.classList.add("card-revealed");
+        }, 1750);
 
-        // 6. Remove the envelope after the flap has completed its movement.
+        // Remove envelope only after the reveal has visually landed.
         setTimeout(function () {
-            if (weddingCard) {
-                weddingCard.classList.add("opened");
-            }
-        }, 2350);
+            if (weddingCard) weddingCard.classList.add("opened");
+        }, 2500);
 
-        // 7. Resume the existing invitation journey after the reveal.
         setTimeout(function () {
             autoScrolling = true;
             cancelAnimationFrame(animationFrame);
             animationFrame = requestAnimationFrame(autoScroll);
-        }, 2700);
+        }, 2850);
     }
 
 
@@ -332,16 +332,20 @@ document.addEventListener("DOMContentLoaded", function () {
     // ==========================================
 
     if (waxButton) {
+        let sealPointerHandled = false;
 
-        waxButton.addEventListener("click", function (event) {
-            event.preventDefault();
+        function handleSealOpen(event) {
+            if (event) event.preventDefault();
+            if (sealPointerHandled || started) return;
+            sealPointerHandled = true;
             startInvitation();
-        });
+            setTimeout(function () { sealPointerHandled = false; }, 500);
+        }
 
-        waxButton.addEventListener("touchend", function (event) {
-            event.preventDefault();
-            startInvitation();
-        }, { passive: false });
+        // Pointer events are the most reliable path on modern iOS/Android.
+        waxButton.addEventListener("pointerup", handleSealOpen, { passive:false });
+        waxButton.addEventListener("touchend", handleSealOpen, { passive:false });
+        waxButton.addEventListener("click", handleSealOpen, { passive:false });
     }
 
 
