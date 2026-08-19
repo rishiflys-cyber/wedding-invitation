@@ -28,12 +28,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-    // Hide loader after 1.8 seconds
     setTimeout(hideLoader, 1800);
 
 
     // ==========================================
     // AUTO SCROLL
+    // iPHONE / SAFARI SAFE
     // ==========================================
 
     function autoScroll() {
@@ -42,94 +42,100 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        // If the guest is manually touching/scrolling,
-        // temporarily pause the automatic movement.
         if (!userInteracting) {
 
             const currentPosition = window.scrollY;
 
-            const pageHeight = document.documentElement.scrollHeight;
-
-            const screenHeight = window.innerHeight;
-
-            const bottomPosition = pageHeight - screenHeight;
+            const maxPosition =
+                document.documentElement.scrollHeight -
+                window.innerHeight;
 
 
-            // Stop when we reach the bottom
-            if (currentPosition >= bottomPosition - 2) {
+            // Stop at bottom
+            if (currentPosition >= maxPosition - 2) {
 
                 autoScrolling = false;
-
                 return;
+
             }
 
 
-            // Slow cinematic movement
+            // IMPORTANT:
+            // Use a whole pixel.
+            // Safari can ignore fractional scrolling.
+
             window.scrollTo(
                 0,
-                currentPosition + 0.7
+                currentPosition + 1
             );
 
         }
 
-
-        animationFrame = requestAnimationFrame(autoScroll);
+        animationFrame =
+            requestAnimationFrame(autoScroll);
 
     }
 
 
     // ==========================================
-    // START THE INVITATION
+    // START INVITATION
     // ==========================================
 
     function startInvitation() {
 
-        // Prevent double activation
         if (started) {
             return;
         }
 
         started = true;
 
-        // Visual feedback on the wax seal
+        // Turn OFF CSS smooth scrolling.
+        // This is important for iPhone Safari.
+
+        document.documentElement.style.scrollBehavior = "auto";
+
         if (waxButton) {
 
             waxButton.classList.add("opened");
 
         }
 
-        // Start automatic scrolling
-        autoScrolling = true;
+        // Give the tap a moment to finish,
+        // then start the journey.
 
-        cancelAnimationFrame(animationFrame);
+        setTimeout(function () {
 
-        animationFrame = requestAnimationFrame(autoScroll);
+            autoScrolling = true;
 
-    }
+            cancelAnimationFrame(animationFrame);
 
+            animationFrame =
+                requestAnimationFrame(autoScroll);
 
-    // ==========================================
-    // WAX SEAL — CLICK
-    // ==========================================
-
-    if (waxButton) {
-
-        waxButton.addEventListener("click", function (event) {
-
-            event.preventDefault();
-
-            startInvitation();
-
-        });
+        }, 300);
 
     }
 
 
     // ==========================================
-    // WAX SEAL — iPHONE / TOUCH
+    // WAX SEAL
     // ==========================================
 
     if (waxButton) {
+
+        waxButton.addEventListener(
+            "click",
+            function (event) {
+
+                event.preventDefault();
+
+                startInvitation();
+
+            }
+        );
+
+
+        // iPhone Safari
 
         waxButton.addEventListener(
             "touchend",
@@ -147,7 +153,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ==========================================
-    // USER INTERACTION
+    // USER TOUCH
     // ==========================================
 
     function pauseForUser() {
@@ -160,15 +166,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         clearTimeout(resumeTimer);
 
-
-        // Resume automatically after the guest
-        // stops touching/scrolling.
-        resumeTimer = setTimeout(function () {
-
-            userInteracting = false;
-
-        }, 1000);
-
     }
 
 
@@ -179,6 +176,8 @@ document.addEventListener("DOMContentLoaded", function () {
     window.addEventListener(
         "touchstart",
         function () {
+
+            if (!started) return;
 
             pauseForUser();
 
@@ -195,6 +194,8 @@ document.addEventListener("DOMContentLoaded", function () {
         "touchmove",
         function () {
 
+            if (!started) return;
+
             pauseForUser();
 
         },
@@ -210,17 +211,18 @@ document.addEventListener("DOMContentLoaded", function () {
         "touchend",
         function () {
 
-            if (!started) {
-                return;
-            }
+            if (!started) return;
 
             clearTimeout(resumeTimer);
 
-            resumeTimer = setTimeout(function () {
+            resumeTimer = setTimeout(
+                function () {
 
-                userInteracting = false;
+                    userInteracting = false;
 
-            }, 700);
+                },
+                500
+            );
 
         },
         { passive: true }
@@ -228,18 +230,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ==========================================
-    // DESKTOP MOUSE / TRACKPAD
+    // DESKTOP WHEEL
     // ==========================================
 
     window.addEventListener(
         "wheel",
         function () {
 
-            pauseForUser();
+            if (!started) return;
+
+            userInteracting = true;
+
+            clearTimeout(resumeTimer);
+
+            resumeTimer = setTimeout(
+                function () {
+
+                    userInteracting = false;
+
+                },
+                500
+            );
 
         },
         { passive: true }
     );
-
 
 });
