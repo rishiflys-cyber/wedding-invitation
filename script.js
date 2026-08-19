@@ -34,37 +34,122 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ==========================================
+    // CINEMATIC REVEAL SYSTEM
+    // ==========================================
+
+    function setupRevealAnimations() {
+
+        const revealElements = document.querySelectorAll(
+            ".section-title, " +
+            ".collage-frame, " +
+            ".invitation-card, " +
+            ".detail-card, " +
+            ".timeline-item, " +
+            ".venue-card, " +
+            ".gallery-item, " +
+            ".blessing-text, " +
+            ".footer-card"
+        );
+
+        revealElements.forEach(function (element) {
+
+            element.classList.add("reveal-element");
+
+        });
+
+
+        if (!("IntersectionObserver" in window)) {
+
+            revealElements.forEach(function (element) {
+
+                element.classList.add("reveal-visible");
+
+            });
+
+            return;
+
+        }
+
+
+        const observer = new IntersectionObserver(
+            function (entries) {
+
+                entries.forEach(function (entry) {
+
+                    if (entry.isIntersecting) {
+
+                        entry.target.classList.add(
+                            "reveal-visible"
+                        );
+
+                        observer.unobserve(entry.target);
+
+                    }
+
+                });
+
+            },
+            {
+                threshold: 0.12,
+                rootMargin: "0px 0px -8% 0px"
+            }
+        );
+
+
+        revealElements.forEach(function (element) {
+
+            observer.observe(element);
+
+        });
+
+    }
+
+
+    setupRevealAnimations();
+
+
+    // ==========================================
     // MUSIC
     // ==========================================
 
     function startMusic() {
 
         if (!bgMusic) {
+
             console.log("Music element not found");
+
             return;
+
         }
 
-        // Make absolutely sure the correct MP3 is being used
+
+        // Current wedding music
         bgMusic.src = "Ranjha.mp3";
 
         bgMusic.loop = true;
         bgMusic.preload = "auto";
-
         bgMusic.volume = 1.0;
 
+
         const playPromise = bgMusic.play();
+
 
         if (playPromise !== undefined) {
 
             playPromise
                 .then(function () {
 
-                    console.log("Wedding music started");
+                    console.log(
+                        "Wedding music started"
+                    );
 
                 })
                 .catch(function (error) {
 
-                    console.log("Music could not start:", error);
+                    console.log(
+                        "Music could not start:",
+                        error
+                    );
 
                 });
 
@@ -81,8 +166,11 @@ document.addEventListener("DOMContentLoaded", function () {
     function autoScroll() {
 
         if (!autoScrolling) {
+
             return;
+
         }
+
 
         if (!userInteracting) {
 
@@ -104,8 +192,8 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            // One whole pixel at a time
-            // Works better on iPhone Safari
+            // Whole pixel movement.
+            // Preserves iPhone Safari behaviour.
 
             window.scrollTo(
                 0,
@@ -113,6 +201,7 @@ document.addEventListener("DOMContentLoaded", function () {
             );
 
         }
+
 
         animationFrame =
             requestAnimationFrame(autoScroll);
@@ -127,16 +216,19 @@ document.addEventListener("DOMContentLoaded", function () {
     function startInvitation() {
 
         if (started) {
+
             return;
+
         }
 
         started = true;
 
 
         // Disable CSS smooth scrolling
-        // for reliable iPhone scrolling
+        // for reliable iPhone scrolling.
 
-        document.documentElement.style.scrollBehavior = "auto";
+        document.documentElement.style.scrollBehavior =
+            "auto";
 
 
         // Open wax seal
@@ -148,16 +240,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        // ======================================
-        // START MUSIC IMMEDIATELY
-        // ======================================
+        // Start music
 
         startMusic();
 
 
-        // ======================================
-        // START AUTO SCROLL
-        // ======================================
+        // Start auto-scroll
 
         setTimeout(function () {
 
@@ -191,9 +279,7 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-        // ======================================
-        // iPHONE / SAFARI TOUCH
-        // ======================================
+        // iPhone / Safari
 
         waxButton.addEventListener(
             "touchend",
@@ -204,7 +290,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 startInvitation();
 
             },
-            { passive: false }
+            {
+                passive: false
+            }
         );
 
     }
@@ -219,7 +307,9 @@ document.addEventListener("DOMContentLoaded", function () {
         function () {
 
             if (!started) {
+
                 return;
+
             }
 
             userInteracting = true;
@@ -227,7 +317,9 @@ document.addEventListener("DOMContentLoaded", function () {
             clearTimeout(resumeTimer);
 
         },
-        { passive: true }
+        {
+            passive: true
+        }
     );
 
 
@@ -240,7 +332,9 @@ document.addEventListener("DOMContentLoaded", function () {
         function () {
 
             if (!started) {
+
                 return;
+
             }
 
             userInteracting = true;
@@ -248,13 +342,14 @@ document.addEventListener("DOMContentLoaded", function () {
             clearTimeout(resumeTimer);
 
         },
-        { passive: true }
+        {
+            passive: true
+        }
     );
 
 
     // ==========================================
     // USER LETS GO
-    // RESUME AUTO SCROLL
     // ==========================================
 
     window.addEventListener(
@@ -262,27 +357,36 @@ document.addEventListener("DOMContentLoaded", function () {
         function () {
 
             if (!started) {
+
                 return;
+
             }
 
             clearTimeout(resumeTimer);
+
 
             resumeTimer = setTimeout(
                 function () {
 
                     userInteracting = false;
 
-                    cancelAnimationFrame(animationFrame);
+                    cancelAnimationFrame(
+                        animationFrame
+                    );
 
                     animationFrame =
-                        requestAnimationFrame(autoScroll);
+                        requestAnimationFrame(
+                            autoScroll
+                        );
 
                 },
                 100
             );
 
         },
-        { passive: true }
+        {
+            passive: true
+        }
     );
 
 
@@ -295,34 +399,43 @@ document.addEventListener("DOMContentLoaded", function () {
         function () {
 
             if (!started) {
+
                 return;
+
             }
 
             userInteracting = true;
 
             clearTimeout(resumeTimer);
 
+
             resumeTimer = setTimeout(
                 function () {
 
                     userInteracting = false;
 
-                    cancelAnimationFrame(animationFrame);
+                    cancelAnimationFrame(
+                        animationFrame
+                    );
 
                     animationFrame =
-                        requestAnimationFrame(autoScroll);
+                        requestAnimationFrame(
+                            autoScroll
+                        );
 
                 },
                 100
             );
 
         },
-        { passive: true }
+        {
+            passive: true
+        }
     );
 
 
     // ==========================================
-    // MOUSE DRAG / CLICK INTERACTION
+    // MOUSE DOWN
     // ==========================================
 
     window.addEventListener(
@@ -330,7 +443,9 @@ document.addEventListener("DOMContentLoaded", function () {
         function () {
 
             if (!started) {
+
                 return;
+
             }
 
             userInteracting = true;
@@ -341,25 +456,36 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
 
+    // ==========================================
+    // MOUSE UP
+    // ==========================================
+
     window.addEventListener(
         "mouseup",
         function () {
 
             if (!started) {
+
                 return;
+
             }
 
             clearTimeout(resumeTimer);
+
 
             resumeTimer = setTimeout(
                 function () {
 
                     userInteracting = false;
 
-                    cancelAnimationFrame(animationFrame);
+                    cancelAnimationFrame(
+                        animationFrame
+                    );
 
                     animationFrame =
-                        requestAnimationFrame(autoScroll);
+                        requestAnimationFrame(
+                            autoScroll
+                        );
 
                 },
                 100
@@ -367,5 +493,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         }
     );
+
 
 });
