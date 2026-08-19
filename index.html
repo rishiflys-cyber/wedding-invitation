@@ -90,55 +90,88 @@ HERO
 <header id="hero">
 
     <div class="hero-background"></div>
-
     <div class="hero-overlay"></div>
 
+    <!-- ======================================================
+         CLOSED ROYAL WEDDING CARD
+         ====================================================== -->
+    <div id="weddingCard" aria-label="Wedding invitation">
+
+        <div class="card-cover">
+
+            <div class="card-border"></div>
+
+            <div class="card-ornament card-ornament-top"></div>
+
+            <div class="card-cover-content">
+
+                <span class="card-kicker">
+                    Together with our families
+                </span>
+
+                <div class="card-names">
+                    <span>Rishabh</span>
+                    <small>&amp;</small>
+                    <span>Ananya</span>
+                </div>
+
+                <div class="card-rule"></div>
+
+                <div class="card-date">
+                    11 • 12 • 2026
+                </div>
+
+                <div class="card-instruction">
+                    Break the seal to begin
+                </div>
+
+            </div>
+
+            <div class="card-ornament card-ornament-bottom"></div>
+
+            <!-- Wax seal sits directly over the centre seam -->
+            <button
+                id="waxButton"
+                type="button"
+                aria-label="Break the RA wax seal and open the invitation">
+
+                <span class="wax-glow"></span>
+
+                <span class="wax-seal">
+                    RA
+                </span>
+
+            </button>
+
+            <!-- Two physical card panels -->
+            <div class="card-panel card-panel-left"></div>
+            <div class="card-panel card-panel-right"></div>
+
+            <!-- Fine glitter particles are created by JavaScript -->
+            <div id="glitterContainer" aria-hidden="true"></div>
+
+        </div>
+
+    </div>
+
+    <!-- ======================================================
+         ORIGINAL HERO — REVEALED AFTER CARD OPENS
+         ====================================================== -->
     <div class="hero-content">
 
         <span class="hero-family">
-
             Together with our families
-
         </span>
 
         <h1 class="hero-title">
-
             Rishabh
-
-            <span class="ampersand">&</span>
-
+            <span class="ampersand">&amp;</span>
             Ananya
-
         </h1>
 
         <p class="hero-description">
-
             We cordially invite you to celebrate our wedding and bless us as we begin this beautiful new chapter together.
-
         </p>
-
-        <!-- Wax Seal -->
-
-        <button
-            id="waxButton"
-            type="button"
-            aria-label="Open Invitation">
-
-            <span class="wax-glow"></span>
-
-            <span class="wax-seal">
-
-                RA
-
-            </span>
-
-            <span class="wax-text">
-
-                Tap to Continue
-
-            </span>
-
-        </button>
 
     </div>
 
@@ -759,7 +792,7 @@ MUSIC
 
 </div>
 
-<script src="script.js?v=3"></script>
+<script src="script.js?v=4"></script>
 
 </body>
 
