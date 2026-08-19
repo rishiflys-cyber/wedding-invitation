@@ -33,8 +33,76 @@ document.addEventListener("DOMContentLoaded", function () {
     setTimeout(hideLoader, 1800);
 
 
+
+
     // ==========================================
-    // CINEMATIC SCROLL REVEALS
+    // CINEMATIC ATMOSPHERE
+    // ==========================================
+
+    function createAmbientDust() {
+        const layer = document.getElementById("ambientDust");
+        if (!layer) return;
+
+        const count = window.innerWidth < 769 ? 18 : 28;
+        const fragment = document.createDocumentFragment();
+
+        for (let i = 0; i < count; i++) {
+            const mote = document.createElement("span");
+            mote.className = "ambient-mote";
+            mote.style.setProperty("--left", `${Math.random() * 100}%`);
+            mote.style.setProperty("--top", `${12 + Math.random() * 78}%`);
+            mote.style.setProperty("--size", `${1 + Math.random() * 2.8}px`);
+            mote.style.setProperty("--drift", `${-18 + Math.random() * 36}px`);
+            mote.style.setProperty("--duration", `${5 + Math.random() * 7}s`);
+            mote.style.setProperty("--delay", `${Math.random() * 6}s`);
+            fragment.appendChild(mote);
+        }
+
+        layer.appendChild(fragment);
+    }
+
+    createAmbientDust();
+
+
+    // ==========================================
+    // CINEMATIC SCROLL PARALLAX
+    // Lightweight: one RAF for the entire page.
+    // ==========================================
+
+    let parallaxFrame = null;
+
+    function updateParallax() {
+        parallaxFrame = null;
+
+        const y = window.scrollY || window.pageYOffset || 0;
+        document.documentElement.style.setProperty("--page-scroll", `${y}px`);
+
+        const heroBackground = document.querySelector(".hero-background");
+        if (heroBackground && y < window.innerHeight * 1.2) {
+            heroBackground.style.transform = `translate3d(0, ${Math.min(y * 0.08, 35)}px, 0) scale(1.025)`;
+        }
+
+        document.querySelectorAll(".section-title, .collage-frame, .invitation-card, .venue-card").forEach(function (el) {
+            const rect = el.getBoundingClientRect();
+            if (rect.bottom < -100 || rect.top > window.innerHeight + 100) return;
+            const distance = (rect.top + rect.height / 2 - window.innerHeight / 2);
+            const shift = Math.max(-10, Math.min(10, -distance * 0.018));
+            el.style.setProperty("--micro-shift", `${shift}px`);
+        });
+    }
+
+    function requestParallax() {
+        if (parallaxFrame === null) {
+            parallaxFrame = requestAnimationFrame(updateParallax);
+        }
+    }
+
+    window.addEventListener("scroll", requestParallax, { passive: true });
+    window.addEventListener("resize", requestParallax, { passive: true });
+    requestParallax();
+
+    // ==========================================
+    // CINEMATIC REVEAL SYSTEM
     // ==========================================
 
     function setupRevealAnimations() {
@@ -56,28 +124,24 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         if (!("IntersectionObserver" in window)) {
-
             revealElements.forEach(function (element) {
                 element.classList.add("reveal-visible");
             });
-
             return;
         }
 
         const observer = new IntersectionObserver(
             function (entries) {
-
                 entries.forEach(function (entry) {
-
                     if (entry.isIntersecting) {
-
+                        const siblings = entry.target.parentElement ?
+                            Array.from(entry.target.parentElement.children) : [];
+                        const index = siblings.indexOf(entry.target);
+                        entry.target.style.setProperty("--reveal-delay", `${Math.max(0, Math.min(index, 6)) * 70}ms`);
                         entry.target.classList.add("reveal-visible");
                         observer.unobserve(entry.target);
-
                     }
-
                 });
-
             },
             {
                 threshold: 0.12,
@@ -99,7 +163,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function startMusic() {
 
-        if (!bgMusic) return;
+        if (!bgMusic) {
+            console.log("Music element not found");
+            return;
+        }
 
         bgMusic.src = "Ranjha.mp3";
         bgMusic.loop = true;
@@ -109,7 +176,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const playPromise = bgMusic.play();
 
         if (playPromise !== undefined) {
-
             playPromise
                 .then(function () {
                     console.log("Wedding music started");
@@ -122,92 +188,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ==========================================
-    // LUXURY GLITTER
+    // LUXURY GOLD GLITTER SHOWER
     // ==========================================
-
-    function createParticle(isStar, originX, originY) {
-
-        if (!glitterContainer) return;
-
-        const particle = document.createElement("span");
-
-        particle.className = isStar
-            ? "glitter star"
-            : "glitter";
-
-        particle.setAttribute("aria-hidden", "true");
-
-        const x =
-            (Math.random() - 0.5) * 82;
-
-        const y =
-            22 + Math.random() * 82;
-
-        const delay =
-            Math.random() * 0.18;
-
-        const duration =
-            1.65 + Math.random() * 1.45;
-
-        const scale =
-            0.55 + Math.random() * 1.35;
-
-        const rotate =
-            180 + Math.random() * 420;
-
-        particle.style.left = originX + "%";
-        particle.style.top = originY + "%";
-
-        particle.style.setProperty(
-            "--x",
-            `calc(${x}vw + ${(Math.random() - 0.5) * 30}px)`
-        );
-
-        particle.style.setProperty(
-            "--y",
-            `${y}vh`
-        );
-
-        particle.style.setProperty(
-            "--delay",
-            `${delay}s`
-        );
-
-        particle.style.setProperty(
-            "--duration",
-            `${duration}s`
-        );
-
-        particle.style.setProperty(
-            "--scale",
-            scale
-        );
-
-        particle.style.setProperty(
-            "--rotate",
-            `${rotate}deg`
-        );
-
-        if (isStar) {
-
-            particle.style.setProperty(
-                "--star-size",
-                `${9 + Math.random() * 10}px`
-            );
-
-        } else {
-
-            const size =
-                2.2 + Math.random() * 3.8;
-
-            particle.style.width = size + "px";
-            particle.style.height = size + "px";
-
-        }
-
-        glitterContainer.appendChild(particle);
-    }
-
 
     function createGlitter() {
 
@@ -215,53 +197,159 @@ document.addEventListener("DOMContentLoaded", function () {
 
         glitterContainer.innerHTML = "";
 
-        /*
-           First wave:
-           A dense, bright burst from the RA seal position.
-           It starts after the flap has visibly cleared the seal,
-           so the glitter cannot be hidden underneath the flap.
-        */
-        for (let i = 0; i < 105; i++) {
+        const particleCount = 150;
 
-            createParticle(
-                Math.random() < 0.22,
-                50 + (Math.random() - 0.5) * 8,
-                57 + (Math.random() - 0.5) * 5
-            );
+        for (let i = 0; i < particleCount; i++) {
+
+            const particle = document.createElement("span");
+            const isStar = Math.random() < 0.16;
+
+            particle.className = isStar ? "glitter star" : "glitter";
+
+            if (isStar) {
+                particle.setAttribute("aria-hidden", "true");
+            }
+
+            const spread = 62 + Math.random() * 34;
+            const x = (Math.random() - 0.5) * spread;
+            const y = 20 + Math.random() * 92;
+            const drift = (Math.random() - 0.5) * 20;
+
+            particle.style.setProperty("--x", `calc(${x}vw + ${drift}px)`);
+            particle.style.setProperty("--y", `${y}vh`);
+            particle.style.setProperty("--delay", `${Math.random() * 0.42}s`);
+            particle.style.setProperty("--duration", `${1.9 + Math.random() * 1.65}s`);
+            particle.style.setProperty("--scale", `${0.45 + Math.random() * 1.25}`);
+            particle.style.setProperty("--rotate", `${180 + Math.random() * 420}deg`);
+
+            if (isStar) {
+                particle.style.setProperty("--star-size", `${9 + Math.random() * 12}px`);
+            } else {
+                const size = 2 + Math.random() * 4.5;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+            }
+
+            glitterContainer.appendChild(particle);
         }
 
-        /*
-           Second wave:
-           Wider, softer particles continue the reveal.
-        */
+        // A second, smaller wave gives the reveal a lingering magical shower.
         setTimeout(function () {
 
-            for (let i = 0; i < 55; i++) {
+            if (!glitterContainer) return;
 
-                createParticle(
-                    Math.random() < 0.30,
-                    50 + (Math.random() - 0.5) * 20,
-                    47 + Math.random() * 9
-                );
+            for (let i = 0; i < 45; i++) {
+
+                const particle = document.createElement("span");
+                const isStar = Math.random() < 0.28;
+
+                particle.className = isStar ? "glitter star" : "glitter";
+
+                particle.style.setProperty("--x", `${(Math.random() - 0.5) * 75}vw`);
+                particle.style.setProperty("--y", `${35 + Math.random() * 75}vh`);
+                particle.style.setProperty("--delay", `${Math.random() * 0.25}s`);
+                particle.style.setProperty("--duration", `${2 + Math.random() * 1.3}s`);
+                particle.style.setProperty("--scale", `${0.4 + Math.random() * .9}`);
+
+                if (isStar) {
+                    particle.style.setProperty("--star-size", `${8 + Math.random() * 9}px`);
+                } else {
+                    const size = 1.5 + Math.random() * 3.5;
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+                }
+
+                glitterContainer.appendChild(particle);
             }
 
-        }, 260);
+        }, 420);
 
-        /*
-           Keep the DOM light. All particles are temporary.
-        */
         setTimeout(function () {
+            if (glitterContainer) glitterContainer.innerHTML = "";
+        }, 5000);
+    }
 
-            if (glitterContainer) {
-                glitterContainer.innerHTML = "";
+
+    // ==========================================
+    // OPEN THE ROYAL WEDDING CARD
+    // ==========================================
+
+    function startInvitation() {
+
+        if (started) return;
+
+        started = true;
+        document.documentElement.style.scrollBehavior = "auto";
+
+        // The seal press is the user gesture, so music can start reliably on iPhone/Safari.
+        startMusic();
+
+        // 1. Tiny seal reaction.
+        if (waxButton) {
+            waxButton.classList.add("opened");
+        }
+
+        // 2. Envelope begins opening immediately.
+        setTimeout(function () {
+            if (weddingCard) {
+                weddingCard.classList.add("opening");
             }
+        }, 120);
 
-        }, 4300);
+        // 3. Glitter erupts as the flap clears the seal.
+        setTimeout(function () {
+            createGlitter();
+        }, 620);
+
+        // Tiny second flash right as the invitation becomes visible.
+        setTimeout(function () {
+            createGlitter();
+        }, 1080);
+
+        // 4. Let the invitation emerge underneath the opening envelope.
+        setTimeout(function () {
+            if (hero) {
+                hero.classList.add("card-revealed");
+            }
+        }, 1240);
+
+        // 5. Remove the envelope only after the physical opening has finished.
+        setTimeout(function () {
+            if (weddingCard) {
+                weddingCard.classList.add("opened");
+            }
+        }, 2050);
+
+        // 6. Existing iPhone/Safari-safe auto-scroll continues after reveal.
+        setTimeout(function () {
+            autoScrolling = true;
+            cancelAnimationFrame(animationFrame);
+            animationFrame = requestAnimationFrame(autoScroll);
+        }, 2450);
+    }
+
+
+    // ==========================================
+    // WAX SEAL — CLICK
+    // ==========================================
+
+    if (waxButton) {
+
+        waxButton.addEventListener("click", function (event) {
+            event.preventDefault();
+            startInvitation();
+        });
+
+        waxButton.addEventListener("touchend", function (event) {
+            event.preventDefault();
+            startInvitation();
+        }, { passive: false });
     }
 
 
     // ==========================================
     // AUTO SCROLL
+    // iPHONE / SAFARI SAFE
     // ==========================================
 
     function autoScroll() {
@@ -277,290 +365,123 @@ document.addEventListener("DOMContentLoaded", function () {
                 window.innerHeight;
 
             if (currentPosition >= maxPosition - 2) {
-
                 autoScrolling = false;
                 return;
             }
 
-            window.scrollTo(
-                0,
-                currentPosition + 1
-            );
+            window.scrollTo(0, currentPosition + 1);
         }
 
-        animationFrame =
-            requestAnimationFrame(autoScroll);
+        animationFrame = requestAnimationFrame(autoScroll);
     }
 
 
     // ==========================================
-    // START INVITATION
+    // TOUCH START
     // ==========================================
 
-    function startInvitation() {
+    window.addEventListener("touchstart", function () {
 
-        if (started) return;
+        if (!started) return;
 
-        started = true;
+        userInteracting = true;
+        clearTimeout(resumeTimer);
 
-        document.documentElement.style.scrollBehavior = "auto";
+    }, { passive: true });
 
-        // Mobile browsers get a dedicated 2D envelope animation fallback.
-        // This is more reliable than depending on 3D rotateX compositing.
-        if (window.matchMedia && window.matchMedia("(max-width: 768px)").matches) {
-            if (weddingCard) {
-                weddingCard.classList.add("mobile-opening");
-            }
-        }
 
-        /*
-           The RA press is the direct user gesture.
-           Start music immediately so iPhone/Safari permits playback.
-        */
-        startMusic();
+    // ==========================================
+    // TOUCH MOVE
+    // ==========================================
 
-        /*
-           0ms — seal releases.
-        */
-        if (waxButton) {
-            waxButton.classList.add("opened");
-        }
+    window.addEventListener("touchmove", function () {
 
-        /*
-           90ms — the envelope begins its physical flap fold.
-        */
-        setTimeout(function () {
+        if (!started) return;
 
-            if (weddingCard) {
-                weddingCard.classList.add("opening");
-            }
+        userInteracting = true;
+        clearTimeout(resumeTimer);
 
-        }, 90);
+    }, { passive: true });
 
-        /*
-           760ms — flap is already high enough for the glitter
-           to be completely visible above it.
-        */
-        setTimeout(function () {
-            createGlitter();
-        }, (window.matchMedia && window.matchMedia("(max-width: 768px)").matches) ? 560 : 760);
 
-        /*
-           1450ms — invitation fades through naturally.
-        */
-        setTimeout(function () {
+    // ==========================================
+    // TOUCH END — RESUME
+    // ==========================================
 
-            if (hero) {
-                hero.classList.add("card-revealed");
-            }
+    window.addEventListener("touchend", function () {
 
-        }, (window.matchMedia && window.matchMedia("(max-width: 768px)").matches) ? 1180 : 1450);
+        if (!started) return;
 
-        /*
-           1950ms — remove the envelope layer.
-           The hero underneath is already visible.
-        */
-        setTimeout(function () {
+        clearTimeout(resumeTimer);
 
-            if (weddingCard) {
-                weddingCard.classList.add("opened");
-            }
+        resumeTimer = setTimeout(function () {
 
-        }, (window.matchMedia && window.matchMedia("(max-width: 768px)").matches) ? 1750 : 1950);
-
-        /*
-           2250ms — resume the existing gentle auto-scroll.
-        */
-        setTimeout(function () {
-
-            autoScrolling = true;
+            userInteracting = false;
 
             cancelAnimationFrame(animationFrame);
+            animationFrame = requestAnimationFrame(autoScroll);
 
-            animationFrame =
-                requestAnimationFrame(autoScroll);
+        }, 100);
 
-        }, 2250);
-    }
-
-
-    // ==========================================
-    // RA SEAL — CLICK
-    // ==========================================
-
-    if (waxButton) {
-
-        waxButton.addEventListener(
-            "click",
-            function (event) {
-
-                event.preventDefault();
-                startInvitation();
-
-            }
-        );
-
-        /*
-           Pointer events are used in addition to click so touch
-           devices receive a single clean activation.
-        */
-        waxButton.addEventListener(
-            "pointerup",
-            function (event) {
-
-                if (event.pointerType === "touch") {
-                    event.preventDefault();
-                    startInvitation();
-                }
-
-            }
-        );
-    }
-
-
-    // ==========================================
-    // USER TOUCH
-    // ==========================================
-
-    window.addEventListener(
-        "touchstart",
-        function () {
-
-            if (!started) return;
-
-            userInteracting = true;
-            clearTimeout(resumeTimer);
-
-        },
-        { passive: true }
-    );
-
-
-    window.addEventListener(
-        "touchmove",
-        function () {
-
-            if (!started) return;
-
-            userInteracting = true;
-            clearTimeout(resumeTimer);
-
-        },
-        { passive: true }
-    );
-
-
-    window.addEventListener(
-        "touchend",
-        function () {
-
-            if (!started) return;
-
-            clearTimeout(resumeTimer);
-
-            resumeTimer = setTimeout(
-                function () {
-
-                    userInteracting = false;
-
-                    cancelAnimationFrame(
-                        animationFrame
-                    );
-
-                    animationFrame =
-                        requestAnimationFrame(
-                            autoScroll
-                        );
-
-                },
-                180
-            );
-
-        },
-        { passive: true }
-    );
+    }, { passive: true });
 
 
     // ==========================================
     // DESKTOP WHEEL / TRACKPAD
     // ==========================================
 
-    window.addEventListener(
-        "wheel",
-        function () {
+    window.addEventListener("wheel", function () {
 
-            if (!started) return;
+        if (!started) return;
 
-            userInteracting = true;
-            clearTimeout(resumeTimer);
+        userInteracting = true;
+        clearTimeout(resumeTimer);
 
-            resumeTimer = setTimeout(
-                function () {
+        resumeTimer = setTimeout(function () {
 
-                    userInteracting = false;
+            userInteracting = false;
 
-                    cancelAnimationFrame(
-                        animationFrame
-                    );
+            cancelAnimationFrame(animationFrame);
+            animationFrame = requestAnimationFrame(autoScroll);
 
-                    animationFrame =
-                        requestAnimationFrame(
-                            autoScroll
-                        );
+        }, 100);
 
-                },
-                180
-            );
-
-        },
-        { passive: true }
-    );
+    }, { passive: true });
 
 
     // ==========================================
-    // DESKTOP MOUSE
+    // MOUSE DOWN
     // ==========================================
 
-    window.addEventListener(
-        "mousedown",
-        function () {
+    window.addEventListener("mousedown", function () {
 
-            if (!started) return;
+        if (!started) return;
 
-            userInteracting = true;
-            clearTimeout(resumeTimer);
+        userInteracting = true;
+        clearTimeout(resumeTimer);
 
-        }
-    );
+    });
 
 
-    window.addEventListener(
-        "mouseup",
-        function () {
+    // ==========================================
+    // MOUSE UP
+    // ==========================================
 
-            if (!started) return;
+    window.addEventListener("mouseup", function () {
 
-            clearTimeout(resumeTimer);
+        if (!started) return;
 
-            resumeTimer = setTimeout(
-                function () {
+        clearTimeout(resumeTimer);
 
-                    userInteracting = false;
+        resumeTimer = setTimeout(function () {
 
-                    cancelAnimationFrame(
-                        animationFrame
-                    );
+            userInteracting = false;
 
-                    animationFrame =
-                        requestAnimationFrame(
-                            autoScroll
-                        );
+            cancelAnimationFrame(animationFrame);
+            animationFrame = requestAnimationFrame(autoScroll);
 
-                },
-                180
-            );
+        }, 100);
 
-        }
-    );
+    });
 
 });
