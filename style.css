@@ -2721,11 +2721,21 @@ section {
 
 @media (max-width: 768px) {
 
+    /* iOS Safari / Android Chrome: avoid relying on 3D compositing for the flap.
+       The flap still opens as an envelope, but the 2D fallback is much more
+       reliable on phones and avoids the occasional "instant jump". */
     #weddingCard {
-        height: 100svh;
-        min-height: 100svh;
-        perspective: 1200px;
-        -webkit-perspective: 1200px;
+        height: 100dvh;
+        min-height: 100dvh;
+        perspective: none;
+        -webkit-perspective: none;
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+    }
+
+    .envelope-shell {
+        height: 100dvh;
+        min-height: 100dvh;
     }
 
     .envelope-border {
@@ -2742,12 +2752,30 @@ section {
 
     .envelope-flap {
         height: 57%;
+        transform-origin: 50% 0;
+        -webkit-transform-origin: 50% 0;
+        transform: translate3d(0,0,0);
+        -webkit-transform: translate3d(0,0,0);
+        transition:
+            transform 1.05s cubic-bezier(.22,.61,.36,1),
+            opacity .35s ease;
+        backface-visibility: visible;
+        -webkit-backface-visibility: visible;
+    }
+
+    /* Phone fallback: lift the triangular flap upward and slightly scale it.
+       It reads as a physical envelope opening without depending on rotateX. */
+    #weddingCard.opening .envelope-flap {
+        transform: translate3d(0,-108%,0) scaleY(.96);
+        -webkit-transform: translate3d(0,-108%,0) scaleY(.96);
+        opacity: .98;
     }
 
     #weddingCard #waxButton {
         width: 126px;
         height: 126px;
         top: 57%;
+        z-index: 80;
     }
 
     #weddingCard #waxButton .wax-seal {
@@ -2762,6 +2790,26 @@ section {
     .envelope-ornament {
         width: 58vw;
     }
+
+    /* Make the glitter unmistakable on a small screen. */
+    #glitterContainer {
+        z-index: 120;
+        overflow: visible;
+        contain: none;
+    }
+
+    .glitter {
+        width: 4.5px;
+        height: 4.5px;
+        box-shadow:
+            0 0 8px rgba(240,217,158,1),
+            0 0 20px rgba(240,217,158,.72);
+    }
+
+    .glitter.star {
+        font-size: var(--star-size, 16px);
+    }
+
 }
 
 @media (max-width: 480px) {
@@ -2804,17 +2852,19 @@ section {
 
 @media (prefers-reduced-motion: reduce) {
 
+    /* Keep the invitation functional and visible even when the device asks
+       for reduced motion. We shorten the reveal rather than hiding it. */
     #weddingCard .envelope-flap {
-        transition: transform .01ms linear;
+        transition-duration: .65s !important;
     }
 
     #weddingCard #waxButton .wax-glow {
-        animation: none;
+        animation: none !important;
     }
 
     .glitter {
-        animation: none !important;
-        opacity: 0 !important;
+        animation-duration: 1.25s !important;
+        animation-iteration-count: 1 !important;
     }
 
 }
