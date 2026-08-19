@@ -30,8 +30,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 800);
     }
 
-    setTimeout(hideLoader, 1800);
-
 
 
 
@@ -284,48 +282,48 @@ document.addEventListener("DOMContentLoaded", function () {
         // The seal press is the user gesture, so music can start reliably on iPhone/Safari.
         startMusic();
 
-        // 1. Tiny seal reaction.
+        // 1. Physically press the RA wax seal.
         if (waxButton) {
             waxButton.classList.add("opened");
         }
 
-        // 2. Envelope begins opening immediately.
+        // 2. Let the seal compress for a moment, then release the envelope flap.
         setTimeout(function () {
             if (weddingCard) {
                 weddingCard.classList.add("opening");
             }
-        }, 90);
+        }, 220);
 
-        // 3. Glitter erupts as the flap clears the seal.
+        // 3. Glitter begins only after the flap has visibly started moving.
         setTimeout(function () {
             createGlitter();
-        }, 620);
+        }, 720);
 
-        // Tiny second flash right as the invitation becomes visible.
+        // 4. A second, smaller sparkle wave lands near the end of the opening.
         setTimeout(function () {
             createGlitter();
-        }, 1080);
+        }, 1120);
 
-        // 4. Let the invitation emerge underneath the opening envelope.
+        // 5. IMPORTANT: names become visible ONLY after the envelope is open.
         setTimeout(function () {
             if (hero) {
                 hero.classList.add("card-revealed");
             }
-        }, 1240);
+        }, 1680);
 
-        // 5. Remove the envelope only after the physical opening has finished.
+        // 6. Remove the envelope after the flap has completed its movement.
         setTimeout(function () {
             if (weddingCard) {
                 weddingCard.classList.add("opened");
             }
-        }, 2050);
+        }, 2350);
 
-        // 6. Existing iPhone/Safari-safe auto-scroll continues after reveal.
+        // 7. Resume the existing invitation journey after the reveal.
         setTimeout(function () {
             autoScrolling = true;
             cancelAnimationFrame(animationFrame);
             animationFrame = requestAnimationFrame(autoScroll);
-        }, 2450);
+        }, 2700);
     }
 
 
