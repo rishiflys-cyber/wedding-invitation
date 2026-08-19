@@ -2212,26 +2212,22 @@ section {
 }
 
 /* ============================================================
-   23 — FULL-SCREEN ENVELOPE — MOBILE FIRST
+   23 — FULL-SCREEN ROYAL ENVELOPE REVEAL
    ============================================================ */
 
 #weddingCard {
     position: fixed;
     inset: 0;
-    z-index: 10000;
-    width: 100%;
+    z-index: 100;
+    width: 100vw;
     height: 100svh;
-    min-height: 100dvh;
     overflow: hidden;
+    display: block;
     pointer-events: auto;
-    background: var(--ivory);
+    background: #4b111d;
     opacity: 1;
     visibility: visible;
-    perspective: 1400px;
-    -webkit-perspective: 1400px;
-    transition:
-        opacity .75s cubic-bezier(.22,.61,.36,1),
-        visibility 0s linear .82s;
+    transition: opacity .9s cubic-bezier(.22,.61,.36,1), visibility 0s linear .95s;
 }
 
 .envelope-shell {
@@ -2242,34 +2238,22 @@ section {
     overflow: hidden;
     isolation: isolate;
     background:
-        radial-gradient(circle at 50% 35%, #fffdf8 0%, #fbf4e8 46%, #f3e6d2 100%);
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
+        radial-gradient(circle at 50% 45%, rgba(139,45,55,.96) 0%, rgba(100,26,39,.98) 48%, #48121d 100%);
 }
 
+/* Handmade-paper texture without any text or imagery. */
 .envelope-shell::before {
     content: "";
     position: absolute;
     inset: 0;
     z-index: 0;
-    pointer-events: none;
-    opacity: .42;
+    opacity: .28;
     background:
-        repeating-linear-gradient(
-            0deg,
-            rgba(117,78,35,.018) 0 1px,
-            transparent 1px 5px
-        ),
-        repeating-linear-gradient(
-            90deg,
-            rgba(117,78,35,.014) 0 1px,
-            transparent 1px 6px
-        ),
-        radial-gradient(
-            circle at 15% 15%,
-            rgba(255,255,255,.7),
-            transparent 30%
-        );
+        repeating-linear-gradient(0deg, rgba(255,255,255,.025) 0 1px, transparent 1px 4px),
+        repeating-linear-gradient(90deg, rgba(255,255,255,.018) 0 1px, transparent 1px 5px),
+        radial-gradient(circle at 20% 20%, rgba(255,220,170,.07), transparent 30%),
+        radial-gradient(circle at 80% 75%, rgba(0,0,0,.12), transparent 32%);
+    pointer-events: none;
 }
 
 .envelope-shell::after {
@@ -2277,143 +2261,68 @@ section {
     position: absolute;
     inset: 0;
     z-index: 1;
+    background: radial-gradient(circle at 50% 50%, transparent 35%, rgba(27,3,10,.24) 100%);
     pointer-events: none;
-    background:
-        radial-gradient(
-            ellipse at center,
-            transparent 48%,
-            rgba(104,71,37,.055) 100%
-        );
 }
 
 .envelope-border {
     position: absolute;
-    inset: clamp(12px, 2.2vw, 30px);
-    z-index: 35;
-    border: 1px solid rgba(148,115,53,.42);
-    box-shadow:
-        inset 0 0 0 1px rgba(255,255,255,.45);
+    inset: clamp(16px, 2.5vw, 36px);
+    z-index: 7;
+    border: 1px solid rgba(230,207,154,.78);
+    box-shadow: inset 0 0 0 1px rgba(200,164,93,.14);
     pointer-events: none;
 }
 
-.envelope-border::before {
-    content: "";
-    position: absolute;
-    inset: 9px;
-    border: 1px solid rgba(200,164,93,.17);
-}
-
+.envelope-border::before,
 .envelope-border::after {
     content: "";
     position: absolute;
-    inset: 17px;
-    border: 1px solid rgba(200,164,93,.10);
+    inset: 10px;
+    border: 1px solid rgba(230,207,154,.20);
 }
 
 .envelope-inner {
     position: absolute;
     inset: 0;
     z-index: 2;
-    pointer-events: none;
     background:
-        radial-gradient(
-            ellipse at 50% 70%,
-            rgba(200,164,93,.055),
-            transparent 42%
-        );
+        linear-gradient(145deg, rgba(255,255,255,.025), transparent 35%, rgba(0,0,0,.08)),
+        radial-gradient(ellipse at 50% 30%, rgba(226,176,113,.10), transparent 45%);
 }
 
-/*
-   The pocket is the actual envelope body.
-   The two diagonal lines meet at the seal exactly like a physical
-   folded envelope.
-*/
+/* Envelope pocket — the V seams make it read as a real envelope. */
 .envelope-pocket {
     position: absolute;
     inset: 0;
-    z-index: 8;
-    pointer-events: none;
+    z-index: 4;
     background:
-        linear-gradient(
-            145deg,
-            transparent 49.65%,
-            rgba(148,115,53,.28) 49.85%,
-            rgba(255,255,255,.30) 50%,
-            transparent 50.22%
-        ),
-        linear-gradient(
-            215deg,
-            transparent 49.65%,
-            rgba(148,115,53,.28) 49.85%,
-            rgba(255,255,255,.30) 50%,
-            transparent 50.22%
-        ),
-        linear-gradient(
-            180deg,
-            rgba(255,255,255,.14),
-            rgba(205,180,140,.10)
-        );
+        linear-gradient(135deg, transparent 49.7%, rgba(230,207,154,.62) 49.9%, transparent 50.15%),
+        linear-gradient(225deg, transparent 49.7%, rgba(230,207,154,.62) 49.9%, transparent 50.15%),
+        linear-gradient(180deg, rgba(255,255,255,.02), rgba(38,3,10,.13));
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-    -webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-    box-shadow: inset 0 -20px 50px rgba(120,80,35,.045);
+    pointer-events: none;
 }
 
-/* Subtle lower fold, kept almost invisible so the envelope stays premium. */
-.envelope-pocket::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 51%;
-    background:
-        linear-gradient(
-            180deg,
-            transparent 0%,
-            rgba(145,111,65,.035) 100%
-        );
-    clip-path: polygon(0 100%, 50% 0, 100% 100%);
-    -webkit-clip-path: polygon(0 100%, 50% 0, 100% 100%);
-}
-
-/*
-   REAL FLAP:
-   Its crease is the top edge. On press it rotates upward around
-   that edge, like opening a physical envelope rather than sliding
-   a card away.
-*/
+/* The flap is the hero: it lifts away from the seal like a physical envelope. */
 .envelope-flap {
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
     height: 58%;
-    z-index: 22;
+    z-index: 10;
     transform-origin: 50% 0%;
-    -webkit-transform-origin: 50% 0%;
-    transform: rotateX(0deg) translateZ(0);
-    -webkit-transform: rotateX(0deg) translateZ(0);
+    transform: rotateX(0deg);
     clip-path: polygon(0 0, 100% 0, 50% 100%);
-    -webkit-clip-path: polygon(0 0, 100% 0, 50% 100%);
     background:
-        linear-gradient(
-            180deg,
-            rgba(255,255,255,.78) 0%,
-            rgba(255,253,248,.50) 52%,
-            rgba(239,226,204,.48) 100%
-        ),
-        #faf2e4;
-    border-bottom: 1px solid rgba(148,115,53,.34);
-    box-shadow:
-        0 18px 42px rgba(94,64,31,.08);
+        linear-gradient(180deg, rgba(255,255,255,.045), transparent 48%),
+        linear-gradient(135deg, #731f2c 0%, #641a27 48%, #50131f 100%);
+    border-bottom: 1px solid rgba(230,207,154,.72);
+    box-shadow: 0 20px 60px rgba(20,2,8,.28);
     backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
     transform-style: preserve-3d;
-    -webkit-transform-style: preserve-3d;
-    will-change: transform;
-    transition:
-        transform 1.15s cubic-bezier(.76,0,.18,1),
-        filter 1.15s ease;
+    transition: transform 1.35s cubic-bezier(.77,0,.18,1), filter 1.35s ease;
     pointer-events: none;
 }
 
@@ -2421,50 +2330,32 @@ section {
     content: "";
     position: absolute;
     inset: 0;
-    pointer-events: none;
     background:
-        linear-gradient(
-            180deg,
-            rgba(255,255,255,.48),
-            transparent 34%,
-            rgba(148,115,53,.035) 100%
-        ),
-        repeating-linear-gradient(
-            0deg,
-            rgba(117,78,35,.012) 0 1px,
-            transparent 1px 5px
-        );
+        repeating-linear-gradient(0deg, rgba(255,255,255,.018) 0 1px, transparent 1px 4px),
+        radial-gradient(circle at 50% 20%, rgba(235,190,126,.08), transparent 35%);
 }
 
 .envelope-flap::after {
     content: "";
     position: absolute;
     left: 50%;
-    bottom: 11%;
-    width: min(55vw, 360px);
-    height: min(55vw, 360px);
+    top: 11%;
+    width: min(38vw, 480px);
+    height: min(38vw, 480px);
     transform: translateX(-50%);
-    border: 1px solid rgba(200,164,93,.12);
+    border: 1px solid rgba(230,207,154,.13);
     border-radius: 50%;
-    pointer-events: none;
 }
 
 .envelope-ornament {
     position: absolute;
-    z-index: 12;
-    left: 50%;
-    width: min(42vw, 430px);
+    z-index: 6;
+    width: min(38vw, 440px);
     height: 1px;
+    left: 50%;
     transform: translateX(-50%);
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(148,115,53,.36),
-            transparent
-        );
-    opacity: .72;
-    pointer-events: none;
+    background: linear-gradient(90deg, transparent, rgba(230,207,154,.62), transparent);
+    opacity: .82;
 }
 
 .envelope-ornament::after {
@@ -2472,30 +2363,25 @@ section {
     position: absolute;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%);
-    color: rgba(148,115,53,.56);
-    background: #faf2e4;
-    padding: 0 11px;
-    font-size: 9px;
+    transform: translate(-50%,-50%);
+    color: rgba(230,207,154,.85);
+    background: #641a27;
+    padding: 0 12px;
+    font-size: 11px;
 }
 
-.ornament-top {
-    top: clamp(38px, 7vh, 76px);
-}
+.ornament-top { top: clamp(55px, 8vh, 90px); }
+.ornament-bottom { bottom: clamp(55px, 8vh, 90px); }
 
-.ornament-bottom {
-    bottom: clamp(38px, 7vh, 76px);
-}
-
-/* RA is the only thing the guest presses. No names, no instructions. */
+/* RA seal: no names, no instruction, no cheap copy. */
 #weddingCard #waxButton {
     position: absolute;
     left: 50%;
     top: 58%;
-    z-index: 32;
-    width: 136px;
-    height: 136px;
-    transform: translate(-50%, -50%);
+    z-index: 20;
+    width: 138px;
+    height: 138px;
+    transform: translate(-50%,-50%);
     border: 0;
     padding: 0;
     margin: 0;
@@ -2505,10 +2391,7 @@ section {
     display: grid;
     place-items: center;
     -webkit-tap-highlight-color: transparent;
-    touch-action: manipulation;
-    transition:
-        transform .22s cubic-bezier(.2,.8,.2,1),
-        opacity .42s ease;
+    transition: transform .22s ease, opacity .5s ease;
 }
 
 #weddingCard #waxButton .wax-glow {
@@ -2516,16 +2399,9 @@ section {
     width: 190px;
     height: 190px;
     border-radius: 50%;
-    background:
-        radial-gradient(
-            circle,
-            rgba(200,164,93,.18) 0%,
-            rgba(200,164,93,.07) 45%,
-            transparent 72%
-        );
-    filter: blur(20px);
-    animation: sealPulse 3.2s ease-in-out infinite;
-    pointer-events: none;
+    background: rgba(230,207,154,.20);
+    filter: blur(35px);
+    animation: sealPulse 3s ease-in-out infinite;
 }
 
 #weddingCard #waxButton .wax-seal {
@@ -2536,22 +2412,14 @@ section {
     place-items: center;
     border-radius: 50%;
     background:
-        radial-gradient(
-            circle at 34% 27%,
-            #b94a56 0%,
-            #8e2432 42%,
-            #641a27 72%,
-            #48121d 100%
-        );
-    border: 3px solid rgba(200,164,93,.82);
+        radial-gradient(circle at 34% 28%, #b94a56 0%, #8e2432 43%, #55131f 100%);
+    border: 3px solid rgba(230,207,154,.72);
     box-shadow:
-        inset 0 0 0 4px rgba(255,255,255,.055),
-        inset 0 0 0 7px rgba(48,7,15,.22),
-        0 16px 48px rgba(73,30,22,.22),
-        0 0 0 1px rgba(255,255,255,.18);
-    transition:
-        transform .22s ease,
-        box-shadow .22s ease;
+        inset 0 0 0 4px rgba(255,255,255,.045),
+        inset 0 0 0 7px rgba(48,7,15,.24),
+        0 18px 55px rgba(28,3,10,.46),
+        0 0 0 1px rgba(255,255,255,.08);
+    transition: transform .25s ease, box-shadow .25s ease;
 }
 
 #weddingCard #waxButton .wax-seal::before {
@@ -2567,41 +2435,50 @@ section {
     position: absolute;
     inset: 17px;
     border-radius: 50%;
-    border: 1px solid rgba(255,255,255,.09);
+    border: 1px solid rgba(255,255,255,.08);
 }
 
 .wax-monogram {
     position: relative;
     z-index: 2;
-    color: #fff8e9;
+    color: #fff5df;
     font-family: var(--serif);
     font-size: 36px;
     font-weight: 600;
     letter-spacing: -2px;
-    text-shadow: 0 2px 5px rgba(48,5,12,.28);
+    text-shadow: 0 2px 5px rgba(48,5,12,.35);
+}
+
+#weddingCard #waxButton:hover .wax-seal,
+#weddingCard #waxButton:focus-visible .wax-seal {
+    transform: scale(1.045);
+    box-shadow:
+        inset 0 0 0 4px rgba(255,255,255,.045),
+        inset 0 0 0 7px rgba(48,7,15,.24),
+        0 20px 62px rgba(28,3,10,.50),
+        0 0 30px rgba(230,207,154,.18);
 }
 
 #weddingCard #waxButton:active {
-    transform: translate(-50%, -50%) scale(.92);
+    transform: translate(-50%,-50%) scale(.91);
 }
 
+/* Seal breaks, then the flap starts its physical opening. */
 #weddingCard.opening #waxButton {
-    transform: translate(-50%, -50%) scale(1.16);
+    transform: translate(-50%,-50%) scale(1.16);
     opacity: 0;
     pointer-events: none;
 }
 
 #weddingCard.opening .envelope-flap {
-    transform: rotateX(-178deg) translateZ(1px);
-    -webkit-transform: rotateX(-178deg) translateZ(1px);
-    filter: brightness(.98);
+    transform: rotateX(178deg);
+    filter: brightness(.78);
 }
 
 #weddingCard.opening .envelope-pocket {
-    filter: brightness(.99);
+    filter: brightness(.92);
 }
 
-/* Once the flap is up, the envelope softly clears the stage. */
 #weddingCard.opened {
     opacity: 0;
     visibility: hidden;
@@ -2615,11 +2492,10 @@ section {
 #glitterContainer {
     position: absolute;
     inset: 0;
-    z-index: 60;
+    z-index: 40;
     overflow: hidden;
     pointer-events: none;
     opacity: 1;
-    contain: layout paint;
 }
 
 .glitter {
@@ -2630,16 +2506,10 @@ section {
     height: 4px;
     border-radius: 50%;
     background: var(--gold-bright);
-    box-shadow:
-        0 0 7px rgba(240,217,158,.98),
-        0 0 18px rgba(240,217,158,.52);
+    box-shadow: 0 0 7px rgba(240,217,158,.98), 0 0 18px rgba(240,217,158,.50);
     opacity: 0;
     will-change: transform, opacity;
-    animation:
-        glitterShower var(--duration, 2.2s)
-        cubic-bezier(.16,.56,.24,1)
-        var(--delay,0s)
-        forwards;
+    animation: glitterShower var(--duration, 2.4s) cubic-bezier(.15,.55,.24,1) var(--delay,0s) forwards;
 }
 
 .glitter.star {
@@ -2651,9 +2521,6 @@ section {
     font-size: var(--star-size, 14px);
     line-height: 1;
     border-radius: 0;
-    text-shadow:
-        0 0 7px rgba(240,217,158,.98),
-        0 0 18px rgba(240,217,158,.55);
 }
 
 .glitter.star::after {
@@ -2663,208 +2530,386 @@ section {
 @keyframes glitterShower {
     0% {
         opacity: 0;
-        transform:
-            translate3d(-50%, -50%, 0)
-            scale(.08)
-            rotate(0deg);
+        transform: translate3d(-50%,-50%,0) scale(.15) rotate(0deg);
     }
-
-    10% {
-        opacity: 1;
-    }
-
-    36% {
-        opacity: 1;
-    }
-
+    8% { opacity: 1; }
+    30% { opacity: .98; }
     100% {
         opacity: 0;
-        transform:
-            translate3d(
-                calc(-50% + var(--x)),
-                calc(-50% + var(--y)),
-                0
-            )
-            scale(var(--scale, .75))
-            rotate(var(--rotate, 240deg));
+        transform: translate3d(calc(-50% + var(--x)), calc(-50% + var(--y)), 0) scale(var(--scale, .65)) rotate(var(--rotate, 240deg));
     }
 }
 
-/* The first hero is revealed only after the physical opening is complete. */
+/* Invitation stays hidden until the envelope has actually opened. */
 #hero > .hero-content {
     opacity: 0;
-    transform: translate3d(0, 22px, 0) scale(.992);
+    transform: translateY(26px) scale(.985);
     pointer-events: none;
     animation: none;
-    transition:
-        opacity .9s ease .05s,
-        transform 1s cubic-bezier(.22,.61,.36,1) .05s;
-    will-change: opacity, transform;
+    transition: opacity 1.1s ease .15s, transform 1.2s cubic-bezier(.22,.61,.36,1) .15s;
 }
 
 #hero.card-revealed > .hero-content {
     opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0) scale(1);
     pointer-events: auto;
 }
 
 @keyframes sealPulse {
-    0%, 100% {
-        transform: scale(.94);
-        opacity: .62;
-    }
-    50% {
-        transform: scale(1.06);
-        opacity: .95;
-    }
+    0%,100% { transform: scale(.94); opacity: .72; }
+    50% { transform: scale(1.08); opacity: 1; }
 }
 
 @media (max-width: 768px) {
-
-    /* iOS Safari / Android Chrome: avoid relying on 3D compositing for the flap.
-       The flap still opens as an envelope, but the 2D fallback is much more
-       reliable on phones and avoids the occasional "instant jump". */
-    #weddingCard {
-        height: 100dvh;
-        min-height: 100dvh;
-        perspective: none;
-        -webkit-perspective: none;
-        transform: translateZ(0);
-        -webkit-transform: translateZ(0);
-    }
-
-    .envelope-shell {
-        height: 100dvh;
-        min-height: 100dvh;
-    }
-
-    .envelope-border {
-        inset: 9px;
-    }
-
-    .envelope-border::before {
-        inset: 6px;
-    }
-
-    .envelope-border::after {
-        inset: 12px;
-    }
-
-    .envelope-flap {
-        height: 57%;
-        transform-origin: 50% 0;
-        -webkit-transform-origin: 50% 0;
-        transform: translate3d(0,0,0);
-        -webkit-transform: translate3d(0,0,0);
-        transition:
-            transform 1.05s cubic-bezier(.22,.61,.36,1),
-            opacity .35s ease;
-        backface-visibility: visible;
-        -webkit-backface-visibility: visible;
-    }
-
-    /* Phone fallback: lift the triangular flap upward and slightly scale it.
-       It reads as a physical envelope opening without depending on rotateX. */
-    #weddingCard.opening .envelope-flap {
-        transform: translate3d(0,-108%,0) scaleY(.96);
-        -webkit-transform: translate3d(0,-108%,0) scaleY(.96);
-        opacity: .98;
-    }
-
+    #weddingCard { height: 100svh; }
+    .envelope-border { inset: 12px; }
+    .envelope-border::before { inset: 7px; }
+    .envelope-border::after { inset: 13px; }
+    .envelope-flap { height: 57%; }
     #weddingCard #waxButton {
         width: 126px;
         height: 126px;
         top: 57%;
-        z-index: 80;
     }
-
     #weddingCard #waxButton .wax-seal {
         width: 100px;
         height: 100px;
     }
-
-    .wax-monogram {
-        font-size: 32px;
-    }
-
-    .envelope-ornament {
-        width: 58vw;
-    }
-
-    /* Make the glitter unmistakable on a small screen. */
-    #glitterContainer {
-        z-index: 120;
-        overflow: visible;
-        contain: none;
-    }
-
-    .glitter {
-        width: 4.5px;
-        height: 4.5px;
-        box-shadow:
-            0 0 8px rgba(240,217,158,1),
-            0 0 20px rgba(240,217,158,.72);
-    }
-
-    .glitter.star {
-        font-size: var(--star-size, 16px);
-    }
-
+    .wax-monogram { font-size: 32px; }
+    .envelope-ornament { width: 58vw; }
 }
 
 @media (max-width: 480px) {
+    .envelope-flap { height: 55%; }
+    #weddingCard #waxButton { top: 55%; }
+    .envelope-ornament { width: 62vw; }
+}
 
-    .envelope-flap {
-        height: 56%;
-    }
 
-    #weddingCard #waxButton {
-        top: 56%;
-    }
 
-    .envelope-ornament {
-        width: 64vw;
-    }
+/* ============================================================
+   CINEMATIC LIFE LAYER — ROYAL / MOBILE FIRST
+   ============================================================ */
 
-    .envelope-pocket {
-        background:
-            linear-gradient(
-                145deg,
-                transparent 49.45%,
-                rgba(148,115,53,.24) 49.8%,
-                rgba(255,255,255,.28) 50%,
-                transparent 50.28%
-            ),
-            linear-gradient(
-                215deg,
-                transparent 49.45%,
-                rgba(148,115,53,.24) 49.8%,
-                rgba(255,255,255,.28) 50%,
-                transparent 50.28%
-            ),
-            linear-gradient(
-                180deg,
-                rgba(255,255,255,.14),
-                rgba(205,180,140,.10)
-            );
-    }
+:root {
+    --cinematic-gold: #f0d99e;
+    --cinematic-gold-soft: rgba(240,217,158,.52);
+    --burgundy-deep: #4b111d;
+}
+
+/* Ambient atmosphere over the whole experience */
+#hero {
+    isolation: isolate;
+    overflow: hidden;
+}
+
+#hero::before {
+    content: "";
+    position: absolute;
+    inset: -15%;
+    z-index: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(circle at 20% 30%, rgba(240,217,158,.07), transparent 18%),
+        radial-gradient(circle at 82% 62%, rgba(240,217,158,.055), transparent 20%);
+    animation: atmosphereFloat 14s ease-in-out infinite alternate;
+}
+
+.cinematic-light {
+    position: absolute;
+    inset: -40% -20%;
+    z-index: 2;
+    pointer-events: none;
+    opacity: .18;
+    background: linear-gradient(112deg, transparent 36%, rgba(255,241,204,.18) 47%, rgba(255,241,204,.04) 52%, transparent 64%);
+    transform: translate3d(-30%,0,0) rotate(-5deg);
+    mix-blend-mode: screen;
+    animation: cinematicSweep 10s ease-in-out infinite;
+}
+
+.hero-vignette {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    background: radial-gradient(circle at 50% 45%, transparent 34%, rgba(24,2,8,.28) 100%);
+    opacity: .75;
+}
+
+#ambientDust {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.ambient-mote {
+    position: absolute;
+    left: var(--left);
+    top: var(--top);
+    width: var(--size);
+    height: var(--size);
+    border-radius: 50%;
+    background: rgba(240,217,158,.78);
+    box-shadow: 0 0 9px rgba(240,217,158,.52);
+    opacity: 0;
+    animation: moteFloat var(--duration) ease-in-out var(--delay) infinite;
+    will-change: transform, opacity;
+}
+
+@keyframes atmosphereFloat {
+    0% { transform: translate3d(-1%, -1%, 0) scale(1); }
+    100% { transform: translate3d(1.5%, 1%, 0) scale(1.035); }
+}
+
+@keyframes cinematicSweep {
+    0%, 18% { transform: translate3d(-35%,0,0) rotate(-5deg); opacity: 0; }
+    38% { opacity: .18; }
+    62% { opacity: .12; }
+    82%, 100% { transform: translate3d(35%,0,0) rotate(-5deg); opacity: 0; }
+}
+
+@keyframes moteFloat {
+    0%, 100% { opacity: 0; transform: translate3d(0, 12px, 0) scale(.55); }
+    20% { opacity: .42; }
+    50% { opacity: .78; transform: translate3d(var(--drift), -24px, 0) scale(1); }
+    82% { opacity: .22; }
+}
+
+/* Make the closed envelope feel tactile before the tap */
+#weddingCard .envelope-shell {
+    transform: translateZ(0);
+}
+
+#weddingCard .envelope-shell::after {
+    animation: envelopeBreath 7s ease-in-out infinite alternate;
+}
+
+@keyframes envelopeBreath {
+    0% { opacity: .68; transform: scale(1); }
+    100% { opacity: .95; transform: scale(1.035); }
+}
+
+#weddingCard #waxButton .wax-seal {
+    animation: royalSealBreath 3.4s cubic-bezier(.45,0,.25,1) infinite;
+}
+
+#weddingCard #waxButton .wax-glow {
+    animation: royalGlow 3.4s ease-in-out infinite;
+}
+
+@keyframes royalSealBreath {
+    0%, 100% { transform: scale(.975) rotate(-.4deg); }
+    50% { transform: scale(1.035) rotate(.4deg); }
+}
+
+@keyframes royalGlow {
+    0%, 100% { opacity: .38; transform: scale(.88); }
+    50% { opacity: .78; transform: scale(1.12); }
+}
+
+/* A proper press reaction before the flap moves */
+#weddingCard #waxButton.opened {
+    transition: transform .18s cubic-bezier(.2,.8,.2,1), opacity .45s ease .08s;
+}
+
+#weddingCard #waxButton.opened::before,
+#weddingCard #waxButton.opened::after {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border: 1px solid rgba(240,217,158,.72);
+    border-radius: 50%;
+    animation: sealShock .72s cubic-bezier(.12,.7,.25,1) forwards;
+    pointer-events: none;
+}
+
+#weddingCard #waxButton.opened::after {
+    animation-delay: .08s;
+}
+
+@keyframes sealShock {
+    0% { opacity: .72; transform: scale(.9); }
+    100% { opacity: 0; transform: scale(2.05); }
+}
+
+/* Reveal the invitation like a camera push, not a page fade */
+#hero > .hero-content {
+    position: relative;
+    z-index: 8;
+    transform-origin: 50% 58%;
+    transition:
+        opacity 1.1s cubic-bezier(.2,.75,.2,1) .05s,
+        transform 1.35s cubic-bezier(.16,.8,.2,1) .05s,
+        filter 1.1s ease .05s;
+    filter: blur(7px);
+}
+
+#hero.card-revealed > .hero-content {
+    filter: blur(0);
+    animation: heroArrival 2.1s cubic-bezier(.16,.75,.2,1) both;
+}
+
+@keyframes heroArrival {
+    0% { transform: translateY(34px) scale(1.045); }
+    55% { transform: translateY(-4px) scale(1.008); }
+    100% { transform: translateY(0) scale(1); }
+}
+
+.hero-family {
+    display: inline-block;
+    animation: familyReveal 1.2s cubic-bezier(.22,.61,.36,1) both;
+}
+
+#hero:not(.card-revealed) .hero-family,
+#hero:not(.card-revealed) .hero-name,
+#hero:not(.card-revealed) .ampersand,
+#hero:not(.card-revealed) .hero-description {
+    animation-play-state: paused;
+}
+
+.hero-name {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(24px);
+    animation: nameRise 1.25s cubic-bezier(.16,.75,.2,1) both;
+}
+
+.hero-name-two { animation-delay: .18s; }
+
+.ampersand {
+    display: inline-block;
+    opacity: 0;
+    transform: scale(.7);
+    animation: ampersandBloom 1s cubic-bezier(.16,.75,.2,1) .1s both;
+}
+
+.hero-description {
+    animation: descriptionRise 1.15s cubic-bezier(.16,.75,.2,1) .42s both;
+}
+
+@keyframes familyReveal {
+    from { opacity: 0; transform: translateY(12px); letter-spacing: .42em; }
+    to { opacity: 1; transform: translateY(0); letter-spacing: .28em; }
+}
+
+@keyframes nameRise {
+    from { opacity: 0; transform: translateY(26px); filter: blur(5px); }
+    to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+@keyframes ampersandBloom {
+    0% { opacity: 0; transform: scale(.65) rotate(-8deg); }
+    70% { opacity: 1; transform: scale(1.08) rotate(2deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0); }
+}
+
+@keyframes descriptionRise {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Subtle life in every section: headings breathe and photos move like film */
+.section-title .divider {
+    transform-origin: center;
+    animation: dividerGlow 4.5s ease-in-out infinite;
+}
+
+@keyframes dividerGlow {
+    0%, 100% { opacity: .55; transform: scaleX(.82); }
+    50% { opacity: 1; transform: scaleX(1); }
+}
+
+.collage-frame,
+.gallery-item img,
+.invitation-card,
+.detail-card,
+.venue-card,
+.footer-card {
+    will-change: transform;
+}
+
+.collage-frame.reveal-visible {
+    animation: filmReveal 1.5s cubic-bezier(.16,.75,.2,1) both;
+}
+
+@keyframes filmReveal {
+    from { opacity: 0; transform: translateY(34px) scale(.975); filter: blur(4px); }
+    to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+
+.collage-frame img,
+.gallery-item img {
+    transform: scale(1.015);
+    transition: transform 1.6s cubic-bezier(.16,.75,.2,1), filter 1.2s ease;
+}
+
+.collage-frame.reveal-visible img,
+.gallery-item.reveal-visible img {
+    animation: kenBurns 9s ease-in-out infinite alternate;
+}
+
+@keyframes kenBurns {
+    from { transform: scale(1.015) translate3d(0,0,0); }
+    to { transform: scale(1.055) translate3d(-.5%, -.5%, 0); }
+}
+
+/* Timeline/detail cards get a tiny hover-like lift even on touch as they appear */
+.timeline-item.reveal-visible,
+.detail-card.reveal-visible,
+.venue-card.reveal-visible,
+.invitation-card.reveal-visible {
+    animation: cardLife 1.05s cubic-bezier(.16,.75,.2,1) both;
+}
+
+@keyframes cardLife {
+    0% { opacity: 0; transform: translateY(32px) scale(.97); }
+    72% { opacity: 1; transform: translateY(-3px) scale(1.005); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Keep the sparkle container above every envelope surface */
+#glitterContainer {
+    z-index: 60 !important;
+    transform: translateZ(0);
+}
+
+.glitter {
+    mix-blend-mode: screen;
+}
+
+/* Mobile: prioritize buttery transforms and visible magic */
+@media (max-width: 768px) {
+    .cinematic-light { opacity: .14; animation-duration: 12s; }
+    .ambient-mote { box-shadow: 0 0 6px rgba(240,217,158,.46); }
+    #weddingCard #waxButton { touch-action: manipulation; }
+    #weddingCard .envelope-flap { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+    .hero-name { will-change: transform, opacity, filter; }
+    .hero-description { max-width: 92vw; margin-inline: auto; }
 }
 
 @media (prefers-reduced-motion: reduce) {
+    /* Keep essential invitation opening functional, but reduce ambient effects. */
+    .cinematic-light,
+    #ambientDust,
+    .section-title .divider,
+    .collage-frame.reveal-visible img,
+    .gallery-item.reveal-visible img { animation: none !important; }
+}
 
-    /* Keep the invitation functional and visible even when the device asks
-       for reduced motion. We shorten the reveal rather than hiding it. */
-    #weddingCard .envelope-flap {
-        transition-duration: .65s !important;
-    }
+/* Dynamic micro-motion values driven by the lightweight scroll RAF. */
+.section-title,
+.collage-frame,
+.invitation-card,
+.venue-card {
+    --micro-shift: 0px;
+}
 
-    #weddingCard #waxButton .wax-glow {
-        animation: none !important;
-    }
-
-    .glitter {
-        animation-duration: 1.25s !important;
-        animation-iteration-count: 1 !important;
-    }
-
+.section-title.reveal-visible,
+.collage-frame.reveal-visible,
+.invitation-card.reveal-visible,
+.venue-card.reveal-visible {
+    transform: translateY(var(--micro-shift));
+    transition-delay: var(--reveal-delay, 0ms);
 }
