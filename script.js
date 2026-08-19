@@ -197,7 +197,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         glitterContainer.innerHTML = "";
 
-        const particleCount = 150;
+        const particleCount = 210;
 
         for (let i = 0; i < particleCount; i++) {
 
@@ -294,7 +294,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (weddingCard) {
                 weddingCard.classList.add("opening");
             }
-        }, 120);
+        }, 90);
 
         // 3. Glitter erupts as the flap clears the seal.
         setTimeout(function () {
