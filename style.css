@@ -2588,740 +2588,398 @@ section {
 
 
 /* ============================================================
-   CINEMATIC LIFE LAYER — ROYAL / MOBILE FIRST
+   OPENING V4 — CLEAN PHYSICAL ENVELOPE
+   This layer intentionally supersedes the previous envelope.
    ============================================================ */
 
-:root {
-    --cinematic-gold: #f0d99e;
-    --cinematic-gold-soft: rgba(240,217,158,.52);
-    --burgundy-deep: #4b111d;
+#weddingCard { display:none !important; }
+#loader { display:none !important; }
+body:not(.opening-complete) #hero .hero-content {
+    opacity:0 !important;
+    visibility:hidden !important;
+    pointer-events:none !important;
+}
+body:not(.opening-complete) #hero {
+    min-height:100svh !important;
 }
 
-/* Ambient atmosphere over the whole experience */
-#hero {
-    isolation: isolate;
-    overflow: hidden;
+#envelopeV4 {
+    position:fixed;
+    inset:0;
+    z-index:99999;
+    overflow:hidden;
+    background:#641A27;
+    isolation:isolate;
+    perspective:1600px;
+    perspective-origin:50% 48%;
+    touch-action:manipulation;
+    -webkit-tap-highlight-color:transparent;
 }
 
-#hero::before {
-    content: "";
-    position: absolute;
-    inset: -15%;
-    z-index: 0;
-    pointer-events: none;
+#envelopeV4 * { box-sizing:border-box; }
+
+.ev4-stage {
+    position:absolute;
+    inset:0;
+    transform-style:preserve-3d;
+    overflow:hidden;
     background:
-        radial-gradient(circle at 20% 30%, rgba(240,217,158,.07), transparent 18%),
-        radial-gradient(circle at 82% 62%, rgba(240,217,158,.055), transparent 20%);
-    animation: atmosphereFloat 14s ease-in-out infinite alternate;
+      radial-gradient(ellipse at 50% 34%, rgba(172,65,78,.26), transparent 45%),
+      linear-gradient(160deg,#7a2433 0%,#641A27 45%,#4a111c 100%);
 }
 
-.cinematic-light {
-    position: absolute;
-    inset: -40% -20%;
-    z-index: 2;
-    pointer-events: none;
-    opacity: .18;
-    background: linear-gradient(112deg, transparent 36%, rgba(255,241,204,.18) 47%, rgba(255,241,204,.04) 52%, transparent 64%);
-    transform: translate3d(-30%,0,0) rotate(-5deg);
-    mix-blend-mode: screen;
-    animation: cinematicSweep 10s ease-in-out infinite;
+.ev4-paper-grain {
+    position:absolute;
+    inset:0;
+    z-index:1;
+    opacity:.18;
+    pointer-events:none;
+    background:
+      repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 1px,transparent 1px 4px),
+      repeating-linear-gradient(90deg,rgba(255,255,255,.014) 0 1px,transparent 1px 6px);
 }
 
-.hero-vignette {
-    position: absolute;
-    inset: 0;
-    z-index: 3;
-    pointer-events: none;
-    background: radial-gradient(circle at 50% 45%, transparent 34%, rgba(24,2,8,.28) 100%);
-    opacity: .75;
+.ev4-border {
+    position:absolute;
+    inset:24px;
+    z-index:30;
+    border:1px solid rgba(240,217,158,.72);
+    box-shadow:inset 0 0 0 1px rgba(240,217,158,.10);
+    pointer-events:none;
+}
+.ev4-border::after {
+    content:"";
+    position:absolute;
+    inset:10px;
+    border:1px solid rgba(240,217,158,.18);
 }
 
-#ambientDust {
-    position: absolute;
-    inset: 0;
-    z-index: 4;
-    pointer-events: none;
-    overflow: hidden;
+.ev4-envelope {
+    position:absolute;
+    inset:0;
+    transform-style:preserve-3d;
 }
 
-.ambient-mote {
-    position: absolute;
-    left: var(--left);
-    top: var(--top);
-    width: var(--size);
-    height: var(--size);
-    border-radius: 50%;
-    background: rgba(240,217,158,.78);
-    box-shadow: 0 0 9px rgba(240,217,158,.52);
-    opacity: 0;
-    animation: moteFloat var(--duration) ease-in-out var(--delay) infinite;
-    will-change: transform, opacity;
-}
-
-@keyframes atmosphereFloat {
-    0% { transform: translate3d(-1%, -1%, 0) scale(1); }
-    100% { transform: translate3d(1.5%, 1%, 0) scale(1.035); }
-}
-
-@keyframes cinematicSweep {
-    0%, 18% { transform: translate3d(-35%,0,0) rotate(-5deg); opacity: 0; }
-    38% { opacity: .18; }
-    62% { opacity: .12; }
-    82%, 100% { transform: translate3d(35%,0,0) rotate(-5deg); opacity: 0; }
-}
-
-@keyframes moteFloat {
-    0%, 100% { opacity: 0; transform: translate3d(0, 12px, 0) scale(.55); }
-    20% { opacity: .42; }
-    50% { opacity: .78; transform: translate3d(var(--drift), -24px, 0) scale(1); }
-    82% { opacity: .22; }
-}
-
-/* Make the closed envelope feel tactile before the tap */
-#weddingCard .envelope-shell {
-    transform: translateZ(0);
-}
-
-#weddingCard .envelope-shell::after {
-    animation: envelopeBreath 7s ease-in-out infinite alternate;
-}
-
-@keyframes envelopeBreath {
-    0% { opacity: .68; transform: scale(1); }
-    100% { opacity: .95; transform: scale(1.035); }
-}
-
-#weddingCard #waxButton .wax-seal {
-    animation: royalSealBreath 3.4s cubic-bezier(.45,0,.25,1) infinite;
-}
-
-#weddingCard #waxButton .wax-glow {
-    animation: royalGlow 3.4s ease-in-out infinite;
-}
-
-@keyframes royalSealBreath {
-    0%, 100% { transform: scale(.975) rotate(-.4deg); }
-    50% { transform: scale(1.035) rotate(.4deg); }
-}
-
-@keyframes royalGlow {
-    0%, 100% { opacity: .38; transform: scale(.88); }
-    50% { opacity: .78; transform: scale(1.12); }
-}
-
-/* A proper press reaction before the flap moves */
-#weddingCard #waxButton.opened {
-    transition: transform .18s cubic-bezier(.2,.8,.2,1), opacity .45s ease .08s;
-}
-
-#weddingCard #waxButton.opened::before,
-#weddingCard #waxButton.opened::after {
-    content: "";
-    position: absolute;
-    inset: 6px;
-    border: 1px solid rgba(240,217,158,.72);
-    border-radius: 50%;
-    animation: sealShock .72s cubic-bezier(.12,.7,.25,1) forwards;
-    pointer-events: none;
-}
-
-#weddingCard #waxButton.opened::after {
-    animation-delay: .08s;
-}
-
-@keyframes sealShock {
-    0% { opacity: .72; transform: scale(.9); }
-    100% { opacity: 0; transform: scale(2.05); }
-}
-
-/* Reveal the invitation like a camera push, not a page fade */
-#hero > .hero-content {
-    position: relative;
-    z-index: 8;
-    transform-origin: 50% 58%;
+/* Hidden until the envelope physically opens. */
+.ev4-letter {
+    position:absolute;
+    z-index:4;
+    left:5%;
+    right:5%;
+    top:9%;
+    height:88%;
+    border-radius:3px 3px 0 0;
+    background:
+      linear-gradient(180deg,rgba(255,255,255,.95),rgba(248,241,229,.98)),
+      #f8f1e5;
+    box-shadow:0 22px 55px rgba(22,2,8,.30);
+    transform:translate3d(0,78%,0) scale(.965);
+    transform-origin:50% 100%;
+    opacity:0;
+    visibility:hidden;
     transition:
-        opacity 1.1s cubic-bezier(.2,.75,.2,1) .05s,
-        transform 1.35s cubic-bezier(.16,.8,.2,1) .05s,
-        filter 1.1s ease .05s;
-    filter: blur(7px);
+      transform 1.15s cubic-bezier(.18,.78,.22,1),
+      opacity .5s ease,
+      visibility 0s linear 1.15s;
+    overflow:hidden;
+}
+.ev4-letter::before {
+    content:"";
+    position:absolute;
+    inset:14px;
+    border:1px solid rgba(148,115,53,.28);
+}
+.ev4-letter::after {
+    content:"";
+    position:absolute;
+    left:8%;right:8%;top:18%;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(148,115,53,.35),transparent);
 }
 
-#hero.card-revealed > .hero-content {
-    filter: blur(0);
-    animation: heroArrival 2.1s cubic-bezier(.16,.75,.2,1) both;
+/* Physical bottom/side folds. */
+.ev4-bottom {
+    position:absolute;
+    inset:auto 0 0 0;
+    height:57%;
+    z-index:7;
+    clip-path:polygon(0 100%,100% 100%,50% 0);
+    background:
+      linear-gradient(155deg,rgba(255,255,255,.07),transparent 40%),
+      linear-gradient(160deg,#76202f,#5b1723 75%);
+    border-top:1px solid rgba(240,217,158,.34);
+    transform-origin:50% 100%;
+    box-shadow:0 -20px 55px rgba(20,2,8,.12);
+    transition:transform 1.05s cubic-bezier(.22,.72,.18,1),opacity .8s ease;
+}
+.ev4-left,.ev4-right {
+    position:absolute;
+    top:0;
+    bottom:0;
+    width:74%;
+    z-index:8;
+    pointer-events:none;
+}
+.ev4-left {
+    left:0;
+    clip-path:polygon(0 0,100% 50%,0 100%);
+    background:linear-gradient(135deg,#6f1d2b,#581522);
+    border-right:1px solid rgba(240,217,158,.42);
+    transform-origin:0 50%;
+    transition:transform 1.0s cubic-bezier(.22,.72,.18,1),opacity .75s ease;
+}
+.ev4-right {
+    right:0;
+    clip-path:polygon(100% 0,0 50%,100% 100%);
+    background:linear-gradient(225deg,#6f1d2b,#581522);
+    border-left:1px solid rgba(240,217,158,.42);
+    transform-origin:100% 50%;
+    transition:transform 1.0s cubic-bezier(.22,.72,.18,1),opacity .75s ease;
 }
 
-@keyframes heroArrival {
-    0% { transform: translateY(34px) scale(1.045); }
-    55% { transform: translateY(-4px) scale(1.008); }
-    100% { transform: translateY(0) scale(1); }
+/* The top flap has a real hinge at its upper crease. */
+.ev4-top {
+    position:absolute;
+    left:0;right:0;top:0;
+    height:61%;
+    z-index:14;
+    clip-path:polygon(0 0,100% 0,50% 100%);
+    background:
+      linear-gradient(180deg,rgba(255,255,255,.055),transparent 48%),
+      linear-gradient(145deg,#812736 0%,#641A27 52%,#4c121d 100%);
+    border-bottom:1px solid rgba(240,217,158,.55);
+    transform-origin:50% 0%;
+    transform:rotateX(0deg);
+    transform-style:preserve-3d;
+    backface-visibility:hidden;
+    transition:
+      transform 1.25s cubic-bezier(.18,.78,.20,1),
+      filter 1.0s ease;
+    box-shadow:0 28px 80px rgba(18,2,7,.32);
+}
+.ev4-top::before {
+    content:"";
+    position:absolute;
+    inset:0;
+    background:radial-gradient(circle at 50% 14%,rgba(240,217,158,.10),transparent 36%);
+}
+.ev4-top::after {
+    content:"";
+    position:absolute;
+    left:0;right:0;top:0;height:1px;
+    background:rgba(240,217,158,.48);
 }
 
-.hero-family {
-    display: inline-block;
-    animation: familyReveal 1.2s cubic-bezier(.22,.61,.36,1) both;
+/* Gold crease lines — deliberately subtle. */
+.ev4-crease {
+    position:absolute;
+    z-index:18;
+    height:1px;
+    background:linear-gradient(90deg,transparent,rgba(240,217,158,.72),transparent);
+    opacity:.72;
+    pointer-events:none;
+}
+.ev4-crease.one { left:-10%; right:54%; top:50%; transform:rotate(45deg); }
+.ev4-crease.two { left:54%; right:-10%; top:50%; transform:rotate(-45deg); }
+.ev4-crease.three { left:24%; right:24%; bottom:26%; }
+
+/* Wax: intentionally irregular and layered, not a circular button. */
+.ev4-seal-button {
+    position:absolute;
+    z-index:50;
+    left:50%;
+    top:58%;
+    width:clamp(112px,22vw,156px);
+    aspect-ratio:1;
+    transform:translate(-50%,-50%);
+    padding:0;
+    background:transparent;
+    border:0;
+    border-radius:50%;
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+    transition:transform .16s ease;
+}
+.ev4-seal-button:active { transform:translate(-50%,-50%) scale(.94); }
+.ev4-wax {
+    position:absolute;
+    inset:0;
+    border-radius:46% 54% 51% 49% / 51% 46% 54% 49%;
+    background:
+      radial-gradient(circle at 34% 27%,rgba(255,150,154,.30),transparent 25%),
+      radial-gradient(circle at 60% 64%,rgba(85,4,15,.34),transparent 56%),
+      linear-gradient(145deg,#b8384b,#8f2032 58%,#641522);
+    box-shadow:
+      0 13px 0 #54101b,
+      0 18px 28px rgba(20,2,7,.38),
+      inset 0 2px 2px rgba(255,255,255,.22),
+      inset 0 -8px 15px rgba(54,3,12,.25);
+    border:2px solid rgba(240,217,158,.82);
+}
+.ev4-wax::before {
+    content:"";
+    position:absolute;
+    inset:11%;
+    border:2px solid rgba(240,217,158,.68);
+    border-radius:50%;
+    box-shadow:inset 0 0 0 5px rgba(255,255,255,.035);
+}
+.ev4-wax::after {
+    content:"";
+    position:absolute;
+    inset:17%;
+    border:1px solid rgba(255,220,180,.25);
+    border-radius:50%;
+}
+.ev4-ra {
+    position:absolute;
+    inset:0;
+    display:grid;
+    place-items:center;
+    color:#f8e9c3;
+    font-family:var(--serif);
+    font-size:clamp(38px,7vw,58px);
+    font-weight:600;
+    letter-spacing:-4px;
+    text-shadow:1px 2px 0 rgba(71,4,14,.55),0 -1px 0 rgba(255,255,255,.22);
+    padding-right:5px;
+}
+.ev4-seal-shadow {
+    position:absolute;
+    inset:-8px;
+    border-radius:50%;
+    background:radial-gradient(circle,rgba(230,170,75,.24),transparent 68%);
+    filter:blur(10px);
+    opacity:.45;
+    animation:ev4SealBreath 2.8s ease-in-out infinite;
+    pointer-events:none;
+}
+@keyframes ev4SealBreath { 0%,100%{transform:scale(.92);opacity:.22} 50%{transform:scale(1.06);opacity:.48} }
+
+/* Opening state. */
+#envelopeV4.is-opening .ev4-top {
+    transform:rotateX(158deg) translateZ(2px);
+    filter:brightness(1.06);
+}
+#envelopeV4.is-opening .ev4-letter {
+    opacity:1;
+    visibility:visible;
+    transform:translate3d(0,-4%,22px) scale(1);
+}
+#envelopeV4.is-opening .ev4-left { transform:translateX(-68%) rotateY(-9deg); opacity:.32; }
+#envelopeV4.is-opening .ev4-right { transform:translateX(68%) rotateY(9deg); opacity:.32; }
+#envelopeV4.is-opening .ev4-bottom { transform:translateY(42%) scaleY(.88); opacity:.35; }
+#envelopeV4.is-opening .ev4-seal-button { animation:ev4SealRelease .42s cubic-bezier(.18,.8,.25,1) both; }
+@keyframes ev4SealRelease {
+  0%{transform:translate(-50%,-50%) scale(1)}
+  25%{transform:translate(-50%,-50%) scale(.91)}
+  55%{transform:translate(-50%,-50%) scale(1.08)}
+  100%{transform:translate(-50%,-50%) scale(.65);opacity:0}
 }
 
-#hero:not(.card-revealed) .hero-family,
-#hero:not(.card-revealed) .hero-name,
-#hero:not(.card-revealed) .ampersand,
-#hero:not(.card-revealed) .hero-description {
-    animation-play-state: paused;
+/* Cinematic flash and particles. */
+.ev4-flash {
+    position:absolute;
+    z-index:80;
+    left:50%;top:58%;
+    width:14px;height:14px;
+    transform:translate(-50%,-50%) scale(.2);
+    border-radius:50%;
+    background:#fff8df;
+    box-shadow:0 0 25px 12px rgba(240,217,158,.8),0 0 90px 35px rgba(240,217,158,.36);
+    opacity:0;
+    pointer-events:none;
+}
+#envelopeV4.is-opening .ev4-flash { animation:ev4Flash .8s ease-out .46s both; }
+@keyframes ev4Flash {
+  0%{transform:translate(-50%,-50%) scale(.2);opacity:0}
+  18%{opacity:1}
+  42%{transform:translate(-50%,-50%) scale(28);opacity:.42}
+  100%{transform:translate(-50%,-50%) scale(52);opacity:0}
+}
+.ev4-spark {
+    position:absolute;
+    z-index:90;
+    left:50%;top:58%;
+    width:6px;height:6px;
+    border-radius:50%;
+    background:#f4d99a;
+    box-shadow:0 0 10px #f4d99a;
+    opacity:0;
+    pointer-events:none;
+    transform:translate(-50%,-50%);
+}
+#envelopeV4.is-opening .ev4-spark { animation:ev4Spark 1.25s cubic-bezier(.14,.75,.24,1) var(--d) both; }
+@keyframes ev4Spark {
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}
+  12%{opacity:1}
+  100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) rotate(var(--rot)) scale(var(--s))}
 }
 
-.hero-name {
-    display: inline-block;
-    opacity: 0;
-    transform: translateY(24px);
-    animation: nameRise 1.25s cubic-bezier(.16,.75,.2,1) both;
-}
+.ev4-particles { position:absolute; inset:0; z-index:90; overflow:hidden; pointer-events:none; }
 
-.hero-name-two { animation-delay: .18s; }
+.ev4-letter-content { position:absolute; inset:18% 8% 12%; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; color:#641A27; opacity:0; transform:translateY(18px); transition:opacity .8s ease .72s, transform .9s cubic-bezier(.22,.61,.36,1) .72s; }
+.ev4-letter-content .small { font-family:var(--sans); text-transform:uppercase; letter-spacing:5px; font-size:10px; color:#947335; margin-bottom:20px; }
+.ev4-letter-content .names { font-family:var(--display); font-size:clamp(32px,7vw,58px); line-height:1.15; letter-spacing:2px; }
+.ev4-letter-content .and { font-family:var(--serif); font-size:30px; color:#947335; margin:8px 0; }
+#envelopeV4.is-opening .ev4-letter-content { opacity:1; transform:none; }
 
-.ampersand {
-    display: inline-block;
-    opacity: 0;
-    transform: scale(.7);
-    animation: ampersandBloom 1s cubic-bezier(.16,.75,.2,1) .1s both;
+.ev4-gold-haze {
+    position:absolute;
+    z-index:75;
+    inset:0;
+    opacity:0;
+    pointer-events:none;
+    background:radial-gradient(circle at 50% 58%,rgba(240,217,158,.28),transparent 20%);
 }
+#envelopeV4.is-opening .ev4-particles { position:absolute; inset:0; z-index:90; overflow:hidden; pointer-events:none; }
 
-.hero-description {
-    animation: descriptionRise 1.15s cubic-bezier(.16,.75,.2,1) .42s both;
-}
+.ev4-letter-content { position:absolute; inset:18% 8% 12%; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; color:#641A27; opacity:0; transform:translateY(18px); transition:opacity .8s ease .72s, transform .9s cubic-bezier(.22,.61,.36,1) .72s; }
+.ev4-letter-content .small { font-family:var(--sans); text-transform:uppercase; letter-spacing:5px; font-size:10px; color:#947335; margin-bottom:20px; }
+.ev4-letter-content .names { font-family:var(--display); font-size:clamp(32px,7vw,58px); line-height:1.15; letter-spacing:2px; }
+.ev4-letter-content .and { font-family:var(--serif); font-size:30px; color:#947335; margin:8px 0; }
+#envelopeV4.is-opening .ev4-letter-content { opacity:1; transform:none; }
 
-@keyframes familyReveal {
-    from { opacity: 0; transform: translateY(12px); letter-spacing: .42em; }
-    to { opacity: 1; transform: translateY(0); letter-spacing: .28em; }
-}
+.ev4-gold-haze { animation:ev4Haze 1.7s ease-out .35s both; }
+@keyframes ev4Haze { 0%{opacity:0;transform:scale(.7)} 25%{opacity:1} 100%{opacity:0;transform:scale(1.5)} }
 
-@keyframes nameRise {
-    from { opacity: 0; transform: translateY(26px); filter: blur(5px); }
-    to { opacity: 1; transform: translateY(0); filter: blur(0); }
-}
+#envelopeV4.is-opening .ev4-seal-button { pointer-events:none; }
+#envelopeV4.is-done { animation:ev4Exit 1s cubic-bezier(.22,.61,.36,1) both; pointer-events:none; }
+@keyframes ev4Exit { to{opacity:0;visibility:hidden} }
 
-@keyframes ampersandBloom {
-    0% { opacity: 0; transform: scale(.65) rotate(-8deg); }
-    70% { opacity: 1; transform: scale(1.08) rotate(2deg); }
-    100% { opacity: 1; transform: scale(1) rotate(0); }
+/* Hero reveal happens only after the envelope is gone. */
+body.opening-complete #hero .hero-content {
+    opacity:1 !important;
+    visibility:visible !important;
+    pointer-events:auto !important;
 }
+body.opening-complete #hero .hero-family,
+body.opening-complete #hero .hero-title,
+body.opening-complete #hero .hero-description {
+    animation:ev4HeroIn 1.1s cubic-bezier(.22,.61,.36,1) both;
+}
+body.opening-complete #hero .hero-title { animation-delay:.18s; }
+body.opening-complete #hero .hero-description { animation-delay:.36s; }
+@keyframes ev4HeroIn { from{opacity:0;transform:translateY(30px);filter:blur(8px)} to{opacity:1;transform:none;filter:none} }
 
-@keyframes descriptionRise {
-    from { opacity: 0; transform: translateY(18px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Subtle life in every section: headings breathe and photos move like film */
-.section-title .divider {
-    transform-origin: center;
-    animation: dividerGlow 4.5s ease-in-out infinite;
-}
-
-@keyframes dividerGlow {
-    0%, 100% { opacity: .55; transform: scaleX(.82); }
-    50% { opacity: 1; transform: scaleX(1); }
-}
-
-.collage-frame,
-.gallery-item img,
-.invitation-card,
-.detail-card,
-.venue-card,
-.footer-card {
-    will-change: transform;
-}
-
-.collage-frame.reveal-visible {
-    animation: filmReveal 1.5s cubic-bezier(.16,.75,.2,1) both;
-}
-
-@keyframes filmReveal {
-    from { opacity: 0; transform: translateY(34px) scale(.975); filter: blur(4px); }
-    to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
-}
-
-.collage-frame img,
-.gallery-item img {
-    transform: scale(1.015);
-    transition: transform 1.6s cubic-bezier(.16,.75,.2,1), filter 1.2s ease;
-}
-
-.collage-frame.reveal-visible img,
-.gallery-item.reveal-visible img {
-    animation: kenBurns 9s ease-in-out infinite alternate;
-}
-
-@keyframes kenBurns {
-    from { transform: scale(1.015) translate3d(0,0,0); }
-    to { transform: scale(1.055) translate3d(-.5%, -.5%, 0); }
-}
-
-/* Timeline/detail cards get a tiny hover-like lift even on touch as they appear */
-.timeline-item.reveal-visible,
-.detail-card.reveal-visible,
-.venue-card.reveal-visible,
-.invitation-card.reveal-visible {
-    animation: cardLife 1.05s cubic-bezier(.16,.75,.2,1) both;
-}
-
-@keyframes cardLife {
-    0% { opacity: 0; transform: translateY(32px) scale(.97); }
-    72% { opacity: 1; transform: translateY(-3px) scale(1.005); }
-    100% { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-/* Keep the sparkle container above every envelope surface */
-#glitterContainer {
-    z-index: 60 !important;
-    transform: translateZ(0);
-}
-
-.glitter {
-    mix-blend-mode: screen;
-}
-
-/* Mobile: prioritize buttery transforms and visible magic */
-@media (max-width: 768px) {
-    .cinematic-light { opacity: .14; animation-duration: 12s; }
-    .ambient-mote { box-shadow: 0 0 6px rgba(240,217,158,.46); }
-    #weddingCard #waxButton { touch-action: manipulation; }
-    #weddingCard .envelope-flap { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
-    .hero-name { will-change: transform, opacity, filter; }
-    .hero-description { max-width: 92vw; margin-inline: auto; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    /* Keep essential invitation opening functional, but reduce ambient effects. */
-    .cinematic-light,
-    #ambientDust,
-    .section-title .divider,
-    .collage-frame.reveal-visible img,
-    .gallery-item.reveal-visible img { animation: none !important; }
-}
-
-/* Dynamic micro-motion values driven by the lightweight scroll RAF. */
-.section-title,
-.collage-frame,
-.invitation-card,
-.venue-card {
-    --micro-shift: 0px;
-}
-
-.section-title.reveal-visible,
-.collage-frame.reveal-visible,
-.invitation-card.reveal-visible,
-.venue-card.reveal-visible {
-    transform: translateY(var(--micro-shift));
-    transition-delay: var(--reveal-delay, 0ms);
-}
-
-
-/* ============================================================
-   FINAL MOBILE-FIRST OPENING FIX
-   The invitation MUST remain invisible until RA is pressed.
-   ============================================================ */
-
-#hero > .hero-content,
-#hero:not(.card-revealed) > .hero-content {
-    opacity: 0 !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-    transform: translate3d(0, 28px, 0) scale(.985) !important;
-    filter: blur(8px) !important;
-}
-
-#hero.card-revealed > .hero-content {
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
-    transform: translate3d(0, 0, 0) scale(1) !important;
-    filter: blur(0) !important;
-}
-
-/* Prevent the old hero animation rules from leaking through before opening. */
-#hero:not(.card-revealed) .hero-family,
-#hero:not(.card-revealed) .hero-title,
-#hero:not(.card-revealed) .hero-name,
-#hero:not(.card-revealed) .ampersand,
-#hero:not(.card-revealed) .hero-description {
-    opacity: 0 !important;
-    visibility: hidden !important;
-    animation: none !important;
-}
-
-/* Mobile browsers get a hardware-friendly 2D fold instead of depending on
-   rotateX/3D perspective. It still reads as the triangular envelope flap. */
-@media (max-width: 768px) {
-    #weddingCard {
-        height: 100dvh;
-        min-height: 100svh;
-        -webkit-transform: translateZ(0);
-        transform: translateZ(0);
-    }
-
-    #weddingCard .envelope-shell,
-    #weddingCard .envelope-flap,
-    #weddingCard #waxButton,
-    #glitterContainer {
-        -webkit-transform: translateZ(0);
-        transform: translateZ(0);
-    }
-
-    #weddingCard .envelope-flap {
-        height: 56%;
-        transform-origin: 50% 0%;
-        transform: translate3d(0,0,0) scaleY(1);
-        transition:
-            transform 1.25s cubic-bezier(.18,.72,.18,1),
-            opacity .45s ease;
-        -webkit-transition:
-            -webkit-transform 1.25s cubic-bezier(.18,.72,.18,1),
-            opacity .45s ease;
-        will-change: transform;
-        backface-visibility: visible;
-        -webkit-backface-visibility: visible;
-    }
-
-    #weddingCard.opening .envelope-flap {
-        transform: translate3d(0,-39vh,0) scaleY(.12);
-        filter: brightness(.88);
-        opacity: .98;
-    }
-
-    #weddingCard #waxButton {
-        top: 56%;
-        width: 132px;
-        height: 132px;
-        will-change: transform, opacity;
-    }
-
-    #weddingCard #waxButton .wax-seal {
-        width: 104px;
-        height: 104px;
-    }
-
-    #weddingCard #waxButton.opened {
-        transform: translate(-50%,-50%) scale(1.18) !important;
-        opacity: 0 !important;
-    }
-
-    #glitterContainer {
-        z-index: 999 !important;
-        overflow: visible;
-    }
-
-    .glitter {
-        width: 4px !important;
-        height: 4px !important;
-        box-shadow: 0 0 8px rgba(240,217,158,1), 0 0 20px rgba(240,217,158,.75);
-        will-change: transform, opacity;
-    }
-
-    .glitter.star {
-        font-size: 16px !important;
-        text-shadow: 0 0 12px rgba(240,217,158,1);
-    }
-}
-
-/* If the device advertises reduced motion, do NOT kill the essential
-   envelope reveal. Only ambient background motion is reduced. */
-@media (prefers-reduced-motion: reduce) {
-    #weddingCard .envelope-flap {
-        transition-duration: .9s !important;
-    }
-    #hero.card-revealed > .hero-content {
-        transition-duration: .9s !important;
-    }
-}
-
-/* ============================================================
-   V3 — CINEMATIC MOBILE ENVELOPE
-   Deliberately overrides earlier envelope rules.
-   ============================================================ */
-
-#loader { display:none !important; opacity:0 !important; pointer-events:none !important; }
-
-#weddingCard {
-  perspective: 1400px !important;
-  -webkit-perspective: 1400px !important;
-  transform-style: preserve-3d !important;
-  background: #641a27 !important;
-}
-
-#weddingCard .envelope-shell {
-  perspective: 1400px !important;
-  -webkit-perspective: 1400px !important;
-  transform-style: preserve-3d !important;
-  background:
-    radial-gradient(circle at 50% 34%, #8e2b39 0%, #6d1c2b 43%, #4b111d 100%) !important;
-}
-
-/* subtle moving silk/paper light */
-#weddingCard .envelope-shell::before {
-  opacity:.42 !important;
-  background:
-    repeating-linear-gradient(0deg, rgba(255,255,255,.022) 0 1px, transparent 1px 5px),
-    radial-gradient(circle at 28% 22%, rgba(240,217,158,.12), transparent 27%),
-    radial-gradient(circle at 72% 72%, rgba(240,217,158,.07), transparent 30%) !important;
-  animation: envelopeTextureDrift 8s ease-in-out infinite alternate !important;
-}
-@keyframes envelopeTextureDrift {
-  from { transform:scale(1) translate3d(0,0,0); }
-  to { transform:scale(1.06) translate3d(0,-1%,0); }
-}
-
-/* The inside of the envelope is a separate sheet, ready to rise. */
-.envelope-letter {
-  position:absolute;
-  z-index:3;
-  left:5%; right:5%;
-  top:17%;
-  height:70%;
-  border-radius:2px;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,241,229,.98)),
-    var(--ivory);
-  box-shadow: 0 -20px 55px rgba(30,3,10,.20), 0 20px 70px rgba(30,3,10,.18);
-  transform:translate3d(0,72%,0) scale(.985);
-  opacity:.98;
-  transition: transform 1.15s cubic-bezier(.16,.84,.22,1), opacity .5s ease;
-  will-change:transform;
-  pointer-events:none;
-}
-.envelope-letter::before {
-  content:"";
-  position:absolute; inset:16px;
-  border:1px solid rgba(148,115,53,.25);
-}
-.envelope-letter::after {
-  content:"✦";
-  position:absolute; left:50%; top:28%;
-  transform:translate(-50%,-50%);
-  color:rgba(148,115,53,.35);
-  font-size:22px;
-}
-
-/* Strong, visible 3D flap. */
-.envelope-flap {
-  z-index:12 !important;
-  height:57% !important;
-  transform-origin:50% 0% !important;
-  transform:rotateX(0deg) translateZ(2px) !important;
-  transform-style:preserve-3d !important;
-  -webkit-transform-style:preserve-3d !important;
-  backface-visibility:visible !important;
-  -webkit-backface-visibility:visible !important;
-  transition:transform 1.45s cubic-bezier(.72,0,.18,1), filter 1.45s ease !important;
-  will-change:transform;
-  box-shadow:0 30px 80px rgba(20,2,8,.34) !important;
-}
-.envelope-flap::before {
-  content:"" !important;
-  position:absolute !important;
-  inset:0 !important;
-  background:
-    linear-gradient(135deg, rgba(255,255,255,.08), transparent 36%),
-    linear-gradient(225deg, rgba(255,255,255,.035), transparent 40%),
-    repeating-linear-gradient(0deg, rgba(255,255,255,.02) 0 1px, transparent 1px 5px) !important;
-}
-.envelope-flap::after {
-  content:"" !important;
-  position:absolute !important;
-  left:50% !important; top:14% !important;
-  width:min(50vw,520px) !important; height:min(50vw,520px) !important;
-  transform:translateX(-50%) !important;
-  border:1px solid rgba(240,217,158,.16) !important;
-  border-radius:50% !important;
-}
-
-/* Rebuild the pocket with a believable V-fold. */
-.envelope-pocket {
-  z-index:7 !important;
-  background:
-    linear-gradient(135deg, transparent 49.35%, rgba(230,207,154,.78) 49.65%, transparent 49.95%),
-    linear-gradient(225deg, transparent 49.35%, rgba(230,207,154,.78) 49.65%, transparent 49.95%),
-    linear-gradient(180deg, rgba(255,255,255,.035), rgba(36,3,10,.16)) !important;
-  transition:transform 1.15s cubic-bezier(.2,.8,.2,1), opacity .8s ease !important;
-}
-
-/* Seal is ALWAYS geometrically centred. */
-#weddingCard #waxButton {
-  left:50% !important;
-  top:58% !important;
-  transform:translate3d(-50%,-50%,0) !important;
-  width:150px !important;
-  height:150px !important;
-  z-index:30 !important;
-}
-#weddingCard #waxButton .wax-glow {
-  width:210px !important; height:210px !important;
-  background:radial-gradient(circle, rgba(240,217,158,.30), rgba(240,217,158,0) 68%) !important;
-  filter:blur(22px) !important;
-}
-#weddingCard #waxButton .wax-seal {
-  width:116px !important; height:116px !important;
-  border:0 !important;
-  background:
-    radial-gradient(circle at 32% 24%, #d45a64 0%, #a62f3e 30%, #7d1f2e 61%, #4e111c 100%) !important;
-  box-shadow:
-    inset 0 3px 7px rgba(255,255,255,.20),
-    inset 0 -8px 12px rgba(40,2,10,.38),
-    0 7px 0 #42101a,
-    0 17px 30px rgba(20,2,8,.42),
-    0 0 0 4px rgba(216,181,109,.88),
-    0 0 0 6px rgba(100,26,39,.95),
-    0 0 0 7px rgba(216,181,109,.42) !important;
-  animation:waxAlive 2.8s ease-in-out infinite !important;
-}
-@keyframes waxAlive {
-  0%,100% { transform:translateY(0) rotate(-.6deg) scale(.985); }
-  50% { transform:translateY(-3px) rotate(.6deg) scale(1.025); }
-}
-#weddingCard #waxButton .wax-seal::before {
-  inset:11px !important;
-  border:1px solid rgba(240,217,158,.65) !important;
-}
-#weddingCard #waxButton .wax-seal::after {
-  content:"" !important;
-  inset:18px !important;
-  border:1px solid rgba(255,255,255,.09) !important;
-}
-.wax-monogram {
-  font-family:var(--serif) !important;
-  font-size:40px !important;
-  letter-spacing:-3px !important;
-  color:#fff4dd !important;
-  text-shadow:0 2px 0 rgba(48,5,12,.45), 0 4px 8px rgba(48,5,12,.25) !important;
-}
-
-/* Press: squash seal before release. */
-#weddingCard #waxButton.pressed {
-  transform:translate3d(-50%,-50%,0) scale(.86) !important;
-  transition:transform .16s cubic-bezier(.2,.9,.2,1) !important;
-}
-#weddingCard #waxButton.pressed .wax-seal {
-  animation:none !important;
-  transform:scale(.94) !important;
-  box-shadow:
-    inset 0 6px 10px rgba(35,1,8,.32),
-    inset 0 -2px 4px rgba(255,255,255,.16),
-    0 3px 0 #42101a,
-    0 8px 18px rgba(20,2,8,.34),
-    0 0 0 4px rgba(216,181,109,.88),
-    0 0 0 6px rgba(100,26,39,.95) !important;
-}
-
-/* Release: flap swings up; letter rises into the opening. */
-#weddingCard.opening .envelope-flap {
-  transform:rotateX(-164deg) translateZ(3px) !important;
-  filter:brightness(.72) !important;
-}
-#weddingCard.opening .envelope-letter {
-  transform:translate3d(0,0,0) scale(1) !important;
-}
-#weddingCard.opening .envelope-pocket {
-  transform:translateY(10%) !important;
-}
-
-/* A physical burst right at the seal. */
-#weddingCard #waxButton.opened::before,
-#weddingCard #waxButton.opened::after {
-  z-index:80 !important;
-  border:2px solid rgba(240,217,158,.92) !important;
-  box-shadow:0 0 22px rgba(240,217,158,.65) !important;
-}
-
-/* Make glitter a proper foreground event, not a few dots. */
-#glitterContainer {
-  z-index:100 !important;
-  overflow:visible !important;
-  perspective:800px;
-}
-.glitter {
-  top:58% !important;
-  width:5px !important; height:5px !important;
-  background:#f5dfa9 !important;
-  box-shadow:0 0 5px #fff3c9,0 0 14px rgba(240,217,158,.9),0 0 28px rgba(240,217,158,.45) !important;
-}
-.glitter.star { font-size:18px !important; text-shadow:0 0 12px rgba(255,239,186,.95) !important; }
-
-/* Add a radial flash behind the glitter during opening. */
-#weddingCard.opening::after {
-  content:"";
-  position:absolute;
-  z-index:90;
-  left:50%; top:58%;
-  width:18vmin; height:18vmin;
-  border-radius:50%;
-  transform:translate(-50%,-50%) scale(.1);
-  background:radial-gradient(circle, rgba(255,249,222,.98) 0%, rgba(240,217,158,.55) 16%, rgba(240,217,158,.12) 45%, transparent 72%);
-  animation:revealFlash .95s ease-out .38s forwards;
-  pointer-events:none;
-}
-@keyframes revealFlash {
-  0% { opacity:0; transform:translate(-50%,-50%) scale(.1); }
-  18% { opacity:1; }
-  100% { opacity:0; transform:translate(-50%,-50%) scale(11); }
-}
-
-/* Nothing underneath is allowed to be visible before the actual reveal. */
-#hero > .hero-content,
-#hero > .hero-content * {
-  visibility:hidden;
-}
-#hero.card-revealed > .hero-content,
-#hero.card-revealed > .hero-content * {
-  visibility:visible;
-}
-#hero:not(.card-revealed) > .hero-content { opacity:0 !important; }
-
-/* Hero comes in AFTER envelope completion, with a deliberate camera push. */
-#hero.card-revealed > .hero-content {
-  animation:heroCinematicArrival 1.55s cubic-bezier(.12,.78,.18,1) both !important;
-}
-@keyframes heroCinematicArrival {
-  0% { opacity:0; transform:translateY(55px) scale(1.08); filter:blur(12px); }
-  55% { opacity:1; transform:translateY(-6px) scale(1.012); filter:blur(1px); }
-  100% { opacity:1; transform:translateY(0) scale(1); filter:blur(0); }
-}
-
-/* Mobile: do NOT use fragile rotateX if the browser doesn't render 3D well.
-   We still create a convincing flap lift using clip-path + translate + scale. */
 @media (max-width:768px) {
-  #weddingCard .envelope-flap {
-    height:56% !important;
-    transform:translate3d(0,0,0) scaleY(1) !important;
-    transform-origin:50% 0 !important;
-    transition:transform 1.35s cubic-bezier(.7,0,.18,1), filter 1.35s ease !important;
-  }
-  #weddingCard.opening .envelope-flap {
-    transform:translate3d(0,-57%,0) scaleY(.16) !important;
-    filter:brightness(.70) !important;
-  }
-  #weddingCard .envelope-letter {
-    left:4%; right:4%; top:16%; height:72%;
-    transform:translate3d(0,74%,0) scale(.97) !important;
-  }
-  #weddingCard.opening .envelope-letter {
-    transform:translate3d(0,0,0) scale(1) !important;
-  }
-  #weddingCard #waxButton { top:58% !important; left:50% !important; width:154px !important; height:154px !important; }
-  #weddingCard #waxButton .wax-seal { width:112px !important; height:112px !important; }
-  .wax-monogram { font-size:38px !important; }
-  #weddingCard.opening #waxButton { transform:translate3d(-50%,-50%,0) scale(1.18) !important; }
+    .ev4-top { box-shadow:0 32px 75px rgba(15,1,6,.42); }
+    .ev4-letter { box-shadow:0 28px 65px rgba(20,2,8,.38); }
+    #envelopeV4 { perspective:1100px; perspective-origin:50% 45%; }
+    .ev4-border { inset:12px; }
+    .ev4-border::after { inset:8px; }
+    .ev4-letter { left:6%;right:6%;top:8%;height:86%; }
+    .ev4-top { height:60%; transition-duration:1.1s; }
+    .ev4-left,.ev4-right { width:78%; }
+    .ev4-seal-button { top:57%; width:126px; }
+    #envelopeV4.is-opening .ev4-top { transform:rotateX(164deg) translateZ(4px); }
+    #envelopeV4.is-opening .ev4-left { transform:translateX(-74%) rotateY(-8deg); }
+    #envelopeV4.is-opening .ev4-right { transform:translateX(74%) rotateY(8deg); }
 }
 
-@media (max-width:480px) {
-  #weddingCard #waxButton { top:58% !important; }
-  #weddingCard .envelope-flap { height:57% !important; }
-  #weddingCard.opening .envelope-flap { transform:translate3d(0,-62%,0) scaleY(.12) !important; }
-  .glitter { width:5px !important; height:5px !important; }
-  .glitter.star { font-size:20px !important; }
-}
-
-@media (prefers-reduced-motion:reduce) {
-  /* Keep the envelope reveal animated: it is the core interaction. */
-  #weddingCard .envelope-flap,
-  #weddingCard .envelope-letter,
-  #weddingCard #waxButton,
-  #weddingCard #waxButton .wax-seal { animation:none !important; transition:transform .8s ease, opacity .5s ease !important; }
+@media (prefers-reduced-motion: reduce) {
+    #envelopeV4 .ev4-top,
+    #envelopeV4 .ev4-letter,
+    #envelopeV4 .ev4-left,
+    #envelopeV4 .ev4-right,
+    #envelopeV4 .ev4-bottom { transition-duration:.8s !important; }
 }
