@@ -45,6 +45,8 @@ document.addEventListener("DOMContentLoaded", function () {
             ".invitation-card, " +
             ".detail-card, " +
             ".timeline-item, " +
+            ".event-card, " +
+            ".food-card, " +
             ".venue-card, " +
             ".gallery-item, " +
             ".blessing-text, " +
@@ -97,7 +99,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         bgMusic.src = "Ranjha.mp3";
-        bgMusic.loop = true;
+        bgMusic.loop = false;
         bgMusic.preload = "auto";
         bgMusic.volume = 1.0;
 
@@ -234,21 +236,21 @@ document.addEventListener("DOMContentLoaded", function () {
             if (hero) {
                 hero.classList.add("card-revealed");
             }
-        }, 1180);
+        }, 820);
 
         // 5. Remove the envelope only after the physical opening has finished.
         setTimeout(function () {
             if (weddingCard) {
                 weddingCard.classList.add("opened");
             }
-        }, 1900);
+        }, 1450);
 
         // 6. Existing iPhone/Safari-safe auto-scroll continues after reveal.
         setTimeout(function () {
             autoScrolling = true;
             cancelAnimationFrame(animationFrame);
             animationFrame = requestAnimationFrame(autoScroll);
-        }, 2300);
+        }, 1700);
     }
 
 
@@ -292,7 +294,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            window.scrollTo(0, currentPosition + 1);
+            const audio = document.getElementById("bgMusic");
+            const duration = audio && Number.isFinite(audio.duration) && audio.duration > 30 ? audio.duration : 212;
+            const remaining = Math.max(1, maxPosition - currentPosition);
+            const speedPerFrame = Math.max(0.55, remaining / Math.max(1, duration * 60));
+            window.scrollTo(0, Math.min(maxPosition, currentPosition + speedPerFrame));
         }
 
         animationFrame = requestAnimationFrame(autoScroll);
