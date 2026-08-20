@@ -27,10 +27,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         setTimeout(function () {
             loader.style.display = "none";
-        }, 800);
+        }, 420);
     }
 
-    setTimeout(hideLoader, 1800);
+    setTimeout(hideLoader, 900);
 
 
     // ==========================================
@@ -85,6 +85,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     setupRevealAnimations();
+
+    // Stop the automatic story scroll exactly when the song finishes.
+    if (bgMusic) {
+        bgMusic.addEventListener("ended", function () {
+            autoScrolling = false;
+            if (animationFrame) cancelAnimationFrame(animationFrame);
+        });
+    }
 
 
     // ==========================================
@@ -224,33 +232,33 @@ document.addEventListener("DOMContentLoaded", function () {
             if (weddingCard) {
                 weddingCard.classList.add("opening");
             }
-        }, 120);
+        }, 80);
 
         // 3. Glitter erupts as the flap clears the seal.
         setTimeout(function () {
             createGlitter();
-        }, 520);
+        }, 320);
 
         // 4. Let the invitation emerge underneath the opening envelope.
         setTimeout(function () {
             if (hero) {
                 hero.classList.add("card-revealed");
             }
-        }, 820);
+        }, 560);
 
         // 5. Remove the envelope only after the physical opening has finished.
         setTimeout(function () {
             if (weddingCard) {
                 weddingCard.classList.add("opened");
             }
-        }, 1450);
+        }, 950);
 
         // 6. Existing iPhone/Safari-safe auto-scroll continues after reveal.
         setTimeout(function () {
             autoScrolling = true;
             cancelAnimationFrame(animationFrame);
             animationFrame = requestAnimationFrame(autoScroll);
-        }, 1700);
+        }, 1100);
     }
 
 
