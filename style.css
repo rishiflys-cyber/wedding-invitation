@@ -3184,3 +3184,110 @@ section {
     }
 }
 \n\n/* ============================================================\n   27 — MOBILE STORYBOOK / CHARACTER MOTION\n   ============================================================ */\n#preWedding { scroll-margin-top: 20px; }\n.event-card--haldi .event-art-frame { animation: haldiFloat 5.2s ease-in-out infinite; }\n.event-card--mehendi .event-art-frame { animation: mehendiFloat 5.8s ease-in-out infinite; }\n.event-card--sangeet .event-art-frame { animation: sangeetDance 3.8s ease-in-out infinite; }\n@keyframes haldiFloat { 0%,100% { transform: scale(1.04) translate3d(0,0,0); } 50% { transform: scale(1.055) translate3d(0,-6px,0); } }\n@keyframes mehendiFloat { 0%,100% { transform: scale(1.04) translate3d(0,0,0) rotate(0deg); } 50% { transform: scale(1.05) translate3d(0,-5px,0) rotate(.35deg); } }\n@keyframes sangeetDance { 0%,100% { transform: scale(1.04) translate3d(0,0,0) rotate(0deg); } 25% { transform: scale(1.055) translate3d(-3px,-5px,0) rotate(-.35deg); } 75% { transform: scale(1.055) translate3d(3px,-7px,0) rotate(.35deg); } }\n@media (max-width: 768px) {\n  body { overflow-x: hidden; }\n  .event-stage { gap: 14px; padding-inline: 4px; }\n  .event-art { height: min(72vw, 330px); }\n  .event-copy { padding-inline: 20px; }\n  .event-copy h3 { font-size: 38px; }\n  .food-grid { gap: 14px; }\n  .story-art-card { margin-inline: 6px; }\n}\n
+/* ============================================================
+   CLEAN MOBILE INVITATION PASS — INFORMATION FIRST
+   ============================================================ */
+.clean-events { padding: 100px 0 110px; background: linear-gradient(180deg,#fbf5e9,#f4ead6); }
+.section-lead { margin-top: 16px; color: var(--brown-soft); font-family: var(--serif); font-size: 21px; }
+.clean-event-stage { align-items: stretch; margin-top: 46px; }
+.clean-event-card { overflow: hidden; border: 1px solid rgba(200,164,93,.35); border-radius: 22px; background: #fffaf0; box-shadow: 0 18px 45px rgba(71,23,31,.10); }
+.clean-event-image { height: 330px; overflow: hidden; background: #eee0c6; }
+.clean-event-image img { width:100%; height:100%; object-fit:cover; object-position:center; transform:scale(1.015); transition:transform 1.2s cubic-bezier(.2,.7,.2,1); }
+.clean-event-card:hover .clean-event-image img { transform:scale(1.045) translateY(-4px); }
+.clean-event-copy { padding: 22px 24px 25px; text-align:center; }
+.clean-event-copy > span { color:var(--gold-dark); font-family:var(--display); font-size:12px; letter-spacing:2px; }
+.clean-event-copy h3 { margin-top:7px; color:var(--burgundy); font-family:var(--serif); font-size:30px; font-weight:600; }
+.clean-event-copy p { margin-top:5px; color:var(--brown-soft); font-family:var(--serif); font-size:18px; }
+.clean-event-copy strong { display:block; margin-top:13px; color:var(--burgundy); font-size:11px; letter-spacing:1px; font-weight:600; text-transform:uppercase; }
+.haldi-card { --card-accent:#c99425; } .mehendi-card { --card-accent:#3c7153; } .sangeet-card { --card-accent:#6a3c78; }
+.clean-event-card { border-top:4px solid var(--card-accent); }
+
+.clean-wedding { padding: 95px 0; background: var(--cream); }
+.wedding-grid { display:grid; grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr); gap:50px; align-items:center; max-width:1120px; margin:auto; }
+.wedding-story-art { border-radius:24px; overflow:hidden; border:1px solid rgba(200,164,93,.35); box-shadow:0 25px 65px rgba(71,23,31,.14); background:#fff; }
+.wedding-story-art img { width:100%; height:auto; display:block; }
+.wedding-copy { padding: 20px 10px; }
+.wedding-copy h2 { margin-top:6px; color:var(--burgundy); font-family:var(--display); font-size:clamp(36px,5vw,54px); font-weight:500; }
+.wedding-date-main { margin-top:24px; color:var(--burgundy); font-family:var(--serif); font-size:34px; font-weight:600; }
+.wedding-note { color:var(--brown-soft); font-family:var(--serif); font-size:18px; }
+.time-block { margin:24px 0; padding:18px 20px; border-left:3px solid var(--gold); background:rgba(200,164,93,.09); }
+.time-block strong { display:block; color:var(--burgundy); font-family:var(--display); font-size:30px; }
+.time-block span { display:block; margin-top:4px; color:var(--brown-soft); font-size:12px; letter-spacing:.5px; }
+.wedding-blurb { margin-top:24px; color:var(--brown); font-family:var(--serif); font-size:22px; }
+
+.clean-dinner { padding: 85px 0; background:linear-gradient(135deg,var(--burgundy),var(--burgundy-deep)); color:var(--cream); }
+.dinner-card { display:grid; grid-template-columns:1fr 1.2fr; gap:35px; align-items:center; max-width:1120px; margin:auto; padding:44px; border:1px solid rgba(230,207,154,.3); border-radius:24px; background:rgba(255,255,255,.055); box-shadow:0 30px 80px rgba(20,2,8,.22); }
+.dinner-card h2 { margin-top:5px; color:var(--cream); font-family:var(--display); font-size:clamp(34px,5vw,52px); font-weight:500; }
+.dinner-card p { margin-top:12px; color:rgba(255,248,236,.8); font-family:var(--serif); font-size:20px; }
+.dinner-facts { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+.dinner-facts div { padding:20px 14px; text-align:center; border:1px solid rgba(230,207,154,.25); border-radius:15px; background:rgba(255,255,255,.06); }
+.dinner-facts small { display:block; color:var(--gold-light); font-size:9px; letter-spacing:2px; }
+.dinner-facts strong { display:block; margin-top:8px; color:var(--cream); font-family:var(--serif); font-size:20px; }
+
+.clean-food { padding:90px 0; }
+.clean-moments { padding:95px 0; background:var(--cream); }
+.moments-frame { max-width:1050px; margin:42px auto 0; border:1px solid rgba(200,164,93,.3); border-radius:24px; overflow:hidden; box-shadow:0 25px 65px rgba(71,23,31,.12); }
+.moments-frame img { width:100%; height:auto; }
+.clean-venue { padding:90px 0; background:var(--ivory-deep); }
+.clean-rsvp { padding:90px 0; background:linear-gradient(180deg,var(--cream),var(--ivory)); }
+.rsvp-card { max-width:700px; margin:auto; text-align:center; padding:50px 30px; border:1px solid rgba(200,164,93,.3); border-radius:24px; background:#fffaf0; box-shadow:0 25px 65px rgba(71,23,31,.10); }
+.rsvp-card h2 { margin-top:7px; color:var(--burgundy); font-family:var(--display); font-size:clamp(35px,6vw,52px); font-weight:500; }
+.rsvp-card p { margin:12px auto 25px; max-width:520px; color:var(--brown-soft); font-family:var(--serif); font-size:20px; }
+.rsvp-button { display:inline-block; padding:12px 32px; border-radius:999px; background:var(--burgundy); color:var(--cream); font-family:var(--display); letter-spacing:1px; box-shadow:0 12px 28px rgba(100,26,39,.2); }
+.rsvp-names { margin-top:20px; color:var(--gold-dark); font-family:var(--serif); font-size:22px; }
+
+@media (max-width:768px) {
+  .clean-events,.clean-wedding,.clean-dinner,.clean-food,.clean-moments,.clean-venue,.clean-rsvp { padding:70px 0; }
+  .clean-event-stage { gap:16px; }
+  .clean-event-card { border-radius:18px; }
+  .clean-event-image { height:300px; }
+  .clean-event-copy { padding:18px 18px 22px; }
+  .clean-event-copy h3 { font-size:28px; }
+  .clean-event-copy p { font-size:17px; }
+  .wedding-grid,.dinner-card { grid-template-columns:1fr; gap:25px; }
+  .wedding-copy { padding:0 5px; text-align:center; }
+  .wedding-copy .divider { margin-left:auto; margin-right:auto; }
+  .dinner-card { padding:28px 20px; }
+  .dinner-facts { grid-template-columns:1fr; }
+  .dinner-facts div { padding:13px; }
+  .dinner-facts strong { font-size:18px; }
+  .moments-frame { margin-top:28px; border-radius:16px; }
+}
+.clean-event-card.reveal-element { opacity:1; transform:none; }
+
+/* FINAL EVENT ART CROP FIX — use complete illustrated event cards without cropping heads */
+.clean-event-image {
+  height: auto !important;
+  overflow: visible !important;
+  background: transparent !important;
+}
+.clean-event-image img {
+  display: block;
+  width: 100% !important;
+  height: auto !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  transform: none !important;
+}
+.clean-event-card:hover .clean-event-image img {
+  transform: none !important;
+}
+.clean-event-copy { display: none !important; }
+.clean-event-card { border-top: 0 !important; }
+@media (max-width: 768px) {
+  .clean-event-image { height: auto !important; }
+  .clean-event-image img { width: 100% !important; height: auto !important; }
+}
+
+
+/* FINAL EVENT CARD PRESENTATION — full artwork, no crop, no zoom */
+.clean-event-stage { align-items: start; }
+.clean-event-card { background: #fffaf0; overflow: hidden; }
+.clean-event-image { height: auto !important; overflow: hidden !important; background: #fffaf0 !important; }
+.clean-event-image img { width: 100% !important; height: auto !important; display: block !important; object-fit: contain !important; object-position: center !important; transform: none !important; }
+.clean-event-copy { display: none !important; }
+@media (max-width: 768px) {
+  .clean-event-stage { grid-template-columns: 1fr; }
+  .clean-event-card { max-width: 420px; width: calc(100% - 24px); margin: 0 auto; }
+  .clean-event-image img { width: 100% !important; height: auto !important; }
+}
