@@ -2811,3 +2811,376 @@ section {
 .story-art-pending { opacity: 0; transform: translateY(34px) scale(.985); }
 .story-art-visible { opacity: 1; transform: translateY(0) scale(1); }
 @media (max-width:799px) { .story-art-pending { transform: translateY(28px) scale(.99); } }
+
+
+
+
+/* ============================================================
+   24 — PRE-WEDDING CELEBRATIONS / EDITORIAL EVENT CARDS
+   ============================================================ */
+
+#preWedding {
+    padding: 145px 0 155px;
+    background:
+        radial-gradient(circle at 12% 22%, rgba(66,124,91,.12), transparent 25%),
+        radial-gradient(circle at 88% 78%, rgba(92,44,104,.11), transparent 27%),
+        linear-gradient(180deg, var(--ivory), var(--cream));
+}
+
+.pre-wedding-intro,
+.food-intro {
+    max-width: 650px;
+    margin: 25px auto 0;
+    color: var(--brown-soft);
+    font-family: var(--serif);
+    font-size: 20px;
+    line-height: 1.65;
+}
+
+.event-stage {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    max-width: 1160px;
+    margin: 0 auto;
+}
+
+.event-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 28px;
+    min-height: 620px;
+    border: 1px solid rgba(200,164,93,.28);
+    box-shadow: 0 28px 80px rgba(71,23,31,.13);
+    background: #fff;
+    isolation: isolate;
+}
+
+.event-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 35%, rgba(15,8,12,.82) 100%);
+    z-index: 2;
+    pointer-events: none;
+}
+
+.event-card--haldi {
+    --event-main: #c9911e;
+    --event-soft: #fff0ad;
+    --event-accent: #d98b22;
+    background: linear-gradient(180deg, #fff1bb, #f1c65d);
+}
+
+.event-card--mehendi {
+    --event-main: #2f6b4f;
+    --event-soft: #d7e7c7;
+    --event-accent: #b99548;
+    background: linear-gradient(180deg, #f5f0d8, #dce9d0);
+}
+
+.event-card--sangeet {
+    --event-main: #3e315f;
+    --event-soft: #e1d4ed;
+    --event-accent: #d49b75;
+    background: linear-gradient(180deg, #eee8f5, #ddd0e7);
+}
+
+.event-art {
+    position: relative;
+    height: 390px;
+    overflow: hidden;
+    background: var(--event-main);
+}
+
+.event-art::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 50% 24%, rgba(255,255,255,.18), transparent 26%),
+        linear-gradient(180deg, transparent 45%, rgba(20,5,15,.42));
+    pointer-events: none;
+    z-index: 1;
+}
+
+.event-art-frame {
+    position: absolute;
+    inset: 0;
+    transform: scale(1.035);
+    animation: characterFloat 6s ease-in-out infinite;
+    will-change: transform;
+}
+
+.event-art-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    filter: saturate(1.06) contrast(1.02);
+}
+
+.event-card--mehendi .event-art-frame img {
+    object-position: 50% 48%;
+}
+
+.event-card--sangeet .event-art-frame img {
+    object-position: 50% 48%;
+}
+
+.event-copy {
+    position: relative;
+    z-index: 3;
+    margin-top: -48px;
+    padding: 28px 34px 36px;
+    color: var(--cream);
+}
+
+.event-kicker {
+    display: inline-block;
+    color: var(--event-soft);
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.event-copy h3 {
+    margin-top: 8px;
+    color: #fff9ef;
+    font-family: var(--display);
+    font-size: clamp(38px, 5vw, 54px);
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.event-copy > p:not(.event-time) {
+    max-width: 490px;
+    margin-top: 9px;
+    color: rgba(255,248,236,.88);
+    font-family: var(--serif);
+    font-size: 18px;
+    line-height: 1.65;
+}
+
+.event-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.event-details span {
+    padding: 7px 11px;
+    border: 1px solid rgba(255,255,255,.22);
+    border-radius: 999px;
+    color: rgba(255,248,236,.9);
+    background: rgba(255,255,255,.08);
+    font-size: 9px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+}
+
+.event-spark {
+    position: absolute;
+    z-index: 4;
+    color: var(--event-soft);
+    text-shadow: 0 0 16px rgba(255,255,255,.65);
+    animation: eventSpark 3.2s ease-in-out infinite;
+}
+
+.spark-one {
+    top: 72px;
+    left: 12%;
+    font-size: 16px;
+}
+
+.spark-two {
+    top: 125px;
+    right: 14%;
+    font-size: 11px;
+    animation-delay: 1.2s;
+}
+
+/* ============================================================
+   25 — FOOD & FESTIVITIES
+   ============================================================ */
+
+#foodFestivities {
+    padding: 145px 0;
+    background:
+        radial-gradient(circle at 50% 0%, rgba(200,164,93,.16), transparent 28%),
+        linear-gradient(180deg, var(--burgundy), var(--burgundy-deep));
+    color: var(--cream);
+}
+
+#foodFestivities .section-title .subtitle {
+    color: var(--gold-light);
+}
+
+#foodFestivities .section-title h2 {
+    color: var(--cream);
+}
+
+#foodFestivities .food-intro {
+    color: rgba(255,248,236,.78);
+}
+
+.food-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.food-card {
+    padding: 38px 30px 34px;
+    min-height: 280px;
+    text-align: center;
+    border: 1px solid rgba(230,207,154,.2);
+    border-radius: 22px;
+    background: linear-gradient(145deg, rgba(255,255,255,.09), rgba(255,255,255,.025));
+    box-shadow: 0 20px 55px rgba(20,2,8,.18);
+}
+
+.food-icon {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 20px;
+    border: 1px solid rgba(230,207,154,.45);
+    border-radius: 50%;
+    color: var(--gold-light);
+    font-size: 18px;
+}
+
+.food-card h3 {
+    color: var(--gold-light);
+    font-family: var(--display);
+    font-size: 25px;
+    font-weight: 500;
+}
+
+.food-card p {
+    margin-top: 10px;
+    color: rgba(255,248,236,.76);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.6;
+}
+
+.food-line {
+    display: block;
+    margin-top: 20px;
+    color: rgba(255,248,236,.58);
+    font-size: 9px;
+    letter-spacing: 1.2px;
+    line-height: 1.8;
+    text-transform: uppercase;
+}
+
+/* ============================================================
+   26 — REVEALS: CLEAN, VISIBLE, MOBILE-FIRST
+   ============================================================ */
+
+.reveal-element {
+    opacity: 0;
+    transform: translateY(34px) scale(.988);
+    filter: none;
+    transition:
+        opacity .42s cubic-bezier(.22,.61,.36,1),
+        transform .46s cubic-bezier(.22,.61,.36,1);
+    will-change: opacity, transform;
+}
+
+.reveal-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+@keyframes characterFloat {
+    0%, 100% { transform: scale(1.035) translate3d(0,0,0); }
+    50% { transform: scale(1.055) translate3d(0,-7px,0); }
+}
+
+@keyframes eventSpark {
+    0%, 100% { opacity: .28; transform: translateY(0) scale(.8) rotate(0deg); }
+    50% { opacity: 1; transform: translateY(-8px) scale(1.15) rotate(18deg); }
+}
+
+/* Make the envelope glitter unmistakable on small screens. */
+#glitterContainer { mix-blend-mode: screen; }
+
+.glitter {
+    min-width: 4px;
+    min-height: 4px;
+    box-shadow:
+        0 0 8px rgba(240,217,158,1),
+        0 0 22px rgba(240,217,158,.72),
+        0 0 42px rgba(240,217,158,.28);
+}
+
+.glitter.star {
+    min-width: 0;
+    min-height: 0;
+    font-size: max(var(--star-size, 14px), 13px);
+}
+
+@media (max-width: 768px) {
+    #preWedding,
+    #foodFestivities {
+        padding: 105px 0;
+    }
+
+    .event-stage,
+    .food-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .event-card {
+        min-height: 0;
+        border-radius: 22px;
+    }
+
+    .event-art {
+        height: 300px;
+    }
+
+    .event-copy {
+        margin-top: -34px;
+        padding: 24px 23px 29px;
+    }
+
+    .event-copy h3 {
+        font-size: 40px;
+    }
+
+    .event-copy > p:not(.event-time) {
+        font-size: 17px;
+    }
+
+    .event-details span {
+        font-size: 8px;
+    }
+
+    .pre-wedding-intro,
+    .food-intro {
+        font-size: 18px;
+    }
+
+    .food-card {
+        min-height: 0;
+        padding: 30px 24px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .event-art-frame,
+    .event-spark {
+        animation: none !important;
+    }
+}
+\n\n/* ============================================================\n   27 — MOBILE STORYBOOK / CHARACTER MOTION\n   ============================================================ */\n#preWedding { scroll-margin-top: 20px; }\n.event-card--haldi .event-art-frame { animation: haldiFloat 5.2s ease-in-out infinite; }\n.event-card--mehendi .event-art-frame { animation: mehendiFloat 5.8s ease-in-out infinite; }\n.event-card--sangeet .event-art-frame { animation: sangeetDance 3.8s ease-in-out infinite; }\n@keyframes haldiFloat { 0%,100% { transform: scale(1.04) translate3d(0,0,0); } 50% { transform: scale(1.055) translate3d(0,-6px,0); } }\n@keyframes mehendiFloat { 0%,100% { transform: scale(1.04) translate3d(0,0,0) rotate(0deg); } 50% { transform: scale(1.05) translate3d(0,-5px,0) rotate(.35deg); } }\n@keyframes sangeetDance { 0%,100% { transform: scale(1.04) translate3d(0,0,0) rotate(0deg); } 25% { transform: scale(1.055) translate3d(-3px,-5px,0) rotate(-.35deg); } 75% { transform: scale(1.055) translate3d(3px,-7px,0) rotate(.35deg); } }\n@media (max-width: 768px) {\n  body { overflow-x: hidden; }\n  .event-stage { gap: 14px; padding-inline: 4px; }\n  .event-art { height: min(72vw, 330px); }\n  .event-copy { padding-inline: 20px; }\n  .event-copy h3 { font-size: 38px; }\n  .food-grid { gap: 14px; }\n  .story-art-card { margin-inline: 6px; }\n}\n
