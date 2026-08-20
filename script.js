@@ -1,207 +1,431 @@
 document.addEventListener("DOMContentLoaded", function () {
+
+    const loader = document.getElementById("loader");
+    const waxButton = document.getElementById("waxButton");
     const bgMusic = document.getElementById("bgMusic");
+    const weddingCard = document.getElementById("weddingCard");
+    const glitterContainer = document.getElementById("glitterContainer");
     const hero = document.getElementById("hero");
+
     let started = false;
     let autoScrolling = false;
-    let animationFrame = null;
     let userInteracting = false;
+    let animationFrame = null;
     let resumeTimer = null;
 
-    document.body.classList.remove("opening-complete");
-    document.documentElement.style.scrollBehavior = "auto";
 
-    const oldCard = document.getElementById("weddingCard");
-    if (oldCard) oldCard.style.display = "none";
-    const oldLoader = document.getElementById("loader");
-    if (oldLoader) oldLoader.style.display = "none";
+    // ==========================================
+    // HIDE LOADER
+    // ==========================================
 
-    const overlay = document.createElement("div");
-    overlay.id = "envelopeV4";
-    overlay.innerHTML = `
-      <div class="ev4-stage">
-        <div class="ev4-paper-grain"></div>
-        <div class="ev4-border"></div>
-        <div class="ev4-envelope">
-          <div class="ev4-letter" aria-hidden="true">
-            <div class="ev4-letter-content">
-              <div class="names">Rishabh</div>
-              <div class="and">&amp;</div>
-              <div class="names">Ananya</div>
-              <div class="heart-line"><span>✦</span></div>
-            </div>
-          </div>
-          <div class="ev4-left" aria-hidden="true"></div>
-          <div class="ev4-right" aria-hidden="true"></div>
-          <div class="ev4-bottom" aria-hidden="true"></div>
-          <div class="ev4-top" aria-hidden="true"></div>
-          <span class="ev4-crease one" aria-hidden="true"></span>
-          <span class="ev4-crease two" aria-hidden="true"></span>
-          <span class="ev4-crease three" aria-hidden="true"></span>
-        </div>
-        <div class="ev4-gold-haze" aria-hidden="true"></div>
-        <div class="ev4-flash" aria-hidden="true"></div>
-        <canvas class="ev4-canvas" aria-hidden="true"></canvas>
-        <button class="ev4-seal-button" type="button" aria-label="Open invitation">
-          <span class="ev4-seal-shadow"></span>
-          <span class="ev4-wax"><span class="ev4-ra">RA</span></span>
-        </button>
-      </div>`;
-    document.body.appendChild(overlay);
+    function hideLoader() {
 
-    const seal = overlay.querySelector(".ev4-seal-button");
-    const canvas = overlay.querySelector(".ev4-canvas");
-    const ctx = canvas.getContext("2d", { alpha: true });
-    let particles = [];
-    let canvasFrame = 0;
+        if (!loader) return;
 
-    function resizeCanvas() {
-        const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        const w = window.innerWidth;
-        const h = window.innerHeight;
-        canvas.width = Math.floor(w * dpr);
-        canvas.height = Math.floor(h * dpr);
-        canvas.style.width = w + "px";
-        canvas.style.height = h + "px";
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-    resizeCanvas();
-    window.addEventListener("resize", resizeCanvas, { passive: true });
+        loader.style.opacity = "0";
+        loader.style.pointerEvents = "none";
 
-    function makeParticle(delay, soft) {
-        const w = window.innerWidth, h = window.innerHeight;
-        const cx = w * .5, cy = h * .57;
-        const a = Math.random() * Math.PI * 2;
-        const distance = (soft ? 80 : 55) + Math.random() * (soft ? Math.min(w,h)*.52 : Math.min(w,h)*.72);
-        const speed = .35 + Math.random() * .8;
-        return {
-            x: cx, y: cy,
-            vx: Math.cos(a) * speed * (soft ? .9 : 1.25),
-            vy: Math.sin(a) * speed * (soft ? .9 : 1.25) - .18,
-            tx: Math.cos(a) * distance,
-            ty: Math.sin(a) * distance,
-            age: -delay,
-            life: 1050 + Math.random() * (soft ? 1200 : 900),
-            size: (soft ? 1.2 : 1.8) + Math.random() * (soft ? 2.6 : 4.4),
-            rot: Math.random() * Math.PI,
-            spin: (Math.random()-.5)*.16,
-            star: Math.random() < (soft ? .12 : .22),
-            alpha: .65 + Math.random()*.35,
-            drift: (Math.random()-.5)*.22
-        };
+        setTimeout(function () {
+            loader.style.display = "none";
+        }, 800);
     }
 
-    function drawStar(c, x, y, r, rotation) {
-        c.save(); c.translate(x,y); c.rotate(rotation);
-        c.beginPath();
-        for (let i=0;i<8;i++) {
-            const rr = i%2===0 ? r : r*.24;
-            const a = i*Math.PI/4;
-            c.lineTo(Math.cos(a)*rr, Math.sin(a)*rr);
+    setTimeout(hideLoader, 1800);
+
+
+    // ==========================================
+    // CINEMATIC REVEAL SYSTEM
+    // ==========================================
+
+    function setupRevealAnimations() {
+
+        const revealElements = document.querySelectorAll(
+            ".section-title, " +
+            ".collage-frame, " +
+            ".invitation-card, " +
+            ".detail-card, " +
+            ".timeline-item, " +
+            ".venue-card, " +
+            ".gallery-item, " +
+            ".blessing-text, " +
+            ".footer-card"
+        );
+
+        revealElements.forEach(function (element) {
+            element.classList.add("reveal-element");
+        });
+
+        if (!("IntersectionObserver" in window)) {
+            revealElements.forEach(function (element) {
+                element.classList.add("reveal-visible");
+            });
+            return;
         }
-        c.closePath(); c.fill(); c.restore();
-    }
 
-    function startGoldBurst() {
-        particles = [];
-        const mobile = window.innerWidth <= 768;
-        const count = mobile ? 170 : 230;
-        for (let i=0;i<count;i++) particles.push(makeParticle(Math.random()*260, false));
-        for (let i=0;i<(mobile?90:120);i++) particles.push(makeParticle(250+Math.random()*500, true));
-        cancelAnimationFrame(canvasFrame);
-        const startedAt = performance.now();
-        function frame(now) {
-            const elapsed = now - startedAt;
-            const w = window.innerWidth, h = window.innerHeight;
-            ctx.clearRect(0,0,w,h);
-            let alive = false;
-            for (const p of particles) {
-                p.age += 16.67;
-                if (p.age < 0) continue;
-                if (p.age < p.life) alive = true;
-                const t = Math.min(1, p.age / p.life);
-                p.x += p.vx * 16.67;
-                p.y += p.vy * 16.67;
-                p.vy += .0038 * 16.67;
-                p.x += Math.sin(p.age*.006 + p.drift*10) * .34;
-                p.rot += p.spin;
-                const fadeIn = Math.min(1, p.age/120);
-                const fadeOut = Math.max(0, 1-(t*.92));
-                ctx.globalAlpha = fadeIn * fadeOut * p.alpha;
-                ctx.fillStyle = Math.random() < .12 ? "#fff3c7" : "#e6cf9a";
-                if (p.star) drawStar(ctx,p.x,p.y,p.size*1.8,p.rot);
-                else { ctx.beginPath(); ctx.arc(p.x,p.y,p.size,0,Math.PI*2); ctx.fill(); }
+        const observer = new IntersectionObserver(
+            function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("reveal-visible");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            {
+                threshold: 0.12,
+                rootMargin: "0px 0px -8% 0px"
             }
-            ctx.globalAlpha = 1;
-            if (alive && elapsed < 3900) canvasFrame=requestAnimationFrame(frame);
-            else ctx.clearRect(0,0,w,h);
-        }
-        canvasFrame=requestAnimationFrame(frame);
+        );
+
+        revealElements.forEach(function (element) {
+            observer.observe(element);
+        });
     }
+
+    setupRevealAnimations();
+
+
+    // ==========================================
+    // MUSIC
+    // ==========================================
 
     function startMusic() {
-        if (!bgMusic) return;
+
+        if (!bgMusic) {
+            console.log("Music element not found");
+            return;
+        }
+
         bgMusic.src = "Ranjha.mp3";
         bgMusic.loop = true;
         bgMusic.preload = "auto";
-        bgMusic.volume = 1;
-        const p = bgMusic.play();
-        if (p && p.catch) p.catch(function(){});
-    }
+        bgMusic.volume = 1.0;
 
-    function openInvitation() {
-        if (started) return;
-        started = true;
-        startMusic();
-        overlay.classList.add("is-opening");
+        const playPromise = bgMusic.play();
 
-        // The animation is intentionally staged: seal -> flap -> folds -> letter -> names.
-        setTimeout(function(){ overlay.classList.add("seal-released"); }, 20);
-        setTimeout(function(){ overlay.classList.add("flap-opening"); }, 170);
-        setTimeout(function(){ startGoldBurst(); overlay.classList.add("gold-burst"); }, 360);
-        setTimeout(function(){ overlay.classList.add("letter-rising"); }, 430);
-        setTimeout(function(){ overlay.classList.add("letter-glow"); }, 780);
-        setTimeout(function(){ overlay.classList.add("names-revealed"); }, 1420);
-        setTimeout(function(){ overlay.classList.add("is-done"); }, 3500);
-        setTimeout(function(){
-            overlay.remove();
-            document.body.classList.add("opening-complete");
-            if (hero) hero.scrollIntoView({ block:"start", behavior:"auto" });
-        }, 4300);
-        setTimeout(startAutoScroll, 5000);
-    }
-
-    seal.addEventListener("pointerup", function(e){ e.preventDefault(); openInvitation(); }, {passive:false});
-    seal.addEventListener("click", function(e){ e.preventDefault(); openInvitation(); });
-
-    function setupRevealAnimations() {
-        const elements=document.querySelectorAll(".section-title,.collage-frame,.invitation-card,.detail-card,.timeline-item,.venue-card,.gallery-item,.blessing-text,.footer-card");
-        elements.forEach(el=>el.classList.add("reveal-element"));
-        if (!("IntersectionObserver" in window)) { elements.forEach(el=>el.classList.add("reveal-visible")); return; }
-        const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{
-            if(entry.isIntersecting){entry.target.classList.add("reveal-visible");observer.unobserve(entry.target);}
-        }),{threshold:.12,rootMargin:"0px 0px -8% 0px"});
-        elements.forEach(el=>observer.observe(el));
-    }
-    setupRevealAnimations();
-
-    function startAutoScroll(){ if(!started)return; autoScrolling=true; cancelAnimationFrame(animationFrame); animationFrame=requestAnimationFrame(autoScroll); }
-    function autoScroll(){
-        if(!autoScrolling)return;
-        if(!userInteracting){
-            const current=window.scrollY, max=document.documentElement.scrollHeight-window.innerHeight;
-            if(current>=max-2){autoScrolling=false;return;}
-            window.scrollTo(0,current+1);
+        if (playPromise !== undefined) {
+            playPromise
+                .then(function () {
+                    console.log("Wedding music started");
+                })
+                .catch(function (error) {
+                    console.log("Music could not start:", error);
+                });
         }
-        animationFrame=requestAnimationFrame(autoScroll);
     }
-    function pauseAndResume(){
-        if(!started)return;
-        userInteracting=true; clearTimeout(resumeTimer);
-        resumeTimer=setTimeout(function(){userInteracting=false;startAutoScroll();},450);
+
+
+    // ==========================================
+    // LUXURY GOLD GLITTER SHOWER
+    // ==========================================
+
+    function createGlitter() {
+
+        if (!glitterContainer) return;
+
+        glitterContainer.innerHTML = "";
+
+        const particleCount = 150;
+
+        for (let i = 0; i < particleCount; i++) {
+
+            const particle = document.createElement("span");
+            const isStar = Math.random() < 0.16;
+
+            particle.className = isStar ? "glitter star" : "glitter";
+
+            if (isStar) {
+                particle.setAttribute("aria-hidden", "true");
+            }
+
+            const spread = 62 + Math.random() * 34;
+            const x = (Math.random() - 0.5) * spread;
+            const y = 20 + Math.random() * 92;
+            const drift = (Math.random() - 0.5) * 20;
+
+            particle.style.setProperty("--x", `calc(${x}vw + ${drift}px)`);
+            particle.style.setProperty("--y", `${y}vh`);
+            particle.style.setProperty("--delay", `${Math.random() * 0.42}s`);
+            particle.style.setProperty("--duration", `${1.9 + Math.random() * 1.65}s`);
+            particle.style.setProperty("--scale", `${0.45 + Math.random() * 1.25}`);
+            particle.style.setProperty("--rotate", `${180 + Math.random() * 420}deg`);
+
+            if (isStar) {
+                particle.style.setProperty("--star-size", `${9 + Math.random() * 12}px`);
+            } else {
+                const size = 2 + Math.random() * 4.5;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+            }
+
+            glitterContainer.appendChild(particle);
+        }
+
+        // A second, smaller wave gives the reveal a lingering magical shower.
+        setTimeout(function () {
+
+            if (!glitterContainer) return;
+
+            for (let i = 0; i < 45; i++) {
+
+                const particle = document.createElement("span");
+                const isStar = Math.random() < 0.28;
+
+                particle.className = isStar ? "glitter star" : "glitter";
+
+                particle.style.setProperty("--x", `${(Math.random() - 0.5) * 75}vw`);
+                particle.style.setProperty("--y", `${35 + Math.random() * 75}vh`);
+                particle.style.setProperty("--delay", `${Math.random() * 0.25}s`);
+                particle.style.setProperty("--duration", `${2 + Math.random() * 1.3}s`);
+                particle.style.setProperty("--scale", `${0.4 + Math.random() * .9}`);
+
+                if (isStar) {
+                    particle.style.setProperty("--star-size", `${8 + Math.random() * 9}px`);
+                } else {
+                    const size = 1.5 + Math.random() * 3.5;
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+                }
+
+                glitterContainer.appendChild(particle);
+            }
+
+        }, 420);
+
+        setTimeout(function () {
+            if (glitterContainer) glitterContainer.innerHTML = "";
+        }, 5000);
     }
-    window.addEventListener("touchstart",pauseAndResume,{passive:true});
-    window.addEventListener("touchmove",pauseAndResume,{passive:true});
-    window.addEventListener("wheel",pauseAndResume,{passive:true});
-    window.addEventListener("mousedown",pauseAndResume);
-    window.addEventListener("mouseup",function(){if(!started)return;clearTimeout(resumeTimer);resumeTimer=setTimeout(function(){userInteracting=false;startAutoScroll();},450);});
+
+
+    // ==========================================
+    // OPEN THE ROYAL WEDDING CARD
+    // ==========================================
+
+    function startInvitation() {
+
+        if (started) return;
+
+        started = true;
+        document.documentElement.style.scrollBehavior = "auto";
+
+        // The seal press is the user gesture, so music can start reliably on iPhone/Safari.
+        startMusic();
+
+        // 1. Tiny seal reaction.
+        if (waxButton) {
+            waxButton.classList.add("opened");
+        }
+
+        // 2. Envelope begins opening immediately.
+        setTimeout(function () {
+            if (weddingCard) {
+                weddingCard.classList.add("opening");
+            }
+        }, 120);
+
+        // 3. Glitter erupts as the flap clears the seal.
+        setTimeout(function () {
+            createGlitter();
+        }, 520);
+
+        // 4. Let the invitation emerge underneath the opening envelope.
+        setTimeout(function () {
+            if (hero) {
+                hero.classList.add("card-revealed");
+            }
+        }, 1180);
+
+        // 5. Remove the envelope only after the physical opening has finished.
+        setTimeout(function () {
+            if (weddingCard) {
+                weddingCard.classList.add("opened");
+            }
+        }, 1900);
+
+        // 6. Existing iPhone/Safari-safe auto-scroll continues after reveal.
+        setTimeout(function () {
+            autoScrolling = true;
+            cancelAnimationFrame(animationFrame);
+            animationFrame = requestAnimationFrame(autoScroll);
+        }, 2300);
+    }
+
+
+    // ==========================================
+    // WAX SEAL — CLICK
+    // ==========================================
+
+    if (waxButton) {
+
+        waxButton.addEventListener("click", function (event) {
+            event.preventDefault();
+            startInvitation();
+        });
+
+        waxButton.addEventListener("touchend", function (event) {
+            event.preventDefault();
+            startInvitation();
+        }, { passive: false });
+    }
+
+
+    // ==========================================
+    // AUTO SCROLL
+    // iPHONE / SAFARI SAFE
+    // ==========================================
+
+    function autoScroll() {
+
+        if (!autoScrolling) return;
+
+        if (!userInteracting) {
+
+            const currentPosition = window.scrollY;
+
+            const maxPosition =
+                document.documentElement.scrollHeight -
+                window.innerHeight;
+
+            if (currentPosition >= maxPosition - 2) {
+                autoScrolling = false;
+                return;
+            }
+
+            window.scrollTo(0, currentPosition + 1);
+        }
+
+        animationFrame = requestAnimationFrame(autoScroll);
+    }
+
+
+    // ==========================================
+    // TOUCH START
+    // ==========================================
+
+    window.addEventListener("touchstart", function () {
+
+        if (!started) return;
+
+        userInteracting = true;
+        clearTimeout(resumeTimer);
+
+    }, { passive: true });
+
+
+    // ==========================================
+    // TOUCH MOVE
+    // ==========================================
+
+    window.addEventListener("touchmove", function () {
+
+        if (!started) return;
+
+        userInteracting = true;
+        clearTimeout(resumeTimer);
+
+    }, { passive: true });
+
+
+    // ==========================================
+    // TOUCH END — RESUME
+    // ==========================================
+
+    window.addEventListener("touchend", function () {
+
+        if (!started) return;
+
+        clearTimeout(resumeTimer);
+
+        resumeTimer = setTimeout(function () {
+
+            userInteracting = false;
+
+            cancelAnimationFrame(animationFrame);
+            animationFrame = requestAnimationFrame(autoScroll);
+
+        }, 100);
+
+    }, { passive: true });
+
+
+    // ==========================================
+    // DESKTOP WHEEL / TRACKPAD
+    // ==========================================
+
+    window.addEventListener("wheel", function () {
+
+        if (!started) return;
+
+        userInteracting = true;
+        clearTimeout(resumeTimer);
+
+        resumeTimer = setTimeout(function () {
+
+            userInteracting = false;
+
+            cancelAnimationFrame(animationFrame);
+            animationFrame = requestAnimationFrame(autoScroll);
+
+        }, 100);
+
+    }, { passive: true });
+
+
+    // ==========================================
+    // MOUSE DOWN
+    // ==========================================
+
+    window.addEventListener("mousedown", function () {
+
+        if (!started) return;
+
+        userInteracting = true;
+        clearTimeout(resumeTimer);
+
+    });
+
+
+    // ==========================================
+    // MOUSE UP
+    // ==========================================
+
+    window.addEventListener("mouseup", function () {
+
+        if (!started) return;
+
+        clearTimeout(resumeTimer);
+
+        resumeTimer = setTimeout(function () {
+
+            userInteracting = false;
+
+            cancelAnimationFrame(animationFrame);
+            animationFrame = requestAnimationFrame(autoScroll);
+
+        }, 100);
+
+    });
+
+
+    /* ----------------------------------------------------------
+       BENGALI STORYBOOK CHARACTER REVEAL
+       Mobile-safe: opacity + translate only.
+    ---------------------------------------------------------- */
+    const storySection = document.getElementById("bengaliStory");
+    const storyArt = document.querySelector(".story-art-card");
+
+    if (storySection && storyArt && "IntersectionObserver" in window) {
+        storyArt.classList.add("story-art-pending");
+        const storyObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    storyArt.classList.add("story-art-visible");
+                    storyObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.16 });
+        storyObserver.observe(storySection);
+    }
+
 });
