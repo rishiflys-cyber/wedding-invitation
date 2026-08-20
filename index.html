@@ -20,9 +20,7 @@
       <div class="envelope-paper"></div>
       <div class="envelope-flap"></div>
       <div class="envelope-fold"></div>
-      <button id="waxButton" class="wax" type="button" aria-label="Open invitation">
-        <span>RA</span>
-      </button>
+      <button id="waxButton" class="wax" type="button" aria-label="Open invitation"><span>RA</span></button>
       <div id="glitterContainer" aria-hidden="true"></div>
       <div class="envelope-label">Tap the seal to open</div>
     </div>
@@ -34,67 +32,21 @@
   </header>
 
   <main id="story">
-    <section class="screen occasion haldi" id="haldi">
-      <div class="page-top"><span>01</span><span>HALDI</span></div>
-      <div class="occasion-copy">
-        <span class="date">10 DECEMBER 2026</span>
-        <h2>Haldi</h2>
-        <p>11:00 AM onwards</p>
-      </div>
-      <div class="character-frame">
-        <img src="haldi-character.png" alt="Rishabh and Ananya sharing a playful Haldi moment">
-        <span class="spark s1">✦</span><span class="spark s2">✧</span><span class="spark s3">♥</span>
-      </div>
-      <div class="moment-line">A little turmeric. A lot of laughter.</div>
-      <div class="swipe-hint">HALDI → MEHENDI</div>
+    <!-- Each occasion is its own complete mobile page. The artwork is never cropped or used as a background. -->
+    <section class="occasion-page haldi-page" id="haldi" aria-label="Haldi — 11 December 2026, 11 AM onwards">
+      <img src="haldi-page.png" alt="Haldi invitation for Rishabh and Ananya on 11 December 2026 at 11 AM onwards">
     </section>
 
-    <section class="screen occasion mehendi" id="mehendi">
-      <div class="page-top"><span>02</span><span>MEHENDI</span></div>
-      <div class="occasion-copy">
-        <span class="date">10 DECEMBER 2026</span>
-        <h2>Mehendi</h2>
-        <p>5:00 PM onwards</p>
-      </div>
-      <div class="character-frame">
-        <img src="mehendi-character.png" alt="Rishabh admiring Ananya's Mehendi">
-        <span class="spark s1">✦</span><span class="spark s2">❋</span><span class="spark s3">♥</span>
-      </div>
-      <div class="moment-line">Henna on her hands. A smile on his face.</div>
-      <div class="swipe-hint">MEHENDI → SANGEET</div>
+    <section class="occasion-page mehendi-page" id="mehendi" aria-label="Mehendi — 10 December 2026, 5 PM onwards">
+      <img src="mehendi-page.png" alt="Mehendi invitation for Rishabh and Ananya on 10 December 2026 at 5 PM onwards">
     </section>
 
-    <section class="screen occasion sangeet" id="sangeet">
-      <div class="page-top"><span>03</span><span>SANGEET</span></div>
-      <div class="occasion-copy">
-        <span class="date">10 DECEMBER 2026</span>
-        <h2>Sangeet</h2>
-        <p>5:00 PM onwards</p>
-      </div>
-      <div class="character-frame dance-frame">
-        <img src="sangeet-character.png" alt="Rishabh and Ananya dancing at their Sangeet">
-        <span class="music-note n1">♪</span><span class="music-note n2">♫</span><span class="music-note n3">♪</span>
-      </div>
-      <div class="moment-line">Music, dance &amp; one unforgettable evening.</div>
-      <div class="swipe-hint">SANGEET → THE WEDDING</div>
+    <section class="occasion-page sangeet-page" id="sangeet" aria-label="Sangeet — 10 December 2026, 5 PM onwards">
+      <img src="sangeet-page.png" alt="Sangeet invitation for Rishabh and Ananya on 10 December 2026 at 5 PM onwards">
     </section>
 
-    <section class="screen occasion wedding" id="wedding">
-      <div class="page-top"><span>04</span><span>SHUBHO BIBAHO</span></div>
-      <div class="occasion-copy">
-        <span class="date">AS PER THE BENGALI CALENDAR</span>
-        <h2>The Wedding</h2>
-        <p>11 December 2026</p>
-      </div>
-      <div class="wedding-frame">
-        <img src="bengali-wedding-story.png" alt="Bengali wedding story">
-      </div>
-      <div class="wedding-facts">
-        <div><b>02:30 AM</b><span>12 December 2026</span></div>
-        <div><b>Salt Lake</b><span>Kolkata</span></div>
-      </div>
-      <div class="moment-line">Tradition, blessings &amp; a lifetime together.</div>
-      <div class="swipe-hint">THE WEDDING → DINNER</div>
+    <section class="occasion-page wedding-page" id="wedding" aria-label="The Wedding — 11 December 2026 Bengali calendar, 12 December 2026 at 2:30 AM">
+      <img src="wedding-page.png" alt="Wedding invitation for Rishabh and Ananya in Salt Lake, Kolkata">
     </section>
 
     <section class="screen dinner" id="dinner">
@@ -106,7 +58,6 @@
       <p>Salt Lake, Kolkata</p>
       <div class="food-strip"><span>Shukto</span><span>Luchi</span><span>Pulao</span><span>Kosha</span><span>Mishti</span></div>
       <p class="small-copy">A Bengali feast, warm conversations and a beautiful evening together.</p>
-      <div class="swipe-hint">DINNER → RSVP</div>
     </section>
 
     <section class="screen closing" id="closing">
