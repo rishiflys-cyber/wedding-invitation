@@ -1,0 +1,112 @@
+:root{--burgundy:#4d111e;--deep:#16070b;--cream:#fff8ea;--gold:#d7b56a;--gold2:#f0d797;--serif:'Cormorant Garamond',serif;--display:'Cinzel',serif;--sans:'Poppins',sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#0d0407;color:var(--cream);font-family:var(--sans);overflow-x:hidden;scroll-behavior:auto;overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent}
+body{min-height:100svh}
+button,a{font:inherit;touch-action:manipulation}a{color:inherit;text-decoration:none}
+#phone{width:100%;max-width:430px;margin:0 auto;background:var(--deep);position:relative;overflow:hidden;box-shadow:0 0 80px rgba(0,0,0,.55)}
+.screen{min-height:100svh;min-height:100dvh;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 20px;overflow:hidden;isolation:isolate}
+.screen:before{content:"";position:absolute;inset:10px;border:1px solid rgba(240,215,151,.22);border-radius:22px;pointer-events:none;z-index:0}
+.screen:after{content:"";position:absolute;width:280px;height:280px;border-radius:50%;background:rgba(240,215,151,.10);filter:blur(55px);top:-80px;left:50%;transform:translateX(-50%);z-index:0;pointer-events:none}
+.cover-screen{background:radial-gradient(circle at 50% 18%,#7b2638 0,#4d111e 48%,#1d070d 100%)}
+.cover-lights{position:absolute;inset:0;opacity:.55;background:radial-gradient(circle at 12% 15%,#fff4bc 0 2px,transparent 3px),radial-gradient(circle at 88% 20%,#fff4bc 0 2px,transparent 3px),radial-gradient(circle at 24% 82%,#fff4bc 0 2px,transparent 3px),radial-gradient(circle at 77% 76%,#fff4bc 0 2px,transparent 3px);background-size:130px 150px,170px 180px,190px 170px,150px 140px;animation:twinkle 4s ease-in-out infinite}
+.envelope{width:min(82vw,340px);aspect-ratio:1/1.18;position:relative;border-radius:18px;cursor:pointer;z-index:3;filter:drop-shadow(0 25px 45px rgba(0,0,0,.42));transition:transform .45s ease}.envelope:hover{transform:translateY(-4px)}
+.envelope-paper{position:absolute;inset:0;border-radius:18px;background:linear-gradient(145deg,#6d1729,#3a0b16);border:1px solid rgba(240,215,151,.55);box-shadow:inset 0 0 0 7px rgba(200,164,93,.10),inset 0 0 45px rgba(0,0,0,.35)}
+.envelope-paper:before{content:"";position:absolute;inset:16px;border:1px solid rgba(240,215,151,.45);border-radius:12px}
+.envelope-flap{position:absolute;left:0;right:0;top:0;height:52%;background:linear-gradient(145deg,#8b2940,#4b0e1d);clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:50% 0;z-index:4;transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.envelope-fold{position:absolute;left:0;right:0;bottom:0;height:62%;background:linear-gradient(155deg,transparent 49.7%,rgba(255,230,164,.18) 50%,transparent 50.4%),linear-gradient(25deg,transparent 49.7%,rgba(255,230,164,.13) 50%,transparent 50.4%);z-index:3}
+.wax{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:96px;height:96px;border:0;border-radius:50%;background:radial-gradient(circle at 35% 30%,#b94455,#7e1b2d 55%,#4b0d18);box-shadow:0 12px 35px rgba(0,0,0,.45),inset 0 0 0 5px rgba(250,220,153,.18);z-index:7;color:#f6df9e;font-family:var(--display);font-size:24px;font-weight:700;cursor:pointer;transition:transform .35s ease}.wax:after{content:"";position:absolute;inset:11px;border:1px solid rgba(250,220,153,.55);border-radius:50%}.wax.opened{transform:translate(-50%,-50%) scale(.78) rotate(-10deg)}.envelope.opened .envelope-flap{transform:rotateX(180deg)}.envelope.opened{pointer-events:none}
+.envelope-label{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,248,234,.7);z-index:8;white-space:nowrap}
+.cover-copy{position:relative;z-index:2;text-align:center;margin-top:26px;opacity:1;transition:opacity .5s ease,transform .5s ease}.cover-copy .eyebrow{font-size:9px;letter-spacing:3px;color:var(--gold2)}.cover-copy h1{font-family:var(--display);font-weight:500;font-size:34px;margin:10px 0 6px}.cover-copy h1 i{font-family:var(--serif);font-size:34px;color:var(--gold2)}.cover-copy p{font-family:var(--serif);font-size:18px;margin:0;color:rgba(255,248,234,.82)}.cover-screen.opened .cover-copy{opacity:0;transform:translateY(-10px)}
+/* Four occasion pages: each uses the supplied complete artwork as an <img>, never as a cropped background. */
+.occasion-page{height:100svh;height:100dvh;min-height:640px;position:relative;display:flex;align-items:stretch;justify-content:stretch;padding:0;background:#130b0d;overflow:hidden;isolation:isolate}
+.occasion-page:before{content:"";position:absolute;inset:0;border:0;pointer-events:none;z-index:2}.occasion-page:after{content:"";position:absolute;inset:0;z-index:-1;opacity:.16}
+.haldi-page{background:#4f2b08}.haldi-page:after{background:radial-gradient(circle at 50% 25%,#e3a72f,transparent 55%)}
+.mehendi-page{background:#102f23}.mehendi-page:after{background:radial-gradient(circle at 50% 25%,#3d8158,transparent 55%)}
+.sangeet-page{background:#261032}.sangeet-page:after{background:radial-gradient(circle at 50% 25%,#8b4caf,transparent 55%)}
+.wedding-page{background:#4b171c}.wedding-page:after{background:radial-gradient(circle at 50% 25%,#b86643,transparent 55%)}
+.occasion-page img{display:block;width:100%;height:100%;max-width:none;max-height:none;object-fit:fill;object-position:center;border-radius:0;box-shadow:none;z-index:1;transform-origin:center}
+/* Premium floating poster-card layout: sharp artwork centered over a soft blurred backdrop of itself, so any source aspect ratio looks intentional instead of stretched. */
+.occasion-page{align-items:center;justify-content:center;padding:26px 18px}
+.occasion-page .bg-fill{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;filter:blur(32px) saturate(1.15) brightness(.5);transform:scale(1.22);z-index:0;opacity:.9}
+.occasion-page .fg-card{position:relative;width:auto;height:auto;max-width:min(88vw,380px);max-height:82%;object-fit:contain;border-radius:20px;z-index:2;box-shadow:0 30px 70px rgba(0,0,0,.5),0 4px 18px rgba(0,0,0,.35);border:1px solid rgba(255,240,210,.16);animation:cardFloat 6s ease-in-out infinite}
+.occasion-page .fg-card{will-change:transform}
+
+
+/* Mobile-first celebration effects: intentionally visible on iOS Safari + Android Chrome. */
+.occasion-page .ambient,.intro-screen .ambient{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden;mix-blend-mode:screen;opacity:1}
+.occasion-page .ambient{z-index:4}
+.occasion-page .ambient::before,.intro-screen .ambient::before{content:"";position:absolute;inset:-35%;background:linear-gradient(115deg,transparent 36%,rgba(255,248,220,.05) 46%,rgba(255,255,255,.32) 50%,rgba(255,248,220,.06) 54%,transparent 64%);transform:translate3d(-78%,0,0) rotate(2deg);animation:lightSweep 5.8s ease-in-out infinite;opacity:.9;-webkit-animation:lightSweep 5.8s ease-in-out infinite}
+.occasion-page .ambient::after,.intro-screen .ambient::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 12% 18%,rgba(255,255,255,.72) 0 1.5px,transparent 3px),radial-gradient(circle at 83% 28%,rgba(255,255,255,.58) 0 1.5px,transparent 3px),radial-gradient(circle at 26% 72%,rgba(255,255,255,.62) 0 1.5px,transparent 3px),radial-gradient(circle at 74% 82%,rgba(255,255,255,.55) 0 1.5px,transparent 3px);animation:ambientTwinkle 2.2s ease-in-out infinite;-webkit-animation:ambientTwinkle 2.2s ease-in-out infinite}
+.occasion-page .ambient .frameGlow{position:absolute;inset:8px;border:1px solid rgba(255,235,177,.42);border-radius:18px;box-shadow:inset 0 0 35px rgba(255,230,160,.12),0 0 18px rgba(255,220,150,.08);animation:framePulse 3.2s ease-in-out infinite;-webkit-animation:framePulse 3.2s ease-in-out infinite}
+.ambient .spark{position:absolute;width:5px;height:5px;border-radius:50%;background:var(--spark,#f6dc94);box-shadow:0 0 10px 3px rgba(246,220,148,.62);opacity:0;animation:riseSpark var(--dur,4.8s) ease-in-out var(--delay,0s) infinite;-webkit-animation:riseSpark var(--dur,4.8s) ease-in-out var(--delay,0s) infinite}
+.ambient .spark::after{content:"✦";position:absolute;left:50%;top:50%;transform:translate3d(-50%,-50%,0) scale(.9);font-size:12px;color:var(--spark,#f6dc94);text-shadow:0 0 12px var(--spark,#f6dc94)}
+.ambient .orb{position:absolute;width:76px;height:76px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(255,255,255,.30),rgba(255,255,255,.06) 45%,transparent 72%);filter:blur(1px);opacity:.52;animation:orbDrift var(--dur,8s) ease-in-out var(--delay,0s) infinite alternate;-webkit-animation:orbDrift var(--dur,8s) ease-in-out var(--delay,0s) infinite alternate}
+.ambient .petal{position:absolute;width:9px;height:5px;border-radius:100% 0 100% 0;background:var(--petal,#f2c76c);opacity:0;animation:petalFall var(--dur,7s) linear var(--delay,0s) infinite;-webkit-animation:petalFall var(--dur,7s) linear var(--delay,0s) infinite}
+.mehendi-page .ambient{--spark:#e8f4b8;--petal:#d6e7a3}.sangeet-page .ambient{--spark:#f7d6ff;--petal:#f1a8e8}.haldi-page .ambient{--spark:#fff0a6;--petal:#f6cf63}.wedding-page .ambient{--spark:#ffe3a1;--petal:#e9a38c}.intro-screen .ambient{--spark:#f6dc94;--petal:#e9a38c;z-index:1}
+.screen.dinner .ambient,.closing .ambient{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.dinner .ambient::before,.closing .ambient::before{content:"";position:absolute;inset:-30%;background:linear-gradient(120deg,transparent 40%,rgba(255,225,150,.12) 50%,transparent 60%);animation:lightSweep 8s ease-in-out infinite}
+.dinner .ambient .spark,.closing .ambient .spark{position:absolute;width:4px;height:4px;border-radius:50%;background:#f6dc94;box-shadow:0 0 8px #f6dc94;opacity:0;animation:riseSpark var(--dur,5s) ease-in-out var(--delay,0s) infinite}
+.page-number{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);z-index:4;font-size:8px;letter-spacing:2px;color:rgba(255,248,234,.7);padding:7px 12px;border:1px solid rgba(240,215,151,.22);border-radius:999px;background:rgba(0,0,0,.14);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
+@keyframes lightSweep{0%,35%{transform:translateX(-80%)}65%,100%{transform:translateX(80%)}}
+@keyframes ambientTwinkle{0%,100%{opacity:.35;transform:scale(.98)}50%{opacity:.85;transform:scale(1.02)}}
+@keyframes riseSpark{0%{opacity:0;transform:translate3d(0,28px,0) scale(.35) rotate(0deg)}18%{opacity:.9}72%{opacity:.65}100%{opacity:0;transform:translate3d(var(--drift,18px),-115px,0) scale(.15) rotate(120deg)}}
+@keyframes orbDrift{0%{transform:translate3d(-18px,22px,0) scale(.8);opacity:.18}50%{opacity:.5}100%{transform:translate3d(24px,-30px,0) scale(1.15);opacity:.08}}
+@keyframes framePulse{0%,100%{opacity:.35;transform:scale(.995)}50%{opacity:.75;transform:scale(1)}}
+@keyframes cardFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@keyframes petalFall{0%{opacity:0;transform:translate3d(0,-30px,0) rotate(0deg)}12%{opacity:.65}80%{opacity:.35}100%{opacity:0;transform:translate3d(var(--drift,22px),115vh,0) rotate(280deg)}}
+@media (max-width:430px){
+  .occasion-page .ambient::before{animation-duration:8.5s}
+  .ambient .spark{width:4px;height:4px}
+  .ambient .orb{width:56px;height:56px}
+  .page-number{bottom:max(14px,env(safe-area-inset-bottom));}
+}
+@media (prefers-reduced-motion:reduce){.occasion-page .ambient::before,.occasion-page .ambient::after,.ambient .spark,.ambient .orb,.ambient .petal,.dinner .ambient::before,.closing .ambient::before,.occasion-page .fg-card{animation:none!important;opacity:.35}.occasion-page .fg-card{opacity:1}.page-number{backdrop-filter:none;-webkit-backdrop-filter:none}}
+@supports not (background:color-mix(in srgb, white 50%, black)){.ambient .spark{box-shadow:0 0 8px rgba(246,220,148,.7)}}
+
+.nazar-overlay{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;overflow:hidden;background:linear-gradient(180deg,#fbf4e8,#ead9ba);opacity:1;visibility:visible;pointer-events:none;transition:opacity .8s ease,visibility 0s linear .8s}.nazar-overlay.done{opacity:0;visibility:hidden}.nazar-stage{position:absolute;inset:0;display:flex;justify-content:center;align-items:center;overflow:hidden}.nazar-stage img{position:absolute;top:-42%;left:50%;width:min(48vw,210px);max-width:210px;transform:translate3d(-50%,-30%,0) rotate(-3deg);opacity:0;filter:drop-shadow(0 18px 18px rgba(40,20,20,.2));will-change:transform,opacity}.nazar-overlay.active .nazar-stage img{animation:nazarDrop 3.1s cubic-bezier(.2,.8,.2,1) forwards;-webkit-animation:nazarDrop 3.1s cubic-bezier(.2,.8,.2,1) forwards}
+.page-top{display:none!important}.dinner{background:radial-gradient(circle at 50% 25%,#8d4b30,#4b1b1d 48%,#1e080d 100%);text-align:center}.page-top{position:absolute;top:24px;left:22px;right:22px;display:flex;justify-content:space-between;font-size:9px;letter-spacing:2.5px;color:rgba(255,248,234,.65);z-index:3}.page-top span:last-child{color:var(--gold2)}
+.date{font-size:9px;letter-spacing:2.5px;color:var(--gold2)}.dinner h2,.closing h2{font-family:var(--display);font-weight:500;font-size:clamp(36px,10vw,52px);line-height:1;margin:7px 0 4px;text-shadow:0 8px 28px rgba(0,0,0,.25)}
+.dinner-art{font-size:52px;letter-spacing:12px;color:var(--gold2);margin-bottom:16px;animation:float 3.5s ease-in-out infinite}.dinner-time{font-family:var(--display);font-size:32px;color:#fff1c7;margin-top:15px}.dinner>p{font-family:var(--serif);font-size:22px;margin:8px 0}.food-strip{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:22px 0 10px;max-width:350px}.food-strip span{padding:8px 11px;border:1px solid rgba(240,215,151,.35);border-radius:999px;background:rgba(255,248,234,.07);font-size:11px;color:#ffe9a7}.small-copy{max-width:310px!important;font-size:17px!important;color:rgba(255,248,234,.78)!important}
+.closing{background:linear-gradient(180deg,#f8f1e5,#ead9ba);color:var(--burgundy);text-align:center;justify-content:flex-start;padding-top:70px}.closing:before{border-color:rgba(100,26,39,.18)}.closing .page-top{color:rgba(100,26,39,.5)}.closing .page-top span:last-child{color:var(--burgundy)}.closing h2{color:var(--burgundy);text-shadow:none}.closing>p{font-family:var(--serif);font-size:20px;max-width:320px;margin:8px auto 20px;color:#5d3434}.collage-reveal{position:relative;z-index:5;width:100%;display:flex;flex-direction:column;align-items:center;opacity:0;transform:translate3d(0,18px,0);transition:opacity .9s ease,transform .9s ease}.collage-reveal.revealed{opacity:1;transform:translate3d(0,0,0)}
+
+/* Intro: a warm, heartfelt pause between opening the envelope and the celebrations. */
+.intro-screen{background:radial-gradient(circle at 50% 22%,#5c1524 0,#3a0b16 55%,#160509 100%);text-align:center;padding:40px 26px}
+.intro-heart{position:relative;z-index:2;font-size:26px;color:var(--gold2);opacity:0;animation:introHeartIn 1.1s ease .15s forwards,heartBeat 2.6s ease-in-out 1.3s infinite;animation-play-state:paused;text-shadow:0 0 18px rgba(240,215,151,.5);margin-bottom:6px}
+.intro-copy{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:14px;max-width:340px}
+.intro-line{opacity:0;transform:translateY(16px);animation:introLineIn .9s cubic-bezier(.2,.7,.25,1) forwards;animation-play-state:paused}
+.intro-screen.active .intro-line,.intro-screen.active .intro-heart{animation-play-state:running}
+.intro-eyebrow{font-size:10px;letter-spacing:3.5px;color:var(--gold2);font-family:var(--sans);animation-delay:.35s}
+.intro-quote-1,.intro-quote-2{font-family:var(--serif);font-weight:600;font-size:clamp(24px,7vw,30px);line-height:1.28;color:var(--cream);text-shadow:0 8px 26px rgba(0,0,0,.3)}
+.intro-quote-1{animation-delay:.75s}
+.intro-quote-2{animation-delay:1.25s;font-style:italic;background:linear-gradient(90deg,#f0d797 0%,#fff6da 25%,#f0d797 50%,#c99a4a 75%,#f0d797 100%);background-size:220% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;animation:introLineIn .9s cubic-bezier(.2,.7,.25,1) forwards,shimmer 3.6s linear 2.2s infinite;animation-play-state:paused}
+.intro-screen.active .intro-quote-2{animation-play-state:running}
+@keyframes shimmer{to{background-position:-220% center}}
+.intro-sub{font-family:var(--sans);font-size:13.5px;line-height:1.7;color:rgba(255,248,234,.72);margin-top:4px;animation-delay:1.85s}
+.intro-continue{margin-top:22px;display:inline-flex;align-items:center;gap:9px;background:linear-gradient(135deg,#f0d797,#c99a4a);color:#3a0b16;border:0;padding:14px 26px;border-radius:999px;font-family:var(--display);font-size:12.5px;letter-spacing:1.5px;font-weight:600;cursor:pointer;box-shadow:0 14px 32px rgba(207,161,80,.28);animation-delay:2.35s;transition:transform .35s ease,box-shadow .35s ease}
+.intro-continue svg{animation:introArrow 1.6s ease-in-out 2.6s infinite;animation-play-state:paused}
+.intro-screen.active .intro-continue svg{animation-play-state:running}
+.intro-continue:active{transform:scale(.96)}
+.intro-screen.leaving .intro-copy,.intro-screen.leaving .intro-heart{transition:opacity .5s ease,transform .5s ease;opacity:0;transform:translateY(-14px)}
+@keyframes introHeartIn{to{opacity:1}}
+@keyframes heartBeat{0%,100%{transform:scale(1)}10%{transform:scale(1.18)}20%{transform:scale(1)}30%{transform:scale(1.12)}40%{transform:scale(1)}}
+@keyframes introLineIn{to{opacity:1;transform:translateY(0)}}
+@keyframes introArrow{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+@media (prefers-reduced-motion:reduce){.intro-heart,.intro-line{animation:none!important;opacity:1;transform:none}.intro-continue svg{animation:none!important}}
+.collage-frame{width:min(88vw,370px);border-radius:16px;overflow:hidden;border:1px solid rgba(100,26,39,.25);box-shadow:0 18px 45px rgba(71,23,31,.18)}.collage-frame img{display:block;width:100%;height:auto}.rsvp{margin-top:18px;background:var(--burgundy);color:#fff8ea;padding:12px 35px;border-radius:999px;font-family:var(--display);letter-spacing:1px;box-shadow:0 12px 25px rgba(100,26,39,.22)}.signature{margin-top:13px;font-family:var(--serif);font-size:23px;color:#8a6134}
+.music-button{position:fixed;right:max(14px,calc((100vw - 430px)/2 + 14px));bottom:16px;width:44px;height:44px;border:1px solid rgba(240,215,151,.45);border-radius:50%;background:rgba(46,8,16,.82);backdrop-filter:blur(8px);color:#f7dc93;font-size:20px;z-index:50;box-shadow:0 10px 30px rgba(0,0,0,.3)}.music-label{position:fixed;left:max(14px,calc((100vw - 430px)/2 + 14px));bottom:21px;z-index:50;font-size:8px;letter-spacing:1.5px;color:rgba(255,248,234,.62);pointer-events:none}
+#loader{position:fixed;inset:0;background:#1a070d;z-index:100;opacity:1;transition:opacity .45s ease;pointer-events:none}#glitterContainer{position:absolute;inset:0;z-index:20;pointer-events:none;overflow:hidden}.glitter{position:absolute;left:50%;top:50%;width:4px;height:4px;background:#f6dc94;border-radius:50%;box-shadow:0 0 9px #f6dc94;animation:burst 1.6s ease-out forwards;animation-delay:var(--d)}
+@keyframes burst{to{transform:translate(var(--x),var(--y)) scale(.2);opacity:0}}
+@keyframes nazarDrop{0%{opacity:0;transform:translate3d(-50%,-55vh,0) rotate(-8deg)}18%{opacity:1}48%{opacity:1;transform:translate3d(-50%,0,0) rotate(3deg)}62%{opacity:1;transform:translate3d(-50%,4px,0) rotate(-2deg)}100%{opacity:0;transform:translate3d(-50%,65vh,0) rotate(8deg)}}@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}@keyframes twinkle{0%,100%{opacity:.35}50%{opacity:.7}}@keyframes pageFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-4px) scale(1.002)}}
+@media (min-width:431px){body{background:#0d0407}#phone{min-height:100svh;border-left:1px solid rgba(240,215,151,.08);border-right:1px solid rgba(240,215,151,.08)}}
+@media (max-height:700px){.occasion-page{min-height:560px}.occasion-page img{width:100%;height:100%}.nazar-screen{min-height:560px}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+/* Final polish: no page numbering anywhere. */
+.page-top{display:none!important}
+/* Keep the selected artwork full-frame on phones without clipping. */
+.occasion-page img{width:100%;height:100%;object-fit:fill;object-position:center}
+/* Make the closing reveal feel intentional rather than like a blank page. */
+.closing{overflow:hidden}
+@media (prefers-reduced-motion:reduce){
+  .nazar-overlay.active .nazar-stage img{animation:none!important;-webkit-animation:none!important;opacity:1;transform:translate3d(-50%,0,0)!important}
+  .collage-reveal{transition:none!important}
+}
