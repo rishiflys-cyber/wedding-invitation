@@ -252,9 +252,10 @@ a{color:inherit;text-decoration:none}
 #openBtn{
   position:absolute;inset:0;z-index:30;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  background:radial-gradient(ellipse at 50% 40%,#3a0f18 0%,#0a0306 70%);
+  background:radial-gradient(ellipse at 50% 40%,#3a0f18 0%,#0a0306 65%,#050103 100%);
   gap:0;
   transition:opacity .8s ease;
+  isolation:isolate;
 }
 .ob-deco{font-size:14px;letter-spacing:8px;color:rgba(212,168,67,.4);margin-bottom:24px;font-family:'Cinzel',serif}
 .ob-seal{
@@ -474,7 +475,7 @@ a{color:inherit;text-decoration:none}
       <span class="ob-seal-sub">OPEN</span>
     </button>
     <div class="ob-names">Rishabh <em>&amp;</em> Ananya</div>
-    <div class="ob-sub">12 · 12 · 2026</div>
+    <div class="ob-sub">11 · 12 · 2026</div>
     <div class="ob-hint">✦ &nbsp; TAP THE SEAL TO BEGIN &nbsp; ✦</div>
     <div id="gc"></div>
   </div>
@@ -489,7 +490,7 @@ a{color:inherit;text-decoration:none}
         <div class="wo-ganesh">ॐ</div>
         <div class="hero-eyebrow">TOGETHER WITH OUR FAMILIES</div>
         <div class="hero-names">Rishabh <span>&amp;</span> Ananya</div>
-        <div class="hero-date">12 · 12 · 2026</div>
+        <div class="hero-date">11 · 12 · 2026</div>
         <div class="wo-divider"></div>
         <div class="wo-invite">
           We are overjoyed to share this beautiful chapter of our lives with you.<br><br>
@@ -501,7 +502,7 @@ a{color:inherit;text-decoration:none}
 
     <!-- SLIDE 2 — Mehendi (animated video) -->
     <div class="slide" data-dur="7000">
-      <video class="vid-bg" autoplay muted playsinline loop poster="mehendi-page.webp">
+      <video class="vid-bg" id="mehendiVid" autoplay muted playsinline poster="mehendi-page.webp">
         <source src="mehendi-web.mp4" type="video/mp4">
       </video>
       <div class="occ-overlay">
@@ -652,6 +653,15 @@ function burst() {
 }
 
 /* ── SHOW SLIDE ─────────────────────────────────────── */
+// Pause-on-last-frame for mehendi video
+const mehendiVid = document.getElementById('mehendiVid');
+if (mehendiVid) {
+  mehendiVid.addEventListener('ended', () => {
+    // Stay on last frame — don't loop, don't reset
+    mehendiVid.pause();
+  });
+}
+
 function showSlide(n) {
   // Pause any video on current slide
   const prevVid = slides[cur].querySelector('video');
@@ -669,7 +679,7 @@ function showSlide(n) {
   slides[cur].classList.add('active');
   dots[cur].classList.add('active');
 
-  // Play video on new slide
+  // Play video on new slide — always restart from beginning
   const nextVid = slides[cur].querySelector('video');
   if (nextVid) { nextVid.currentTime = 0; nextVid.play().catch(()=>{}); }
 
