@@ -252,12 +252,84 @@ a{color:inherit;text-decoration:none}
 #openBtn{
   position:absolute;inset:0;z-index:30;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  background:radial-gradient(ellipse at 50% 40%,#3a0f18 0%,#0a0306 65%,#050103 100%);
+  background:
+    radial-gradient(ellipse at 50% 0%,   rgba(180,60,20,.55)  0%, transparent 55%),
+    radial-gradient(ellipse at 0%   50%,  rgba(140,30,80,.45)  0%, transparent 50%),
+    radial-gradient(ellipse at 100% 50%,  rgba(160,80,10,.45)  0%, transparent 50%),
+    radial-gradient(ellipse at 50%  100%, rgba(100,20,60,.5)   0%, transparent 55%),
+    linear-gradient(160deg, #2a0a14 0%, #1a0a24 35%, #200814 65%, #160610 100%);
   gap:0;
   transition:opacity .8s ease;
   isolation:isolate;
+  overflow:hidden;
 }
-.ob-deco{font-size:14px;letter-spacing:8px;color:rgba(212,168,67,.4);margin-bottom:24px;font-family:'Cinzel',serif}
+/* Mandala background */
+.ob-mandala{
+  position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(212,168,67,.06) 0%, transparent 60%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Ccircle cx='200' cy='200' r='180' fill='none' stroke='rgba(212,168,67,.06)' stroke-width='1'/%3E%3Ccircle cx='200' cy='200' r='145' fill='none' stroke='rgba(212,168,67,.05)' stroke-width='1'/%3E%3Ccircle cx='200' cy='200' r='110' fill='none' stroke='rgba(212,168,67,.06)' stroke-width='1'/%3E%3Ccircle cx='200' cy='200' r='75' fill='none' stroke='rgba(212,168,67,.05)' stroke-width='1'/%3E%3Ccircle cx='200' cy='200' r='40' fill='none' stroke='rgba(212,168,67,.06)' stroke-width='1'/%3E%3Cline x1='200' y1='20' x2='200' y2='380' stroke='rgba(212,168,67,.04)' stroke-width='1'/%3E%3Cline x1='20' y1='200' x2='380' y2='200' stroke='rgba(212,168,67,.04)' stroke-width='1'/%3E%3Cline x1='73' y1='73' x2='327' y2='327' stroke='rgba(212,168,67,.03)' stroke-width='1'/%3E%3Cline x1='327' y1='73' x2='73' y2='327' stroke='rgba(212,168,67,.03)' stroke-width='1'/%3E%3C/svg%3E") center/cover;
+  animation:mandalaSpin 60s linear infinite;
+}
+@keyframes mandalaSpin{to{transform:rotate(360deg)}}
+
+/* Toran at top */
+.ob-toran{
+  position:absolute;top:0;left:0;right:0;
+  display:flex;justify-content:space-around;align-items:flex-end;
+  padding:0 8px 4px;
+  background:linear-gradient(180deg,rgba(180,60,20,.3),transparent);
+  font-size:20px;z-index:2;pointer-events:none;
+}
+.ob-toran span{animation:toranSway 2.5s ease-in-out infinite}
+.ob-toran span:nth-child(2n){animation-delay:.4s}
+.ob-toran span:nth-child(3n){animation-delay:.8s}
+.ob-toran span:nth-child(4n){animation-delay:1.2s}
+@keyframes toranSway{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+
+/* Corner diyas */
+.ob-diya{
+  position:absolute;font-size:26px;z-index:2;pointer-events:none;
+  animation:diyaGlow 2s ease-in-out infinite;
+  filter:drop-shadow(0 0 10px rgba(255,140,0,.6));
+}
+.ob-diya-tl{top:52px;left:16px;animation-delay:0s}
+.ob-diya-tr{top:52px;right:16px;animation-delay:.5s}
+.ob-diya-bl{bottom:32px;left:16px;animation-delay:1s}
+.ob-diya-br{bottom:32px;right:16px;animation-delay:1.5s}
+@keyframes diyaGlow{
+  0%,100%{filter:drop-shadow(0 0 8px rgba(255,140,0,.5));transform:scale(1)}
+  50%{filter:drop-shadow(0 0 16px rgba(255,160,0,.85));transform:scale(1.08)}
+}
+
+/* Rangoli glow at bottom */
+.ob-rangoli{
+  position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  width:280px;height:120px;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 100%,
+    rgba(220,80,20,.18) 0%,
+    rgba(180,40,120,.12) 35%,
+    transparent 70%);
+  animation:rangGlow 3s ease-in-out infinite;
+}
+@keyframes rangGlow{0%,100%{opacity:.7}50%{opacity:1}}
+
+/* Colourful dots / sparkles in background */
+.ob-mandala::after{
+  content:'';
+  position:absolute;inset:0;
+  background:
+    radial-gradient(circle at 15% 25%, rgba(255,100,50,.12) 0 3px, transparent 4px),
+    radial-gradient(circle at 85% 20%, rgba(255,180,0,.12)  0 3px, transparent 4px),
+    radial-gradient(circle at 20% 75%, rgba(220,50,120,.10) 0 3px, transparent 4px),
+    radial-gradient(circle at 80% 70%, rgba(255,120,0,.12)  0 3px, transparent 4px),
+    radial-gradient(circle at 50% 15%, rgba(255,200,0,.10)  0 2px, transparent 3px),
+    radial-gradient(circle at 50% 85%, rgba(200,50,150,.10) 0 2px, transparent 3px);
+  animation:sparkTwinkle 3s ease-in-out infinite;
+}
+@keyframes sparkTwinkle{0%,100%{opacity:.4}50%{opacity:1}}
+
+.ob-deco{font-size:14px;letter-spacing:8px;color:rgba(212,168,67,.55);margin-bottom:24px;font-family:'Cinzel',serif}
 .ob-seal{
   width:110px;height:110px;border-radius:50%;
   background:radial-gradient(circle at 35% 30%,#c04458,#7e1b2d 55%,#4b0d18);
@@ -273,9 +345,9 @@ a{color:inherit;text-decoration:none}
   0%,100%{box-shadow:0 0 0 8px rgba(212,168,67,.08),0 0 0 16px rgba(212,168,67,.04),0 20px 50px rgba(0,0,0,.6)}
   50%    {box-shadow:0 0 0 10px rgba(212,168,67,.14),0 0 0 22px rgba(212,168,67,.06),0 20px 50px rgba(0,0,0,.6)}
 }
-.ob-names{font-family:'Dancing Script',cursive;font-size:clamp(28px,8vw,36px);color:#fdf6e8;margin-bottom:6px}
+.ob-names{font-family:'Dancing Script',cursive;font-size:clamp(30px,9vw,40px);color:#fdf6e8;margin-bottom:6px;text-shadow:0 4px 20px rgba(0,0,0,.5)}
 .ob-names em{color:#f0d080;font-style:normal}
-.ob-sub{font-family:'Cinzel',serif;font-size:9px;letter-spacing:3px;color:rgba(255,248,234,.4);margin-bottom:32px}
+.ob-sub{font-family:'Cinzel',serif;font-size:10px;letter-spacing:4px;color:rgba(240,208,128,.65);margin-bottom:32px}
 .ob-hint{font-family:'Cinzel',serif;font-size:8px;letter-spacing:3px;color:rgba(255,248,234,.35);animation:hintFade 2s ease-in-out infinite}
 @keyframes hintFade{0%,100%{opacity:.3}50%{opacity:.8}}
 /* Falling petals on open screen */
@@ -461,14 +533,39 @@ a{color:inherit;text-decoration:none}
 
   <!-- ── OPEN SCREEN ─────────────────────────────────────── -->
   <div id="openBtn">
-    <div class="ob-petals">
-      <span class="obp" style="left:8%;--d:9s;--dl:0s">🌸</span>
-      <span class="obp" style="left:25%;--d:7s;--dl:2s">🌺</span>
-      <span class="obp" style="left:55%;--d:11s;--dl:1s">🌸</span>
-      <span class="obp" style="left:72%;--d:8s;--dl:3s">🌹</span>
-      <span class="obp" style="left:88%;--d:10s;--dl:.5s">🌸</span>
-      <span class="obp" style="left:40%;--d:13s;--dl:4s">🌺</span>
+
+    <!-- Mandala background glow -->
+    <div class="ob-mandala" aria-hidden="true"></div>
+
+    <!-- Toran (marigold garland) at the top -->
+    <div class="ob-toran" aria-hidden="true">
+      <span>🌼</span><span>🍃</span><span>🌼</span><span>🍃</span>
+      <span>🌼</span><span>🍃</span><span>🌼</span><span>🍃</span>
+      <span>🌼</span><span>🍃</span><span>🌼</span><span>🍃</span>
+      <span>🌼</span>
     </div>
+
+    <!-- Corner diyas -->
+    <div class="ob-diya ob-diya-tl" aria-hidden="true">🪔</div>
+    <div class="ob-diya ob-diya-tr" aria-hidden="true">🪔</div>
+    <div class="ob-diya ob-diya-bl" aria-hidden="true">🪔</div>
+    <div class="ob-diya ob-diya-br" aria-hidden="true">🪔</div>
+
+    <!-- Falling petals -->
+    <div class="ob-petals">
+      <span class="obp" style="left:5%; --d:9s; --dl:0s">🌸</span>
+      <span class="obp" style="left:18%;--d:7s; --dl:2s">🌺</span>
+      <span class="obp" style="left:35%;--d:11s;--dl:1s">🌼</span>
+      <span class="obp" style="left:55%;--d:8s; --dl:3s">🌸</span>
+      <span class="obp" style="left:70%;--d:10s;--dl:.5s">🌹</span>
+      <span class="obp" style="left:85%;--d:13s;--dl:4s">🌺</span>
+      <span class="obp" style="left:92%;--d:9s; --dl:1.5s">🌸</span>
+    </div>
+
+    <!-- Rangoli glow at bottom -->
+    <div class="ob-rangoli" aria-hidden="true"></div>
+
+    <!-- Content -->
     <div class="ob-deco">✦ &nbsp; WEDDING INVITATION &nbsp; ✦</div>
     <button class="ob-seal" id="sealBtn" aria-label="Open invitation">
       <span class="ob-seal-text">RA</span>
