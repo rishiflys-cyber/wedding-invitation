@@ -93,63 +93,9 @@ a{color:inherit;text-decoration:none}
 /* ── SLIDE TRANSITION ───────────────────────────────────────────────── */
 .slide{transition:opacity .9s ease}
 
-/* ── INVITATION CARD PANEL ──────────────────────────────────────────── */
-/*  Slides in from the bottom on activation, like in the reference video */
-.card{
-  position:absolute;
-  /* Position varies per slide type — default: left-aligned portrait card */
-  left:5%;top:50%;transform:translate(0,-50%) translateY(40px);
-  width:52%;
-  background:linear-gradient(160deg,#fdf8f0,#f5ead8);
-  border-radius:6px;
-  padding:18px 14px 20px;
-  text-align:center;
-  box-shadow:4px 8px 40px rgba(0,0,0,.45),0 2px 8px rgba(0,0,0,.2);
-  opacity:0;
-  transition:opacity .6s ease .4s, transform .7s cubic-bezier(.2,.8,.25,1) .4s;
-  /* Arched top via clip-path */
-  clip-path:polygon(
-    0% 8%,
-    4% 4%, 7% 1.5%, 12% 0.3%, 20% 0%, 80% 0%,
-    88% 0.3%, 93% 1.5%, 96% 4%, 100% 8%,
-    100% 100%, 0% 100%
-  );
-}
-.slide.active .card{
-  opacity:1;
-  transform:translate(0,-50%) translateY(0);
-}
-
-/* Full-width card variant (for intro / family / closing slides) */
-.card.wide{
-  left:50%;top:50%;width:84%;
-  transform:translate(-50%,-50%) translateY(40px);
-  clip-path:polygon(
-    0% 5%,2% 2%,5% 0.5%,10% 0%,90% 0%,
-    95% 0.5%,98% 2%,100% 5%,
-    100% 100%,0% 100%
-  );
-}
-.slide.active .card.wide{
-  transform:translate(-50%,-50%) translateY(0);
-}
-
-/* Floral arch border drawn in CSS on the card */
-.card::before{
-  content:'';
-  position:absolute;inset:5px;
-  border:1px solid rgba(180,100,60,.25);
-  border-radius:4px;
-  background:
-    radial-gradient(ellipse at 50% 0%,rgba(180,100,60,.08) 0%,transparent 60%);
-  pointer-events:none;
-}
-/* Decorative corner flowers */
-.card::after{
-  content:'✿';
-  position:absolute;top:8px;right:8px;
-  font-size:10px;color:rgba(160,80,40,.35);
-}
+/* ── CARD — hidden, replaced by text overlay ────────────────────────── */
+.card{ display:none; }
+.card.wide{ display:none; }
 
 /* ── CARD CONTENT ───────────────────────────────────────────────────── */
 .card-ganesh{
@@ -347,6 +293,102 @@ a{color:inherit;text-decoration:none}
   100%{transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y))) scale(.05);opacity:0}
 }
 
+/* ── CINEMATIC TEXT OVERLAY (replaces card) ─────────────────────────── */
+.occ-overlay{
+  position:absolute;bottom:0;left:0;right:0;z-index:10;
+  padding:32px 24px max(36px,env(safe-area-inset-bottom,36px));
+  background:linear-gradient(0deg,rgba(0,0,0,.88) 0%,rgba(0,0,0,.55) 55%,transparent 100%);
+  text-align:center;
+}
+.occ-eyebrow{
+  font-family:'Cinzel',serif;font-size:9px;letter-spacing:5px;
+  color:rgba(240,208,128,.8);margin-bottom:8px;
+  opacity:0;transform:translateY(10px);
+  transition:opacity .6s ease .3s,transform .6s ease .3s;
+}
+.occ-title{
+  font-family:'Dancing Script',cursive;
+  font-size:clamp(42px,12vw,58px);font-weight:700;
+  color:#fff;line-height:1;margin-bottom:10px;
+  text-shadow:0 4px 24px rgba(0,0,0,.5);
+  opacity:0;transform:translateY(14px);
+  transition:opacity .7s ease .5s,transform .7s ease .5s;
+}
+.occ-line{
+  width:50px;height:1px;margin:0 auto 10px;
+  background:linear-gradient(90deg,transparent,rgba(240,208,128,.7),transparent);
+  opacity:0;transition:opacity .6s ease .7s;
+}
+.occ-date{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(16px,4.5vw,20px);font-weight:600;
+  color:#fdf6e8;margin-bottom:3px;
+  opacity:0;transform:translateY(8px);
+  transition:opacity .6s ease .8s,transform .6s ease .8s;
+}
+.occ-time{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(13px,3.5vw,15px);
+  color:rgba(255,248,234,.7);font-style:italic;
+  opacity:0;transform:translateY(8px);
+  transition:opacity .6s ease .95s,transform .6s ease .95s;
+}
+.occ-venue{
+  font-family:'Cinzel',serif;font-size:9px;letter-spacing:2.5px;
+  color:rgba(240,208,128,.75);margin-top:8px;
+  opacity:0;transform:translateY(8px);
+  transition:opacity .6s ease 1.1s,transform .6s ease 1.1s;
+}
+/* Trigger animations when slide is active */
+.slide.active .occ-eyebrow,
+.slide.active .occ-title,
+.slide.active .occ-line,
+.slide.active .occ-date,
+.slide.active .occ-time,
+.slide.active .occ-venue{
+  opacity:1;transform:translateY(0);
+}
+
+/* ── WIDE OVERLAY for family/closing slides ─────────────────────────── */
+.wide-overlay{
+  position:absolute;inset:0;z-index:10;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:60px 28px max(40px,env(safe-area-inset-bottom,40px));
+  background:linear-gradient(180deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,.35) 50%,rgba(0,0,0,.75) 100%);
+  text-align:center;gap:10px;
+}
+.wo-ganesh{font-size:22px;color:rgba(240,208,128,.8);opacity:0;transition:opacity .6s ease .2s}
+.wo-invite{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:clamp(14px,4vw,17px);color:rgba(255,248,234,.8);
+  line-height:1.7;max-width:320px;
+  opacity:0;transform:translateY(10px);transition:opacity .7s ease .4s,transform .7s ease .4s;
+}
+.wo-divider{width:60px;height:1px;background:linear-gradient(90deg,transparent,rgba(240,208,128,.6),transparent);opacity:0;transition:opacity .6s ease .6s}
+.wo-name{
+  font-family:'Dancing Script',cursive;font-size:clamp(28px,8vw,38px);font-weight:700;
+  color:#fff;line-height:1.15;
+  opacity:0;transform:translateY(10px);
+}
+.wo-name:nth-of-type(1){transition:opacity .7s ease .7s,transform .7s ease .7s}
+.wo-name:nth-of-type(2){transition:opacity .7s ease 1.1s,transform .7s ease 1.1s}
+.wo-parents{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(11px,3vw,13px);
+  color:rgba(255,248,234,.65);line-height:1.6;
+  opacity:0;transition:opacity .6s ease .9s;
+}
+.wo-parents:nth-of-type(2){transition-delay:1.3s}
+.wo-with{
+  font-family:'Dancing Script',cursive;font-size:22px;
+  color:rgba(240,208,128,.9);
+  opacity:0;transition:opacity .6s ease 1s;
+}
+.slide.active .wo-ganesh,.slide.active .wo-invite,
+.slide.active .wo-divider,.slide.active .wo-name,
+.slide.active .wo-parents,.slide.active .wo-with{
+  opacity:1;transform:translateY(0);
+}
+
 /* ── SWIPE HINT ARROW ───────────────────────────────────────────────── */
 #swipeHint{
   position:absolute;bottom:max(56px,env(safe-area-inset-bottom,56px));
@@ -397,103 +439,89 @@ a{color:inherit;text-decoration:none}
   <!-- ── SLIDES ──────────────────────────────────────────── -->
   <div id="slides">
 
-    <!-- SLIDE 1 — Invitation + family names — wedding bg -->
-    <div class="slide" data-dur="7000">
+    <!-- SLIDE 1 — Invitation + family names -->
+    <div class="slide" data-dur="8000">
       <div class="bg" style="background-image:url('wedding-page.webp')"></div>
-      <div class="bg-overlay"></div>
-      <div class="card wide">
-        <div class="card-ganesh">ॐ</div>
-        <div class="card-invite">With the blessings of our beloved elders, we joyfully invite you to celebrate the wedding of</div>
-        <div class="card-divider"></div>
-        <div class="card-names-main">Rishabh Chattopadhyay</div>
-        <div class="card-parents">S/O Partha Sarathi Chattopadhyay<br>&amp; Soma Chattopadhyay</div>
-        <div class="card-with">♥ with ♥</div>
-        <div class="card-names-main">Ananya Dash (Acharya)</div>
-        <div class="card-parents">D/O Atanu Kumar Dash (Acharya)<br>&amp; Aparna Dash (Acharya)</div>
+      <div class="wide-overlay">
+        <div class="wo-ganesh">ॐ</div>
+        <div class="wo-invite">With the blessings of our beloved elders, we joyfully invite you to celebrate the wedding of</div>
+        <div class="wo-divider"></div>
+        <div class="wo-name">Rishabh Chattopadhyay</div>
+        <div class="wo-parents">S/O Partha Sarathi Chattopadhyay &amp; Soma Chattopadhyay</div>
+        <div class="wo-with">♥ with ♥</div>
+        <div class="wo-name">Ananya Dash (Acharya)</div>
+        <div class="wo-parents">D/O Atanu Kumar Dash (Acharya) &amp; Aparna Dash (Acharya)</div>
       </div>
     </div>
 
     <!-- SLIDE 2 — Mehendi (animated video) -->
     <div class="slide" data-dur="7000">
-      <!-- Looping animated video background -->
       <video class="vid-bg" autoplay muted playsinline loop poster="mehendi-page.webp">
         <source src="mehendi-web.mp4" type="video/mp4">
       </video>
-      <div class="bg-overlay vid-overlay"></div>
-      <div class="card">
-        <div class="card-event">Mehendi</div>
-        <div class="card-divider"></div>
-        <div class="card-label">Date</div>
-        <div class="card-value">10 December 2026</div>
-        <div class="card-label">Time</div>
-        <div class="card-value">5:00 PM Onwards</div>
-        <div class="card-label">Venue</div>
-        <div class="card-value">The Circle Club<br>Kaikhali, Kolkata</div>
+      <div class="occ-overlay">
+        <div class="occ-eyebrow">✦ &nbsp; THE CELEBRATIONS BEGIN &nbsp; ✦</div>
+        <div class="occ-title">Mehendi</div>
+        <div class="occ-line"></div>
+        <div class="occ-date">10 December 2026</div>
+        <div class="occ-time">5:00 PM Onwards</div>
+        <div class="occ-venue">THE CIRCLE CLUB &nbsp;·&nbsp; KAIKHALI, KOLKATA</div>
       </div>
     </div>
 
     <!-- SLIDE 3 — Sangeet -->
     <div class="slide" data-dur="6500">
       <div class="bg" style="background-image:url('sangeet-page.webp')"></div>
-      <div class="bg-overlay"></div>
-      <div class="card">
-        <div class="card-event">Sangeet</div>
-        <div class="card-divider"></div>
-        <div class="card-label">Date</div>
-        <div class="card-value">10 December 2026</div>
-        <div class="card-label">Time</div>
-        <div class="card-value">5:00 PM Onwards</div>
-        <div class="card-label">Venue</div>
-        <div class="card-value">The Circle Club<br>Kaikhali, Kolkata</div>
+      <div class="occ-overlay">
+        <div class="occ-eyebrow">✦ &nbsp; MUSIC &nbsp;·&nbsp; DANCE &nbsp;·&nbsp; CELEBRATION &nbsp; ✦</div>
+        <div class="occ-title">Sangeet</div>
+        <div class="occ-line"></div>
+        <div class="occ-date">10 December 2026</div>
+        <div class="occ-time">5:00 PM Onwards</div>
+        <div class="occ-venue">THE CIRCLE CLUB &nbsp;·&nbsp; KAIKHALI, KOLKATA</div>
       </div>
     </div>
 
     <!-- SLIDE 4 — Haldi -->
     <div class="slide" data-dur="6500">
       <div class="bg" style="background-image:url('haldi-page.webp')"></div>
-      <div class="bg-overlay"></div>
-      <div class="card">
-        <div class="card-event">Haldi</div>
-        <div class="card-divider"></div>
-        <div class="card-label">Date</div>
-        <div class="card-value">11 December 2026</div>
-        <div class="card-label">Time</div>
-        <div class="card-value">11:00 AM Onwards</div>
-        <div class="card-label">Venue</div>
-        <div class="card-value">The Circle Club<br>Kaikhali, Kolkata</div>
+      <div class="occ-overlay">
+        <div class="occ-eyebrow">✦ &nbsp; TURMERIC &nbsp;·&nbsp; BLESSINGS &nbsp;·&nbsp; JOY &nbsp; ✦</div>
+        <div class="occ-title">Haldi</div>
+        <div class="occ-line"></div>
+        <div class="occ-date">11 December 2026</div>
+        <div class="occ-time">11:00 AM Onwards</div>
+        <div class="occ-venue">THE CIRCLE CLUB &nbsp;·&nbsp; KAIKHALI, KOLKATA</div>
       </div>
     </div>
 
     <!-- SLIDE 5 — Wedding Ceremony -->
-    <div class="slide" data-dur="7500">
+    <div class="slide" data-dur="7000">
       <div class="bg" style="background-image:url('wedding-page.webp')"></div>
-      <div class="bg-overlay"></div>
-      <div class="card wide">
-        <div class="card-event">Wedding Ceremony</div>
-        <div class="card-divider"></div>
-        <div class="card-invite">Request the honour of your presence as they unite in the sacred bond of marriage</div>
-        <div class="card-divider"></div>
-        <div class="card-label">Date</div>
-        <div class="card-value">12 December 2026 (Friday)<br><em style="font-size:.9em;color:#7a3a1a">11 Agrahayana, Bengali Calendar</em></div>
-        <div class="card-label">Muhurat</div>
-        <div class="card-value">2:30 AM Onwards</div>
-        <div class="card-label">Venue</div>
-        <div class="card-value">The Circle Club<br>VIP Road, Kaikhali, Kolkata</div>
+      <div class="occ-overlay">
+        <div class="occ-eyebrow">✦ &nbsp; 11 AGRAHAYANA &nbsp;·&nbsp; BENGALI CALENDAR &nbsp; ✦</div>
+        <div class="occ-title">Wedding</div>
+        <div class="occ-line"></div>
+        <div class="occ-date">12 December 2026 · Friday</div>
+        <div class="occ-time">Lagna &nbsp;·&nbsp; 2:30 AM</div>
+        <div class="occ-venue">THE CIRCLE CLUB &nbsp;·&nbsp; VIP ROAD, KAIKHALI</div>
       </div>
     </div>
 
     <!-- SLIDE 6 — Closing -->
     <div class="slide" data-dur="99999">
-      <div class="bg" style="background-image:url('collage.webp');background-size:cover;filter:brightness(.55)"></div>
-      <div class="bg-overlay" style="background:linear-gradient(180deg,rgba(0,0,0,.5) 0%,rgba(0,0,0,.2) 50%,rgba(0,0,0,.65) 100%)"></div>
-      <div class="card wide">
-        <div class="card-closing-names">Rishabh &amp; Ananya</div>
-        <div class="card-tagline">Two hearts. Two families.<br>One beautiful beginning.</div>
-        <div class="card-divider"></div>
-        <div class="card-bless">Your presence, blessings &amp; love<br>will mean the world to us.</div>
-        <div class="card-fam">Partha Sarathi Chattopadhyay &amp; Soma Chattopadhyay</div>
-        <div class="card-fam">Atanu Kumar Dash (Acharya) &amp; Aparna Dash (Acharya)</div>
-        <a class="card-map" href="https://maps.google.com/?q=The+Circle+Club+VIP+Road+Kaikhali+Kolkata" target="_blank" rel="noopener">📍 THE CIRCLE CLUB, KAIKHALI</a>
+      <div class="bg" style="background-image:url('collage.webp')"></div>
+      <div class="wide-overlay" style="background:linear-gradient(180deg,rgba(0,0,0,.6) 0%,rgba(0,0,0,.3) 45%,rgba(0,0,0,.8) 100%)">
+        <div class="wo-name" style="font-size:clamp(32px,10vw,48px)">Rishabh &amp; Ananya</div>
+        <div class="wo-invite" style="font-style:italic">Two hearts. Two families. One beautiful beginning.</div>
+        <div class="wo-divider"></div>
+        <div class="wo-invite">Your presence, blessings &amp; love will mean the world to us.</div>
+        <div class="wo-parents" style="transition-delay:.8s">Partha Sarathi Chattopadhyay &amp; Soma Chattopadhyay</div>
+        <div class="wo-with">✦</div>
+        <div class="wo-parents" style="transition-delay:1s">Atanu Kumar Dash (Acharya) &amp; Aparna Dash (Acharya)</div>
+        <a href="https://maps.google.com/?q=The+Circle+Club+VIP+Road+Kaikhali+Kolkata" target="_blank" rel="noopener"
+           style="margin-top:12px;font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;color:rgba(240,208,128,.85);border:1px solid rgba(240,208,128,.3);padding:10px 20px;border-radius:999px;opacity:0;transition:opacity .6s ease 1.2s"
+           class="wo-invite">📍 &nbsp; THE CIRCLE CLUB, KAIKHALI</a>
       </div>
     </div>
 
