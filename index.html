@@ -49,7 +49,7 @@ a{color:inherit;text-decoration:none}
 .ld-txt{font-family:'Cinzel',serif;font-size:9px;letter-spacing:4px;color:rgba(212,168,67,.5)}
 
 /* ── SLIDE STACK ────────────────────────────────────────────────────── */
-#slides{position:absolute;inset:0;z-index:1}
+#slides{position:absolute;inset:0;z-index:1;background:#0a0306}
 
 /* ── INDIVIDUAL SLIDE ───────────────────────────────────────────────── */
 .slide{
@@ -250,10 +250,10 @@ a{color:inherit;text-decoration:none}
 
 /* ── OPEN SCREEN: BENGALI WEDDING CARD ───────────────────────────────── */
 #openBtn{
-  position:fixed;inset:0;z-index:30;
-  max-width:430px;margin:0 auto;
+  /* position:absolute inside #app so it covers exactly the app — no bleed */
+  position:absolute;inset:0;z-index:50;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  /* Authentic Bengali wedding card — bright festival red */
+  /* Authentic Bengali wedding card — bright festival red, fully opaque */
   background:#c41e3a;
   gap:0;
   transition:opacity .8s ease;
@@ -846,10 +846,11 @@ async function open() {
   try { await audio.play(); mBtn.textContent = '⏸'; } catch(e) {}
   audioStarted = true;
 
+  openBtn.style.transition = 'opacity .6s ease';
   openBtn.style.opacity = '0';
-  openBtn.style.transition = 'opacity .8s ease';
+  openBtn.style.pointerEvents = 'none';
   setTimeout(() => {
-    openBtn.style.display = 'none';
+    openBtn.style.display = 'none';  /* completely remove — no bleed through */
     showSlide(0);
     setTimeout(() => { swipe.style.opacity = '1'; }, 3000);
   }, 800);
