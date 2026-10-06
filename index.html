@@ -80,6 +80,16 @@ a{color:inherit;text-decoration:none}
   background:linear-gradient(180deg,rgba(0,0,0,.22) 0%,rgba(0,0,0,.10) 40%,rgba(0,0,0,.35) 100%);
 }
 
+/* ── VIDEO BACKGROUND ───────────────────────────────────────────────── */
+.vid-bg{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center;
+  z-index:0;
+}
+.vid-overlay{
+  background:linear-gradient(180deg,rgba(0,0,0,.15) 0%,rgba(0,0,0,.05) 40%,rgba(0,0,0,.55) 100%);
+}
+
 /* ── SLIDE TRANSITION ───────────────────────────────────────────────── */
 .slide{transition:opacity .9s ease}
 
@@ -403,10 +413,13 @@ a{color:inherit;text-decoration:none}
       </div>
     </div>
 
-    <!-- SLIDE 2 — Mehendi -->
-    <div class="slide" data-dur="6500">
-      <div class="bg" style="background-image:url('mehendi-page.webp')"></div>
-      <div class="bg-overlay"></div>
+    <!-- SLIDE 2 — Mehendi (animated video) -->
+    <div class="slide" data-dur="7000">
+      <!-- Looping animated video background -->
+      <video class="vid-bg" autoplay muted playsinline loop poster="mehendi-page.webp">
+        <source src="mehendi-web.mp4" type="video/mp4">
+      </video>
+      <div class="bg-overlay vid-overlay"></div>
       <div class="card">
         <div class="card-event">Mehendi</div>
         <div class="card-divider"></div>
@@ -559,6 +572,10 @@ function burst() {
 
 /* ── SHOW SLIDE ─────────────────────────────────────── */
 function showSlide(n) {
+  // Pause any video on current slide
+  const prevVid = slides[cur].querySelector('video');
+  if (prevVid) prevVid.pause();
+
   slides[cur].classList.remove('active');
   slides[cur].classList.add('prev');
   dots[cur].classList.remove('active');
@@ -570,6 +587,10 @@ function showSlide(n) {
   cur = n;
   slides[cur].classList.add('active');
   dots[cur].classList.add('active');
+
+  // Play video on new slide
+  const nextVid = slides[cur].querySelector('video');
+  if (nextVid) { nextVid.currentTime = 0; nextVid.play().catch(()=>{}); }
 
   clearTimeout(timer);
   const dur = parseInt(slides[cur].dataset.dur) || 6500;
