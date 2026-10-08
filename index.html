@@ -771,6 +771,24 @@ html, body {
   max-width: 270px;
   opacity: 0.85;
 }
+.rsvp-name-input-wrap {
+  width: 100%;
+  max-width: 280px;
+}
+.rsvp-name-input {
+  width: 100%;
+  background: rgba(255,200,60,0.07);
+  border: 1px solid rgba(201,168,76,0.35);
+  border-radius: 8px;
+  color: #e8d5a3;
+  font-family: 'Georgia', serif;
+  font-size: 16px;
+  padding: 12px 16px;
+  text-align: center;
+  outline: none;
+}
+.rsvp-name-input::placeholder { opacity: 0.4; }
+.rsvp-name-input:focus { border-color: rgba(240,200,64,0.6); }
 .rsvp-done-tap {
   font-size: 9px;
   letter-spacing: 3px;
@@ -1042,23 +1060,27 @@ html, body {
 <div id="screen-invite" class="screen" onclick="goTo('screen-rsvp')">
   <div class="invite-screen-wrap">
 
-    <div class="invite-top-border">✦ You are invited ✦</div>
+    <div class="invite-top-border">✦ A heartfelt invitation ✦</div>
 
-    <div class="invite-preamble">With joy in our hearts</div>
-
-    <div>
-      <div class="invite-dear">Dear</div>
-      <div class="invite-name" id="guest-name">Friend</div>
-    </div>
+    <div class="invite-preamble">Some moments are meant to be shared</div>
 
     <div class="invite-divider"></div>
 
     <div class="invite-body">
-      We joyfully request your presence<br>
-      to celebrate the <span class="highlight">sacred union</span> of<br><br>
+      There are people in our lives whose presence<br>
+      doesn't just fill a room —<br>
+      it makes every moment <span class="highlight">feel complete.</span><br><br>
+      You are one of those people.<br><br>
+      And so, with hearts full of love,<br>
+      we humbly ask you to be with us<br>
+      as two souls become one —<br><br>
       <span class="highlight">Rishabh Chattopadhyay</span><br>
-      &amp;<br>
-      <span class="highlight">Ananya Dash</span>
+      <span style="opacity:0.5;font-size:13px">&amp;</span><br>
+      <span class="highlight">Ananya Dash</span><br><br>
+      <span style="font-size:13px;opacity:0.65;font-style:italic">
+        This day will be lived once,<br>but remembered forever.<br>
+        It wouldn't be the same without you.
+      </span>
     </div>
 
     <div class="invite-parents">
@@ -1089,7 +1111,9 @@ html, body {
     <div class="rsvp-ornament">✦</div>
     <div class="rsvp-title">Will you join us?</div>
     <div class="rsvp-sub">Kindly RSVP so we can celebrate together</div>
-    <div class="rsvp-name-display" id="rsvp-name-display"></div>
+    <div class="rsvp-name-input-wrap" id="rsvp-name-input-wrap">
+      <input type="text" id="rsvp-name-input" class="rsvp-name-input" placeholder="Your name" autocomplete="name">
+    </div>
     <div class="rsvp-buttons">
       <button class="rsvp-btn rsvp-yes" onclick="submitRSVP('yes')">
         <span class="rsvp-btn-icon">🎉</span>
@@ -1171,10 +1195,14 @@ const RSVP_ENTRY_NAME = 'entry.000000001'; // replace with real entry ID
 const RSVP_ENTRY_RESP = 'entry.000000002'; // replace with real entry ID
 
 function submitRSVP(answer) {
+  const nameInput = document.getElementById('rsvp-name-input');
+  const guestName = (nameInput && nameInput.value.trim()) || _guestFull || 'Guest';
   const buttons = document.querySelector('.rsvp-buttons');
+  const nameWrap = document.getElementById('rsvp-name-input-wrap');
   const done = document.getElementById('rsvp-done');
   const icon = document.getElementById('rsvp-done-icon');
   const text = document.getElementById('rsvp-done-text');
+  if (nameWrap) nameWrap.style.display = 'none';
 
   buttons.style.display = 'none';
   done.style.display = 'flex';
@@ -1190,7 +1218,7 @@ function submitRSVP(answer) {
   // Submit to Google Form silently (no-cors)
   if (RSVP_FORM_URL.includes('YOUR_FORM_ID')) return; // skip if not set up yet
   const body = new URLSearchParams();
-  body.append(RSVP_ENTRY_NAME, _guestFull);
+  body.append(RSVP_ENTRY_NAME, guestName);
   body.append(RSVP_ENTRY_RESP, answer === 'yes' ? 'Attending' : 'Not Attending');
   fetch(RSVP_FORM_URL, { method: 'POST', mode: 'no-cors', body }).catch(() => {});
 }
