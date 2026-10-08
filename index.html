@@ -852,13 +852,19 @@ html, body {
       <div class="seal-outer">
         <div class="seal-ring"></div>
         <div class="seal-monogram">
-          <svg width="90" height="80" viewBox="0 0 90 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Large R — left-anchored, tall -->
-            <text x="2" y="72" font-family="'IM Fell English SC', Georgia, serif"
-              font-size="78" fill="#1a0800">R</text>
-            <!-- A — shifted left to tuck inside R's leg, slightly smaller -->
-            <text x="34" y="72" font-family="'IM Fell English SC', Georgia, serif"
-              font-size="62" fill="#1a0800">A</text>
+          <svg width="96" height="88" viewBox="0 0 96 88" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- R: thick vertical stem -->
+            <rect x="8" y="8" width="9" height="72" rx="2" fill="#1a0800"/>
+            <!-- R: top bowl (arch) -->
+            <path d="M17 8 Q52 8 52 26 Q52 44 17 44" stroke="#1a0800" stroke-width="9" fill="none" stroke-linecap="round"/>
+            <!-- R: diagonal leg kicking right -->
+            <path d="M24 44 L54 80" stroke="#1a0800" stroke-width="9" stroke-linecap="round"/>
+            <!-- A: left leg (starts inside R bowl area, overlaps with R) -->
+            <path d="M42 80 L62 16" stroke="#1a0800" stroke-width="7.5" stroke-linecap="round"/>
+            <!-- A: right leg -->
+            <path d="M62 16 L83 80" stroke="#1a0800" stroke-width="7.5" stroke-linecap="round"/>
+            <!-- A: crossbar -->
+            <path d="M50 56 L75 56" stroke="#1a0800" stroke-width="6" stroke-linecap="round"/>
           </svg>
         </div>
         <div class="seal-subtext">✿ open ✿</div>
