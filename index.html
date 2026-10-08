@@ -364,7 +364,11 @@ html, body {
    SCREEN 2 — GANESH (full screen after reveal)
 ══════════════════════════════════════════ */
 #screen-ganesh {
-  background: radial-gradient(ellipse at 50% 45%, #3d0808 0%, #1a0000 55%, #000 100%);
+  background:
+    radial-gradient(ellipse at 20% 0%, rgba(255,160,30,0.18) 0%, transparent 40%),
+    radial-gradient(ellipse at 80% 0%, rgba(255,160,30,0.18) 0%, transparent 40%),
+    radial-gradient(ellipse at 50% 45%, #6b1a00 0%, #3a0800 40%, #1a0400 70%, #080200 100%);
+  overflow: hidden;
 }
 
 .ganesh-container {
@@ -535,6 +539,128 @@ html, body {
   margin-top: 4px;
 }
 
+/* ── HANGING DIYAS ── */
+.diya-left, .diya-right {
+  position: absolute;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+.diya-left  { left: 18px; }
+.diya-right { right: 18px; }
+
+/* Chain links */
+.diya-chain {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0px;
+}
+.diya-chain-link {
+  width: 2px;
+  height: 6px;
+  background: linear-gradient(180deg, #f0c840, #c9a84c, #f0c840);
+  border-radius: 1px;
+  opacity: 0.9;
+}
+.diya-chain-bead {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ffe87a, #c9a84c);
+  box-shadow: 0 0 4px rgba(255,210,50,0.6);
+}
+
+/* Lantern body */
+.diya-lantern {
+  position: relative;
+  width: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: diya-sway 3.5s ease-in-out infinite;
+  transform-origin: top center;
+}
+.diya-right .diya-lantern {
+  animation-delay: -1.2s;
+}
+
+@keyframes diya-sway {
+  0%,100% { transform: rotate(-4deg); }
+  50%      { transform: rotate(4deg); }
+}
+
+.diya-cap {
+  width: 30px; height: 7px;
+  background: linear-gradient(180deg, #f0c840 0%, #c9a84c 100%);
+  border-radius: 3px 3px 0 0;
+  box-shadow: 0 -2px 6px rgba(255,200,50,0.5);
+}
+.diya-body {
+  width: 22px;
+  height: 40px;
+  background: linear-gradient(180deg,
+    rgba(255,230,120,0.15) 0%,
+    rgba(255,180,40,0.25) 40%,
+    rgba(255,140,0,0.2) 100%
+  );
+  border: 1.5px solid rgba(255,200,60,0.7);
+  border-top: none; border-bottom: none;
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow:
+    0 0 12px rgba(255,160,0,0.5),
+    inset 0 0 10px rgba(255,200,80,0.3);
+}
+/* Vertical gold ribs */
+.diya-body::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0px, transparent 4px,
+    rgba(255,200,60,0.25) 4px, rgba(255,200,60,0.25) 5px
+  );
+}
+/* Flame inside */
+.diya-flame {
+  position: relative;
+  z-index: 2;
+  font-size: 14px;
+  line-height: 1;
+  filter: drop-shadow(0 0 6px rgba(255,160,0,0.9));
+  animation: flame-flicker 1.2s ease-in-out infinite;
+}
+.diya-right .diya-flame { animation-delay: -0.4s; }
+@keyframes flame-flicker {
+  0%,100% { transform: scale(1) translateY(0); opacity: 1; }
+  30%      { transform: scale(1.1,1.2) translateY(-1px); opacity: 0.85; }
+  60%      { transform: scale(0.95,1.1) translateY(-1px); opacity: 1; }
+}
+.diya-base {
+  width: 30px; height: 7px;
+  background: linear-gradient(180deg, #c9a84c 0%, #f0c840 100%);
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 4px 10px rgba(255,160,0,0.5), 0 0 20px rgba(255,140,0,0.3);
+}
+/* Warm glow cast on background */
+.diya-glow {
+  position: absolute;
+  top: 30px;
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,150,0,0.25) 0%, transparent 70%);
+  animation: diya-sway 3.5s ease-in-out infinite;
+  transform-origin: top center;
+  pointer-events: none;
+  z-index: 0;
+}
+.diya-right .diya-glow { animation-delay: -1.2s; }
+
 /* All placeholder screens keep same dark base */
 #screen-invite, #screen-hero {
   background: #0a0500;
@@ -589,6 +715,45 @@ html, body {
      SCREEN 2 — GANESH
 ══════════════════════════════════════════ -->
 <div id="screen-ganesh" class="screen" onclick="goTo('screen-invite')">
+
+  <!-- Hanging diya — left corner -->
+  <div class="diya-left">
+    <div class="diya-glow"></div>
+    <div class="diya-chain">
+      <div class="diya-chain-bead"></div>
+      <div class="diya-chain-link"></div>
+      <div class="diya-chain-bead"></div>
+      <div class="diya-chain-link"></div>
+      <div class="diya-chain-bead"></div>
+      <div class="diya-chain-link"></div>
+      <div class="diya-chain-bead"></div>
+    </div>
+    <div class="diya-lantern">
+      <div class="diya-cap"></div>
+      <div class="diya-body"><div class="diya-flame">🔥</div></div>
+      <div class="diya-base"></div>
+    </div>
+  </div>
+
+  <!-- Hanging diya — right corner -->
+  <div class="diya-right">
+    <div class="diya-glow"></div>
+    <div class="diya-chain">
+      <div class="diya-chain-bead"></div>
+      <div class="diya-chain-link"></div>
+      <div class="diya-chain-bead"></div>
+      <div class="diya-chain-link"></div>
+      <div class="diya-chain-bead"></div>
+      <div class="diya-chain-link"></div>
+      <div class="diya-chain-bead"></div>
+    </div>
+    <div class="diya-lantern">
+      <div class="diya-cap"></div>
+      <div class="diya-body"><div class="diya-flame">🔥</div></div>
+      <div class="diya-base"></div>
+    </div>
+  </div>
+
   <div class="ganesh-container">
     <div class="om-symbol">ॐ</div>
     <div class="ganesh-title">
