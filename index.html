@@ -46,29 +46,26 @@ html, body {
    SCREEN 1 — ENVELOPE
 ══════════════════════════════════════════ */
 #screen-envelope {
-  background: radial-gradient(ellipse at 50% 50%,
-    #1a0a00 0%, #080010 35%, #000008 65%, #000 100%);
+  background: radial-gradient(ellipse at 50% 50%, #1a0005 0%, #0a0002 50%, #000 100%);
   overflow: hidden;
   z-index: 10;
 }
 
-/* Multi-color ambient glow at center — like a gem catching light */
+/* Center glow — gold meets red */
 #screen-envelope::before {
   content: '';
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(ellipse at 50% 48%,
-      rgba(255,180,0,0.12) 0%,
-      rgba(180,0,80,0.08) 25%,
-      rgba(80,0,180,0.06) 50%,
-      transparent 70%);
+  background: radial-gradient(ellipse at 50% 48%,
+    rgba(255,200,50,0.14) 0%,
+    rgba(200,10,30,0.10) 35%,
+    transparent 65%);
   z-index: 0;
   animation: env-breathe 3s ease-in-out infinite;
 }
 @keyframes env-breathe {
   0%,100% { opacity: 0.7; transform: scale(1); }
-  50%      { opacity: 1;   transform: scale(1.05); }
+  50%      { opacity: 1;   transform: scale(1.06); }
 }
 
 /* The 4 envelope flaps */
@@ -105,48 +102,48 @@ html, body {
   pointer-events: none;
 }
 
-/* Top flap — royal sapphire to violet */
+/* Top flap — deep crimson, lighter face */
 .env-flap-top {
   top: 0; left: 0; right: 0;
   height: 50%;
   clip-path: polygon(0 0, 100% 0, 60% 100%, 50% 92%, 40% 100%);
-  background: linear-gradient(160deg, #6a0dad 0%, #3d0070 40%, #1a003a 80%, #0a0015 100%);
+  background: linear-gradient(175deg, #e8102a 0%, #b00018 35%, #700010 70%, #300006 100%);
   transform-origin: top center;
-  box-shadow: 0 12px 60px rgba(106,13,173,0.6), inset 0 -2px 0 rgba(255,200,255,0.15);
+  box-shadow: 0 16px 60px rgba(220,10,30,0.55);
 }
-/* Bottom flap — deep emerald */
+/* Bottom flap — deep crimson, darker face */
 .env-flap-bottom {
   bottom: 0; left: 0; right: 0;
   height: 50%;
   clip-path: polygon(40% 0, 50% 8%, 60% 0, 100% 100%, 0 100%);
-  background: linear-gradient(200deg, #006b3c 0%, #003d22 40%, #001a10 80%, #000a06 100%);
+  background: linear-gradient(5deg, #e8102a 0%, #b00018 35%, #700010 70%, #300006 100%);
   transform-origin: bottom center;
-  box-shadow: 0 -12px 60px rgba(0,107,60,0.5), inset 0 2px 0 rgba(100,255,180,0.12);
+  box-shadow: 0 -16px 60px rgba(220,10,30,0.55);
 }
-/* Left flap — blazing saffron to crimson */
+/* Left flap — gold, warm light */
 .env-flap-left {
   top: 0; left: 0; bottom: 0;
   width: 50%;
   clip-path: polygon(0 0, 100% 40%, 92% 50%, 100% 60%, 0 100%);
-  background: linear-gradient(110deg, #c05000 0%, #8b2200 35%, #4a0a00 70%, #1a0300 100%);
+  background: linear-gradient(105deg, #ffe066 0%, #d4920a 35%, #9a6200 70%, #3d2200 100%);
   transform-origin: left center;
-  box-shadow: 12px 0 60px rgba(180,60,0,0.5), inset -2px 0 0 rgba(255,180,80,0.15);
+  box-shadow: 16px 0 60px rgba(212,146,10,0.55);
 }
-/* Right flap — royal crimson to deep rose */
+/* Right flap — gold, warm light */
 .env-flap-right {
   top: 0; right: 0; bottom: 0;
   width: 50%;
   clip-path: polygon(0 40%, 100% 0, 100% 100%, 0 60%, 8% 50%);
-  background: linear-gradient(250deg, #b5003a 0%, #7a0025 35%, #3d0012 70%, #150005 100%);
+  background: linear-gradient(255deg, #ffe066 0%, #d4920a 35%, #9a6200 70%, #3d2200 100%);
   transform-origin: right center;
-  box-shadow: -12px 0 60px rgba(181,0,58,0.5), inset 2px 0 0 rgba(255,120,160,0.15);
+  box-shadow: -16px 0 60px rgba(212,146,10,0.55);
 }
 
 /* Gold seam lines glow on each flap edge */
-.env-flap-top::after    { box-shadow: inset 0 -2px 0 rgba(255,215,80,0.5), inset 0 0 30px rgba(255,180,0,0.08); }
-.env-flap-bottom::after { box-shadow: inset 0  2px 0 rgba(255,215,80,0.5), inset 0 0 30px rgba(255,180,0,0.08); }
-.env-flap-left::after   { box-shadow: inset -2px 0 0 rgba(255,215,80,0.5), inset 0 0 30px rgba(255,180,0,0.08); }
-.env-flap-right::after  { box-shadow: inset  2px 0 0 rgba(255,215,80,0.5), inset 0 0 30px rgba(255,180,0,0.08); }
+.env-flap-top::after    { box-shadow: inset 0 -2px 0 rgba(255,220,80,0.6), inset 0 0 40px rgba(255,180,0,0.1); }
+.env-flap-bottom::after { box-shadow: inset 0  2px 0 rgba(255,220,80,0.6), inset 0 0 40px rgba(255,180,0,0.1); }
+.env-flap-left::after   { box-shadow: inset -2px 0 0 rgba(255,100,100,0.5), inset 0 0 40px rgba(220,10,30,0.1); }
+.env-flap-right::after  { box-shadow: inset  2px 0 0 rgba(255,100,100,0.5), inset 0 0 40px rgba(220,10,30,0.1); }
 
 /* ── Open state — flaps fly outward ── */
 #screen-envelope.opening .env-flap-top {
