@@ -46,62 +46,95 @@ html, body {
    SCREEN 1 — ENVELOPE
 ══════════════════════════════════════════ */
 #screen-envelope {
-  background: radial-gradient(ellipse at 50% 45%, #3d0808 0%, #1a0000 55%, #000 100%);
+  background: radial-gradient(ellipse at 50% 45%, #1a0000 0%, #0a0000 60%, #000 100%);
   overflow: hidden;
   z-index: 10;
 }
 
-/* The 4 envelope flaps that tear outward */
+/* Ambient shimmer across whole envelope bg */
+#screen-envelope::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(201,168,76,0.06) 0%, transparent 70%);
+  z-index: 0;
+  animation: env-breathe 3s ease-in-out infinite;
+}
+@keyframes env-breathe {
+  0%,100% { opacity: 0.6; }
+  50%      { opacity: 1; }
+}
+
+/* The 4 envelope flaps */
 .env-flap {
   position: absolute;
-  background: linear-gradient(160deg, #7a1010 0%, #5a0808 60%, #3a0505 100%);
   transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1),
               opacity 0.7s ease 0.3s;
   z-index: 5;
   will-change: transform;
 }
 
-/* Top flap */
+/* Shimmer overlay on all flaps */
+.env-flap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg,
+    rgba(255,220,100,0.18) 0%,
+    transparent 40%,
+    rgba(255,200,60,0.08) 70%,
+    transparent 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Gold seam line on all flaps */
+.env-flap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 0 1.5px rgba(201,168,76,0.3);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Top flap — rich deep maroon with gold sheen */
 .env-flap-top {
   top: 0; left: 0; right: 0;
   height: 50%;
   clip-path: polygon(0 0, 100% 0, 60% 100%, 50% 92%, 40% 100%);
-  background: linear-gradient(180deg, #5a0808 0%, #8b1010 100%);
+  background: linear-gradient(170deg, #c0192a 0%, #8b0e1e 30%, #5c0610 70%, #2d0008 100%);
   transform-origin: top center;
-  border-bottom: 1px solid rgba(201,168,76,0.15);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.8);
 }
 /* Bottom flap */
 .env-flap-bottom {
   bottom: 0; left: 0; right: 0;
   height: 50%;
   clip-path: polygon(40% 0, 50% 8%, 60% 0, 100% 100%, 0 100%);
-  background: linear-gradient(0deg, #5a0808 0%, #8b1010 100%);
+  background: linear-gradient(10deg, #c0192a 0%, #8b0e1e 30%, #5c0610 70%, #2d0008 100%);
   transform-origin: bottom center;
+  box-shadow: 0 -8px 40px rgba(0,0,0,0.8);
 }
 /* Left flap */
 .env-flap-left {
   top: 0; left: 0; bottom: 0;
   width: 50%;
   clip-path: polygon(0 0, 100% 40%, 92% 50%, 100% 60%, 0 100%);
-  background: linear-gradient(90deg, #5a0808 0%, #7a1212 100%);
+  background: linear-gradient(100deg, #2d0008 0%, #5c0610 30%, #8b0e1e 70%, #a01525 100%);
   transform-origin: left center;
+  box-shadow: 8px 0 40px rgba(0,0,0,0.8);
 }
 /* Right flap */
 .env-flap-right {
   top: 0; right: 0; bottom: 0;
   width: 50%;
   clip-path: polygon(0 40%, 100% 0, 100% 100%, 0 60%, 8% 50%);
-  background: linear-gradient(270deg, #5a0808 0%, #7a1212 100%);
+  background: linear-gradient(260deg, #2d0008 0%, #5c0610 30%, #8b0e1e 70%, #a01525 100%);
   transform-origin: right center;
-}
-
-/* Gold border lines on each flap */
-.env-flap::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: inherit;
-  opacity: 0;
+  box-shadow: -8px 0 40px rgba(0,0,0,0.8);
 }
 
 /* ── Open state — flaps fly outward ── */
@@ -152,24 +185,33 @@ html, body {
 .seal-outer {
   width: 100px; height: 100px;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 32%, #ddb84e, #a07c22 55%, #6b4f10 100%);
+  background: radial-gradient(circle at 35% 32%, #ffe57a, #d4a020 40%, #a07c22 65%, #6b4f10 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   box-shadow:
-    0 4px 20px rgba(0,0,0,0.7),
-    inset 0 2px 3px rgba(255,255,255,0.25),
-    inset 0 -3px 6px rgba(0,0,0,0.5);
-  border: 2.5px solid rgba(201,168,76,0.45);
+    0 0 0 2px rgba(255,220,80,0.6),
+    0 0 30px rgba(255,200,0,0.7),
+    0 0 70px rgba(255,150,0,0.4),
+    0 8px 30px rgba(0,0,0,0.8),
+    inset 0 2px 4px rgba(255,255,255,0.4),
+    inset 0 -3px 8px rgba(0,0,0,0.5);
+  border: 2px solid rgba(255,230,100,0.8);
   position: relative;
+  animation: seal-pulse 2.5s ease-in-out infinite;
+}
+@keyframes seal-pulse {
+  0%,100% { box-shadow: 0 0 0 2px rgba(255,220,80,0.6), 0 0 30px rgba(255,200,0,0.7), 0 0 70px rgba(255,150,0,0.4), 0 8px 30px rgba(0,0,0,0.8), inset 0 2px 4px rgba(255,255,255,0.4), inset 0 -3px 8px rgba(0,0,0,0.5); }
+  50%      { box-shadow: 0 0 0 3px rgba(255,230,100,0.9), 0 0 50px rgba(255,210,0,1),   0 0 110px rgba(255,160,0,0.6), 0 8px 30px rgba(0,0,0,0.8), inset 0 2px 4px rgba(255,255,255,0.4), inset 0 -3px 8px rgba(0,0,0,0.5); }
 }
 
 .seal-ring {
   position: absolute;
-  inset: -5px;
+  inset: -8px;
   border-radius: 50%;
-  border: 1.5px dashed rgba(201,168,76,0.35);
+  border: 1.5px dashed rgba(255,220,80,0.7);
+  box-shadow: 0 0 10px rgba(255,200,0,0.4);
   animation: spin-slow 20s linear infinite;
 }
 
@@ -212,11 +254,12 @@ html, body {
 /* Gold corner ornaments on envelope */
 .env-corner {
   position: absolute;
-  color: var(--gold);
-  opacity: 0.35;
-  font-size: 18px;
+  color: #f0c840;
+  opacity: 0.75;
+  font-size: 22px;
   z-index: 8;
   pointer-events: none;
+  text-shadow: 0 0 12px rgba(255,200,0,0.8);
 }
 .env-corner.tl { top: 16px; left: 16px; }
 .env-corner.tr { top: 16px; right: 16px; }
