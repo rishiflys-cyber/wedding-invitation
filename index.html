@@ -111,7 +111,7 @@ html, body {
     linear-gradient(120deg, rgba(255,215,80,0.18) 0%, transparent 30%, rgba(255,200,60,0.12) 60%, transparent 100%),
     linear-gradient(175deg, #d4102e 0%, #9a0020 30%, #5c000f 65%, #200007 100%);
   transform-origin: top center;
-  box-shadow: 0 20px 80px rgba(180,5,25,0.7), 0 4px 0 rgba(255,200,60,0.3);
+  box-shadow: 0 20px 80px rgba(180,5,25,0.7);
 }
 .env-flap-bottom {
   bottom: 0; left: 0; right: 0; height: 50%;
@@ -120,7 +120,7 @@ html, body {
     linear-gradient(60deg, rgba(255,215,80,0.18) 0%, transparent 30%, rgba(255,200,60,0.12) 60%, transparent 100%),
     linear-gradient(5deg, #d4102e 0%, #9a0020 30%, #5c000f 65%, #200007 100%);
   transform-origin: bottom center;
-  box-shadow: 0 -20px 80px rgba(180,5,25,0.7), 0 -4px 0 rgba(255,200,60,0.3);
+  box-shadow: 0 -20px 80px rgba(180,5,25,0.7);
 }
 .env-flap-left {
   top: 0; left: 0; bottom: 0; width: 50%;
@@ -129,7 +129,7 @@ html, body {
     linear-gradient(170deg, rgba(255,215,80,0.18) 0%, transparent 30%, rgba(255,200,60,0.12) 60%, transparent 100%),
     linear-gradient(105deg, #d4102e 0%, #9a0020 30%, #5c000f 65%, #200007 100%);
   transform-origin: left center;
-  box-shadow: 20px 0 80px rgba(180,5,25,0.7), 4px 0 0 rgba(255,200,60,0.3);
+  box-shadow: 20px 0 80px rgba(180,5,25,0.7);
 }
 .env-flap-right {
   top: 0; right: 0; bottom: 0; width: 50%;
@@ -138,15 +138,13 @@ html, body {
     linear-gradient(10deg, rgba(255,215,80,0.18) 0%, transparent 30%, rgba(255,200,60,0.12) 60%, transparent 100%),
     linear-gradient(255deg, #d4102e 0%, #9a0020 30%, #5c000f 65%, #200007 100%);
   transform-origin: right center;
-  box-shadow: -20px 0 80px rgba(180,5,25,0.7), -4px 0 0 rgba(255,200,60,0.3);
+  box-shadow: -20px 0 80px rgba(180,5,25,0.7);
 }
 
-/* Gold foil border — like embossed edge on luxury card */
+/* No visible border — seamless blend */
 .env-flap::after {
   box-shadow:
-    inset 0 0 0 1.5px rgba(255,215,80,0.55),
-    inset 0 0 60px rgba(255,180,0,0.08),
-    inset 0 0 120px rgba(180,5,25,0.15);
+    inset 0 0 80px rgba(180,5,25,0.2);
 }
 
 /* Fine brocade shimmer — diagonal highlight sweep */
