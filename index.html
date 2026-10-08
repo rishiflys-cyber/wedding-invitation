@@ -330,12 +330,26 @@ html, body {
 }
 
 .ganesh-title {
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 6px;
   color: var(--gold-light);
   text-transform: uppercase;
   opacity: 0.7;
+  position: relative;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+.ganesh-title span {
+  position: absolute;
+  transition: opacity 0.8s ease;
+  white-space: nowrap;
+}
+
+.ganesh-title .title-en { opacity: 1; }
+.ganesh-title .title-hi { opacity: 0; font-size: 15px; letter-spacing: 3px; text-transform: none; }
 
 /* Ganesh image with divine halo rings */
 .ganesh-img-wrap {
@@ -515,7 +529,10 @@ html, body {
 <div id="screen-ganesh" class="screen" onclick="goTo('screen-invite')">
   <div class="ganesh-container">
     <div class="om-symbol">ॐ</div>
-    <div class="ganesh-title">Shubh Aarambh · शुभ आरम्भ</div>
+    <div class="ganesh-title">
+      <span class="title-en">Shubh Aarambh</span>
+      <span class="title-hi">शुभ आरम्भ</span>
+    </div>
 
     <div class="ganesh-img-wrap">
       <div class="halo-outer-glow"></div>
@@ -582,6 +599,18 @@ function openEnvelope() {
     opened = false;
   }, 1600);
 }
+
+// Cycle Shubh Aarambh between English ↔ Hindi
+(function(){
+  const en = document.querySelector('.title-en');
+  const hi = document.querySelector('.title-hi');
+  let showEn = true;
+  setInterval(() => {
+    showEn = !showEn;
+    en.style.opacity = showEn ? '1' : '0';
+    hi.style.opacity = showEn ? '0' : '1';
+  }, 2200);
+})();
 
 function spawnPetals(n) {
   const c = document.getElementById('particles');
