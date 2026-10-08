@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  width: 100%; height: 100%; overflow: hidden;
+  background: radial-gradient(ellipse at 50% 35%, #2a1400 0%, #110700 60%, #000 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Georgia', serif;
+}
+.container {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 18px; padding: 30px 24px;
+  animation: rise 1.2s ease-out;
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.om { font-size: 62px; color: #f0c840;
+  text-shadow: 0 0 40px rgba(240,200,64,0.8), 0 0 80px rgba(240,200,64,0.4);
+  animation: glow 3s ease-in-out infinite; line-height: 1; }
+@keyframes glow {
+  0%,100% { text-shadow: 0 0 30px rgba(240,200,64,0.6); }
+  50%      { text-shadow: 0 0 60px rgba(240,200,64,1), 0 0 120px rgba(240,200,64,0.5); }
+}
+.title { font-size: 11px; letter-spacing: 6px; color: #e8d5a3;
+  text-transform: uppercase; opacity: 0.72; }
+.blessing { font-size: 13px; color: #e8d5a3; font-style: italic;
+  opacity: 0.78; text-align: center; line-height: 1.9; max-width: 260px; }
+.hindi { display: block; font-size: 17px; color: #f0c840; margin-bottom: 6px; }
+.gold-line { display: flex; align-items: center; gap: 10px;
+  color: #c9a84c; opacity: 0.4; font-size: 13px; }
+.gold-line::before,.gold-line::after { content:''; width:50px; height:1px;
+  background: linear-gradient(90deg,transparent,#c9a84c,transparent); }
+.tap-hint { font-size: 9px; letter-spacing: 3px; color: #e8d5a3;
+  text-transform: uppercase; opacity: 0.35;
+  animation: breathe 2.5s ease-in-out infinite; }
+@keyframes breathe { 0%,100%{opacity:.2} 50%{opacity:.55} }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="om">ॐ</div>
+  <div class="title">Shubh Aarambh</div>
+
+  <svg viewBox="0 0 300 400" width="200" height="266" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="g1" cx="50%" cy="38%" r="58%">
+        <stop offset="0%" stop-color="#f5c842"/>
+        <stop offset="55%" stop-color="#d4920e"/>
+        <stop offset="100%" stop-color="#96620a"/>
+      </radialGradient>
+      <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="rgba(255,200,60,0.28)"/>
+        <stop offset="100%" stop-color="rgba(255,160,0,0)"/>
+      </radialGradient>
+      <filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+
+    <!-- Divine halo -->
+    <circle cx="150" cy="148" r="128" fill="url(#halo)"/>
+    <circle cx="150" cy="120" r="82" fill="none" stroke="rgba(255,200,60,0.22)" stroke-width="2"/>
+    <circle cx="150" cy="120" r="76" fill="none" stroke="rgba(255,200,60,0.12)" stroke-width="1"/>
+
+    <!-- Lotus seat -->
+    <ellipse cx="150" cy="358" rx="85" ry="20" fill="#d04868" opacity="0.4"/>
+    <g opacity="0.72">
+      <ellipse cx="90"  cy="350" rx="30" ry="14" fill="#d04868" transform="rotate(-22,90,350)"/>
+      <ellipse cx="114" cy="342" rx="30" ry="14" fill="#e0607a" transform="rotate(-10,114,342)"/>
+      <ellipse cx="140" cy="338" rx="30" ry="14" fill="#e8708a"/>
+      <ellipse cx="166" cy="338" rx="30" ry="14" fill="#e8708a"/>
+      <ellipse cx="192" cy="342" rx="30" ry="14" fill="#e0607a" transform="rotate(10,192,342)"/>
+      <ellipse cx="214" cy="350" rx="30" ry="14" fill="#d04868" transform="rotate(22,214,350)"/>
+    </g>
+
+    <!-- Dhoti / lower body -->
+    <path d="M 68 265 Q 78 335 150 348 Q 222 335 232 265 Q 200 286 150 290 Q 100 286 68 265Z"
+          fill="#b8200a" opacity="0.9"/>
+    <path d="M 74 267 Q 150 284 226 267" stroke="#f0c030" stroke-width="2.5" fill="none" opacity="0.7"/>
+    <path d="M 92 272 Q 108 295 128 298" stroke="#7a1008" stroke-width="1.5" fill="none" opacity="0.55"/>
+    <path d="M 208 272 Q 192 295 172 298" stroke="#7a1008" stroke-width="1.5" fill="none" opacity="0.55"/>
+
+    <!-- Waist band -->
+    <path d="M 88 252 Q 150 264 212 252" stroke="#f0c030" stroke-width="3.5" fill="none"/>
+    <circle cx="150" cy="264" r="6" fill="#f0c030"/>
+    <circle cx="125" cy="259" r="4" fill="#f0c030" opacity="0.8"/>
+    <circle cx="175" cy="259" r="4" fill="#f0c030" opacity="0.8"/>
+
+    <!-- Torso / belly -->
+    <ellipse cx="150" cy="238" rx="58" ry="50" fill="url(#g1)"/>
+    <!-- Sacred pot belly — Ganesh's blessing -->
+    <ellipse cx="150" cy="248" rx="42" ry="32" fill="#d49010" opacity="0.35"/>
+    <circle cx="150" cy="255" r="6" fill="#b87808" opacity="0.55"/>
+
+    <!-- Sacred thread across chest -->
+    <path d="M 108 198 Q 138 228 146 252 Q 152 268 156 278"
+          stroke="#f5f0e0" stroke-width="2" fill="none" opacity="0.55"/>
+
+    <!-- Necklace -->
+    <path d="M 100 196 Q 150 212 200 196" stroke="#f0c030" stroke-width="2.5" fill="none"/>
+    <circle cx="150" cy="212" r="7" fill="#f0c030"/>
+    <circle cx="128" cy="206" r="4" fill="#f0c030" opacity="0.8"/>
+    <circle cx="172" cy="206" r="4" fill="#f0c030" opacity="0.8"/>
+    <circle cx="112" cy="200" r="3" fill="#f0c030" opacity="0.6"/>
+    <circle cx="188" cy="200" r="3" fill="#f0c030" opacity="0.6"/>
+
+    <!-- ── FOUR ARMS ── -->
+    <!-- Back left — lotus -->
+    <path d="M 102 192 Q 55 158 38 118 Q 32 100 44 93"
+          stroke="url(#g1)" stroke-width="14" fill="none" stroke-linecap="round"/>
+    <circle cx="40" cy="82" r="16" fill="#d84068" opacity="0.82"/>
+    <circle cx="40" cy="82" r="10" fill="#f07090" opacity="0.9"/>
+    <circle cx="40" cy="82" r="5" fill="#ffd090"/>
+    <path d="M 28 76 Q 32 66 40 63 Q 48 66 52 76" fill="#d84068" opacity="0.65"/>
+
+    <!-- Back right — ankush (elephant goad) -->
+    <path d="M 198 192 Q 245 158 262 118 Q 268 100 256 93"
+          stroke="url(#g1)" stroke-width="14" fill="none" stroke-linecap="round"/>
+    <line x1="258" y1="78" x2="248" y2="108" stroke="#c8a020" stroke-width="5" stroke-linecap="round"/>
+    <path d="M 258 78 Q 270 68 266 58 Q 260 50 252 58" fill="#c8a020"/>
+    <rect x="246" y="76" width="16" height="5" rx="2.5" fill="#f0c030" transform="rotate(-28,246,76)"/>
+
+    <!-- Front left — modak (sweet) -->
+    <path d="M 106 228 Q 66 244 50 272 Q 42 288 50 300"
+          stroke="url(#g1)" stroke-width="16" fill="none" stroke-linecap="round"/>
+    <ellipse cx="50" cy="295" rx="17" ry="14" fill="url(#g1)"/>
+    <!-- Modak shape -->
+    <ellipse cx="50" cy="278" rx="13" ry="17" fill="#f5e2b2"/>
+    <path d="M 37 278 Q 50 258 63 278" fill="#e8c870" opacity="0.72"/>
+    <ellipse cx="50" cy="261" rx="8" ry="6" fill="#f5e2b2"/>
+    <path d="M 44 270 Q 50 265 56 270" stroke="#c8a030" stroke-width="1" fill="none"/>
+
+    <!-- Front right — abhaya mudra (blessing) -->
+    <path d="M 194 228 Q 234 244 250 272 Q 258 288 250 300"
+          stroke="url(#g1)" stroke-width="16" fill="none" stroke-linecap="round"/>
+    <ellipse cx="252" cy="296" rx="17" ry="14" fill="url(#g1)"/>
+    <!-- Fingers raised in blessing -->
+    <path d="M 242 286 Q 240 272 243 265" stroke="#b87808" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M 249 284 Q 247 269 250 262" stroke="#b87808" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M 256 284 Q 255 270 257 263" stroke="#b87808" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M 262 286 Q 262 273 264 267" stroke="#b87808" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+    <!-- Armlets -->
+    <circle cx="55" cy="115" r="7" fill="none" stroke="#f0c030" stroke-width="3" opacity="0.85"/>
+    <circle cx="245" cy="115" r="7" fill="none" stroke="#f0c030" stroke-width="3" opacity="0.85"/>
+    <circle cx="52" cy="280" r="7" fill="none" stroke="#f0c030" stroke-width="3" opacity="0.85"/>
+    <circle cx="248" cy="280" r="7" fill="none" stroke="#f0c030" stroke-width="3" opacity="0.85"/>
+
+    <!-- ── NECK ── -->
+    <path d="M 120 178 Q 150 186 180 178 L 182 160 Q 150 170 118 160 Z" fill="url(#g1)"/>
+
+    <!-- ── ELEPHANT HEAD ── majestic, divine -->
+    <!-- Large ears — flat, ornate, like temple murti -->
+    <ellipse cx="74" cy="112" rx="26" ry="44" fill="url(#g1)" opacity="0.9"/>
+    <ellipse cx="74" cy="112" rx="17" ry="30" fill="#f0c840" opacity="0.22"/>
+    <circle cx="70" cy="132" r="10" fill="#f0c030" opacity="0.85"/>
+    <circle cx="70" cy="132" r="6" fill="#e84030" opacity="0.9"/>
+    <ellipse cx="226" cy="112" rx="26" ry="44" fill="url(#g1)" opacity="0.9"/>
+    <ellipse cx="226" cy="112" rx="17" ry="30" fill="#f0c840" opacity="0.22"/>
+    <circle cx="230" cy="132" r="10" fill="#f0c030" opacity="0.85"/>
+    <circle cx="230" cy="132" r="6" fill="#e84030" opacity="0.9"/>
+
+    <!-- Head -->
+    <ellipse cx="150" cy="110" rx="70" ry="68" fill="url(#g1)"/>
+
+    <!-- ── TRUNK — curls left, tip touching modak ── -->
+    <path d="M 138 162 Q 120 174 112 192 Q 102 212 108 232 Q 114 248 130 244 Q 144 240 144 226 Q 144 212 136 206"
+          stroke="url(#g1)" stroke-width="22" fill="none" stroke-linecap="round"/>
+    <!-- Trunk tip -->
+    <ellipse cx="136" cy="207" rx="12" ry="9" fill="#c89010" opacity="0.5" transform="rotate(-15,136,207)"/>
+    <!-- Trunk wrinkles -->
+    <path d="M 128 178 Q 116 182 114 190" stroke="#b07808" stroke-width="2" fill="none" opacity="0.45"/>
+    <path d="M 124 192 Q 110 196 108 206" stroke="#b07808" stroke-width="2" fill="none" opacity="0.45"/>
+    <path d="M 120 208 Q 108 214 108 224" stroke="#b07808" stroke-width="2" fill="none" opacity="0.45"/>
+
+    <!-- ── DIVINE EYES ── large, lotus-shaped -->
+    <ellipse cx="122" cy="100" rx="16" ry="12" fill="white"/>
+    <ellipse cx="124" cy="101" rx="10" ry="10" fill="#1a0800"/>
+    <circle cx="127" cy="99" r="4" fill="white"/>
+    <path d="M 106 94 Q 122 86 138 94" stroke="#1a0800" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M 106 108 Q 122 114 138 108" stroke="#b07808" stroke-width="1.5" fill="none" opacity="0.5"/>
+
+    <ellipse cx="178" cy="100" rx="16" ry="12" fill="white"/>
+    <ellipse cx="176" cy="101" rx="10" ry="10" fill="#1a0800"/>
+    <circle cx="179" cy="99" r="4" fill="white"/>
+    <path d="M 162 94 Q 178 86 194 94" stroke="#1a0800" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M 162 108 Q 178 114 194 108" stroke="#b07808" stroke-width="1.5" fill="none" opacity="0.5"/>
+
+    <!-- Third eye / tilak -->
+    <ellipse cx="150" cy="85" rx="10" ry="6.5" fill="#e83020" opacity="0.92" filter="url(#glow)"/>
+    <ellipse cx="150" cy="85" rx="5" ry="3.2" fill="#ff6040"/>
+    <circle cx="150" cy="85" r="2" fill="#ff9070"/>
+
+    <!-- ── MUKUT / CROWN — tall, ornate temple style ── -->
+    <path d="M 90 66 Q 150 74 210 66" stroke="#f0c030" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <!-- Central spire -->
+    <path d="M 140 66 L 138 38 L 144 44 L 150 18 L 156 44 L 162 38 L 160 66"
+          fill="#c8a018" stroke="#f0c030" stroke-width="1.5"/>
+    <!-- Side spires -->
+    <path d="M 106 66 L 104 46 L 110 50 L 114 32 L 118 50 L 124 46 L 122 66"
+          fill="#b09010" stroke="#e0b020" stroke-width="1.2"/>
+    <path d="M 178 66 L 176 46 L 182 50 L 186 32 L 190 50 L 196 46 L 194 66"
+          fill="#b09010" stroke="#e0b020" stroke-width="1.2"/>
+    <!-- Outer small spires -->
+    <path d="M 92 66 L 91 52 L 95 55 L 98 44 L 101 55 L 105 52 L 104 66"
+          fill="#9a7808" stroke="#c8a010" stroke-width="1"/>
+    <path d="M 196 66 L 195 52 L 199 55 L 202 44 L 205 55 L 209 52 L 208 66"
+          fill="#9a7808" stroke="#c8a010" stroke-width="1"/>
+    <!-- Crown jewels -->
+    <circle cx="150" cy="20" r="8" fill="#e83020" opacity="0.95" filter="url(#glow)"/>
+    <circle cx="114" cy="34" r="5" fill="#40a0e0" opacity="0.9"/>
+    <circle cx="186" cy="34" r="5" fill="#40a0e0" opacity="0.9"/>
+    <circle cx="98"  cy="46" r="4" fill="#f0c030"/>
+    <circle cx="202" cy="46" r="4" fill="#f0c030"/>
+    <circle cx="150" cy="46" r="5" fill="#f0c030"/>
+    <!-- Crown base gems -->
+    <circle cx="100" cy="63" r="3.5" fill="#f0c030"/>
+    <circle cx="116" cy="60" r="3.5" fill="#e83020" opacity="0.85"/>
+    <circle cx="133" cy="58" r="3.5" fill="#f0c030"/>
+    <circle cx="150" cy="57" r="4.5" fill="#f0c030"/>
+    <circle cx="167" cy="58" r="3.5" fill="#f0c030"/>
+    <circle cx="184" cy="60" r="3.5" fill="#e83020" opacity="0.85"/>
+    <circle cx="200" cy="63" r="3.5" fill="#f0c030"/>
+
+    <!-- Bottom rangoli -->
+    <g opacity="0.22" transform="translate(150,378)">
+      <circle r="10" fill="none" stroke="#c9a84c" stroke-width="1.2"/>
+      <line x1="-14" y1="0" x2="14" y2="0" stroke="#c9a84c" stroke-width="1"/>
+      <line x1="0" y1="-14" x2="0" y2="14" stroke="#c9a84c" stroke-width="1"/>
+      <circle r="3" fill="#c9a84c" opacity="0.5"/>
+    </g>
+  </svg>
+
+  <div class="gold-line">✦</div>
+  <div class="blessing">
+    <span class="hindi">श्री गणेशाय नमः</span>
+    May Lord Ganesha bless this sacred union<br>with joy, love &amp; prosperity
+  </div>
+  <div class="tap-hint">tap to continue ✦</div>
+</div>
+</body>
+</html>
