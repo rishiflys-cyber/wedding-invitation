@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 30%, #1a0820 0%, #0a0310 60%, #000 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Georgia', serif;
+}
+.container {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 18px; padding: 30px 24px;
+  animation: rise 1.2s ease-out;
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.jay-text {
+  font-size: 11px; letter-spacing: 6px; color: #e8d5a3;
+  text-transform: uppercase; opacity: 0.7;
+}
+.name-text {
+  font-size: 28px; color: #f0c840;
+  text-shadow: 0 0 30px rgba(240,200,64,0.7), 0 0 60px rgba(240,200,64,0.3);
+  letter-spacing: 3px; font-style: italic;
+  animation: glow 3s ease-in-out infinite;
+}
+@keyframes glow {
+  0%,100% { text-shadow: 0 0 20px rgba(240,200,64,0.6); }
+  50%      { text-shadow: 0 0 50px rgba(240,200,64,1), 0 0 100px rgba(240,200,64,0.5); }
+}
+.blessing {
+  font-size: 13px; color: #e8d5a3; font-style: italic;
+  opacity: 0.75; text-align: center; line-height: 1.9; max-width: 260px;
+}
+.gold-line {
+  display: flex; align-items: center; gap: 10px;
+  color: #c9a84c; opacity: 0.4; font-size: 13px;
+}
+.gold-line::before, .gold-line::after {
+  content: ''; width: 50px; height: 1px;
+  background: linear-gradient(90deg, transparent, #c9a84c, transparent);
+}
+.tap-hint {
+  font-size: 9px; letter-spacing: 3px; color: #e8d5a3;
+  text-transform: uppercase; opacity: 0.35;
+  animation: breathe 2.5s ease-in-out infinite;
+}
+@keyframes breathe {
+  0%,100% { opacity: 0.2; } 50% { opacity: 0.55; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="jay-text">জয় মা তারা</div>
+  <div class="name-text">Maa Tara</div>
+
+  <!-- Maa Tara SVG — Tarapith sacred murti style -->
+  <svg viewBox="0 0 280 360" width="210" height="270" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="skin" cx="50%" cy="38%" r="55%">
+        <stop offset="0%" stop-color="#2a6040"/>
+        <stop offset="55%" stop-color="#1a4828"/>
+        <stop offset="100%" stop-color="#0d2a16"/>
+      </radialGradient>
+      <radialGradient id="haloG" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="rgba(255,180,0,0.22)"/>
+        <stop offset="70%" stop-color="rgba(255,120,0,0.08)"/>
+        <stop offset="100%" stop-color="rgba(255,80,0,0)"/>
+      </radialGradient>
+      <radialGradient id="fireG" cx="50%" cy="0%" r="100%">
+        <stop offset="0%" stop-color="#ff9020"/>
+        <stop offset="50%" stop-color="#e05010"/>
+        <stop offset="100%" stop-color="#800000"/>
+      </radialGradient>
+      <filter id="softglow">
+        <feGaussianBlur stdDeviation="3" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <filter id="strongglow">
+        <feGaussianBlur stdDeviation="6" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+
+    <!-- ── DIVINE RADIANCE / PRABHAMANDAL ── -->
+    <circle cx="140" cy="140" r="130" fill="url(#haloG)"/>
+    <!-- Flame aureole rays -->
+    <g opacity="0.18" filter="url(#softglow)">
+      <path d="M140 20 L136 55 L140 50 L144 55 Z" fill="#ff9020"/>
+      <path d="M100 30 L108 62 L113 56 L116 64 Z" fill="#ff7010"/>
+      <path d="M65 55 L82 82 L88 75 L89 85 Z" fill="#ff5010"/>
+      <path d="M40 90 L62 108 L66 100 L70 110 Z" fill="#ff4010"/>
+      <path d="M180 30 L172 62 L167 56 L164 64 Z" fill="#ff7010"/>
+      <path d="M215 55 L198 82 L192 75 L191 85 Z" fill="#ff5010"/>
+      <path d="M240 90 L218 108 L214 100 L210 110 Z" fill="#ff4010"/>
+    </g>
+    <!-- Halo rings -->
+    <circle cx="140" cy="125" r="78" fill="none" stroke="rgba(255,180,60,0.25)" stroke-width="2"/>
+    <circle cx="140" cy="125" r="72" fill="none" stroke="rgba(255,140,20,0.15)" stroke-width="1"/>
+
+    <!-- ── LOTUS SEAT ── -->
+    <!-- Lotus petals bottom -->
+    <g opacity="0.75">
+      <ellipse cx="85"  cy="340" rx="28" ry="14" fill="#d04060" transform="rotate(-25,85,340)"/>
+      <ellipse cx="108" cy="332" rx="28" ry="14" fill="#e05070" transform="rotate(-12,108,332)"/>
+      <ellipse cx="132" cy="328" rx="28" ry="14" fill="#e86080"/>
+      <ellipse cx="156" cy="328" rx="28" ry="14" fill="#e86080"/>
+      <ellipse cx="180" cy="332" rx="28" ry="14" fill="#e05070" transform="rotate(12,180,332)"/>
+      <ellipse cx="200" cy="340" rx="28" ry="14" fill="#d04060" transform="rotate(25,200,340)"/>
+    </g>
+    <ellipse cx="140" cy="332" rx="68" ry="16" fill="#c03050" opacity="0.5"/>
+
+    <!-- ── LOWER BODY / SAREE ── red, sacred -->
+    <path d="M 72 250 Q 80 320 140 330 Q 200 320 208 250 Q 180 268 140 272 Q 100 268 72 250 Z"
+          fill="#9a1020" opacity="0.92"/>
+    <!-- Saree border gold -->
+    <path d="M 78 252 Q 140 268 202 252" stroke="#f0c030" stroke-width="2" fill="none" opacity="0.6"/>
+    <!-- Saree folds -->
+    <path d="M 95 260 Q 110 278 128 280" stroke="#6a0818" stroke-width="1.5" fill="none" opacity="0.6"/>
+    <path d="M 185 260 Q 170 278 152 280" stroke="#6a0818" stroke-width="1.5" fill="none" opacity="0.6"/>
+    <!-- Waist ornament -->
+    <path d="M 100 238 Q 140 248 180 238" stroke="#f0c030" stroke-width="3" fill="none"/>
+    <circle cx="140" cy="248" r="5" fill="#f0c030"/>
+    <circle cx="120" cy="244" r="3" fill="#f0c030"/>
+    <circle cx="160" cy="244" r="3" fill="#f0c030"/>
+
+    <!-- ── TORSO / BLOUSE ── -->
+    <ellipse cx="140" cy="225" rx="48" ry="40" fill="url(#skin)"/>
+    <!-- Sacred necklace — bone/rudraksha (Tara's necklace) -->
+    <path d="M 100 192 Q 140 206 180 192" stroke="#e8e0d0" stroke-width="2" fill="none"/>
+    <!-- Skull necklace dots (tantric) — small, subtle -->
+    <circle cx="115" cy="197" r="4" fill="#d8d0c0" opacity="0.7"/>
+    <circle cx="128" cy="202" r="4" fill="#d8d0c0" opacity="0.7"/>
+    <circle cx="140" cy="205" r="4" fill="#d8d0c0" opacity="0.7"/>
+    <circle cx="152" cy="202" r="4" fill="#d8d0c0" opacity="0.7"/>
+    <circle cx="165" cy="197" r="4" fill="#d8d0c0" opacity="0.7"/>
+    <!-- Chest jewel -->
+    <circle cx="140" cy="215" r="7" fill="#f0c030"/>
+    <circle cx="140" cy="215" r="4" fill="#e84040"/>
+
+    <!-- ── FOUR ARMS ── -->
+    <!-- Back left — kartari (scissors/sword) -->
+    <path d="M 100 195 Q 55 165 38 130 Q 32 112 42 105"
+          stroke="url(#skin)" stroke-width="13" fill="none" stroke-linecap="round"/>
+    <!-- Sword -->
+    <line x1="42" y1="88" x2="30" y2="55" stroke="#d0d8e8" stroke-width="4" stroke-linecap="round"/>
+    <path d="M 30 55 L 26 48 L 38 50 Z" fill="#d0d8e8"/>
+    <rect x="36" y="84" width="14" height="5" rx="2" fill="#f0c030" transform="rotate(-30,36,84)"/>
+
+    <!-- Back right — kapala (skull cup) -->
+    <path d="M 180 195 Q 225 165 242 130 Q 248 112 238 105"
+          stroke="url(#skin)" stroke-width="13" fill="none" stroke-linecap="round"/>
+    <!-- Skull cup -->
+    <path d="M 230 88 Q 250 80 255 95 Q 255 108 238 110 Q 225 108 225 95 Z" fill="#e8e0d0" opacity="0.85"/>
+    <!-- Blood drops from cup — sacred -->
+    <circle cx="240" cy="112" r="3" fill="#c01020" opacity="0.7"/>
+    <circle cx="234" cy="115" r="2" fill="#c01020" opacity="0.6"/>
+
+    <!-- Front left — lotus -->
+    <path d="M 105 218 Q 68 232 52 258 Q 44 272 52 282"
+          stroke="url(#skin)" stroke-width="15" fill="none" stroke-linecap="round"/>
+    <!-- Lotus -->
+    <circle cx="50" cy="290" r="16" fill="#e04060" opacity="0.8"/>
+    <circle cx="50" cy="290" r="10" fill="#f06880" opacity="0.9"/>
+    <circle cx="50" cy="290" r="5" fill="#ffd080"/>
+    <path d="M 38 283 Q 42 274 50 272 Q 58 274 62 283" fill="#e04060" opacity="0.65"/>
+
+    <!-- Front right — abhaya mudra (blessing) -->
+    <path d="M 175 218 Q 212 232 228 258 Q 236 272 228 282"
+          stroke="url(#skin)" stroke-width="15" fill="none" stroke-linecap="round"/>
+    <!-- Open palm blessing -->
+    <ellipse cx="232" cy="288" rx="15" ry="13" fill="url(#skin)"/>
+    <path d="M 222 280 Q 220 268 223 262" stroke="#1a5030" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M 229 278 Q 227 265 230 259" stroke="#1a5030" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M 236 278 Q 235 265 237 260" stroke="#1a5030" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path d="M 242 280 Q 242 268 244 263" stroke="#1a5030" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+    <!-- ── NECK ── -->
+    <rect x="124" y="170" width="32" height="26" rx="8" fill="url(#skin)"/>
+
+    <!-- ── HEAD ── divine feminine, Tara -->
+    <ellipse cx="140" cy="130" rx="58" ry="60" fill="url(#skin)"/>
+
+    <!-- Wild hair — Tara's knotted tantric hair -->
+    <!-- Hair mass behind -->
+    <ellipse cx="140" cy="100" rx="64" ry="55" fill="#1a0808" opacity="0.95"/>
+    <!-- Jata / matted locks flowing -->
+    <path d="M 85 80 Q 60 55 55 25 Q 68 40 72 20 Q 78 45 85 60" fill="#1a0808" opacity="0.8"/>
+    <path d="M 195 80 Q 220 55 225 25 Q 212 40 208 20 Q 202 45 195 60" fill="#1a0808" opacity="0.8"/>
+    <!-- Side locks -->
+    <path d="M 82 120 Q 55 130 45 150" stroke="#1a0808" stroke-width="8" fill="none" stroke-linecap="round" opacity="0.9"/>
+    <path d="M 198 120 Q 225 130 235 150" stroke="#1a0808" stroke-width="8" fill="none" stroke-linecap="round" opacity="0.9"/>
+
+    <!-- Face on top of hair -->
+    <ellipse cx="140" cy="135" rx="48" ry="50" fill="url(#skin)"/>
+
+    <!-- ── FACE ── -->
+    <!-- Cheeks subtle -->
+    <circle cx="118" cy="142" r="14" fill="#c84060" opacity="0.12"/>
+    <circle cx="162" cy="142" r="14" fill="#c84060" opacity="0.12"/>
+
+    <!-- Eyes — large, divine -->
+    <!-- Left eye -->
+    <ellipse cx="122" cy="130" rx="14" ry="10" fill="white"/>
+    <ellipse cx="124" cy="131" rx="9" ry="9" fill="#1a0808"/>
+    <circle cx="126" cy="129" r="3.5" fill="white"/>
+    <path d="M 108 126 Q 122 118 136 126" stroke="#1a0808" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Right eye -->
+    <ellipse cx="158" cy="130" rx="14" ry="10" fill="white"/>
+    <ellipse cx="156" cy="131" rx="9" ry="9" fill="#1a0808"/>
+    <circle cx="158" cy="129" r="3.5" fill="white"/>
+    <path d="M 144 126 Q 158 118 172 126" stroke="#1a0808" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+    <!-- Third eye — the most sacred, centre forehead -->
+    <ellipse cx="140" cy="116" rx="10" ry="7" fill="#c01020" opacity="0.95" filter="url(#softglow)"/>
+    <ellipse cx="140" cy="116" rx="5" ry="3.5" fill="#ff4040" opacity="0.9"/>
+    <circle cx="140" cy="116" r="2" fill="#ff8060"/>
+
+    <!-- Sindoor / vermillion in hair parting -->
+    <path d="M 140 90 L 140 105" stroke="#c01020" stroke-width="4" stroke-linecap="round" opacity="0.85"/>
+
+    <!-- Nose -->
+    <circle cx="140" cy="143" r="3" fill="#1a4828" opacity="0.4"/>
+    <!-- Nose ring -->
+    <circle cx="148" cy="144" r="4" fill="none" stroke="#f0c030" stroke-width="1.5" opacity="0.8"/>
+    <circle cx="150" cy="143" r="2" fill="#f0c030" opacity="0.7"/>
+
+    <!-- Lips — red, slightly open (tongue slightly visible — Tara/Kali iconography) -->
+    <path d="M 126 156 Q 140 163 154 156" fill="#c01828"/>
+    <path d="M 126 156 Q 140 152 154 156" fill="#e03040"/>
+    <!-- Tongue hint -->
+    <ellipse cx="140" cy="162" rx="8" ry="4" fill="#c01020" opacity="0.65"/>
+
+    <!-- Chin -->
+    <path d="M 126 162 Q 140 174 154 162" stroke="url(#skin)" stroke-width="2" fill="none" opacity="0.3"/>
+
+    <!-- ── MUKUT / CROWN — tantric, ornate ── -->
+    <!-- Crown base -->
+    <path d="M 94 98 Q 140 106 186 98" stroke="#f0c030" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <!-- Central tall spire -->
+    <path d="M 132 98 L 130 70 L 137 76 L 140 52 L 143 76 L 150 70 L 148 98"
+          fill="#c9a020" stroke="#f0c030" stroke-width="1.5"/>
+    <!-- Side spires -->
+    <path d="M 108 98 L 106 78 L 112 82 L 115 65 L 118 82 L 124 78 L 122 98"
+          fill="#b89010" stroke="#e0b020" stroke-width="1"/>
+    <path d="M 158 98 L 158 78 L 156 82 L 165 65 L 162 82 L 168 78 L 172 98"
+          fill="#b89010" stroke="#e0b020" stroke-width="1"/>
+    <!-- Crown jewels -->
+    <circle cx="140" cy="54" r="7" fill="#e84040" opacity="0.95" filter="url(#softglow)"/>
+    <circle cx="115" cy="67" r="5" fill="#f0c030"/>
+    <circle cx="165" cy="67" r="5" fill="#f0c030"/>
+    <circle cx="140" cy="74" r="4" fill="#f0c030"/>
+    <!-- Crown dots -->
+    <circle cx="102" cy="95" r="3" fill="#f0c030"/>
+    <circle cx="118" cy="92" r="3" fill="#e84040" opacity="0.8"/>
+    <circle cx="140" cy="90" r="4" fill="#f0c030"/>
+    <circle cx="162" cy="92" r="3" fill="#e84040" opacity="0.8"/>
+    <circle cx="178" cy="95" r="3" fill="#f0c030"/>
+
+    <!-- ── JEWELLERY ── -->
+    <!-- Ear ornaments -->
+    <circle cx="90" cy="140" r="9" fill="#f0c030" opacity="0.9"/>
+    <circle cx="90" cy="140" r="5" fill="#e84040"/>
+    <circle cx="190" cy="140" r="9" fill="#f0c030" opacity="0.9"/>
+    <circle cx="190" cy="140" r="5" fill="#e84040"/>
+    <!-- Armlets -->
+    <circle cx="58" cy="122" r="6" fill="none" stroke="#f0c030" stroke-width="2.5" opacity="0.8"/>
+    <circle cx="222" cy="122" r="6" fill="none" stroke="#f0c030" stroke-width="2.5" opacity="0.8"/>
+    <circle cx="56" cy="268" r="6" fill="none" stroke="#f0c030" stroke-width="2.5" opacity="0.8"/>
+    <circle cx="224" cy="268" r="6" fill="none" stroke="#f0c030" stroke-width="2.5" opacity="0.8"/>
+
+    <!-- Bottom rangoli motif -->
+    <g opacity="0.25" transform="translate(140,358)">
+      <circle cx="0" cy="0" r="8" fill="none" stroke="#c9a84c" stroke-width="1"/>
+      <line x1="-12" y1="0" x2="12" y2="0" stroke="#c9a84c" stroke-width="1"/>
+      <line x1="0" y1="-12" x2="0" y2="12" stroke="#c9a84c" stroke-width="1"/>
+    </g>
+  </svg>
+
+  <div class="gold-line">✦</div>
+  <div class="blessing">
+    তারাপীঠের জয় মা তারা<br>
+    <span style="font-size:12px; opacity:0.7;">May the Divine Mother bless<br>this sacred union with her grace</span>
+  </div>
+  <div class="tap-hint">tap to continue ✦</div>
+</div>
+</body>
+</html>
