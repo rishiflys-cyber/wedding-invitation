@@ -344,12 +344,12 @@ html, body {
 
 .ganesh-title span {
   position: absolute;
-  transition: opacity 0.8s ease;
+  transition: opacity 1s ease;
   white-space: nowrap;
 }
 
-.ganesh-title .title-en { opacity: 1; }
-.ganesh-title .title-hi { opacity: 0; font-size: 15px; letter-spacing: 3px; text-transform: none; }
+.ganesh-title .title-en { opacity: 1; font-size: 13px; letter-spacing: 6px; }
+.ganesh-title .title-hi { opacity: 0; font-size: 16px; letter-spacing: 3px; text-transform: none; font-weight: bold; }
 
 /* Ganesh image with divine halo rings */
 .ganesh-img-wrap {
@@ -600,16 +600,23 @@ function openEnvelope() {
   }, 1600);
 }
 
-// Cycle Shubh Aarambh between English ↔ Hindi
+// Cycle Shubh Aarambh: fade OUT English → pause → fade IN Hindi → hold → repeat
 (function(){
   const en = document.querySelector('.title-en');
   const hi = document.querySelector('.title-hi');
-  let showEn = true;
-  setInterval(() => {
-    showEn = !showEn;
-    en.style.opacity = showEn ? '1' : '0';
-    hi.style.opacity = showEn ? '0' : '1';
-  }, 2200);
+  function toHindi() {
+    en.style.opacity = '0';                        // fade out English
+    setTimeout(() => { hi.style.opacity = '1'; },  // fade in Hindi after gap
+      1000);
+    setTimeout(toEnglish, 3800);                   // hold Hindi, then switch back
+  }
+  function toEnglish() {
+    hi.style.opacity = '0';                        // fade out Hindi
+    setTimeout(() => { en.style.opacity = '1'; },  // fade in English after gap
+      1000);
+    setTimeout(toHindi, 3800);                     // hold English, then switch
+  }
+  setTimeout(toHindi, 2500);                       // first switch after 2.5s
 })();
 
 function spawnPetals(n) {
