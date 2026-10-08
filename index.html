@@ -666,6 +666,176 @@ html, body {
   background: #0a0500;
 }
 
+/* ══════════════════════════════════════════
+   SCREEN COUNTDOWN
+══════════════════════════════════════════ */
+#screen-countdown {
+  background:
+    radial-gradient(ellipse at 50% 50%, #2a0800 0%, #0e0200 55%, #000 100%);
+  cursor: pointer;
+}
+.countdown-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 40px 24px;
+  width: 100%;
+  max-width: 380px;
+  text-align: center;
+  animation: fade-rise 1s ease-out;
+}
+.cd-top-label {
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  opacity: 0.5;
+}
+.cd-date-display { display: flex; flex-direction: column; gap: 4px; }
+.cd-date-en {
+  font-size: 22px;
+  color: #f0c840;
+  letter-spacing: 1px;
+  text-shadow: 0 0 24px rgba(240,200,64,0.4);
+}
+.cd-date-bn {
+  font-size: 13px;
+  color: var(--gold-light);
+  opacity: 0.55;
+  letter-spacing: 1px;
+}
+.cd-units {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0;
+}
+.cd-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,200,60,0.06);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 10px;
+  padding: 14px 10px 10px;
+  min-width: 64px;
+}
+.cd-num {
+  font-size: 42px;
+  font-weight: bold;
+  color: #f0c840;
+  font-family: 'Georgia', serif;
+  line-height: 1;
+  text-shadow: 0 0 30px rgba(240,200,64,0.5);
+  letter-spacing: -1px;
+  min-width: 2ch;
+  text-align: center;
+}
+.cd-label {
+  font-size: 8px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  opacity: 0.45;
+}
+.cd-sep {
+  font-size: 32px;
+  color: #f0c840;
+  opacity: 0.4;
+  margin-bottom: 18px;
+  font-weight: bold;
+}
+.cd-message {
+  font-size: 13px;
+  color: var(--gold-light);
+  opacity: 0.55;
+  letter-spacing: 2px;
+  font-style: italic;
+}
+.cd-names {
+  font-size: 20px;
+  color: var(--gold-light);
+  letter-spacing: 3px;
+  opacity: 0.7;
+}
+
+/* ══════════════════════════════════════════
+   SCREEN EXPLORE KOLKATA
+══════════════════════════════════════════ */
+#screen-kolkata {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255,160,30,0.1) 0%, transparent 50%),
+    linear-gradient(175deg, #120400 0%, #060100 100%);
+  overflow-y: auto;
+  justify-content: flex-start;
+}
+.kolkata-wrap {
+  width: 100%;
+  max-width: 420px;
+  padding: 40px 20px 60px;
+  animation: fade-rise 0.9s ease-out;
+}
+.kolkata-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.kolkata-title {
+  font-size: 26px;
+  color: #f0c840;
+  letter-spacing: 2px;
+  text-shadow: 0 0 24px rgba(240,200,64,0.35);
+  margin-bottom: 6px;
+}
+.kolkata-sub {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--gold-light);
+  opacity: 0.45;
+  text-transform: uppercase;
+}
+.kolkata-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.kolkata-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(255,200,60,0.05);
+  border: 1px solid rgba(201,168,76,0.15);
+  border-radius: 10px;
+  padding: 14px 16px;
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s;
+}
+.kolkata-card:active {
+  background: rgba(255,200,60,0.1);
+  border-color: rgba(201,168,76,0.35);
+}
+.kolkata-card-icon { font-size: 26px; flex-shrink: 0; }
+.kolkata-card-info { flex: 1; }
+.kolkata-card-name {
+  font-size: 15px;
+  color: #f0c840;
+  margin-bottom: 3px;
+  letter-spacing: 0.5px;
+}
+.kolkata-card-desc {
+  font-size: 11px;
+  color: var(--gold-light);
+  opacity: 0.55;
+  line-height: 1.5;
+}
+.kolkata-card-arrow {
+  color: var(--gold);
+  opacity: 0.4;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
 .placeholder-text {
   color: var(--gold-light);
   font-size: 14px;
@@ -1127,13 +1297,137 @@ html, body {
     <div class="rsvp-done" id="rsvp-done" style="display:none">
       <div class="rsvp-done-icon" id="rsvp-done-icon">🎊</div>
       <div class="rsvp-done-text" id="rsvp-done-text">Thank you! We can't wait to celebrate with you!</div>
-      <div class="rsvp-done-tap" onclick="goTo('screen-hero')">tap to continue ✦</div>
+      <div class="rsvp-done-tap" onclick="goTo('screen-countdown')">tap to continue ✦</div>
     </div>
   </div>
 </div>
 
 <div id="screen-hero" class="screen">
   <div class="placeholder-text">Screen 4 · Wedding Hero</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN COUNTDOWN
+══════════════════════════════════════════ -->
+<div id="screen-countdown" class="screen" onclick="goTo('screen-kolkata')">
+  <div class="countdown-wrap">
+    <div class="cd-top-label">The Sacred Moment Approaches</div>
+    <div class="cd-date-display">
+      <div class="cd-date-en">12th December 2025</div>
+      <div class="cd-date-bn">১১ই অগ্রহায়ণ · ২:৩০ প্রভাত</div>
+    </div>
+    <div class="cd-units">
+      <div class="cd-unit">
+        <div class="cd-num" id="cd-days">00</div>
+        <div class="cd-label">Days</div>
+      </div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit">
+        <div class="cd-num" id="cd-hours">00</div>
+        <div class="cd-label">Hours</div>
+      </div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit">
+        <div class="cd-num" id="cd-mins">00</div>
+        <div class="cd-label">Minutes</div>
+      </div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit">
+        <div class="cd-num" id="cd-secs">00</div>
+        <div class="cd-label">Seconds</div>
+      </div>
+    </div>
+    <div class="cd-message" id="cd-message">until the wedding ✨</div>
+    <div class="cd-names">Rishabh &amp; Ananya</div>
+    <div class="screen-tap-hint">tap to continue ✦</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN EXPLORE KOLKATA
+══════════════════════════════════════════ -->
+<div id="screen-kolkata" class="screen">
+  <div class="kolkata-wrap">
+    <div class="kolkata-header">
+      <div class="kolkata-title">Explore Kolkata</div>
+      <div class="kolkata-sub">The City of Joy awaits you ✦</div>
+    </div>
+    <div class="kolkata-list">
+
+      <a class="kolkata-card" href="https://maps.google.com/?q=Victoria+Memorial+Kolkata" target="_blank">
+        <div class="kolkata-card-icon">🏛️</div>
+        <div class="kolkata-card-info">
+          <div class="kolkata-card-name">Victoria Memorial</div>
+          <div class="kolkata-card-desc">Majestic white marble monument — a must-see at sunset</div>
+        </div>
+        <div class="kolkata-card-arrow">→</div>
+      </a>
+
+      <a class="kolkata-card" href="https://maps.google.com/?q=Howrah+Bridge+Kolkata" target="_blank">
+        <div class="kolkata-card-icon">🌉</div>
+        <div class="kolkata-card-info">
+          <div class="kolkata-card-name">Howrah Bridge</div>
+          <div class="kolkata-card-desc">Iconic cantilever bridge — stunning at dawn & dusk</div>
+        </div>
+        <div class="kolkata-card-arrow">→</div>
+      </a>
+
+      <a class="kolkata-card" href="https://maps.google.com/?q=Park+Street+Kolkata" target="_blank">
+        <div class="kolkata-card-icon">🍽️</div>
+        <div class="kolkata-card-info">
+          <div class="kolkata-card-name">Park Street</div>
+          <div class="kolkata-card-desc">The food & nightlife heart of Kolkata — eat, stroll, enjoy</div>
+        </div>
+        <div class="kolkata-card-arrow">→</div>
+      </a>
+
+      <a class="kolkata-card" href="https://maps.google.com/?q=Dakshineswar+Kali+Temple+Kolkata" target="_blank">
+        <div class="kolkata-card-icon">🛕</div>
+        <div class="kolkata-card-info">
+          <div class="kolkata-card-name">Dakshineswar Kali Temple</div>
+          <div class="kolkata-card-desc">Sacred riverside temple — spiritual & serene</div>
+        </div>
+        <div class="kolkata-card-arrow">→</div>
+      </a>
+
+      <a class="kolkata-card" href="https://maps.google.com/?q=College+Street+Kolkata" target="_blank">
+        <div class="kolkata-card-icon">📚</div>
+        <div class="kolkata-card-info">
+          <div class="kolkata-card-name">College Street</div>
+          <div class="kolkata-card-desc">World's largest secondhand book market — a bibliophile's dream</div>
+        </div>
+        <div class="kolkata-card-arrow">→</div>
+      </a>
+
+      <a class="kolkata-card" href="https://maps.google.com/?q=New+Market+Kolkata" target="_blank">
+        <div class="kolkata-card-icon">🛍️</div>
+        <div class="kolkata-card-info">
+          <div class="kolkata-card-name">New Market</div>
+          <div class="kolkata-card-desc">Kolkata's iconic bazaar — clothes, sweets, everything</div>
+        </div>
+        <div class="kolkata-card-arrow">→</div>
+      </a>
+
+      <a class="kolkata-card" href="https://maps.google.com/?q=Princep+Ghat+Kolkata" target="_blank">
+        <div class="kolkata-card-icon">🌊</div>
+        <div class="kolkata-card-info">
+          <div class="kolkata-card-name">Prinsep Ghat</div>
+          <div class="kolkata-card-desc">Riverside promenade — perfect for an evening walk</div>
+        </div>
+        <div class="kolkata-card-arrow">→</div>
+      </a>
+
+      <a class="kolkata-card" href="https://maps.google.com/?q=Kumartuli+Kolkata" target="_blank">
+        <div class="kolkata-card-icon">🎨</div>
+        <div class="kolkata-card-info">
+          <div class="kolkata-card-name">Kumartuli</div>
+          <div class="kolkata-card-desc">The potters' quarter — watch artisans craft clay idols</div>
+        </div>
+        <div class="kolkata-card-arrow">→</div>
+      </a>
+
+    </div>
+  </div>
 </div>
 
 <script>
@@ -1222,6 +1516,34 @@ function submitRSVP(answer) {
   body.append(RSVP_ENTRY_RESP, answer === 'yes' ? 'Attending' : 'Not Attending');
   fetch(RSVP_FORM_URL, { method: 'POST', mode: 'no-cors', body }).catch(() => {});
 }
+
+// Countdown to wedding: 12 Dec 2025, 2:30 AM IST
+(function(){
+  const weddingTime = new Date('2025-12-12T02:30:00+05:30').getTime();
+  function tick() {
+    const now = Date.now();
+    const diff = weddingTime - now;
+    const msg = document.getElementById('cd-message');
+    if (diff <= 0) {
+      document.getElementById('cd-days').textContent = '00';
+      document.getElementById('cd-hours').textContent = '00';
+      document.getElementById('cd-mins').textContent = '00';
+      document.getElementById('cd-secs').textContent = '00';
+      if (msg) msg.textContent = '🎊 They are married! 🎊';
+      return;
+    }
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    document.getElementById('cd-days').textContent  = String(d).padStart(2,'0');
+    document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
+    document.getElementById('cd-mins').textContent  = String(m).padStart(2,'0');
+    document.getElementById('cd-secs').textContent  = String(s).padStart(2,'0');
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
 
 // Cycle Shubh Aarambh: fade OUT English → pause → fade IN Hindi → hold → repeat
 (function(){
