@@ -549,8 +549,8 @@ html, body {
   align-items: center;
   pointer-events: none;
 }
-.diya-left  { left: 18px; }
-.diya-right { right: 18px; }
+.diya-left  { left: 18px; top: 40px; }
+.diya-right { right: 18px; top: 40px; }
 
 /* Chain links */
 .diya-chain {
@@ -662,7 +662,7 @@ html, body {
 .diya-right .diya-glow { animation-delay: -1.2s; }
 
 /* All placeholder screens keep same dark base */
-#screen-invite, #screen-hero {
+#screen-hero {
   background: #0a0500;
 }
 
@@ -672,6 +672,154 @@ html, body {
   letter-spacing: 3px;
   opacity: 0.5;
   text-transform: uppercase;
+}
+
+/* ══════════════════════════════════════════
+   SCREEN 3 — PERSONALISED INVITE
+══════════════════════════════════════════ */
+#screen-invite {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255,180,40,0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 20% 100%, rgba(180,20,0,0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba(180,20,0,0.15) 0%, transparent 50%),
+    linear-gradient(175deg, #1c0800 0%, #0e0300 50%, #050100 100%);
+  overflow: hidden;
+}
+
+.invite-screen-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 32px 28px 40px;
+  width: 100%;
+  max-width: 380px;
+  animation: fade-rise 0.9s ease-out;
+  text-align: center;
+}
+
+/* Top decorative border */
+.invite-top-border {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--gold);
+  font-size: 11px;
+  letter-spacing: 2px;
+  opacity: 0.6;
+}
+.invite-top-border::before,
+.invite-top-border::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #c9a84c, transparent);
+}
+
+/* "With joy in our hearts" */
+.invite-preamble {
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  opacity: 0.55;
+}
+
+/* Dear [Name] */
+.invite-dear {
+  font-size: 15px;
+  letter-spacing: 2px;
+  color: var(--gold-light);
+  opacity: 0.75;
+}
+.invite-name {
+  font-size: 36px;
+  font-family: 'Georgia', serif;
+  color: #f0c840;
+  letter-spacing: 1px;
+  text-shadow:
+    0 0 30px rgba(240,200,64,0.5),
+    0 0 60px rgba(255,160,0,0.25);
+  animation: name-glow 3s ease-in-out infinite;
+  line-height: 1.15;
+  margin: 2px 0 6px;
+}
+@keyframes name-glow {
+  0%,100% { text-shadow: 0 0 20px rgba(240,200,64,0.4), 0 0 50px rgba(255,140,0,0.2); }
+  50%      { text-shadow: 0 0 35px rgba(240,200,64,0.7), 0 0 80px rgba(255,160,0,0.35); }
+}
+
+.invite-divider {
+  width: 60px; height: 1px;
+  background: linear-gradient(90deg, transparent, #c9a84c, transparent);
+  opacity: 0.5;
+}
+
+/* Main body text */
+.invite-body {
+  font-size: 15px;
+  line-height: 2;
+  color: var(--gold-light);
+  opacity: 0.85;
+  max-width: 310px;
+}
+.invite-body .highlight {
+  color: #f0c840;
+  font-style: italic;
+}
+
+/* Parents' names */
+.invite-parents {
+  background: linear-gradient(135deg, rgba(255,200,60,0.08), rgba(255,140,0,0.05));
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 8px;
+  padding: 14px 20px;
+  width: 100%;
+  max-width: 310px;
+}
+.invite-parents-label {
+  font-size: 9px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.5;
+  margin-bottom: 10px;
+}
+.invite-family {
+  display: flex;
+  justify-content: space-around;
+  gap: 12px;
+}
+.invite-family-side {
+  flex: 1;
+  text-align: center;
+}
+.invite-family-names {
+  font-size: 12px;
+  color: var(--gold-light);
+  line-height: 1.7;
+  opacity: 0.8;
+}
+.invite-family-relation {
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.45;
+  margin-top: 4px;
+}
+.invite-family-divider {
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(201,168,76,0.3), transparent);
+  align-self: stretch;
+}
+
+.invite-bottom-ornament {
+  font-size: 16px;
+  color: var(--gold);
+  opacity: 0.4;
+  letter-spacing: 8px;
 }
 </style>
 </head>
@@ -781,10 +929,49 @@ html, body {
 </div>
 
 <!-- ══════════════════════════════════════════
-     PLACEHOLDER — more screens coming
+     SCREEN 3 — PERSONALISED INVITE
 ══════════════════════════════════════════ -->
-<div id="screen-invite" class="screen">
-  <div class="placeholder-text">Screen 3 · Personalised Invite</div>
+<div id="screen-invite" class="screen" onclick="goTo('screen-hero')">
+  <div class="invite-screen-wrap">
+
+    <div class="invite-top-border">✦ You are invited ✦</div>
+
+    <div class="invite-preamble">With joy in our hearts</div>
+
+    <div>
+      <div class="invite-dear">Dear</div>
+      <div class="invite-name" id="guest-name">Friend</div>
+    </div>
+
+    <div class="invite-divider"></div>
+
+    <div class="invite-body">
+      We joyfully request your presence<br>
+      to celebrate the <span class="highlight">sacred union</span> of<br><br>
+      <span class="highlight">Rishabh Chattopadhyay</span><br>
+      &amp;<br>
+      <span class="highlight">Ananya Dash</span>
+    </div>
+
+    <div class="invite-parents">
+      <div class="invite-parents-label">Blessed by our families</div>
+      <div class="invite-family">
+        <div class="invite-family-side">
+          <div class="invite-family-names">Subrata &amp;<br>Sanghamitra<br>Chattopadhyay</div>
+          <div class="invite-family-relation">Groom's Parents</div>
+        </div>
+        <div class="invite-family-divider"></div>
+        <div class="invite-family-side">
+          <div class="invite-family-names">Asit &amp;<br>Ruma<br>Dash</div>
+          <div class="invite-family-relation">Bride's Parents</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="invite-bottom-ornament">✦ ✦ ✦</div>
+    <div class="screen-tap-hint">tap to continue ✦</div>
+
+  </div>
 </div>
 <div id="screen-hero" class="screen">
   <div class="placeholder-text">Screen 4 · Wedding Hero</div>
@@ -826,6 +1013,15 @@ function openEnvelope() {
     opened = false;
   }, 1600);
 }
+
+// Read guest name from ?to=Name URL param
+(function(){
+  const params = new URLSearchParams(window.location.search);
+  const name = params.get('to');
+  if (name) {
+    document.getElementById('guest-name').textContent = decodeURIComponent(name);
+  }
+})();
 
 // Cycle Shubh Aarambh: fade OUT English → pause → fade IN Hindi → hold → repeat
 (function(){
