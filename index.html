@@ -228,7 +228,7 @@ html, body {
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: radial-gradient(ellipse at 50% 40%, #2a1400 0%, #110700 60%, #000 100%);
+  background: radial-gradient(ellipse at 50% 45%, #3d0808 0%, #1a0000 55%, #000 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -238,6 +238,8 @@ html, body {
   transition: opacity 0.5s ease 0.6s;
   pointer-events: none;
 }
+
+.gworld-text { display: none; }
 
 #screen-envelope.opening #ganesh-world {
   opacity: 1;
@@ -443,10 +445,9 @@ html, body {
 ══════════════════════════════════════════ -->
 <div id="screen-envelope" class="screen active">
 
-  <!-- Ganesh world glows behind as flaps open -->
+  <!-- Ganesh world glows behind as flaps open — just a radiant OM -->
   <div id="ganesh-world">
     <div class="gworld-om">ॐ</div>
-    <div class="gworld-text">Shubh Aarambh</div>
   </div>
 
   <!-- Corner ornaments -->
