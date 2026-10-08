@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invite Link Generator — R & A Wedding</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: Georgia, serif;
+  background: #0e0300;
+  color: #e8d5a3;
+  min-height: 100vh;
+  padding: 32px 16px;
+}
+h1 {
+  text-align: center;
+  font-size: 20px;
+  letter-spacing: 4px;
+  color: #f0c840;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+.subtitle {
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 2px;
+  opacity: 0.5;
+  margin-bottom: 32px;
+  text-transform: uppercase;
+}
+.card {
+  background: rgba(255,200,60,0.05);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 10px;
+  padding: 24px;
+  max-width: 600px;
+  margin: 0 auto 24px;
+}
+.card h2 {
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #c9a84c;
+  opacity: 0.7;
+  margin-bottom: 16px;
+}
+label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  opacity: 0.6;
+  margin-bottom: 6px;
+}
+input, select, textarea {
+  width: 100%;
+  background: rgba(255,200,60,0.07);
+  border: 1px solid rgba(201,168,76,0.3);
+  border-radius: 6px;
+  color: #e8d5a3;
+  font-family: Georgia, serif;
+  font-size: 14px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  outline: none;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: rgba(240,200,64,0.6);
+}
+select option { background: #1a0800; }
+.row { display: flex; gap: 12px; }
+.row > div { flex: 1; }
+button {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #d4a020, #f0c840, #d4a020);
+  color: #1a0800;
+  font-family: Georgia, serif;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 4px;
+}
+button:hover { opacity: 0.9; }
+.output-card {
+  background: rgba(255,200,60,0.05);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 10px;
+  padding: 24px;
+  max-width: 600px;
+  margin: 0 auto 24px;
+  display: none;
+}
+.output-card h2 {
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #c9a84c;
+  opacity: 0.7;
+  margin-bottom: 16px;
+}
+.msg-box {
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(201,168,76,0.15);
+  border-radius: 6px;
+  padding: 14px;
+  font-size: 13px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  word-break: break-all;
+  margin-bottom: 14px;
+  color: #e8d5a3;
+}
+.copy-btn {
+  background: rgba(201,168,76,0.15);
+  border: 1px solid rgba(201,168,76,0.4);
+  color: #f0c840;
+  font-size: 12px;
+  letter-spacing: 2px;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 8px;
+  font-family: Georgia, serif;
+}
+.copy-btn:hover { background: rgba(201,168,76,0.25); }
+
+/* Bulk section */
+.bulk-area {
+  width: 100%;
+  min-height: 160px;
+  font-size: 12px;
+  line-height: 1.6;
+  resize: vertical;
+}
+.bulk-instructions {
+  font-size: 11px;
+  opacity: 0.5;
+  line-height: 1.8;
+  margin-bottom: 12px;
+}
+.bulk-instructions code {
+  background: rgba(255,200,60,0.1);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-family: monospace;
+  color: #f0c840;
+}
+.divider {
+  border: none;
+  border-top: 1px solid rgba(201,168,76,0.15);
+  margin: 24px 0;
+}
+.count-badge {
+  display: inline-block;
+  background: rgba(240,200,64,0.15);
+  color: #f0c840;
+  font-size: 11px;
+  letter-spacing: 1px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-left: 8px;
+}
+</style>
+</head>
+<body>
+
+<h1>✦ Invite Generator ✦</h1>
+<div class="subtitle">Rishabh &amp; Ananya — Wedding 2025</div>
+
+<!-- Single invite -->
+<div class="card">
+  <h2>Single Invite</h2>
+  <div class="row">
+    <div>
+      <label>Salutation</label>
+      <select id="sal">
+        <option value="Mr">Mr</option>
+        <option value="Mrs">Mrs</option>
+        <option value="Ms">Ms</option>
+        <option value="Dr">Dr</option>
+        <option value="">No salutation</option>
+      </select>
+    </div>
+    <div style="flex:2">
+      <label>Full Name</label>
+      <input type="text" id="single-name" placeholder="e.g. Vignesh Vishwanath">
+    </div>
+  </div>
+  <button onclick="generateSingle()">Generate Link &amp; Message</button>
+</div>
+
+<div class="output-card" id="single-output">
+  <h2>Your Invite Message</h2>
+  <div class="msg-box" id="single-msg"></div>
+  <button class="copy-btn" onclick="copyMsg()">✦ Copy WhatsApp Message</button>
+  <button class="copy-btn" onclick="copyLink()">Copy Link Only</button>
+</div>
+
+<hr class="divider">
+
+<!-- Bulk generator -->
+<div class="card">
+  <h2>Bulk Generator <span class="count-badge" id="bulk-count">0 guests</span></h2>
+  <p class="bulk-instructions">
+    Paste your guest list below — one per line in this format:<br>
+    <code>Mr|Vignesh Vishwanath</code><br>
+    <code>Mrs|Priya Sharma</code><br>
+    <code>Ms|Ananya Gupta</code><br>
+    <code>Dr|Rahul Mehta</code><br>
+    <code>|Sharma Family</code> (no salutation)
+  </p>
+  <label>Guest List</label>
+  <textarea class="bulk-area" id="bulk-input" placeholder="Mr|Vignesh Vishwanath&#10;Mrs|Priya Sharma&#10;Ms|Ananya Gupta" oninput="updateCount()"></textarea>
+  <button onclick="generateBulk()">Generate All Messages</button>
+</div>
+
+<div class="output-card" id="bulk-output">
+  <h2>All WhatsApp Messages <span class="count-badge" id="bulk-result-count"></span></h2>
+  <div class="msg-box" id="bulk-msgs" style="max-height:400px;overflow-y:auto;font-size:12px;"></div>
+  <button class="copy-btn" onclick="copyAllMsgs()">✦ Copy All Messages</button>
+  <button class="copy-btn" onclick="downloadMsgs()">Download as .txt file</button>
+</div>
+
+<script>
+const BASE_URL = 'https://wedding-invitation-two-peach.vercel.app';
+
+const MESSAGE_TEMPLATE = (salutation, name, link) => {
+const displayName = salutation ? `${salutation}. ${name}` : name;
+return `Dear ${displayName},
+
+With immense joy, we invite you to celebrate the wedding of
+
+✨ Rishabh Chattopadhyay & Ananya Dash ✨
+
+Your presence will make our special day even more memorable. Please open your personalised invitation below:
+
+${link}
+
+With love & blessings,
+The Chattopadhyay & Dash Families 🙏`;
+};
+
+let lastLink = '';
+let lastMsg = '';
+let allMsgs = '';
+
+function generateSingle() {
+  const name = document.getElementById('single-name').value.trim();
+  const sal = document.getElementById('sal').value;
+  if (!name) { alert('Please enter a name'); return; }
+
+  const encodedName = encodeURIComponent(name);
+  const link = sal
+    ? `${BASE_URL}?to=${encodedName}&sal=${encodeURIComponent(sal)}`
+    : `${BASE_URL}?to=${encodedName}`;
+
+  lastLink = link;
+  lastMsg = MESSAGE_TEMPLATE(sal, name, link);
+
+  document.getElementById('single-msg').textContent = lastMsg;
+  document.getElementById('single-output').style.display = 'block';
+  document.getElementById('single-output').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function copyMsg() {
+  navigator.clipboard.writeText(lastMsg).then(() => alert('Message copied! Paste into WhatsApp.'));
+}
+function copyLink() {
+  navigator.clipboard.writeText(lastLink).then(() => alert('Link copied!'));
+}
+
+function updateCount() {
+  const lines = document.getElementById('bulk-input').value.trim().split('\n').filter(l => l.trim());
+  document.getElementById('bulk-count').textContent = lines.length + ' guest' + (lines.length !== 1 ? 's' : '');
+}
+
+function generateBulk() {
+  const raw = document.getElementById('bulk-input').value.trim();
+  if (!raw) { alert('Please paste your guest list'); return; }
+
+  const lines = raw.split('\n').filter(l => l.trim());
+  const messages = [];
+
+  lines.forEach((line, i) => {
+    const parts = line.split('|');
+    const sal = (parts[0] || '').trim();
+    const name = (parts[1] || parts[0] || '').trim();
+    if (!name) return;
+
+    const encodedName = encodeURIComponent(name);
+    const link = sal
+      ? `${BASE_URL}?to=${encodedName}&sal=${encodeURIComponent(sal)}`
+      : `${BASE_URL}?to=${encodedName}`;
+
+    messages.push(`--- Guest ${i+1}: ${sal ? sal+'. ' : ''}${name} ---\n` + MESSAGE_TEMPLATE(sal, name, link));
+  });
+
+  allMsgs = messages.join('\n\n' + '─'.repeat(50) + '\n\n');
+  document.getElementById('bulk-msgs').textContent = allMsgs;
+  document.getElementById('bulk-result-count').textContent = messages.length + ' messages';
+  document.getElementById('bulk-output').style.display = 'block';
+  document.getElementById('bulk-output').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function copyAllMsgs() {
+  navigator.clipboard.writeText(allMsgs).then(() => alert('All messages copied!'));
+}
+
+function downloadMsgs() {
+  const blob = new Blob([allMsgs], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'wedding-invite-messages.txt';
+  a.click();
+}
+</script>
+</body>
+</html>
