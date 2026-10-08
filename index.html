@@ -675,6 +675,114 @@ html, body {
 }
 
 /* ══════════════════════════════════════════
+   SCREEN RSVP
+══════════════════════════════════════════ */
+#screen-rsvp {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255,180,40,0.1) 0%, transparent 50%),
+    linear-gradient(175deg, #1c0800 0%, #0a0200 100%);
+}
+.rsvp-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 40px 28px;
+  width: 100%;
+  max-width: 380px;
+  animation: fade-rise 0.9s ease-out;
+  text-align: center;
+}
+.rsvp-ornament {
+  font-size: 22px;
+  color: var(--gold);
+  opacity: 0.4;
+  letter-spacing: 12px;
+}
+.rsvp-title {
+  font-size: 28px;
+  color: #f0c840;
+  letter-spacing: 1px;
+  text-shadow: 0 0 30px rgba(240,200,64,0.4);
+}
+.rsvp-sub {
+  font-size: 13px;
+  color: var(--gold-light);
+  opacity: 0.6;
+  letter-spacing: 1px;
+  line-height: 1.6;
+  max-width: 260px;
+}
+.rsvp-name-display {
+  font-size: 15px;
+  color: var(--gold-light);
+  opacity: 0.75;
+  letter-spacing: 1px;
+  min-height: 20px;
+}
+.rsvp-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  max-width: 280px;
+}
+.rsvp-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Georgia', serif;
+  font-size: 16px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.2s;
+}
+.rsvp-btn:active { transform: scale(0.96); }
+.rsvp-yes {
+  background: linear-gradient(135deg, #d4a020, #f0c840, #d4a020);
+  color: #1a0800;
+  font-weight: bold;
+  box-shadow: 0 4px 20px rgba(240,200,64,0.35);
+}
+.rsvp-no {
+  background: transparent;
+  color: var(--gold-light);
+  border: 1px solid rgba(201,168,76,0.3);
+  opacity: 0.75;
+}
+.rsvp-btn-icon { font-size: 18px; }
+.rsvp-done {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  animation: fade-rise 0.6s ease-out;
+}
+.rsvp-done-icon { font-size: 52px; }
+.rsvp-done-text {
+  font-size: 16px;
+  color: var(--gold-light);
+  line-height: 1.7;
+  max-width: 270px;
+  opacity: 0.85;
+}
+.rsvp-done-tap {
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: var(--gold-light);
+  text-transform: uppercase;
+  opacity: 0.35;
+  animation: breathe 2.5s ease-in-out infinite;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+/* ══════════════════════════════════════════
    SCREEN 3 — PERSONALISED INVITE
 ══════════════════════════════════════════ */
 #screen-invite {
@@ -931,7 +1039,7 @@ html, body {
 <!-- ══════════════════════════════════════════
      SCREEN 3 — PERSONALISED INVITE
 ══════════════════════════════════════════ -->
-<div id="screen-invite" class="screen" onclick="goTo('screen-hero')">
+<div id="screen-invite" class="screen" onclick="goTo('screen-rsvp')">
   <div class="invite-screen-wrap">
 
     <div class="invite-top-border">✦ You are invited ✦</div>
@@ -973,6 +1081,33 @@ html, body {
 
   </div>
 </div>
+<!-- ══════════════════════════════════════════
+     SCREEN RSVP
+══════════════════════════════════════════ -->
+<div id="screen-rsvp" class="screen">
+  <div class="rsvp-wrap">
+    <div class="rsvp-ornament">✦</div>
+    <div class="rsvp-title">Will you join us?</div>
+    <div class="rsvp-sub">Kindly RSVP so we can celebrate together</div>
+    <div class="rsvp-name-display" id="rsvp-name-display"></div>
+    <div class="rsvp-buttons">
+      <button class="rsvp-btn rsvp-yes" onclick="submitRSVP('yes')">
+        <span class="rsvp-btn-icon">🎉</span>
+        <span>Joyfully Accept</span>
+      </button>
+      <button class="rsvp-btn rsvp-no" onclick="submitRSVP('no')">
+        <span class="rsvp-btn-icon">🙏</span>
+        <span>Regretfully Decline</span>
+      </button>
+    </div>
+    <div class="rsvp-done" id="rsvp-done" style="display:none">
+      <div class="rsvp-done-icon" id="rsvp-done-icon">🎊</div>
+      <div class="rsvp-done-text" id="rsvp-done-text">Thank you! We can't wait to celebrate with you!</div>
+      <div class="rsvp-done-tap" onclick="goTo('screen-hero')">tap to continue ✦</div>
+    </div>
+  </div>
+</div>
+
 <div id="screen-hero" class="screen">
   <div class="placeholder-text">Screen 4 · Wedding Hero</div>
 </div>
@@ -1014,14 +1149,51 @@ function openEnvelope() {
   }, 1600);
 }
 
-// Read guest name from ?to=Name URL param
+// Read guest name + salutation from URL params
+const _params = new URLSearchParams(window.location.search);
+const _guestRaw = _params.get('to') ? decodeURIComponent(_params.get('to')) : '';
+const _sal = _params.get('sal') || '';
+const _guestFull = (_sal ? _sal + '. ' : '') + (_guestRaw || 'Friend');
+
 (function(){
-  const params = new URLSearchParams(window.location.search);
-  const name = params.get('to');
-  if (name) {
-    document.getElementById('guest-name').textContent = decodeURIComponent(name);
+  if (_guestRaw) {
+    document.getElementById('guest-name').textContent = _guestFull;
+    const rd = document.getElementById('rsvp-name-display');
+    if (rd) rd.textContent = _guestFull;
   }
 })();
+
+// RSVP submission — posts to Google Form (replace FORM_ID with your form's ID)
+// To set up: create a Google Form with one short-answer question "Response",
+// one for "Name", publish it, grab the entry IDs from the form source.
+const RSVP_FORM_URL = 'https://docs.google.com/forms/d/e/YOUR_FORM_ID/formResponse';
+const RSVP_ENTRY_NAME = 'entry.000000001'; // replace with real entry ID
+const RSVP_ENTRY_RESP = 'entry.000000002'; // replace with real entry ID
+
+function submitRSVP(answer) {
+  const buttons = document.querySelector('.rsvp-buttons');
+  const done = document.getElementById('rsvp-done');
+  const icon = document.getElementById('rsvp-done-icon');
+  const text = document.getElementById('rsvp-done-text');
+
+  buttons.style.display = 'none';
+  done.style.display = 'flex';
+
+  if (answer === 'yes') {
+    icon.textContent = '🎊';
+    text.textContent = 'Wonderful! We can\'t wait to celebrate with you. See you soon! 💛';
+  } else {
+    icon.textContent = '🙏';
+    text.textContent = 'We\'ll miss you dearly. Thank you for letting us know. Your blessings mean everything!';
+  }
+
+  // Submit to Google Form silently (no-cors)
+  if (RSVP_FORM_URL.includes('YOUR_FORM_ID')) return; // skip if not set up yet
+  const body = new URLSearchParams();
+  body.append(RSVP_ENTRY_NAME, _guestFull);
+  body.append(RSVP_ENTRY_RESP, answer === 'yes' ? 'Attending' : 'Not Attending');
+  fetch(RSVP_FORM_URL, { method: 'POST', mode: 'no-cors', body }).catch(() => {});
+}
 
 // Cycle Shubh Aarambh: fade OUT English → pause → fade IN Hindi → hold → repeat
 (function(){
