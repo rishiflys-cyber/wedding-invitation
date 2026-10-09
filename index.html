@@ -1600,9 +1600,9 @@ html, body {
     <source src="mehendi.mp4" type="video/mp4">
   </video>
   <!-- dark scrim at bottom for text readability — shown only after video ends -->
-  <div id="mehendi-scrim" style="position:absolute;inset:0;z-index:1;background:linear-gradient(to bottom,transparent 40%,rgba(5,1,0,0.97) 80%,#050100 100%);opacity:0;transition:opacity 1.2s ease;"></div>
+  <div id="mehendi-scrim" style="position:absolute;inset:0;z-index:1;background:linear-gradient(to bottom,transparent 40%,rgba(5,1,0,0.92) 75%,#050100 100%);"></div>
   <div class="event-particles" id="ep-mehendi" style="z-index:2;"></div>
-  <div class="event-wrap" id="mehendi-invite" style="z-index:3;opacity:0;transform:translateY(40px);transition:opacity 1.2s ease, transform 1.2s ease;pointer-events:none;">
+  <div class="event-wrap" id="mehendi-invite" style="position:absolute;bottom:0;left:0;right:0;z-index:3;opacity:0;transform:translateY(30px);transition:opacity 1.2s ease,transform 1.2s ease;pointer-events:none;">
     <div class="event-icon-big">🌿</div>
     <div class="event-title">Henna & Happiness</div>
     <div class="event-subtitle">An evening of henna, laughter &amp; love</div>
@@ -1975,20 +1975,9 @@ document.addEventListener('DOMContentLoaded', function() {
     };
   }
 
-  /* Mehendi: video plays once, then invite details slide in */
+  /* Mehendi: video loops in background, invite always visible at bottom */
   var mv = document.getElementById('mehendi-video');
-  var mi = document.getElementById('mehendi-invite');
-  var ms = document.getElementById('mehendi-scrim');
-  function showMehendiInvite() {
-    if (ms) { ms.style.opacity = '1'; }
-    if (mi) { mi.style.opacity = '1'; mi.style.transform = 'translateY(0)'; mi.style.pointerEvents = 'auto'; }
-  }
-  if (mv) {
-    mv.addEventListener('ended', function() { mv.pause(); showMehendiInvite(); });
-    mv.addEventListener('error', showMehendiInvite);
-    /* fallback: if video hasn't ended after 30s, show invite anyway */
-    setTimeout(showMehendiInvite, 30000);
-  }
+  if (mv) { mv.loop = true; }
 });
 
 (function(){
