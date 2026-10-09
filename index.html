@@ -1976,8 +1976,20 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   /* Mehendi: video loops in background, invite always visible at bottom */
+    /* Mehendi: video plays once → invite slides in */
   var mv = document.getElementById('mehendi-video');
-  if (mv) { mv.loop = true; }
+  var mi = document.getElementById('mehendi-invite');
+  var ms = document.getElementById('mehendi-scrim');
+  function showMehendiInvite() {
+    if (ms) ms.style.opacity = '1';
+    if (mi) { mi.style.opacity = '1'; mi.style.transform = 'translateY(0)'; mi.style.pointerEvents = 'auto'; }
+  }
+  if (mv) {
+    mv.loop = false;
+    mv.addEventListener('ended', function() { mv.pause(); showMehendiInvite(); });
+    mv.addEventListener('error', showMehendiInvite);
+    setTimeout(showMehendiInvite, 32000); /* fallback after 32s */
+  }
 });
 
 (function(){
