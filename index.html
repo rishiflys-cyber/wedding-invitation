@@ -784,6 +784,107 @@ html, body {
   color: #f0c840;
   font-style: normal;
 }
+/* ══════════════════════════════════════════
+   EVENT SCREEN ANIMATIONS
+══════════════════════════════════════════ */
+
+/* Shared: subtle ken-burns zoom on image */
+.event-img-wrap img {
+  animation: img-breathe 8s ease-in-out infinite alternate;
+  transform-origin: center top;
+}
+@keyframes img-breathe {
+  0%   { transform: scale(1); }
+  100% { transform: scale(1.06); }
+}
+
+/* Floating particle layer inside each event screen */
+.event-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+.ep {
+  position: absolute;
+  opacity: 0;
+  animation: ep-fall linear infinite;
+  pointer-events: none;
+}
+@keyframes ep-fall {
+  0%   { opacity: 0;   transform: translateY(-10px) rotate(0deg) scale(1); }
+  10%  { opacity: 0.85; }
+  85%  { opacity: 0.6; }
+  100% { opacity: 0;   transform: translateY(105vh) rotate(360deg) scale(0.4); }
+}
+
+/* Mehendi — green henna leaves drift down */
+#screen-mehendi .ep { color: #7ec850; font-size: 10px; }
+
+/* Sangeet — purple sparkles & music notes */
+#screen-sangeet .ep { color: #d090f8; font-size: 11px; }
+
+/* Haldi — golden turmeric dust */
+#screen-haldi .ep { color: #f0c840; font-size: 9px; }
+
+/* Wedding — white flower petals */
+#screen-wedding .ep { color: rgba(255,255,255,0.85); font-size: 11px; }
+
+/* Reception — pink bokeh circles */
+#screen-reception .ep { color: #f8b4c8; font-size: 12px; }
+
+/* Glow pulse on event image overlay for each theme */
+#screen-mehendi .event-img-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(ellipse at 50% 80%, rgba(100,200,60,0.08) 0%, transparent 60%);
+  animation: theme-pulse 4s ease-in-out infinite;
+}
+#screen-sangeet .event-img-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(ellipse at 50% 50%, rgba(180,80,240,0.1) 0%, transparent 60%);
+  animation: theme-pulse 2s ease-in-out infinite;
+}
+#screen-haldi .event-img-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(ellipse at 50% 40%, rgba(255,200,40,0.12) 0%, transparent 55%);
+  animation: theme-pulse 3.5s ease-in-out infinite;
+}
+#screen-wedding .event-img-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(ellipse at 50% 60%, rgba(255,120,40,0.1) 0%, transparent 55%);
+  animation: fire-pulse 1.8s ease-in-out infinite;
+}
+#screen-reception .event-img-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(ellipse at 50% 20%, rgba(255,210,220,0.08) 0%, transparent 50%);
+  animation: theme-pulse 5s ease-in-out infinite;
+}
+@keyframes theme-pulse {
+  0%,100% { opacity: 0.5; }
+  50%      { opacity: 1; }
+}
+@keyframes fire-pulse {
+  0%,100% { opacity: 0.4; transform: scale(1); }
+  33%      { opacity: 1;   transform: scale(1.02) translateY(-2px); }
+  66%      { opacity: 0.7; transform: scale(0.99) translateY(1px); }
+}
+
 /* Bengali note on Wedding screen */
 .event-bengali-note {
   display: flex;
@@ -1457,6 +1558,7 @@ html, body {
   <div class="event-img-wrap">
     <img src="1-mehendi_4k.jpg" alt="Mehendi" loading="lazy">
   </div>
+  <div class="event-particles" id="ep-mehendi"></div>
   <div class="event-wrap">
     <div class="event-icon-big">🌿</div>
     <div class="event-tag" style="background:rgba(120,200,80,0.15);border-color:rgba(120,200,80,0.3);color:#a8e080">Mehendi</div>
@@ -1490,6 +1592,7 @@ html, body {
   <div class="event-img-wrap">
     <img src="2-sangeet_4k.jpg" alt="Sangeet" loading="lazy">
   </div>
+  <div class="event-particles" id="ep-sangeet"></div>
   <div class="event-wrap">
     <div class="event-icon-big">🎶</div>
     <div class="event-tag" style="background:rgba(180,80,220,0.15);border-color:rgba(180,80,220,0.3);color:#d8a0f0">Sangeet</div>
@@ -1523,6 +1626,7 @@ html, body {
   <div class="event-img-wrap">
     <img src="3-haldi_4k.jpg" alt="Haldi" loading="lazy">
   </div>
+  <div class="event-particles" id="ep-haldi"></div>
   <div class="event-wrap">
     <div class="event-icon-big">💛</div>
     <div class="event-tag" style="background:rgba(255,200,40,0.15);border-color:rgba(255,200,40,0.3);color:#f0d060">Haldi</div>
@@ -1556,6 +1660,7 @@ html, body {
   <div class="event-img-wrap">
     <img src="4-wedding_4k.jpg" alt="Wedding" loading="lazy">
   </div>
+  <div class="event-particles" id="ep-wedding"></div>
   <div class="event-wrap">
     <div class="event-icon-big">💍</div>
     <div class="event-tag" style="background:rgba(255,200,60,0.15);border-color:rgba(255,200,60,0.3);color:#f0c840">The Wedding</div>
@@ -1593,6 +1698,7 @@ html, body {
   <div class="event-img-wrap">
     <img src="5-reception_4k.jpg" alt="Reception" loading="lazy">
   </div>
+  <div class="event-particles" id="ep-reception"></div>
   <div class="event-wrap">
     <div class="event-icon-big">🥂</div>
     <div class="event-tag" style="background:rgba(255,150,80,0.15);border-color:rgba(255,150,80,0.3);color:#f0a870">Reception</div>
@@ -1630,7 +1736,7 @@ html, body {
   <div class="countdown-wrap">
     <div class="cd-top-label">The Sacred Moment Approaches</div>
     <div class="cd-date-display">
-      <div class="cd-date-en">12th December 2025</div>
+      <div class="cd-date-en">12th December 2026</div>
       <div class="cd-date-bn">১১ই অগ্রহায়ণ · ২:৩০ প্রভাত</div>
     </div>
     <div class="cd-units">
@@ -1890,6 +1996,33 @@ function submitRSVP(answer) {
     setTimeout(toHindi, 3800);                     // hold English, then switch
   }
   setTimeout(toHindi, 2500);                       // first switch after 2.5s
+})();
+
+// Event screen particles
+(function(){
+  const configs = {
+    'ep-mehendi':  { symbols: ['✿','❀','🌿','·','✾'], colors: ['#7ec850','#a8e080','#5db840','#c8f0a0'], count: 18 },
+    'ep-sangeet':  { symbols: ['✦','♪','♫','·','✵','⋆'], colors: ['#d090f8','#b060e0','#f0c0ff','#ffffff'], count: 22 },
+    'ep-haldi':    { symbols: ['·','•','✦','❋','✿'], colors: ['#f0c840','#ffd860','#ffe090','#d4a020'], count: 20 },
+    'ep-wedding':  { symbols: ['✿','❀','·','✾','°'], colors: ['rgba(255,255,255,0.9)','rgba(255,220,180,0.8)','rgba(255,200,120,0.7)'], count: 25 },
+    'ep-reception':{ symbols: ['✦','·','°','⋆','○'], colors: ['#f8b4c8','#ffd0e0','#ffffff','#ffe0f0'], count: 20 }
+  };
+  Object.entries(configs).forEach(([id, cfg]) => {
+    const container = document.getElementById(id);
+    if (!container) return;
+    for (let i = 0; i < cfg.count; i++) {
+      const el = document.createElement('span');
+      el.className = 'ep';
+      el.textContent = cfg.symbols[Math.floor(Math.random() * cfg.symbols.length)];
+      el.style.left = (Math.random() * 100) + 'vw';
+      el.style.top = '-20px';
+      el.style.color = cfg.colors[Math.floor(Math.random() * cfg.colors.length)];
+      el.style.fontSize = (7 + Math.random() * 8) + 'px';
+      el.style.animationDuration = (6 + Math.random() * 8) + 's';
+      el.style.animationDelay = (Math.random() * 8) + 's';
+      container.appendChild(el);
+    }
+  });
 })();
 
 function spawnPetals(n) {
