@@ -355,9 +355,10 @@ html, body {
 }
 
 @keyframes fall {
-  0%   { opacity: 0.9; transform: translateY(0) rotate(0deg) scale(1); }
-  80%  { opacity: 0.6; }
-  100% { opacity: 0; transform: translateY(110vh) rotate(400deg) scale(0.5); }
+  0%   { opacity: 0; transform: translateY(-10px) rotate(0deg) scale(1); }
+  10%  { opacity: 1; }
+  80%  { opacity: 0.8; }
+  100% { opacity: 0; transform: translateY(110vh) rotate(540deg) scale(0.6); }
 }
 
 /* ══════════════════════════════════════════
@@ -1954,7 +1955,7 @@ function openEnvelope() {
   document.getElementById('screen-envelope').classList.add('opening');
 
   // Spawn petals
-  spawnPetals(30);
+  spawnPetals(70);
 
   // After reveal animation, move to full Ganesh screen
   setTimeout(() => {
@@ -2162,18 +2163,20 @@ function submitRSVP(answer) {
 
 function spawnPetals(n) {
   const c = document.getElementById('particles');
-  const symbols = ['✿','❀','✾','·','•','❁'];
+  const symbols = ['✿','❀','✾','❁','🌸','🌼','🌺','꽃','✽','❋','⚘','✦'];
   for (let i = 0; i < n; i++) {
     const p = document.createElement('div');
     p.className = 'petal';
     p.textContent = symbols[Math.floor(Math.random() * symbols.length)];
     p.style.left = Math.random() * 100 + 'vw';
-    p.style.color = `hsl(${38 + Math.random()*18}, 72%, ${58+Math.random()*22}%)`;
-    p.style.fontSize = (8 + Math.random() * 10) + 'px';
-    p.style.animationDuration = (3 + Math.random() * 3) + 's';
-    p.style.animationDelay = (Math.random() * 1.2) + 's';
+    // Mix of golden, pink, orange, white tones
+    const hue = [38, 340, 20, 55, 300][Math.floor(Math.random()*5)];
+    p.style.color = `hsl(${hue + Math.random()*15}, 80%, ${60+Math.random()*25}%)`;
+    p.style.fontSize = (20 + Math.random() * 30) + 'px';
+    p.style.animationDuration = (5 + Math.random() * 5) + 's';
+    p.style.animationDelay = (Math.random() * 2) + 's';
     c.appendChild(p);
-    setTimeout(() => p.remove(), 7000);
+    setTimeout(() => p.remove(), 11000);
   }
 }
 </script>
