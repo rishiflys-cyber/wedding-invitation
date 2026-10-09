@@ -539,6 +539,41 @@ html, body {
   margin-top: 4px;
 }
 
+/* ── BACK BUTTON ── */
+#back-btn {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 9999;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(10,2,0,0.55);
+  border: 1px solid rgba(201,168,76,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+#back-btn.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+#back-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: #c9a84c;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 /* ── HANGING DIYAS ── */
 .diya-left, .diya-right {
   position: absolute;
@@ -1369,6 +1404,10 @@ html, body {
 </style>
 </head>
 <body>
+<!-- Global back button -->
+<div id="back-btn" onclick="goBack()">
+  <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+</div>
 
 <div id="particles"></div>
 <audio id="bgmusic" loop preload="auto"><source src="Ranjha.mp3" type="audio/mpeg"></audio>
@@ -1860,13 +1899,40 @@ html, body {
 let current = 'screen-envelope';
 let opened = false;
 
+var _history = [];
+
 function goTo(id) {
   const prev = document.getElementById(current);
   const next = document.getElementById(id);
   if (!next || id === current) return;
+  _history.push(current);
   prev.classList.remove('active');
   next.classList.add('active');
   current = id;
+  updateBackBtn();
+}
+
+function goBack() {
+  if (_history.length === 0) return;
+  const prevId = _history.pop();
+  const prev = document.getElementById(current);
+  const next = document.getElementById(prevId);
+  if (!next) return;
+  prev.classList.remove('active');
+  next.classList.add('active');
+  current = prevId;
+  updateBackBtn();
+}
+
+function updateBackBtn() {
+  const btn = document.getElementById('back-btn');
+  if (!btn) return;
+  /* Hide on the very first screen (envelope) */
+  if (_history.length === 0) {
+    btn.classList.remove('visible');
+  } else {
+    btn.classList.add('visible');
+  }
 }
 
 function openEnvelope() {
