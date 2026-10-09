@@ -1638,11 +1638,17 @@ html, body {
      SCREEN SANGEET
 ══════════════════════════════════════════ -->
 <div id="screen-sangeet" class="screen event-screen" onclick="goTo('screen-haldi')">
-  <div class="event-img-wrap">
+  <video id="sangeet-video" muted playsinline preload="auto"
+    style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
+    <source src="sangeet.mp4" type="video/mp4">
+  </video>
+  <div class="event-img-wrap" id="sangeet-bg-img" style="z-index:0;">
     <img src="2-sangeet_4k.jpg" alt="Sangeet" loading="lazy">
   </div>
-  <div class="event-particles" id="ep-sangeet"></div>
-  <div class="event-wrap">
+  <div class="event-particles" id="ep-sangeet" style="z-index:2;"></div>
+
+  <div id="sangeet-panel" style="position:absolute;bottom:0;left:0;right:0;height:42%;z-index:3;background:linear-gradient(to bottom,transparent 0%,rgba(5,1,0,0.88) 30%,#050100 70%);padding-top:40px;transform:translateY(100%);transition:transform 1.4s cubic-bezier(0.22,1,0.36,1);pointer-events:none;">
+  <div class="event-wrap" id="sangeet-invite" style="position:relative;opacity:0;transform:translateY(20px);transition:opacity 0.8s ease 0.5s,transform 0.8s ease 0.5s;pointer-events:none;">
     <div class="event-icon-big">🎶</div>
     <div class="event-tag" style="background:rgba(180,80,220,0.15);border-color:rgba(180,80,220,0.3);color:#d8a0f0">Sangeet</div>
     <div class="event-title">Sur aur Sargam</div>
@@ -1666,6 +1672,7 @@ html, body {
     </div>
     <div class="screen-tap-hint">tap to continue ✦</div>
   </div>
+  </div><!-- end sangeet-panel -->
 </div>
 
 <!-- ══════════════════════════════════════════
@@ -2038,13 +2045,64 @@ document.addEventListener('DOMContentLoaded', function() {
         var dur = (mv.duration && isFinite(mv.duration)) ? mv.duration * 1000 + 500 : 10000;
         mehendiTimer = setTimeout(showMehendiInvite, dur);
       }
-      if (false) { /* placeholder to keep else-if chain intact */
-        if (mp) { mp.style.transition = 'none'; mp.style.transform = 'translateY(0)'; mp.style.pointerEvents = 'auto'; }
-        if (mi) { mi.style.opacity = '1'; mi.style.transform = 'translateY(0)'; mi.style.pointerEvents = 'auto'; }
-      }
     }
   };
 });
+
+/* ── Sangeet video logic ── */
+(function(){
+  var sv = document.getElementById('sangeet-video');
+  var si = document.getElementById('sangeet-invite');
+  var sp = document.getElementById('sangeet-panel');
+  var sangeetShown = false;
+  var sangeetTimer = null;
+
+  function showSangeetInvite() {
+    sangeetShown = true;
+    if (sp) { sp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; sp.style.transform = 'translateY(0)'; sp.style.pointerEvents = 'auto'; }
+    if (si) { si.style.opacity = '1'; si.style.transform = 'translateY(0)'; si.style.pointerEvents = 'auto'; }
+  }
+
+  function resetSangeet() {
+    sangeetShown = false;
+    if (sangeetTimer) { clearTimeout(sangeetTimer); sangeetTimer = null; }
+    if (sp) { sp.style.transition = 'none'; sp.style.transform = 'translateY(100%)'; sp.style.pointerEvents = 'none'; }
+    if (si) { si.style.opacity = '0'; si.style.transform = 'translateY(20px)'; si.style.pointerEvents = 'none'; }
+    if (sv) { sv.currentTime = 0; sv.play().catch(function(){}); }
+  }
+
+  if (sv) {
+    sv.loop = false;
+    sv.addEventListener('ended', function() { sv.pause(); showSangeetInvite(); });
+    sv.addEventListener('error', showSangeetInvite);
+  }
+
+  var _origGoTo2 = goTo;
+  goTo = function(id) {
+    var from = current;
+    _origGoTo2(id);
+    /* Leaving sangeet — reset immediately for next visit */
+    if (from === 'screen-sangeet' && id !== 'screen-sangeet') {
+      resetSangeet();
+    }
+    /* Arriving at sangeet — always play fresh from start */
+    if (id === 'screen-sangeet') {
+      sangeetShown = false;
+      if (sangeetTimer) { clearTimeout(sangeetTimer); sangeetTimer = null; }
+      if (sp) { sp.style.transition = 'none'; sp.style.transform = 'translateY(100%)'; sp.style.pointerEvents = 'none'; }
+      if (si) { si.style.opacity = '0'; si.style.transform = 'translateY(20px)'; si.style.pointerEvents = 'none'; }
+      if (sv) {
+        sv.currentTime = 0;
+        var playPromise = sv.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(function() { showSangeetInvite(); });
+        }
+        var dur = (sv.duration && isFinite(sv.duration)) ? sv.duration * 1000 + 500 : 10000;
+        sangeetTimer = setTimeout(showSangeetInvite, dur);
+      }
+    }
+  };
+})();
 
 (function(){
   if (_guestRaw) {
