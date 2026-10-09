@@ -1980,18 +1980,46 @@ document.addEventListener('DOMContentLoaded', function() {
   /* Mehendi: video plays once → dark panel slides up, invite fades in */
   var mv = document.getElementById('mehendi-video');
   var mi = document.getElementById('mehendi-invite');
-  var ms = document.getElementById('mehendi-scrim');
   var mp = document.getElementById('mehendi-panel');
+  var mehendiShown = false;
+  var mehendiTimer = null;
+
   function showMehendiInvite() {
-    if (mp) { mp.style.transform = 'translateY(0)'; mp.style.pointerEvents = 'auto'; }
+    mehendiShown = true;
+    if (mp) { mp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; mp.style.transform = 'translateY(0)'; mp.style.pointerEvents = 'auto'; }
     if (mi) { mi.style.opacity = '1'; mi.style.transform = 'translateY(0)'; mi.style.pointerEvents = 'auto'; }
   }
+
+  function resetMehendi() {
+    mehendiShown = false;
+    if (mehendiTimer) { clearTimeout(mehendiTimer); mehendiTimer = null; }
+    if (mp) { mp.style.transition = 'none'; mp.style.transform = 'translateY(100%)'; mp.style.pointerEvents = 'none'; }
+    if (mi) { mi.style.opacity = '0'; mi.style.transform = 'translateY(20px)'; mi.style.pointerEvents = 'none'; }
+    if (mv) { mv.currentTime = 0; mv.play().catch(function(){}); }
+  }
+
   if (mv) {
     mv.loop = false;
     mv.addEventListener('ended', function() { mv.pause(); showMehendiInvite(); });
     mv.addEventListener('error', showMehendiInvite);
-    setTimeout(showMehendiInvite, 32000); /* fallback after 32s */
+    mehendiTimer = setTimeout(showMehendiInvite, 32000);
   }
+
+  /* Hook into goTo to reset/restore mehendi state */
+  var _origGoTo = goTo;
+  goTo = function(id) {
+    var from = current;
+    _origGoTo(id);
+    /* Leaving mehendi — reset for next visit */
+    if (from === 'screen-mehendi' && id !== 'screen-mehendi') {
+      setTimeout(resetMehendi, 400);
+    }
+    /* Arriving at mehendi — if already shown (came back), show instantly */
+    if (id === 'screen-mehendi' && mehendiShown) {
+      if (mp) { mp.style.transition = 'none'; mp.style.transform = 'translateY(0)'; mp.style.pointerEvents = 'auto'; }
+      if (mi) { mi.style.opacity = '1'; mi.style.transform = 'translateY(0)'; mi.style.pointerEvents = 'auto'; }
+    }
+  };
 });
 
 (function(){
