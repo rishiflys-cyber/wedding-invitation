@@ -1980,8 +1980,9 @@ function openEnvelope() {
   if (opened) return;
   opened = true;
 
-  // Start music
+  // Start music from beginning
   const music = document.getElementById('bgmusic');
+  music.currentTime = 0;
   music.volume = 0.5;
   music.play().catch(() => {});
   // Show music toggle button
