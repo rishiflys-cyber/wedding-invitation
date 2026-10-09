@@ -2282,11 +2282,19 @@ function restartFromBeginning() {
   if (icon) icon.textContent = '🎵';
   var mb = document.getElementById('music-btn');
   if (mb) mb.style.display = 'none';
-  // Reset envelope state so it can be opened again
+
+  // Reset envelope state
   opened = false;
   var env = document.getElementById('screen-envelope');
   if (env) env.classList.remove('opening');
-  goTo('screen-envelope');
+
+  // Clear history and force switch to envelope screen directly
+  _history.length = 0;
+  var prevScreen = document.getElementById(current);
+  if (prevScreen) prevScreen.classList.remove('active');
+  current = 'screen-envelope';
+  if (env) env.classList.add('active');
+  updateBackBtn();
 }
 
 (function(){
