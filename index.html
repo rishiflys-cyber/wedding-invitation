@@ -1592,6 +1592,13 @@ html, body {
       <div class="rsvp-done-text" id="rsvp-done-text">Thank you! We can't wait to celebrate with you!</div>
       <div class="rsvp-done-tap" onclick="goTo('screen-countdown')">tap to continue ✦</div>
     </div>
+
+    <!-- Restart button -->
+    <div id="restart-btn" onclick="restartFromBeginning()" style="margin-top:28px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;opacity:0.85;">
+      <div style="width:52px;height:52px;border-radius:50%;border:1.5px solid rgba(255,210,100,0.5);display:flex;align-items:center;justify-content:center;font-size:22px;background:rgba(255,200,60,0.08);">🔄</div>
+      <div style="font-size:12px;color:rgba(255,210,120,0.7);letter-spacing:1.5px;text-transform:uppercase;">Start Again</div>
+    </div>
+
   </div>
 </div>
 
@@ -2224,6 +2231,32 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   };
 })();
+
+/* ── Music fade on last screen + restart ── */
+(function(){
+  var _origGoTo5 = goTo;
+  goTo = function(id) {
+    _origGoTo5(id);
+    if (id === 'screen-kolkata') {
+      var music = document.getElementById('bgmusic');
+      if (music && !music.paused) {
+        var vol = music.volume;
+        var step = vol / 40;
+        var fade = setInterval(function() {
+          vol -= step;
+          if (vol <= 0) { music.volume = 0; music.pause(); clearInterval(fade); }
+          else { music.volume = vol; }
+        }, 80);
+      }
+    }
+  };
+})();
+
+function restartFromBeginning() {
+  var music = document.getElementById('bgmusic');
+  if (music) { music.volume = 0.5; music.currentTime = 0; music.play().catch(function(){}); }
+  goTo('screen-ganesh');
+}
 
 (function(){
   if (_guestRaw) {
