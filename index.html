@@ -1721,11 +1721,17 @@ html, body {
      SCREEN WEDDING
 ══════════════════════════════════════════ -->
 <div id="screen-wedding" class="screen event-screen" onclick="goTo('screen-rsvp')">
-  <div class="event-img-wrap">
+  <video id="wedding-video" muted playsinline preload="auto"
+    style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
+    <source src="wedding.mp4" type="video/mp4">
+  </video>
+  <div class="event-img-wrap" id="wedding-bg-img" style="z-index:0;">
     <img src="4-wedding_4k.jpg" alt="Wedding" loading="lazy">
   </div>
-  <div class="event-particles" id="ep-wedding"></div>
-  <div class="event-wrap">
+  <div class="event-particles" id="ep-wedding" style="z-index:2;"></div>
+
+  <div id="wedding-panel" style="position:absolute;bottom:0;left:0;right:0;height:42%;z-index:3;background:linear-gradient(to bottom,transparent 0%,rgba(5,1,0,0.88) 30%,#050100 70%);padding-top:40px;transform:translateY(100%);transition:transform 1.4s cubic-bezier(0.22,1,0.36,1);pointer-events:none;">
+  <div class="event-wrap" id="wedding-invite" style="position:relative;opacity:0;transform:translateY(20px);transition:opacity 0.8s ease 0.5s,transform 0.8s ease 0.5s;pointer-events:none;">
     <div class="event-icon-big">💍</div>
     <div class="event-tag" style="background:rgba(255,200,60,0.15);border-color:rgba(255,200,60,0.3);color:#f0c840">The Wedding</div>
     <div class="event-title">Shubho Bibaho</div>
@@ -1753,6 +1759,7 @@ html, body {
     </div>
     <div class="screen-tap-hint">tap to continue ✦</div>
   </div>
+  </div><!-- end wedding-panel -->
 </div>
 
 <!-- ══════════════════════════════════════════
@@ -2160,6 +2167,59 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         var dur = (hv.duration && isFinite(hv.duration)) ? hv.duration * 1000 + 500 : 10000;
         haldiTimer = setTimeout(showHaldiInvite, dur);
+      }
+    }
+  };
+})();
+
+/* ── Wedding video logic ── */
+(function(){
+  var wv = document.getElementById('wedding-video');
+  var wi = document.getElementById('wedding-invite');
+  var wp = document.getElementById('wedding-panel');
+  var weddingShown = false;
+  var weddingTimer = null;
+
+  function showWeddingInvite() {
+    weddingShown = true;
+    if (wp) { wp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; wp.style.transform = 'translateY(0)'; wp.style.pointerEvents = 'auto'; }
+    if (wi) { wi.style.opacity = '1'; wi.style.transform = 'translateY(0)'; wi.style.pointerEvents = 'auto'; }
+  }
+
+  function resetWedding() {
+    weddingShown = false;
+    if (weddingTimer) { clearTimeout(weddingTimer); weddingTimer = null; }
+    if (wp) { wp.style.transition = 'none'; wp.style.transform = 'translateY(100%)'; wp.style.pointerEvents = 'none'; }
+    if (wi) { wi.style.opacity = '0'; wi.style.transform = 'translateY(20px)'; wi.style.pointerEvents = 'none'; }
+    if (wv) { wv.currentTime = 0; wv.play().catch(function(){}); }
+  }
+
+  if (wv) {
+    wv.loop = false;
+    wv.addEventListener('ended', function() { wv.pause(); showWeddingInvite(); });
+    wv.addEventListener('error', showWeddingInvite);
+  }
+
+  var _origGoTo4 = goTo;
+  goTo = function(id) {
+    var from = current;
+    _origGoTo4(id);
+    if (from === 'screen-wedding' && id !== 'screen-wedding') {
+      resetWedding();
+    }
+    if (id === 'screen-wedding') {
+      weddingShown = false;
+      if (weddingTimer) { clearTimeout(weddingTimer); weddingTimer = null; }
+      if (wp) { wp.style.transition = 'none'; wp.style.transform = 'translateY(100%)'; wp.style.pointerEvents = 'none'; }
+      if (wi) { wi.style.opacity = '0'; wi.style.transform = 'translateY(20px)'; wi.style.pointerEvents = 'none'; }
+      if (wv) {
+        wv.currentTime = 0;
+        var playPromise = wv.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(function() { showWeddingInvite(); });
+        }
+        var dur = (wv.duration && isFinite(wv.duration)) ? wv.duration * 1000 + 500 : 10000;
+        weddingTimer = setTimeout(showWeddingInvite, dur);
       }
     }
   };
