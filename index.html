@@ -1555,14 +1555,15 @@ html, body {
      SCREEN MEHENDI
 ══════════════════════════════════════════ -->
 <div id="screen-mehendi" class="screen event-screen" onclick="goTo('screen-sangeet')">
-  <div class="event-img-wrap">
-    <video id="mehendi-video" autoplay muted playsinline poster="1-mehendi_4k.jpg"
-      style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:fill;">
-      <source src="mehendi.mp4" type="video/mp4">
-    </video>
-  </div>
-  <div class="event-particles" id="ep-mehendi"></div>
-  <div class="event-wrap" id="mehendi-invite" style="opacity:0;transform:translateY(40px);transition:opacity 1.2s ease, transform 1.2s ease;pointer-events:none;">
+  <!-- full-screen video, no overlay blocking it -->
+  <video id="mehendi-video" autoplay muted playsinline poster="1-mehendi_4k.jpg"
+    style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;">
+    <source src="mehendi.mp4" type="video/mp4">
+  </video>
+  <!-- dark scrim at bottom for text readability — shown only after video ends -->
+  <div id="mehendi-scrim" style="position:absolute;inset:0;z-index:1;background:linear-gradient(to bottom,transparent 40%,rgba(5,1,0,0.97) 80%,#050100 100%);opacity:0;transition:opacity 1.2s ease;"></div>
+  <div class="event-particles" id="ep-mehendi" style="z-index:2;"></div>
+  <div class="event-wrap" id="mehendi-invite" style="z-index:3;opacity:0;transform:translateY(40px);transition:opacity 1.2s ease, transform 1.2s ease;pointer-events:none;">
     <div class="event-icon-big">🌿</div>
     <div class="event-title">Henna & Happiness</div>
     <div class="event-subtitle">An evening of henna, laughter &amp; love</div>
@@ -1911,24 +1912,16 @@ document.addEventListener('DOMContentLoaded', function() {
   /* Mehendi: video plays once, then invite details slide in */
   var mv = document.getElementById('mehendi-video');
   var mi = document.getElementById('mehendi-invite');
-  if (mv && mi) {
-    mv.addEventListener('ended', function() {
-      /* freeze on last frame */
-      mv.pause();
-      /* fade invite in */
-      mi.style.opacity = '1';
-      mi.style.transform = 'translateY(0)';
-      mi.style.pointerEvents = 'auto';
-      /* dim the video slightly so text pops */
-      mv.style.transition = 'filter 1.2s ease';
-      mv.style.filter = 'brightness(0.45)';
-    });
-    /* fallback: if video can't play, show invite straight away */
-    mv.addEventListener('error', function() {
-      mi.style.opacity = '1';
-      mi.style.transform = 'translateY(0)';
-      mi.style.pointerEvents = 'auto';
-    });
+  var ms = document.getElementById('mehendi-scrim');
+  function showMehendiInvite() {
+    if (ms) { ms.style.opacity = '1'; }
+    if (mi) { mi.style.opacity = '1'; mi.style.transform = 'translateY(0)'; mi.style.pointerEvents = 'auto'; }
+  }
+  if (mv) {
+    mv.addEventListener('ended', function() { mv.pause(); showMehendiInvite(); });
+    mv.addEventListener('error', showMehendiInvite);
+    /* fallback: if video hasn't ended after 30s, show invite anyway */
+    setTimeout(showMehendiInvite, 30000);
   }
 });
 
