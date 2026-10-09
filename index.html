@@ -2276,10 +2276,16 @@ function toggleMusic() {
 
 function restartFromBeginning() {
   var music = document.getElementById('bgmusic');
-  if (music) { music.volume = 0.5; music.currentTime = 0; music.play().catch(function(){}); }
+  if (music) { music.pause(); music.currentTime = 0; music.volume = 0.5; }
   var icon = document.getElementById('music-icon');
   if (icon) icon.textContent = '🎵';
-  goTo('screen-ganesh');
+  var mb = document.getElementById('music-btn');
+  if (mb) mb.style.display = 'none';
+  // Reset envelope state so it can be opened again
+  opened = false;
+  var env = document.getElementById('screen-envelope');
+  if (env) env.classList.remove('opening');
+  goTo('screen-envelope');
 }
 
 (function(){
