@@ -1600,9 +1600,10 @@ html, body {
     <source src="mehendi.mp4" type="video/mp4">
   </video>
   <!-- dark scrim at bottom for text readability — shown only after video ends -->
-  <div id="mehendi-scrim" style="position:absolute;inset:0;z-index:1;background:linear-gradient(to bottom,transparent 60%,rgba(5,1,0,0.7) 85%,rgba(5,1,0,0.88) 100%);opacity:0;transition:opacity 1.2s ease;"></div>
   <div class="event-particles" id="ep-mehendi" style="z-index:2;"></div>
-  <div class="event-wrap" id="mehendi-invite" style="position:absolute;bottom:0;left:0;right:0;z-index:3;opacity:0;transform:translateY(30px);transition:opacity 1.2s ease,transform 1.2s ease;pointer-events:none;">
+  <!-- Dark panel slides up from bottom after video ends -->
+  <div id="mehendi-panel" style="position:absolute;bottom:0;left:0;right:0;z-index:3;background:linear-gradient(to bottom,transparent 0%,rgba(5,1,0,0.82) 18%,rgba(5,1,0,0.97) 40%,#050100 100%);padding-top:60px;transform:translateY(100%);transition:transform 1.4s cubic-bezier(0.22,1,0.36,1);pointer-events:none;">
+  <div class="event-wrap" id="mehendi-invite" style="position:relative;opacity:0;transform:translateY(20px);transition:opacity 0.8s ease 0.5s,transform 0.8s ease 0.5s;pointer-events:none;">
     <div class="event-icon-big">🌿</div>
     <div class="event-title">Henna & Happiness</div>
     <div class="event-subtitle">An evening of henna, laughter &amp; love</div>
@@ -1625,6 +1626,7 @@ html, body {
     </div>
     <div class="screen-tap-hint">tap to continue ✦</div>
   </div>
+  </div><!-- end mehendi-panel -->
 </div>
 
 <!-- ══════════════════════════════════════════
@@ -1980,8 +1982,9 @@ document.addEventListener('DOMContentLoaded', function() {
   var mv = document.getElementById('mehendi-video');
   var mi = document.getElementById('mehendi-invite');
   var ms = document.getElementById('mehendi-scrim');
+  var mp = document.getElementById('mehendi-panel');
   function showMehendiInvite() {
-    if (ms) ms.style.opacity = '1';
+    if (mp) { mp.style.transform = 'translateY(0)'; mp.style.pointerEvents = 'auto'; }
     if (mi) { mi.style.opacity = '1'; mi.style.transform = 'translateY(0)'; mi.style.pointerEvents = 'auto'; }
   }
   if (mv) {
