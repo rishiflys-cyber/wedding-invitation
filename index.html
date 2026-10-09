@@ -2007,7 +2007,6 @@ document.addEventListener('DOMContentLoaded', function() {
     mv.loop = false;
     mv.addEventListener('ended', function() { mv.pause(); showMehendiInvite(); });
     mv.addEventListener('error', showMehendiInvite);
-    mehendiTimer = setTimeout(showMehendiInvite, 32000);
   }
 
   /* Hook into goTo to reset/restore mehendi state */
@@ -2015,27 +2014,31 @@ document.addEventListener('DOMContentLoaded', function() {
   goTo = function(id) {
     var from = current;
     _origGoTo(id);
-    /* Leaving mehendi — reset for next visit */
+    /* Leaving mehendi — reset immediately for next visit */
     if (from === 'screen-mehendi' && id !== 'screen-mehendi') {
-      setTimeout(resetMehendi, 400);
+      resetMehendi();
     }
-    /* Arriving at mehendi — play video (user interaction satisfies autoplay policy) */
+    /* Arriving at mehendi — always play fresh from start */
     if (id === 'screen-mehendi') {
-      if (mv && !mehendiShown) {
+      /* Always reset state and play fresh */
+      mehendiShown = false;
+      if (mehendiTimer) { clearTimeout(mehendiTimer); mehendiTimer = null; }
+      if (mp) { mp.style.transition = 'none'; mp.style.transform = 'translateY(100%)'; mp.style.pointerEvents = 'none'; }
+      if (mi) { mi.style.opacity = '0'; mi.style.transform = 'translateY(20px)'; mi.style.pointerEvents = 'none'; }
+      if (mv) {
         mv.currentTime = 0;
         var playPromise = mv.play();
         if (playPromise !== undefined) {
           playPromise.catch(function() {
-            /* autoplay still blocked — show invite immediately */
+            /* autoplay blocked — show invite immediately */
             showMehendiInvite();
           });
         }
-        /* restart fallback timer */
-        if (mehendiTimer) clearTimeout(mehendiTimer);
-        mehendiTimer = setTimeout(showMehendiInvite, 32000);
+        /* fallback timer based on video duration + buffer */
+        var dur = (mv.duration && isFinite(mv.duration)) ? mv.duration * 1000 + 500 : 10000;
+        mehendiTimer = setTimeout(showMehendiInvite, dur);
       }
-      /* already finished — show invite instantly */
-      if (mehendiShown) {
+      if (false) { /* placeholder to keep else-if chain intact */
         if (mp) { mp.style.transition = 'none'; mp.style.transform = 'translateY(0)'; mp.style.pointerEvents = 'auto'; }
         if (mi) { mi.style.opacity = '1'; mi.style.transform = 'translateY(0)'; mi.style.pointerEvents = 'auto'; }
       }
