@@ -2173,10 +2173,10 @@ function spawnPetals(n) {
     const hue = [38, 340, 20, 55, 300][Math.floor(Math.random()*5)];
     p.style.color = `hsl(${hue + Math.random()*15}, 80%, ${60+Math.random()*25}%)`;
     p.style.fontSize = (20 + Math.random() * 30) + 'px';
-    p.style.animationDuration = (5 + Math.random() * 5) + 's';
-    p.style.animationDelay = (Math.random() * 2) + 's';
+    p.style.animationDuration = (3 + Math.random() * 3) + 's';
+    p.style.animationDelay = (Math.random() * 1.2) + 's';
     c.appendChild(p);
-    setTimeout(() => p.remove(), 11000);
+    setTimeout(() => p.remove(), 7000);
   }
 }
 </script>
