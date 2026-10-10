@@ -2310,7 +2310,12 @@ function goTo(id) {
   const next = document.getElementById(id);
   if (!next || id === current) return;
   _navigating = true;
-  setTimeout(function(){ _navigating = false; }, 700);
+  // Block all pointer events on entire page during transition
+  document.body.style.pointerEvents = 'none';
+  setTimeout(function(){
+    _navigating = false;
+    document.body.style.pointerEvents = '';
+  }, 750);
   try { window.navigator.vibrate([80]); } catch(e) {}
   _history.push(current);
   prev.classList.remove('active');
