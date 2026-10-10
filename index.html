@@ -1621,27 +1621,44 @@ html, body {
 </div>
 
 <!-- ══════════════════════════════════════════
-     SCREEN 3 — PERSONALISED INVITE
+     SCREEN 3a — INVITE ACT 1 (poem)
 ══════════════════════════════════════════ -->
-<div id="screen-invite" class="screen" onclick="goTo('screen-mehendi')">
-  <div class="invite-screen-wrap">
-
-    <div class="invite-top-border">✦ A heartfelt invitation ✦</div>
-    <div class="invite-preamble">Some moments are meant to be shared</div>
-    <div class="invite-divider"></div>
-
-    <div class="invite-body">
+<div id="screen-invite" class="screen">
+  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:48px 36px;text-align:center;gap:0;">
+    <div style="font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);opacity:0.6;margin-bottom:28px;">✦ A heartfelt invitation ✦</div>
+    <div style="font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-light);opacity:0.5;margin-bottom:28px;">Some moments are meant to be shared</div>
+    <div style="width:50px;height:1px;background:linear-gradient(90deg,transparent,#c9a84c,transparent);opacity:0.5;margin-bottom:32px;"></div>
+    <div id="invite-act1-text" style="font-size:18px;line-height:2;color:var(--gold-light);opacity:0;transition:opacity 1.2s ease;">
       There are people in our lives whose presence<br>
       doesn't just fill a room —<br>
-      it makes every moment <span class="highlight">feel complete.</span>
+      it makes every moment <span style="color:#f0c840;font-style:italic;">feel complete.</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 3b — INVITE ACT 2 (you are one)
+══════════════════════════════════════════ -->
+<div id="screen-invite2" class="screen">
+  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:48px 36px;text-align:center;">
+    <div id="invite-act2-text" class="you-are-one" style="font-size:26px;opacity:0;transition:opacity 1.2s ease;">You are one of those people.</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 3c — INVITE ACT 3 (names + families)
+══════════════════════════════════════════ -->
+<div id="screen-invite3" class="screen" onclick="goTo('screen-mehendi')">
+  <div class="invite-screen-wrap" style="gap:14px;padding:80px 28px 36px;">
+
+    <div id="invite-act3-text" style="font-size:14px;font-style:italic;color:var(--gold-light);opacity:0;transition:opacity 1.2s ease;line-height:1.8;text-align:center;">
+      And so, with hearts full of love,<br>we invite you to celebrate with us —
     </div>
 
-    <div class="you-are-one">You are one of those people.</div>
-
-    <div style="display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:8px;">
-      <span style="font-size:26px;font-style:italic;color:#f0c840;text-shadow:0 0 30px rgba(240,200,64,0.6);letter-spacing:1px;">Rishabh Chattopadhyay</span>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:4px;">
+      <span style="font-size:28px;font-style:italic;color:#f0c840;text-shadow:0 0 30px rgba(240,200,64,0.6),0 0 60px rgba(255,160,0,0.3);letter-spacing:1px;">Rishabh Chattopadhyay</span>
       <span style="font-size:16px;opacity:0.4;color:var(--gold-light);">&amp;</span>
-      <span style="font-size:26px;font-style:italic;color:#f0c840;text-shadow:0 0 30px rgba(240,200,64,0.6);letter-spacing:1px;">Ananya Dash</span>
+      <span style="font-size:28px;font-style:italic;color:#f0c840;text-shadow:0 0 30px rgba(240,200,64,0.6),0 0 60px rgba(255,160,0,0.3);letter-spacing:1px;">Ananya Dash</span>
     </div>
 
     <div class="invite-divider"></div>
@@ -2063,6 +2080,18 @@ function goTo(id) {
   if (cb) {
     var hideOn = ['screen-envelope','screen-ganesh'];
     cb.style.display = hideOn.indexOf(id) === -1 ? 'flex' : 'none';
+  }
+  // Invite acts — fade in text + auto-advance
+  if (id === 'screen-invite') {
+    setTimeout(function(){ var el=document.getElementById('invite-act1-text'); if(el) el.style.opacity='1'; }, 600);
+    setTimeout(function(){ if(current==='screen-invite') goTo('screen-invite2'); }, 5500);
+  }
+  if (id === 'screen-invite2') {
+    setTimeout(function(){ var el=document.getElementById('invite-act2-text'); if(el) el.style.opacity='1'; }, 600);
+    setTimeout(function(){ if(current==='screen-invite2') goTo('screen-invite3'); }, 4500);
+  }
+  if (id === 'screen-invite3') {
+    setTimeout(function(){ var el=document.getElementById('invite-act3-text'); if(el) el.style.opacity='1'; }, 600);
   }
 }
 
