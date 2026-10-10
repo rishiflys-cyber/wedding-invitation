@@ -2049,9 +2049,13 @@ function goTo(id) {
 }
 
 function closeInvitation() {
-  // Stop music
+  // Stop music and reset icon state
   var music = document.getElementById('bgmusic');
   if (music) { music.pause(); music.currentTime = 0; }
+  var icon = document.getElementById('music-icon');
+  if (icon) icon.style.opacity = '1';
+  var muteLine = document.getElementById('music-mute-line');
+  if (muteLine) muteLine.style.display = 'none';
   // Hide buttons
   var mb = document.getElementById('music-btn');
   if (mb) mb.style.display = 'none';
