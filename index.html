@@ -2111,7 +2111,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function showMehendiInvite() {
     mehendiShown = true;
-    requestWakeLock();
     if (mp) { mp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; mp.style.transform = 'translateY(0)'; mp.style.pointerEvents = 'auto'; }
     if (mi) { mi.style.opacity = '1'; mi.style.transform = 'translateY(0)'; mi.style.pointerEvents = 'auto'; }
     var delay = mehendiVisited ? 10000 : 5000;
@@ -2144,6 +2143,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     /* Arriving at mehendi — always play fresh from start */
     if (id === 'screen-mehendi') {
+      requestWakeLock();
       /* Always reset state and play fresh */
       mehendiShown = false;
       if (mehendiTimer) { clearTimeout(mehendiTimer); mehendiTimer = null; }
@@ -2218,8 +2218,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (playPromise !== undefined) {
           playPromise.catch(function() { showSangeetInvite(); });
         }
-        var dur = (sv.duration && isFinite(sv.duration)) ? sv.duration * 1000 + 500 : 10000;
+        var dur = (sv.duration && isFinite(sv.duration)) ? sv.duration * 1000 + 500 : 8000;
         sangeetTimer = setTimeout(showSangeetInvite, dur);
+      } else {
+        sangeetTimer = setTimeout(showSangeetInvite, 2000);
       }
     }
   };
@@ -2275,8 +2277,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (playPromise !== undefined) {
           playPromise.catch(function() { showHaldiInvite(); });
         }
-        var dur = (hv.duration && isFinite(hv.duration)) ? hv.duration * 1000 + 500 : 10000;
+        var dur = (hv.duration && isFinite(hv.duration)) ? hv.duration * 1000 + 500 : 8000;
         haldiTimer = setTimeout(showHaldiInvite, dur);
+      } else {
+        haldiTimer = setTimeout(showHaldiInvite, 2000);
       }
     }
   };
@@ -2331,8 +2335,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (playPromise !== undefined) {
           playPromise.catch(function() { showWeddingInvite(); });
         }
-        var dur = (wv.duration && isFinite(wv.duration)) ? wv.duration * 1000 + 500 : 10000;
+        var dur = (wv.duration && isFinite(wv.duration)) ? wv.duration * 1000 + 500 : 8000;
         weddingTimer = setTimeout(showWeddingInvite, dur);
+      } else {
+        weddingTimer = setTimeout(showWeddingInvite, 2000);
       }
     }
   };
