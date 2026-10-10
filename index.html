@@ -2889,10 +2889,10 @@ async function saveRSVPtoDB(name, phone, answer, meal) {
 function addToCalendar() {
   var title = 'Rishabh & Ananya Wedding';
   var location = 'Circle Club, Kolkata';
-  var details = 'You are cordially invited to the wedding of Rishabh & Ananya. Dress code: Ethnic / Formal.';
-  // Wedding: 11 Dec 2026, 7pm–11pm IST (UTC+5:30 → 13:30–17:30 UTC)
-  var startUTC = '20261211T133000Z';
-  var endUTC   = '20261211T173000Z';
+  var details = 'You are cordially invited to the wedding of Rishabh & Ananya. Starting 7:30 PM onwards. Dress code: Ethnic / Formal.';
+  // Wedding: 11 Dec 2026, 7:30pm onwards IST (UTC+5:30 → 14:00 UTC)
+  var startUTC = '20261211T140000Z';
+  var endUTC   = '20261211T180000Z'; // 11:30pm IST — open ended
   var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
   if (isIOS) {
     // .ics download for Apple Calendar
