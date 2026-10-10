@@ -194,11 +194,12 @@ html, body {
 }
 
 .invite-label {
-  font-size: 10px;
+  font-size: 15px;
   letter-spacing: 5px;
   color: var(--gold-light);
   text-transform: uppercase;
-  opacity: 0.65;
+  opacity: 0.85;
+  font-weight: 600;
 }
 
 .wax-seal {
@@ -2097,6 +2098,39 @@ function updateBackBtn() {
 function openEnvelope() {
   if (opened) return;
   opened = true;
+
+  // Haptic feedback — seal crack pattern
+  if (navigator.vibrate) {
+    navigator.vibrate([30, 50, 60, 30, 100]);
+  }
+
+  // Flower petal burst
+  (function spawnPetals() {
+    var petals = ['🌸','🌺','🌼','✿','❀','🌹','💐'];
+    var colors = ['#ffb7c5','#ff8fab','#ffd6a5','#c9a84c','#fff0f3','#ffccd5'];
+    for (var i = 0; i < 28; i++) {
+      (function(i) {
+        setTimeout(function() {
+          var p = document.createElement('div');
+          var isEmoji = Math.random() > 0.4;
+          p.textContent = isEmoji ? petals[Math.floor(Math.random()*petals.length)] : '✦';
+          var startX = 30 + Math.random() * 40; // % from left, centred on seal
+          var endX = startX + (Math.random() - 0.5) * 80;
+          var dur = 1.2 + Math.random() * 1.2;
+          var size = 14 + Math.random() * 16;
+          p.style.cssText = 'position:fixed;top:52%;left:'+startX+'%;font-size:'+size+'px;z-index:9998;pointer-events:none;opacity:1;color:'+colors[Math.floor(Math.random()*colors.length)]+';transition:transform '+dur+'s ease-out,opacity '+dur+'s ease-out;will-change:transform,opacity;';
+          document.body.appendChild(p);
+          requestAnimationFrame(function(){ requestAnimationFrame(function(){
+            var fallY = 200 + Math.random() * 300;
+            var rotate = (Math.random()-0.5)*720;
+            p.style.transform = 'translate('+((endX-startX)*3)+'px,'+fallY+'px) rotate('+rotate+'deg)';
+            p.style.opacity = '0';
+          });});
+          setTimeout(function(){ if(p.parentNode) p.parentNode.removeChild(p); }, (dur+0.2)*1000);
+        }, i * 60);
+      })(i);
+    }
+  })();
 
   // Start music from beginning
   const music = document.getElementById('bgmusic');
