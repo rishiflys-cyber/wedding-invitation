@@ -2070,6 +2070,12 @@ function openEnvelope() {
   var mb = document.getElementById('music-btn');
   if (mb) mb.style.display = 'flex';
 
+  // Unlock all event videos during this user gesture so they can autoplay later
+  ['sangeet-video','haldi-video','wedding-video'].forEach(function(vid) {
+    var v = document.getElementById(vid);
+    if (v) { v.muted = true; v.play().then(function(){ v.pause(); v.currentTime = 0; }).catch(function(){}); }
+  });
+
   // Trigger flaps flying outward
   document.getElementById('screen-envelope').classList.add('opening');
 
