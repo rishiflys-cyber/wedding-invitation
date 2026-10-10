@@ -2037,6 +2037,12 @@ function goTo(id) {
   next.classList.add('active');
   current = id;
   updateBackBtn();
+  // Show close button from screen-invite onwards; hide on envelope/ganesh
+  var cb = document.getElementById('close-btn');
+  if (cb) {
+    var hideOn = ['screen-envelope','screen-ganesh'];
+    cb.style.display = hideOn.indexOf(id) === -1 ? 'flex' : 'none';
+  }
 }
 
 function closeInvitation() {
@@ -2087,11 +2093,9 @@ function openEnvelope() {
   music.currentTime = 0;
   music.volume = 0.5;
   music.play().catch(() => {});
-  // Show music toggle + close buttons
+  // Show music toggle button (close btn shown later, from screen-invite onwards)
   var mb = document.getElementById('music-btn');
   if (mb) mb.style.display = 'flex';
-  var cb = document.getElementById('close-btn');
-  if (cb) cb.style.display = 'flex';
 
   // Unlock all event videos during this user gesture so they can autoplay later
   ['sangeet-video','haldi-video','wedding-video'].forEach(function(vid) {
