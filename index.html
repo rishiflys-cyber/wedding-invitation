@@ -2268,6 +2268,7 @@ function goTo(id) {
   const prev = document.getElementById(current);
   const next = document.getElementById(id);
   if (!next || id === current) return;
+  try { window.navigator.vibrate([30]); } catch(e) {}
   _history.push(current);
   prev.classList.remove('active');
   next.classList.add('active');
