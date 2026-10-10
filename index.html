@@ -2081,17 +2081,17 @@ function goTo(id) {
     var hideOn = ['screen-envelope','screen-ganesh'];
     cb.style.display = hideOn.indexOf(id) === -1 ? 'flex' : 'none';
   }
-  // Invite acts — fade in text + auto-advance
+  // Invite acts — fade in fast, advance at 3s each; act 3 stays
   if (id === 'screen-invite') {
-    setTimeout(function(){ var el=document.getElementById('invite-act1-text'); if(el) el.style.opacity='1'; }, 600);
-    setTimeout(function(){ if(current==='screen-invite') goTo('screen-invite2'); }, 5500);
+    setTimeout(function(){ var el=document.getElementById('invite-act1-text'); if(el){ el.style.transition='opacity 0.4s ease'; el.style.opacity='1'; } }, 200);
+    setTimeout(function(){ if(current==='screen-invite') goTo('screen-invite2'); }, 3000);
   }
   if (id === 'screen-invite2') {
-    setTimeout(function(){ var el=document.getElementById('invite-act2-text'); if(el) el.style.opacity='1'; }, 600);
-    setTimeout(function(){ if(current==='screen-invite2') goTo('screen-invite3'); }, 4500);
+    setTimeout(function(){ var el=document.getElementById('invite-act2-text'); if(el){ el.style.transition='opacity 0.4s ease'; el.style.opacity='1'; } }, 200);
+    setTimeout(function(){ if(current==='screen-invite2') goTo('screen-invite3'); }, 3000);
   }
   if (id === 'screen-invite3') {
-    setTimeout(function(){ var el=document.getElementById('invite-act3-text'); if(el) el.style.opacity='1'; }, 600);
+    setTimeout(function(){ var el=document.getElementById('invite-act3-text'); if(el){ el.style.transition='opacity 0.4s ease'; el.style.opacity='1'; } }, 200);
   }
 }
 
