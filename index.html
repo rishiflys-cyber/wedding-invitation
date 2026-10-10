@@ -1621,43 +1621,34 @@ html, body {
 </div>
 
 <!-- ══════════════════════════════════════════
-     SCREEN 3a — INVITE PART 1 (emotional hook)
+     SCREEN 3 — PERSONALISED INVITE
 ══════════════════════════════════════════ -->
-<div id="screen-invite" class="screen">
-  <div class="invite-screen-wrap" style="justify-content:center;gap:20px;padding:60px 36px;">
+<div id="screen-invite" class="screen" onclick="goTo('screen-mehendi')">
+  <div class="invite-screen-wrap">
 
     <div class="invite-top-border">✦ A heartfelt invitation ✦</div>
     <div class="invite-preamble">Some moments are meant to be shared</div>
     <div class="invite-divider"></div>
 
-    <div class="invite-body" style="font-size:16px;line-height:1.9;">
+    <div class="invite-body">
       There are people in our lives whose presence<br>
       doesn't just fill a room —<br>
       it makes every moment <span class="highlight">feel complete.</span>
     </div>
 
-    <div class="you-are-one" style="font-size:22px;margin:8px 0;">You are one of those people.</div>
-
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════════
-     SCREEN 3b — INVITE PART 2 (couple hero + families)
-══════════════════════════════════════════ -->
-<div id="screen-invite2" class="screen" onclick="goTo('screen-mehendi')">
-  <div class="invite-screen-wrap" style="gap:16px;padding:80px 28px 36px;">
-
-    <div style="font-size:14px;opacity:0.6;font-style:italic;color:var(--gold-light);line-height:1.8;text-align:center;">
-      This day will be lived once, but remembered forever.<br>
-      It wouldn't be the same without you.
-    </div>
+    <div class="you-are-one">You are one of those people.</div>
 
     <div class="invite-divider"></div>
 
-    <div style="display:flex;flex-direction:column;align-items:center;gap:4px;margin:8px 0;">
-      <span style="font-size:30px;font-style:italic;color:#f0c840;text-shadow:0 0 30px rgba(240,200,64,0.6),0 0 60px rgba(255,160,0,0.3);letter-spacing:1px;">Rishabh Chattopadhyay</span>
-      <span style="font-size:18px;opacity:0.4;color:var(--gold-light);">&amp;</span>
-      <span style="font-size:30px;font-style:italic;color:#f0c840;text-shadow:0 0 30px rgba(240,200,64,0.6),0 0 60px rgba(255,160,0,0.3);letter-spacing:1px;">Ananya Dash</span>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+      <span style="font-size:26px;font-style:italic;color:#f0c840;text-shadow:0 0 30px rgba(240,200,64,0.6);letter-spacing:1px;">Rishabh Chattopadhyay</span>
+      <span style="font-size:16px;opacity:0.4;color:var(--gold-light);">&amp;</span>
+      <span style="font-size:26px;font-style:italic;color:#f0c840;text-shadow:0 0 30px rgba(240,200,64,0.6);letter-spacing:1px;">Ananya Dash</span>
+    </div>
+
+    <div style="font-size:12px;opacity:0.5;font-style:italic;color:var(--gold-light);line-height:1.7;text-align:center;">
+      This day will be lived once, but remembered forever.<br>
+      It wouldn't be the same without you.
     </div>
 
     <div class="invite-divider"></div>
@@ -2079,12 +2070,6 @@ function goTo(id) {
   if (cb) {
     var hideOn = ['screen-envelope','screen-ganesh'];
     cb.style.display = hideOn.indexOf(id) === -1 ? 'flex' : 'none';
-  }
-  // Auto-advance from invite part 1 → part 2
-  if (id === 'screen-invite') {
-    setTimeout(function() {
-      if (current === 'screen-invite') goTo('screen-invite2');
-    }, 4000);
   }
 }
 
