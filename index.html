@@ -2096,8 +2096,31 @@ function updateBackBtn() {
 }
 
 function openEnvelope() {
-  // Haptic — must fire on every touch, before opened guard
+  // Haptic — Android vibrate + iOS audio trick
   try { window.navigator.vibrate([50, 80, 100, 50, 150]); } catch(e) {}
+  try {
+    // iOS Taptic workaround: play ultra-short silent audio bursts
+    var AC = window.AudioContext || window.webkitAudioContext;
+    if (AC) {
+      var ctx = new AC();
+      function buzz(time, dur) {
+        var buf = ctx.createBuffer(1, ctx.sampleRate * dur, ctx.sampleRate);
+        var data = buf.getChannelData(0);
+        for (var i = 0; i < data.length; i++) data[i] = (Math.random()*2-1) * 0.3;
+        var src = ctx.createBufferSource();
+        src.buffer = buf;
+        src.connect(ctx.destination);
+        src.start(ctx.currentTime + time);
+        src.stop(ctx.currentTime + time + dur);
+      }
+      buzz(0,    0.04);
+      buzz(0.08, 0.06);
+      buzz(0.18, 0.08);
+      buzz(0.30, 0.05);
+      buzz(0.40, 0.10);
+      setTimeout(function(){ try{ctx.close();}catch(e){} }, 600);
+    }
+  } catch(e) {}
   if (opened) return;
   opened = true;
 
