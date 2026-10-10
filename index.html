@@ -2303,10 +2303,14 @@ document.addEventListener('visibilitychange', function() {
   }
 });
 
+var _navigating = false;
 function goTo(id) {
+  if (_navigating) return;
   const prev = document.getElementById(current);
   const next = document.getElementById(id);
   if (!next || id === current) return;
+  _navigating = true;
+  setTimeout(function(){ _navigating = false; }, 700);
   try { window.navigator.vibrate([80]); } catch(e) {}
   _history.push(current);
   prev.classList.remove('active');
