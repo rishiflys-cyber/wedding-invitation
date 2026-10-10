@@ -1470,6 +1470,11 @@ html, body {
   <span id="music-icon" style="font-size:22px;line-height:1;">🎵</span>
 </div>
 
+<!-- Close (X) button — centre-top between back and music -->
+<div id="close-btn" onclick="closeInvitation()" style="position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:9999;width:38px;height:38px;display:none;align-items:center;justify-content:center;cursor:pointer;">
+  <svg viewBox="0 0 24 24" width="22" height="22" stroke="rgba(255,255,255,0.75)" stroke-width="2.5" fill="none" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+</div>
+
 <!-- ══════════════════════════════════════════
      SCREEN 1 — ENVELOPE
 ══════════════════════════════════════════ -->
@@ -2034,6 +2039,22 @@ function goTo(id) {
   updateBackBtn();
 }
 
+function closeInvitation() {
+  // Stop music
+  var music = document.getElementById('bgmusic');
+  if (music) { music.pause(); music.currentTime = 0; }
+  // Hide buttons
+  var mb = document.getElementById('music-btn');
+  if (mb) mb.style.display = 'none';
+  var cb = document.getElementById('close-btn');
+  if (cb) cb.style.display = 'none';
+  var bb = document.getElementById('back-btn');
+  if (bb) { bb.style.opacity = '0'; bb.style.pointerEvents = 'none'; }
+  // Clear history and go to envelope
+  _history = [];
+  goTo('screen-envelope');
+}
+
 function goBack() {
   if (_history.length === 0) return;
   const prevId = _history[_history.length - 1]; // peek without popping
@@ -2066,9 +2087,11 @@ function openEnvelope() {
   music.currentTime = 0;
   music.volume = 0.5;
   music.play().catch(() => {});
-  // Show music toggle button
+  // Show music toggle + close buttons
   var mb = document.getElementById('music-btn');
   if (mb) mb.style.display = 'flex';
+  var cb = document.getElementById('close-btn');
+  if (cb) cb.style.display = 'flex';
 
   // Unlock all event videos during this user gesture so they can autoplay later
   ['sangeet-video','haldi-video','wedding-video'].forEach(function(vid) {
