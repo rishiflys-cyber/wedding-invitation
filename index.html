@@ -2180,6 +2180,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (sangeetShown) return;
     sangeetShown = true;
     if (sangeetTimer) { clearTimeout(sangeetTimer); sangeetTimer = null; }
+    if (sv) sv.pause();
     if (sp) { sp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; sp.style.transform = 'translateY(0)'; sp.style.pointerEvents = 'auto'; }
     if (si) { si.style.opacity = '1'; si.style.transform = 'translateY(0)'; si.style.pointerEvents = 'auto'; }
     var delay = sangeetVisited ? 10000 : 5000;
@@ -2217,16 +2218,12 @@ document.addEventListener('DOMContentLoaded', function() {
       if (si) { si.style.opacity = '0'; si.style.transform = 'translateY(20px)'; si.style.pointerEvents = 'none'; }
       if (sv) {
         sv.currentTime = 0;
-        var playPromise = sv.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(function() {
-            setTimeout(showSangeetInvite, 800);
-          });
-        }
+        sv.play().catch(function() {});
+        sv.onended = function() { sv.pause(); showSangeetInvite(); };
         var dur = (sv.duration && isFinite(sv.duration)) ? sv.duration * 1000 + 500 : 12000;
         sangeetTimer = setTimeout(showSangeetInvite, dur);
       } else {
-        sangeetTimer = setTimeout(showSangeetInvite, 800);
+        sangeetTimer = setTimeout(showSangeetInvite, 1000);
       }
     }
   };
@@ -2280,16 +2277,12 @@ document.addEventListener('DOMContentLoaded', function() {
       if (hi) { hi.style.opacity = '0'; hi.style.transform = 'translateY(20px)'; hi.style.pointerEvents = 'none'; }
       if (hv) {
         hv.currentTime = 0;
-        var playPromise = hv.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(function() {
-            setTimeout(showHaldiInvite, 800);
-          });
-        }
+        hv.play().catch(function() {});
+        hv.onended = function() { hv.pause(); showHaldiInvite(); };
         var dur = (hv.duration && isFinite(hv.duration)) ? hv.duration * 1000 + 500 : 12000;
         haldiTimer = setTimeout(showHaldiInvite, dur);
       } else {
-        haldiTimer = setTimeout(showHaldiInvite, 800);
+        haldiTimer = setTimeout(showHaldiInvite, 1000);
       }
     }
   };
@@ -2341,16 +2334,12 @@ document.addEventListener('DOMContentLoaded', function() {
       if (wi) { wi.style.opacity = '0'; wi.style.transform = 'translateY(20px)'; wi.style.pointerEvents = 'none'; }
       if (wv) {
         wv.currentTime = 0;
-        var playPromise = wv.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(function() {
-            setTimeout(showWeddingInvite, 800);
-          });
-        }
+        wv.play().catch(function() {});
+        wv.onended = function() { wv.pause(); showWeddingInvite(); };
         var dur = (wv.duration && isFinite(wv.duration)) ? wv.duration * 1000 + 500 : 12000;
         weddingTimer = setTimeout(showWeddingInvite, dur);
       } else {
-        weddingTimer = setTimeout(showWeddingInvite, 800);
+        weddingTimer = setTimeout(showWeddingInvite, 1000);
       }
     }
   };
