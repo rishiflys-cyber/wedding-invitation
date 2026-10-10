@@ -2839,15 +2839,17 @@ function submitRSVP(answer) {
   }
 }
 
+// ── Paste your Apps Script Web App URL here after deploying ──
+var APPS_SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL';
+
 async function saveRSVPtoDB(name, phone, answer, meal) {
   try {
-    // Post to Formspree — replace FORMSPREE_ID with your form ID from formspree.io
-    const FORMSPREE_ID = 'YOUR_FORMSPREE_ID';
-    if (FORMSPREE_ID === 'YOUR_FORMSPREE_ID') return; // not set up yet
-    await fetch('https://formspree.io/f/' + FORMSPREE_ID, {
+    if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL') return;
+    await fetch(APPS_SCRIPT_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({ name, phone, answer, meal, time: new Date().toLocaleString('en-IN') })
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, phone, answer, meal })
     });
   } catch(e) {}
 }
