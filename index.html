@@ -1942,6 +1942,11 @@ html, body {
           Send RSVP on WhatsApp
         </a>
       </div>
+      <div id="rsvp-calendar-btn" style="display:none;margin-top:10px;">
+        <button onclick="addToCalendar()" style="background:none;border:1px solid rgba(201,168,76,0.4);color:#c9a84c;font-family:inherit;font-size:12px;letter-spacing:2px;padding:9px 20px;border-radius:20px;cursor:pointer;">
+          📅 Add to Calendar
+        </button>
+      </div>
       <div id="rsvp-change-btn" style="display:none;margin-top:10px;">
         <button onclick="changeRSVP()" style="background:none;border:1px solid rgba(201,168,76,0.4);color:#c9a84c;font-family:inherit;font-size:12px;letter-spacing:2px;padding:9px 20px;border-radius:20px;cursor:pointer;">
           ✎ Change my RSVP
@@ -2845,6 +2850,9 @@ function submitRSVP(answer) {
   // Show "Change my RSVP" button
   var changeBtn = document.getElementById('rsvp-change-btn');
   if (changeBtn) changeBtn.style.display = 'block';
+  // Show "Add to Calendar" only for attending
+  var calBtn = document.getElementById('rsvp-calendar-btn');
+  if (calBtn) calBtn.style.display = answer === 'yes' ? 'block' : 'none';
 
   // Save to dashboard db
   saveRSVPtoDB(guestName, guestPhone, answer, _selectedMeal);
@@ -2878,6 +2886,45 @@ async function saveRSVPtoDB(name, phone, answer, meal) {
   } catch(e) {}
 }
 
+function addToCalendar() {
+  var title = 'Rishabh & Ananya Wedding';
+  var location = 'Circle Club, Kolkata';
+  var details = 'You are cordially invited to the wedding of Rishabh & Ananya. Dress code: Ethnic / Formal.';
+  // Wedding: 12 Dec 2026, 7pm–11pm IST (UTC+5:30 → 13:30–17:30 UTC)
+  var startUTC = '20261212T133000Z';
+  var endUTC   = '20261212T173000Z';
+  var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  if (isIOS) {
+    // .ics download for Apple Calendar
+    var ics = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'BEGIN:VEVENT',
+      'DTSTART:' + startUTC,
+      'DTEND:' + endUTC,
+      'SUMMARY:' + title,
+      'LOCATION:' + location,
+      'DESCRIPTION:' + details,
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ].join('\r\n');
+    var blob = new Blob([ics], {type: 'text/calendar'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = 'rishabh-ananya-wedding.ics';
+    document.body.appendChild(a); a.click();
+    setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 1000);
+  } else {
+    // Google Calendar for Android / others
+    var gcUrl = 'https://calendar.google.com/calendar/render?action=TEMPLATE' +
+      '&text=' + encodeURIComponent(title) +
+      '&dates=' + startUTC + '/' + endUTC +
+      '&details=' + encodeURIComponent(details) +
+      '&location=' + encodeURIComponent(location);
+    window.open(gcUrl, '_blank');
+  }
+}
+
 function changeRSVP() {
   // Reset confirmation screen back to RSVP form
   var done = document.getElementById('rsvp-done');
@@ -2890,6 +2937,8 @@ function changeRSVP() {
   if (nameWrap) nameWrap.style.display = '';
   if (waBtn) waBtn.style.display = 'none';
   if (changeBtn) changeBtn.style.display = 'none';
+  var calBtn = document.getElementById('rsvp-calendar-btn');
+  if (calBtn) calBtn.style.display = 'none';
   // Clear meal selection
   document.querySelectorAll('.meal-pick').forEach(b => b.classList.remove('selected'));
   _selectedMeal = null;
