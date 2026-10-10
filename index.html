@@ -1390,6 +1390,21 @@ html, body {
   opacity: 0.5;
 }
 
+/* "You are one of those people" star shine */
+@keyframes starshine {
+  0%   { opacity: 0.7; text-shadow: 0 0 6px rgba(255,220,100,0.3); font-size: 16px; }
+  50%  { opacity: 1;   text-shadow: 0 0 18px rgba(255,220,100,0.9), 0 0 32px rgba(255,180,50,0.5); font-size: 19px; }
+  100% { opacity: 0.7; text-shadow: 0 0 6px rgba(255,220,100,0.3); font-size: 16px; }
+}
+.you-are-one {
+  display: inline-block;
+  color: #ffe580;
+  font-style: italic;
+  font-weight: 600;
+  animation: starshine 2.4s ease-in-out infinite;
+  letter-spacing: 0.5px;
+}
+
 /* Main body text */
 .invite-body {
   font-size: 15px;
@@ -1621,7 +1636,7 @@ html, body {
       There are people in our lives whose presence<br>
       doesn't just fill a room —<br>
       it makes every moment <span class="highlight">feel complete.</span><br><br>
-      You are one of those people.<br><br>
+      <span class="you-are-one">You are one of those people.</span><br><br>
       And so, with hearts full of love,<br>
       we humbly ask you to be with us<br>
       as two souls become one —<br><br>
@@ -1638,12 +1653,12 @@ html, body {
       <div class="invite-parents-label">Blessed by our families</div>
       <div class="invite-family">
         <div class="invite-family-side">
-          <div class="invite-family-names">Subrata &amp;<br>Sanghamitra<br>Chattopadhyay</div>
+          <div class="invite-family-names">Partha Sarathi<br>Chattopadhyay<br>&amp; Soma<br>Chattopadhyay</div>
           <div class="invite-family-relation">Groom's Parents</div>
         </div>
         <div class="invite-family-divider"></div>
         <div class="invite-family-side">
-          <div class="invite-family-names">Asit &amp;<br>Ruma<br>Dash</div>
+          <div class="invite-family-names">Atanu Kumar<br>Dash (Acharya)<br>&amp; Aparna<br>Dash (Acharya)</div>
           <div class="invite-family-relation">Bride's Parents</div>
         </div>
       </div>
