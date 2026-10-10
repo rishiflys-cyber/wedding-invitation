@@ -2846,30 +2846,17 @@ var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxuiLfitewkxS7jAO
 async function saveRSVPtoDB(name, phone, answer, meal) {
   try {
     if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL') return;
-    // Use a hidden form submit — works cross-origin without CORS issues
-    var form = document.createElement('form');
-    form.method = 'POST';
-    form.action = APPS_SCRIPT_URL;
-    form.target = 'rsvp-hidden-frame';
-    form.style.display = 'none';
-    var fields = { name: name, phone: phone, answer: answer, meal: meal };
-    Object.keys(fields).forEach(function(key) {
-      var input = document.createElement('input');
-      input.type = 'hidden';
-      input.name = key;
-      input.value = fields[key] || '';
-      form.appendChild(input);
+    // Use URLSearchParams with no-cors — Apps Script reads e.parameter
+    var params = new URLSearchParams();
+    params.append('name', name || '');
+    params.append('phone', phone || '');
+    params.append('answer', answer || '');
+    params.append('meal', meal || '');
+    fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: params
     });
-    var iframe = document.getElementById('rsvp-hidden-frame');
-    if (!iframe) {
-      iframe = document.createElement('iframe');
-      iframe.name = 'rsvp-hidden-frame';
-      iframe.style.display = 'none';
-      document.body.appendChild(iframe);
-    }
-    document.body.appendChild(form);
-    form.submit();
-    setTimeout(function() { form.remove(); }, 3000);
   } catch(e) {}
 }
 
