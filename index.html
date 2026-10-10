@@ -1498,7 +1498,7 @@ html, body {
   <!-- Centre wax seal -->
   <div class="env-center">
     <div class="invite-label">Wedding Invitation</div>
-    <div class="wax-seal" onclick="openEnvelope()" id="seal">
+    <div class="wax-seal" ontouchstart="openEnvelope()" onclick="openEnvelope()" id="seal">
       <div class="seal-outer">
         <div class="seal-ring"></div>
         <div class="seal-monogram">RA</div>
@@ -2100,9 +2100,7 @@ function openEnvelope() {
   opened = true;
 
   // Haptic feedback — seal crack pattern
-  if (navigator.vibrate) {
-    navigator.vibrate([30, 50, 60, 30, 100]);
-  }
+  try { navigator.vibrate([40, 60, 80, 40, 120]); } catch(e) {}
 
   // Flower petal burst
   (function spawnPetals() {
