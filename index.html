@@ -1957,14 +1957,14 @@ function goTo(id) {
 
 function goBack() {
   if (_history.length === 0) return;
-  const prevId = _history.pop();
-  const prev = document.getElementById(current);
-  const next = document.getElementById(prevId);
-  if (!next) return;
-  prev.classList.remove('active');
-  next.classList.add('active');
-  current = prevId;
-  updateBackBtn();
+  const prevId = _history[_history.length - 1]; // peek without popping
+  // Use goTo so all video hooks fire; goTo will push current onto history
+  // then we remove the duplicate
+  goTo(prevId);
+  // goTo pushed the old current AND prevId is now current
+  // history now has [..., prevId, oldCurrent] — remove the last two and keep [...]
+  _history.pop(); // remove oldCurrent (just pushed by goTo)
+  _history.pop(); // remove prevId (the peek we left)
 }
 
 function updateBackBtn() {
