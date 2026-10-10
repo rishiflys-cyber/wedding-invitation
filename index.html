@@ -2064,6 +2064,7 @@ document.addEventListener('DOMContentLoaded', function() {
     mehendiShown = true;
     if (mp) { mp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; mp.style.transform = 'translateY(0)'; mp.style.pointerEvents = 'auto'; }
     if (mi) { mi.style.opacity = '1'; mi.style.transform = 'translateY(0)'; mi.style.pointerEvents = 'auto'; }
+    setTimeout(function() { if (current === 'screen-mehendi') goTo('screen-sangeet'); }, 5000);
   }
 
   function resetMehendi() {
@@ -2125,6 +2126,7 @@ document.addEventListener('DOMContentLoaded', function() {
     sangeetShown = true;
     if (sp) { sp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; sp.style.transform = 'translateY(0)'; sp.style.pointerEvents = 'auto'; }
     if (si) { si.style.opacity = '1'; si.style.transform = 'translateY(0)'; si.style.pointerEvents = 'auto'; }
+    setTimeout(function() { if (current === 'screen-sangeet') goTo('screen-haldi'); }, 5000);
   }
 
   function resetSangeet() {
@@ -2180,6 +2182,7 @@ document.addEventListener('DOMContentLoaded', function() {
     haldiShown = true;
     if (hp) { hp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; hp.style.transform = 'translateY(0)'; hp.style.pointerEvents = 'auto'; }
     if (hi) { hi.style.opacity = '1'; hi.style.transform = 'translateY(0)'; hi.style.pointerEvents = 'auto'; }
+    setTimeout(function() { if (current === 'screen-haldi') goTo('screen-wedding'); }, 5000);
   }
 
   function resetHaldi() {
@@ -2233,6 +2236,7 @@ document.addEventListener('DOMContentLoaded', function() {
     weddingShown = true;
     if (wp) { wp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; wp.style.transform = 'translateY(0)'; wp.style.pointerEvents = 'auto'; }
     if (wi) { wi.style.opacity = '1'; wi.style.transform = 'translateY(0)'; wi.style.pointerEvents = 'auto'; }
+    setTimeout(function() { if (current === 'screen-wedding') goTo('screen-rsvp'); }, 5000);
   }
 
   function resetWedding() {
