@@ -1310,6 +1310,23 @@ html, body {
   cursor: pointer;
   margin-top: 8px;
 }
+.meal-pick {
+  flex: 1;
+  background: rgba(201,168,76,0.07);
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius: 20px;
+  color: var(--gold-light);
+  font-family: Georgia, serif;
+  font-size: 12px;
+  padding: 8px 4px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+.meal-pick.selected {
+  background: rgba(201,168,76,0.22);
+  border-color: var(--gold);
+  color: #f0c840;
+}
 
 /* ══════════════════════════════════════════
    SCREEN 3 — PERSONALISED INVITE
@@ -1897,7 +1914,13 @@ html, body {
       Circle Club, Kolkata
     </a>
     <div class="rsvp-name-input-wrap" id="rsvp-name-input-wrap">
-      <input type="text" id="rsvp-name-input" class="rsvp-name-input" placeholder="Your name" autocomplete="name">
+      <input type="text" id="rsvp-name-input" class="rsvp-name-input" placeholder="Your name" autocomplete="name" style="margin-bottom:10px;">
+      <input type="tel" id="rsvp-phone-input" class="rsvp-name-input" placeholder="Phone number" autocomplete="tel" inputmode="tel">
+      <div style="display:flex;gap:8px;margin-top:10px;width:100%;justify-content:center;">
+        <button id="meal-veg" onclick="selectMeal('Veg',this)" class="meal-pick">🌿 Veg</button>
+        <button id="meal-nonveg" onclick="selectMeal('Non-Veg',this)" class="meal-pick">🍗 Non-Veg</button>
+        <button id="meal-jain" onclick="selectMeal('Jain',this)" class="meal-pick">🪷 Jain</button>
+      </div>
     </div>
     <div class="rsvp-buttons">
       <button class="rsvp-btn rsvp-yes" onclick="submitRSVP('yes')">
@@ -1912,6 +1935,13 @@ html, body {
     <div class="rsvp-done" id="rsvp-done" style="display:none">
       <div class="rsvp-done-icon" id="rsvp-done-icon">🎊</div>
       <div class="rsvp-done-text" id="rsvp-done-text">Thank you! We can't wait to celebrate with you!</div>
+      <div id="rsvp-whatsapp-btn" style="display:none;margin-top:12px;">
+        <a id="rsvp-wa-link" href="#" target="_blank" rel="noopener"
+          style="display:inline-flex;align-items:center;gap:8px;padding:12px 22px;background:rgba(37,211,102,0.12);border:1px solid rgba(37,211,102,0.35);border-radius:30px;color:#25d366;font-size:13px;letter-spacing:1.5px;text-decoration:none;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#25d366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Get Confirmation on WhatsApp
+        </a>
+      </div>
       <div class="rsvp-done-tap" onclick="goTo('screen-countdown')">tap to continue ✦</div>
     </div>
 
@@ -2757,9 +2787,18 @@ const RSVP_FORM_URL = 'https://docs.google.com/forms/d/e/YOUR_FORM_ID/formRespon
 const RSVP_ENTRY_NAME = 'entry.000000001'; // replace with real entry ID
 const RSVP_ENTRY_RESP = 'entry.000000002'; // replace with real entry ID
 
+var _selectedMeal = '';
+function selectMeal(meal, btn) {
+  _selectedMeal = meal;
+  document.querySelectorAll('.meal-pick').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
 function submitRSVP(answer) {
   const nameInput = document.getElementById('rsvp-name-input');
+  const phoneInput = document.getElementById('rsvp-phone-input');
   const guestName = (nameInput && nameInput.value.trim()) || _guestFull || 'Guest';
+  const guestPhone = (phoneInput && phoneInput.value.trim()) || '';
   const buttons = document.querySelector('.rsvp-buttons');
   const nameWrap = document.getElementById('rsvp-name-input-wrap');
   const done = document.getElementById('rsvp-done');
@@ -2773,17 +2812,44 @@ function submitRSVP(answer) {
   if (answer === 'yes') {
     icon.textContent = '🎊';
     text.textContent = 'Wonderful! We can\'t wait to celebrate with you. See you soon! 💛';
+    // Show WhatsApp self-confirmation
+    var waBtn = document.getElementById('rsvp-whatsapp-btn');
+    var waLink = document.getElementById('rsvp-wa-link');
+    if (waBtn && waLink) {
+      var msg = encodeURIComponent(
+        '✨ *Rishabh & Ananya Wedding* ✨\n\nHi ' + guestName + '! Your RSVP is confirmed 🎉\n\n📍 Circle Club, Kolkata\n📅 12th December 2026\n\nWe\'re so glad you\'ll be with us on this special day! 💛\n\n— Rishabh & Ananya'
+      );
+      waLink.href = 'https://wa.me/?text=' + msg;
+      waBtn.style.display = 'block';
+    }
   } else {
     icon.textContent = '🙏';
     text.textContent = 'We\'ll miss you dearly. Thank you for letting us know. Your blessings mean everything!';
   }
 
-  // Submit to Google Form silently (no-cors)
-  if (RSVP_FORM_URL.includes('YOUR_FORM_ID')) return; // skip if not set up yet
-  const body = new URLSearchParams();
-  body.append(RSVP_ENTRY_NAME, guestName);
-  body.append(RSVP_ENTRY_RESP, answer === 'yes' ? 'Attending' : 'Not Attending');
-  fetch(RSVP_FORM_URL, { method: 'POST', mode: 'no-cors', body }).catch(() => {});
+  // Save to dashboard db
+  saveRSVPtoDB(guestName, guestPhone, answer, _selectedMeal);
+
+  // Legacy Google Form (no-cors, silent)
+  if (!RSVP_FORM_URL.includes('YOUR_FORM_ID')) {
+    const body = new URLSearchParams();
+    body.append(RSVP_ENTRY_NAME, guestName);
+    body.append(RSVP_ENTRY_RESP, answer === 'yes' ? 'Attending' : 'Not Attending');
+    fetch(RSVP_FORM_URL, { method: 'POST', mode: 'no-cors', body }).catch(() => {});
+  }
+}
+
+async function saveRSVPtoDB(name, phone, answer, meal) {
+  try {
+    // Post to Formspree — replace FORMSPREE_ID with your form ID from formspree.io
+    const FORMSPREE_ID = 'YOUR_FORMSPREE_ID';
+    if (FORMSPREE_ID === 'YOUR_FORMSPREE_ID') return; // not set up yet
+    await fetch('https://formspree.io/f/' + FORMSPREE_ID, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ name, phone, answer, meal, time: new Date().toLocaleString('en-IN') })
+    });
+  } catch(e) {}
 }
 
 // Ganesh chant transition: English → Bengali → Hindi
