@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Rishabh & Ananya — Wedding Invitation</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -1313,12 +1316,44 @@ html, body {
 ══════════════════════════════════════════ */
 #screen-invite {
   background:
-    radial-gradient(ellipse at 50% 0%, rgba(255,180,40,0.12) 0%, transparent 50%),
-    radial-gradient(ellipse at 20% 100%, rgba(180,20,0,0.15) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 100%, rgba(180,20,0,0.15) 0%, transparent 50%),
-    linear-gradient(175deg, #1c0800 0%, #0e0300 50%, #050100 100%);
+    radial-gradient(ellipse at 50% 20%, rgba(255,220,120,0.28) 0%, transparent 50%),
+    radial-gradient(ellipse at 10% 70%, rgba(180,30,60,0.22) 0%, transparent 50%),
+    radial-gradient(ellipse at 90% 70%, rgba(180,30,60,0.22) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 100%, rgba(120,30,0,0.3) 0%, transparent 55%),
+    linear-gradient(170deg, #3d1a00 0%, #5c2200 30%, #3a1200 60%, #1e0800 100%);
   overflow: hidden;
 }
+#screen-invite::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255,200,80,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+#screen-invite::after {
+  content: '❧';
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 22px;
+  color: #c9a84c;
+  opacity: 0.35;
+  pointer-events: none;
+}
+@keyframes act1-shimmer {
+  0%,100% { opacity: 0.12; }
+  50% { opacity: 0.22; }
+}
+.act1-corner {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  pointer-events: none;
+  opacity: 0.3;
+}
+.act1-corner svg { width: 100%; height: 100%; }
 
 .invite-screen-wrap {
   display: flex;
@@ -1624,11 +1659,69 @@ html, body {
      SCREEN 3a — INVITE ACT 1 (poem)
 ══════════════════════════════════════════ -->
 <div id="screen-invite" class="screen">
-  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:48px 40px;text-align:center;">
-    <div id="invite-act1-text" style="font-size:26px;line-height:1.8;color:var(--gold-light);opacity:0;transform:translateY(18px);transition:opacity 1.5s ease,transform 1.5s ease;">
-      There are people in our lives whose presence<br>
-      doesn't just fill a room —<br>
-      it makes every moment<br><span style="color:#f0c840;font-style:italic;font-size:30px;">feel complete.</span>
+  <!-- Corner ornaments -->
+  <div class="act1-corner" style="top:0;left:0;">
+    <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <path d="M4 4 Q40 4 76 4 M4 4 Q4 40 4 76" stroke="#c9a84c" stroke-width="1" fill="none" opacity="0.6"/>
+      <path d="M4 4 Q20 20 36 4 M4 4 Q4 20 20 36" stroke="#f0c840" stroke-width="0.8" fill="none" opacity="0.5"/>
+      <circle cx="8" cy="8" r="3" fill="none" stroke="#c9a84c" stroke-width="1" opacity="0.7"/>
+      <path d="M14 4 C18 8 22 4 26 8 C30 12 34 8 38 12" stroke="#c9a84c" stroke-width="0.7" fill="none" opacity="0.4"/>
+      <path d="M4 14 C8 18 4 22 8 26 C12 30 8 34 12 38" stroke="#c9a84c" stroke-width="0.7" fill="none" opacity="0.4"/>
+    </svg>
+  </div>
+  <div class="act1-corner" style="top:0;right:0;transform:scaleX(-1);">
+    <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <path d="M4 4 Q40 4 76 4 M4 4 Q4 40 4 76" stroke="#c9a84c" stroke-width="1" fill="none" opacity="0.6"/>
+      <path d="M4 4 Q20 20 36 4 M4 4 Q4 20 20 36" stroke="#f0c840" stroke-width="0.8" fill="none" opacity="0.5"/>
+      <circle cx="8" cy="8" r="3" fill="none" stroke="#c9a84c" stroke-width="1" opacity="0.7"/>
+    </svg>
+  </div>
+  <div class="act1-corner" style="bottom:0;left:0;transform:scaleY(-1);">
+    <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <path d="M4 4 Q40 4 76 4 M4 4 Q4 40 4 76" stroke="#c9a84c" stroke-width="1" fill="none" opacity="0.6"/>
+      <path d="M4 4 Q20 20 36 4 M4 4 Q4 20 20 36" stroke="#f0c840" stroke-width="0.8" fill="none" opacity="0.5"/>
+      <circle cx="8" cy="8" r="3" fill="none" stroke="#c9a84c" stroke-width="1" opacity="0.7"/>
+    </svg>
+  </div>
+  <div class="act1-corner" style="bottom:0;right:0;transform:scale(-1,-1);">
+    <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <path d="M4 4 Q40 4 76 4 M4 4 Q4 40 4 76" stroke="#c9a84c" stroke-width="1" fill="none" opacity="0.6"/>
+      <path d="M4 4 Q20 20 36 4 M4 4 Q4 20 20 36" stroke="#f0c840" stroke-width="0.8" fill="none" opacity="0.5"/>
+      <circle cx="8" cy="8" r="3" fill="none" stroke="#c9a84c" stroke-width="1" opacity="0.7"/>
+    </svg>
+  </div>
+
+  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:60px 44px;text-align:center;position:relative;z-index:1;">
+
+    <!-- Floral top motif -->
+    <div id="invite-act1-ornament" style="opacity:0;transition:opacity 2s ease;margin-bottom:20px;">
+      <svg width="160" height="30" viewBox="0 0 160 30" xmlns="http://www.w3.org/2000/svg">
+        <line x1="0" y1="15" x2="55" y2="15" stroke="#c9a84c" stroke-width="0.8" opacity="0.6"/>
+        <line x1="105" y1="15" x2="160" y2="15" stroke="#c9a84c" stroke-width="0.8" opacity="0.6"/>
+        <circle cx="80" cy="15" r="5" fill="none" stroke="#f0c840" stroke-width="1" opacity="0.8"/>
+        <circle cx="80" cy="15" r="2" fill="#f0c840" opacity="0.6"/>
+        <circle cx="65" cy="15" r="3" fill="none" stroke="#c9a84c" stroke-width="0.8" opacity="0.6"/>
+        <circle cx="95" cy="15" r="3" fill="none" stroke="#c9a84c" stroke-width="0.8" opacity="0.6"/>
+        <path d="M55 15 Q60 8 65 15 M95 15 Q100 8 105 15" stroke="#c9a84c" stroke-width="0.8" fill="none" opacity="0.5"/>
+        <path d="M20 15 Q25 9 30 15 M130 15 Q135 9 140 15" stroke="#c9a84c" stroke-width="0.7" fill="none" opacity="0.4"/>
+        <text x="80" y="6" text-anchor="middle" fill="#f0c840" font-size="8" opacity="0.5" font-family="serif">✦</text>
+      </svg>
+    </div>
+
+    <div id="invite-act1-text" style="font-family:'Cormorant Garamond',Garamond,'EB Garamond',Georgia,serif;font-size:24px;font-weight:400;line-height:2;letter-spacing:0.03em;color:#f5dfa0;opacity:0;transform:translateY(20px);transition:opacity 2s ease,transform 2s ease;">
+      There are people in our lives<br>
+      whose presence doesn't just fill a room —<br>
+      it makes every moment<br>
+      <span style="font-size:32px;font-style:italic;font-weight:600;color:#f9e060;letter-spacing:0.02em;text-shadow:0 0 24px rgba(249,224,96,0.55),0 0 8px rgba(249,224,96,0.3);">feel complete.</span>
+    </div>
+
+    <!-- Bottom divider -->
+    <div id="invite-act1-divider" style="margin-top:24px;opacity:0;transition:opacity 2s ease 0.5s;">
+      <svg width="120" height="16" viewBox="0 0 120 16" xmlns="http://www.w3.org/2000/svg">
+        <line x1="0" y1="8" x2="46" y2="8" stroke="#c9a84c" stroke-width="0.8" opacity="0.5"/>
+        <line x1="74" y1="8" x2="120" y2="8" stroke="#c9a84c" stroke-width="0.8" opacity="0.5"/>
+        <text x="60" y="12" text-anchor="middle" fill="#f0c840" font-size="10" opacity="0.6" font-family="serif">✦</text>
+      </svg>
     </div>
   </div>
 </div>
@@ -2078,9 +2171,15 @@ function goTo(id) {
   // Invite acts — cinematic trailer timing
   if (id === 'screen-invite') {
     setTimeout(function(){
+      var orn=document.getElementById('invite-act1-ornament');
+      if(orn){ orn.style.opacity='1'; }
+    }, 200);
+    setTimeout(function(){
       var el=document.getElementById('invite-act1-text');
       if(el){ el.style.transition='opacity 2s ease, transform 2s ease'; el.style.opacity='1'; el.style.transform='translateY(0)'; }
-    }, 400);
+      var div=document.getElementById('invite-act1-divider');
+      if(div){ div.style.opacity='1'; }
+    }, 600);
     setTimeout(function(){ if(current==='screen-invite') goTo('screen-invite2'); }, 7500);
   }
   if (id === 'screen-invite2') {
