@@ -2091,8 +2091,33 @@ function goTo(id) {
     setTimeout(function(){
       var el=document.getElementById('invite-act2-text');
       if(el){ el.style.transition='opacity 1.2s ease, transform 1.2s ease'; el.style.opacity='1'; el.style.transform='scale(1)'; }
+      // Golden confetti burst
+      var shapes = ['✦','✧','·','⋆','❋','◆','▲'];
+      var colors = ['#f0c840','#ffe580','#ffd700','#c9a84c','#fff8dc','#ffec6e'];
+      for(var i=0;i<60;i++){
+        (function(i){
+          setTimeout(function(){
+            var p=document.createElement('div');
+            p.textContent = shapes[Math.floor(Math.random()*shapes.length)];
+            var x = 20 + Math.random()*60;
+            var vx = (Math.random()-0.5)*200;
+            var vy = -(180+Math.random()*220);
+            var rot = (Math.random()-0.5)*720;
+            var size = 10+Math.random()*14;
+            var dur = 1.4+Math.random()*0.8;
+            p.style.cssText='position:fixed;left:'+x+'%;top:50%;font-size:'+size+'px;color:'+colors[Math.floor(Math.random()*colors.length)]+';z-index:9999;pointer-events:none;opacity:1;will-change:transform,opacity;';
+            document.body.appendChild(p);
+            requestAnimationFrame(function(){requestAnimationFrame(function(){
+              p.style.transition='transform '+dur+'s cubic-bezier(.2,.8,.4,1),opacity '+dur+'s ease-in';
+              p.style.transform='translate('+vx+'px,'+vy+'px) rotate('+rot+'deg)';
+              p.style.opacity='0';
+            });});
+            setTimeout(function(){if(p.parentNode)p.parentNode.removeChild(p);},(dur+0.1)*1000);
+          },i*25);
+        })(i);
+      }
     }, 300);
-    setTimeout(function(){ if(current==='screen-invite2') goTo('screen-invite3'); }, 4000);
+    setTimeout(function(){ if(current==='screen-invite2') goTo('screen-invite3'); }, 4500);
   }
   if (id === 'screen-invite3') {
     setTimeout(function(){
