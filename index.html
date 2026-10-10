@@ -2059,12 +2059,15 @@ document.addEventListener('DOMContentLoaded', function() {
   var mp = document.getElementById('mehendi-panel');
   var mehendiShown = false;
   var mehendiTimer = null;
+  var mehendiVisited = false;
 
   function showMehendiInvite() {
     mehendiShown = true;
     if (mp) { mp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; mp.style.transform = 'translateY(0)'; mp.style.pointerEvents = 'auto'; }
     if (mi) { mi.style.opacity = '1'; mi.style.transform = 'translateY(0)'; mi.style.pointerEvents = 'auto'; }
-    setTimeout(function() { if (current === 'screen-mehendi') goTo('screen-sangeet'); }, 5000);
+    var delay = mehendiVisited ? 10000 : 5000;
+    mehendiVisited = true;
+    setTimeout(function() { if (current === 'screen-mehendi') goTo('screen-sangeet'); }, delay);
   }
 
   function resetMehendi() {
@@ -2121,12 +2124,15 @@ document.addEventListener('DOMContentLoaded', function() {
   var sp = document.getElementById('sangeet-panel');
   var sangeetShown = false;
   var sangeetTimer = null;
+  var sangeetVisited = false;
 
   function showSangeetInvite() {
     sangeetShown = true;
     if (sp) { sp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; sp.style.transform = 'translateY(0)'; sp.style.pointerEvents = 'auto'; }
     if (si) { si.style.opacity = '1'; si.style.transform = 'translateY(0)'; si.style.pointerEvents = 'auto'; }
-    setTimeout(function() { if (current === 'screen-sangeet') goTo('screen-haldi'); }, 5000);
+    var delay = sangeetVisited ? 10000 : 5000;
+    sangeetVisited = true;
+    setTimeout(function() { if (current === 'screen-sangeet') goTo('screen-haldi'); }, delay);
   }
 
   function resetSangeet() {
@@ -2177,12 +2183,15 @@ document.addEventListener('DOMContentLoaded', function() {
   var hp = document.getElementById('haldi-panel');
   var haldiShown = false;
   var haldiTimer = null;
+  var haldiVisited = false;
 
   function showHaldiInvite() {
     haldiShown = true;
     if (hp) { hp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; hp.style.transform = 'translateY(0)'; hp.style.pointerEvents = 'auto'; }
     if (hi) { hi.style.opacity = '1'; hi.style.transform = 'translateY(0)'; hi.style.pointerEvents = 'auto'; }
-    setTimeout(function() { if (current === 'screen-haldi') goTo('screen-wedding'); }, 5000);
+    var delay = haldiVisited ? 10000 : 5000;
+    haldiVisited = true;
+    setTimeout(function() { if (current === 'screen-haldi') goTo('screen-wedding'); }, delay);
   }
 
   function resetHaldi() {
@@ -2231,12 +2240,15 @@ document.addEventListener('DOMContentLoaded', function() {
   var wp = document.getElementById('wedding-panel');
   var weddingShown = false;
   var weddingTimer = null;
+  var weddingVisited = false;
 
   function showWeddingInvite() {
     weddingShown = true;
     if (wp) { wp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; wp.style.transform = 'translateY(0)'; wp.style.pointerEvents = 'auto'; }
     if (wi) { wi.style.opacity = '1'; wi.style.transform = 'translateY(0)'; wi.style.pointerEvents = 'auto'; }
-    setTimeout(function() { if (current === 'screen-wedding') goTo('screen-rsvp'); }, 5000);
+    var delay = weddingVisited ? 10000 : 5000;
+    weddingVisited = true;
+    setTimeout(function() { if (current === 'screen-wedding') goTo('screen-rsvp'); }, delay);
   }
 
   function resetWedding() {
