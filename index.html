@@ -2110,6 +2110,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var mehendiVisited = false;
 
   function showMehendiInvite() {
+    if (mehendiShown) return;
     mehendiShown = true;
     if (mp) { mp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; mp.style.transform = 'translateY(0)'; mp.style.pointerEvents = 'auto'; }
     if (mi) { mi.style.opacity = '1'; mi.style.transform = 'translateY(0)'; mi.style.pointerEvents = 'auto'; }
@@ -2176,7 +2177,9 @@ document.addEventListener('DOMContentLoaded', function() {
   var sangeetVisited = false;
 
   function showSangeetInvite() {
+    if (sangeetShown) return;
     sangeetShown = true;
+    if (sangeetTimer) { clearTimeout(sangeetTimer); sangeetTimer = null; }
     if (sp) { sp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; sp.style.transform = 'translateY(0)'; sp.style.pointerEvents = 'auto'; }
     if (si) { si.style.opacity = '1'; si.style.transform = 'translateY(0)'; si.style.pointerEvents = 'auto'; }
     var delay = sangeetVisited ? 10000 : 5000;
@@ -2216,12 +2219,14 @@ document.addEventListener('DOMContentLoaded', function() {
         sv.currentTime = 0;
         var playPromise = sv.play();
         if (playPromise !== undefined) {
-          playPromise.catch(function() { showSangeetInvite(); });
+          playPromise.catch(function() {
+            setTimeout(showSangeetInvite, 800);
+          });
         }
-        var dur = (sv.duration && isFinite(sv.duration)) ? sv.duration * 1000 + 500 : 8000;
+        var dur = (sv.duration && isFinite(sv.duration)) ? sv.duration * 1000 + 500 : 1500;
         sangeetTimer = setTimeout(showSangeetInvite, dur);
       } else {
-        sangeetTimer = setTimeout(showSangeetInvite, 2000);
+        sangeetTimer = setTimeout(showSangeetInvite, 800);
       }
     }
   };
@@ -2237,7 +2242,9 @@ document.addEventListener('DOMContentLoaded', function() {
   var haldiVisited = false;
 
   function showHaldiInvite() {
+    if (haldiShown) return;
     haldiShown = true;
+    if (haldiTimer) { clearTimeout(haldiTimer); haldiTimer = null; }
     if (hp) { hp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; hp.style.transform = 'translateY(0)'; hp.style.pointerEvents = 'auto'; }
     if (hi) { hi.style.opacity = '1'; hi.style.transform = 'translateY(0)'; hi.style.pointerEvents = 'auto'; }
     var delay = haldiVisited ? 10000 : 5000;
@@ -2275,12 +2282,14 @@ document.addEventListener('DOMContentLoaded', function() {
         hv.currentTime = 0;
         var playPromise = hv.play();
         if (playPromise !== undefined) {
-          playPromise.catch(function() { showHaldiInvite(); });
+          playPromise.catch(function() {
+            setTimeout(showHaldiInvite, 800);
+          });
         }
-        var dur = (hv.duration && isFinite(hv.duration)) ? hv.duration * 1000 + 500 : 8000;
+        var dur = (hv.duration && isFinite(hv.duration)) ? hv.duration * 1000 + 500 : 1500;
         haldiTimer = setTimeout(showHaldiInvite, dur);
       } else {
-        haldiTimer = setTimeout(showHaldiInvite, 2000);
+        haldiTimer = setTimeout(showHaldiInvite, 800);
       }
     }
   };
@@ -2296,6 +2305,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var weddingVisited = false;
 
   function showWeddingInvite() {
+    if (weddingShown) return;
     weddingShown = true;
     releaseWakeLock();
     if (wp) { wp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; wp.style.transform = 'translateY(0)'; wp.style.pointerEvents = 'auto'; }
@@ -2333,12 +2343,14 @@ document.addEventListener('DOMContentLoaded', function() {
         wv.currentTime = 0;
         var playPromise = wv.play();
         if (playPromise !== undefined) {
-          playPromise.catch(function() { showWeddingInvite(); });
+          playPromise.catch(function() {
+            setTimeout(showWeddingInvite, 800);
+          });
         }
-        var dur = (wv.duration && isFinite(wv.duration)) ? wv.duration * 1000 + 500 : 8000;
+        var dur = (wv.duration && isFinite(wv.duration)) ? wv.duration * 1000 + 500 : 1500;
         weddingTimer = setTimeout(showWeddingInvite, dur);
       } else {
-        weddingTimer = setTimeout(showWeddingInvite, 2000);
+        weddingTimer = setTimeout(showWeddingInvite, 800);
       }
     }
   };
