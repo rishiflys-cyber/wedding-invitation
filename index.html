@@ -2080,12 +2080,11 @@ function goTo(id) {
   }
   // Invite acts — cinematic trailer timing
   if (id === 'screen-invite') {
-    // Fade in slow like a title card
     setTimeout(function(){
       var el=document.getElementById('invite-act1-text');
-      if(el){ el.style.transition='opacity 1.5s ease, transform 1.5s ease'; el.style.opacity='1'; el.style.transform='translateY(0)'; }
+      if(el){ el.style.transition='opacity 2s ease, transform 2s ease'; el.style.opacity='1'; el.style.transform='translateY(0)'; }
     }, 400);
-    setTimeout(function(){ if(current==='screen-invite') goTo('screen-invite2'); }, 4500);
+    setTimeout(function(){ if(current==='screen-invite') goTo('screen-invite2'); }, 7500);
   }
   if (id === 'screen-invite2') {
     setTimeout(function(){
