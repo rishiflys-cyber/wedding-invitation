@@ -2054,8 +2054,6 @@ function closeInvitation() {
   if (mb) mb.style.display = 'none';
   var cb = document.getElementById('close-btn');
   if (cb) cb.style.display = 'none';
-  var bb = document.getElementById('back-btn');
-  if (bb) { bb.style.opacity = '0'; bb.style.pointerEvents = 'none'; }
   // Clear history and go to envelope
   _history = [];
   goTo('screen-envelope');
