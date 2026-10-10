@@ -2014,6 +2014,7 @@ var _history = [];
 
 /* ── Wake Lock: keep screen on during auto-advance ── */
 var _wakeLock = null;
+var _musicPausedByHide = false;
 async function requestWakeLock() {
   if ('wakeLock' in navigator) {
     try {
@@ -2026,8 +2027,12 @@ function releaseWakeLock() {
 }
 // Re-acquire if page becomes visible again (e.g. tab switch)
 document.addEventListener('visibilitychange', function() {
-  if (document.visibilityState === 'visible' && _wakeLock === null) {
-    requestWakeLock();
+  var music = document.getElementById('bgmusic');
+  if (document.visibilityState === 'hidden') {
+    if (music && !music.paused) { music.pause(); _musicPausedByHide = true; }
+  } else {
+    if (music && _musicPausedByHide) { music.play().catch(function(){}); _musicPausedByHide = false; }
+    if (_wakeLock === null) { requestWakeLock(); }
   }
 });
 
