@@ -1605,12 +1605,13 @@ html, body {
      SCREEN MEHENDI
 ══════════════════════════════════════════ -->
 <div id="screen-mehendi" class="screen event-screen" onclick="goTo('screen-sangeet')">
-  <!-- full-screen video, no overlay blocking it -->
   <video id="mehendi-video" muted playsinline preload="auto"
-    style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;">
+    style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
     <source src="mehendi.mp4" type="video/mp4">
   </video>
-  <!-- dark scrim at bottom for text readability — shown only after video ends -->
+  <div class="event-img-wrap" id="mehendi-bg-img" style="z-index:0;">
+    <img src="1-mehendi_4k.jpg" alt="Mehendi" loading="lazy">
+  </div>
   <div class="event-particles" id="ep-mehendi" style="z-index:2;"></div>
   <!-- Dark panel slides up from bottom after video ends -->
   <div id="mehendi-panel" style="position:absolute;bottom:0;left:0;right:0;height:42%;z-index:3;background:linear-gradient(to bottom,transparent 0%,rgba(5,1,0,0.88) 30%,#050100 70%);padding-top:40px;transform:translateY(100%);transition:transform 1.4s cubic-bezier(0.22,1,0.36,1);pointer-events:none;">
