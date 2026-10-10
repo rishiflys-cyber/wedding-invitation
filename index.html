@@ -2003,6 +2003,25 @@ let opened = false;
 
 var _history = [];
 
+/* ── Wake Lock: keep screen on during auto-advance ── */
+var _wakeLock = null;
+async function requestWakeLock() {
+  if ('wakeLock' in navigator) {
+    try {
+      _wakeLock = await navigator.wakeLock.request('screen');
+    } catch(e) {}
+  }
+}
+function releaseWakeLock() {
+  if (_wakeLock) { _wakeLock.release(); _wakeLock = null; }
+}
+// Re-acquire if page becomes visible again (e.g. tab switch)
+document.addEventListener('visibilitychange', function() {
+  if (document.visibilityState === 'visible' && _wakeLock === null) {
+    requestWakeLock();
+  }
+});
+
 function goTo(id) {
   const prev = document.getElementById(current);
   const next = document.getElementById(id);
@@ -2091,6 +2110,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function showMehendiInvite() {
     mehendiShown = true;
+    requestWakeLock();
     if (mp) { mp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; mp.style.transform = 'translateY(0)'; mp.style.pointerEvents = 'auto'; }
     if (mi) { mi.style.opacity = '1'; mi.style.transform = 'translateY(0)'; mi.style.pointerEvents = 'auto'; }
     var delay = mehendiVisited ? 10000 : 5000;
@@ -2276,7 +2296,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (wi) { wi.style.opacity = '1'; wi.style.transform = 'translateY(0)'; wi.style.pointerEvents = 'auto'; }
     var delay = weddingVisited ? 10000 : 5000;
     weddingVisited = true;
-    setTimeout(function() { if (current === 'screen-wedding') goTo('screen-rsvp'); }, delay);
+    setTimeout(function() { if (current === 'screen-wedding') { releaseWakeLock(); goTo('screen-rsvp'); } }, delay);
   }
 
   function resetWedding() {
