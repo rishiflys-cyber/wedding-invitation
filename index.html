@@ -1621,44 +1621,60 @@ html, body {
 </div>
 
 <!-- ══════════════════════════════════════════
-     SCREEN 3 — PERSONALISED INVITE
+     SCREEN 3a — INVITE PART 1 (emotional hook)
 ══════════════════════════════════════════ -->
-<div id="screen-invite" class="screen" onclick="goTo('screen-mehendi')">
-  <div class="invite-screen-wrap">
+<div id="screen-invite" class="screen">
+  <div class="invite-screen-wrap" style="justify-content:center;gap:20px;padding:60px 36px;">
 
     <div class="invite-top-border">✦ A heartfelt invitation ✦</div>
-
     <div class="invite-preamble">Some moments are meant to be shared</div>
+    <div class="invite-divider"></div>
+
+    <div class="invite-body" style="font-size:16px;line-height:1.9;">
+      There are people in our lives whose presence<br>
+      doesn't just fill a room —<br>
+      it makes every moment <span class="highlight">feel complete.</span>
+    </div>
+
+    <div class="you-are-one" style="font-size:22px;margin:8px 0;">You are one of those people.</div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 3b — INVITE PART 2 (couple hero + families)
+══════════════════════════════════════════ -->
+<div id="screen-invite2" class="screen" onclick="goTo('screen-mehendi')">
+  <div class="invite-screen-wrap" style="gap:16px;padding:80px 28px 36px;">
+
+    <div style="font-size:13px;opacity:0.55;letter-spacing:3px;text-transform:uppercase;color:var(--gold-light);">
+      This day will be lived once,<br>but remembered forever.
+    </div>
 
     <div class="invite-divider"></div>
 
-    <div class="invite-body">
-      There are people in our lives whose presence<br>
-      doesn't just fill a room —<br>
-      it makes every moment <span class="highlight">feel complete.</span><br><br>
-      <span class="you-are-one">You are one of those people.</span><br><br>
-      And so, with hearts full of love,<br>
-      we humbly ask you to be with us<br>
-      as two souls become one —<br><br>
-      <span class="highlight">Rishabh Chattopadhyay</span><br>
-      <span style="opacity:0.5;font-size:13px">&amp;</span><br>
-      <span class="highlight">Ananya Dash</span><br><br>
-      <span style="font-size:13px;opacity:0.65;font-style:italic">
-        This day will be lived once,<br>but remembered forever.<br>
-        It wouldn't be the same without you.
-      </span>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:4px;margin:8px 0;">
+      <span style="font-size:30px;font-style:italic;color:#f0c840;text-shadow:0 0 30px rgba(240,200,64,0.6),0 0 60px rgba(255,160,0,0.3);letter-spacing:1px;">Rishabh Chattopadhyay</span>
+      <span style="font-size:18px;opacity:0.4;color:var(--gold-light);">&amp;</span>
+      <span style="font-size:30px;font-style:italic;color:#f0c840;text-shadow:0 0 30px rgba(240,200,64,0.6),0 0 60px rgba(255,160,0,0.3);letter-spacing:1px;">Ananya Dash</span>
     </div>
+
+    <div style="font-size:12px;opacity:0.45;font-style:italic;color:var(--gold-light);">
+      It wouldn't be the same without you.
+    </div>
+
+    <div class="invite-divider"></div>
 
     <div class="invite-parents">
       <div class="invite-parents-label">Blessed by our families</div>
       <div class="invite-family">
         <div class="invite-family-side">
-          <div class="invite-family-names">Partha Sarathi Chattopadhyay<br><span style="opacity:0.5;font-size:10px">&amp;</span><br>Soma Chattopadhyay</div>
+          <div class="invite-family-names">Partha Sarathi<br>Chattopadhyay<br><span style="opacity:0.5;font-size:10px">&amp;</span><br>Soma Chattopadhyay</div>
           <div class="invite-family-relation">Groom's Parents</div>
         </div>
         <div class="invite-family-divider"></div>
         <div class="invite-family-side">
-          <div class="invite-family-names">Atanu Kumar Dash<br><span style="opacity:0.5;font-size:10px">&amp;</span><br>Aparna Dash<br><span style="opacity:0.45;font-size:10px">(Acharya)</span></div>
+          <div class="invite-family-names">Atanu Kumar<br>Dash (Acharya)<br><span style="opacity:0.5;font-size:10px">&amp;</span><br>Aparna Dash<br><span style="opacity:0.45;font-size:10px">(Acharya)</span></div>
           <div class="invite-family-relation">Bride's Parents</div>
         </div>
       </div>
@@ -2066,6 +2082,12 @@ function goTo(id) {
   if (cb) {
     var hideOn = ['screen-envelope','screen-ganesh'];
     cb.style.display = hideOn.indexOf(id) === -1 ? 'flex' : 'none';
+  }
+  // Auto-advance from invite part 1 → part 2
+  if (id === 'screen-invite') {
+    setTimeout(function() {
+      if (current === 'screen-invite') goTo('screen-invite2');
+    }, 4000);
   }
 }
 
