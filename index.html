@@ -1825,6 +1825,7 @@ html, body {
     </div>
     <div class="event-venue">📍 Circle Club, Kolkata</div>
     <div class="event-poem"><span class="event-poem-em">Under the same stars that have witnessed a thousand love stories — theirs begins tonight.</span></div>
+    <div class="screen-tap-hint">tap to continue ✦</div>
   </div>
   </div><!-- end wedding-panel -->
 </div>
@@ -2292,11 +2293,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function showWeddingInvite() {
     weddingShown = true;
+    releaseWakeLock();
     if (wp) { wp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; wp.style.transform = 'translateY(0)'; wp.style.pointerEvents = 'auto'; }
     if (wi) { wi.style.opacity = '1'; wi.style.transform = 'translateY(0)'; wi.style.pointerEvents = 'auto'; }
-    var delay = weddingVisited ? 10000 : 5000;
-    weddingVisited = true;
-    setTimeout(function() { if (current === 'screen-wedding') { releaseWakeLock(); goTo('screen-rsvp'); } }, delay);
+    // No auto-advance — user taps to continue from Shubho Bibaho
   }
 
   function resetWedding() {
