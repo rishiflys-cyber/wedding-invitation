@@ -1628,7 +1628,7 @@ html, body {
     <div style="font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);opacity:0.6;margin-bottom:28px;">✦ A heartfelt invitation ✦</div>
     <div style="font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-light);opacity:0.5;margin-bottom:28px;">Some moments are meant to be shared</div>
     <div style="width:50px;height:1px;background:linear-gradient(90deg,transparent,#c9a84c,transparent);opacity:0.5;margin-bottom:32px;"></div>
-    <div id="invite-act1-text" style="font-size:18px;line-height:2;color:var(--gold-light);opacity:0;transition:opacity 1.2s ease;">
+    <div id="invite-act1-text" style="font-size:18px;line-height:2;color:var(--gold-light);opacity:0;transform:translateY(18px);transition:opacity 1.5s ease,transform 1.5s ease;">
       There are people in our lives whose presence<br>
       doesn't just fill a room —<br>
       it makes every moment <span style="color:#f0c840;font-style:italic;">feel complete.</span>
@@ -1641,7 +1641,7 @@ html, body {
 ══════════════════════════════════════════ -->
 <div id="screen-invite2" class="screen">
   <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:48px 36px;text-align:center;">
-    <div id="invite-act2-text" class="you-are-one" style="font-size:26px;opacity:0;transition:opacity 1.2s ease;">You are one of those people.</div>
+    <div id="invite-act2-text" class="you-are-one" style="font-size:26px;opacity:0;transform:scale(0.88);transition:opacity 1.2s ease,transform 1.2s ease;">You are one of those people.</div>
   </div>
 </div>
 
@@ -2081,17 +2081,27 @@ function goTo(id) {
     var hideOn = ['screen-envelope','screen-ganesh'];
     cb.style.display = hideOn.indexOf(id) === -1 ? 'flex' : 'none';
   }
-  // Invite acts — fade in fast, advance at 3s each; act 3 stays
+  // Invite acts — cinematic trailer timing
   if (id === 'screen-invite') {
-    setTimeout(function(){ var el=document.getElementById('invite-act1-text'); if(el){ el.style.transition='opacity 0.4s ease'; el.style.opacity='1'; } }, 200);
-    setTimeout(function(){ if(current==='screen-invite') goTo('screen-invite2'); }, 3000);
+    // Fade in slow like a title card
+    setTimeout(function(){
+      var el=document.getElementById('invite-act1-text');
+      if(el){ el.style.transition='opacity 1.5s ease, transform 1.5s ease'; el.style.opacity='1'; el.style.transform='translateY(0)'; }
+    }, 400);
+    setTimeout(function(){ if(current==='screen-invite') goTo('screen-invite2'); }, 4500);
   }
   if (id === 'screen-invite2') {
-    setTimeout(function(){ var el=document.getElementById('invite-act2-text'); if(el){ el.style.transition='opacity 0.4s ease'; el.style.opacity='1'; } }, 200);
-    setTimeout(function(){ if(current==='screen-invite2') goTo('screen-invite3'); }, 3000);
+    setTimeout(function(){
+      var el=document.getElementById('invite-act2-text');
+      if(el){ el.style.transition='opacity 1.2s ease, transform 1.2s ease'; el.style.opacity='1'; el.style.transform='scale(1)'; }
+    }, 300);
+    setTimeout(function(){ if(current==='screen-invite2') goTo('screen-invite3'); }, 4000);
   }
   if (id === 'screen-invite3') {
-    setTimeout(function(){ var el=document.getElementById('invite-act3-text'); if(el){ el.style.transition='opacity 0.4s ease'; el.style.opacity='1'; } }, 200);
+    setTimeout(function(){
+      var el=document.getElementById('invite-act3-text');
+      if(el){ el.style.transition='opacity 1.2s ease'; el.style.opacity='1'; }
+    }, 300);
   }
 }
 
