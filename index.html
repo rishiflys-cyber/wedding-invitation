@@ -805,10 +805,18 @@ html, body {
   color: rgba(201,168,76,0.5);
 }
 .event-detail-value {
-  font-size: 13px;
+  font-size: 16px;
   color: #f0c840;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.5px;
+}
+.event-venue {
+  font-size: 11px;
+  color: rgba(201,168,76,0.75);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-top: 2px;
+  margin-bottom: 6px;
 }
 .event-detail-sep {
   width: 1px;
@@ -818,9 +826,12 @@ html, body {
 .event-poem {
   font-size: 12px;
   color: rgba(232,213,163,0.65);
-  line-height: 1.6;
+  line-height: 1.5;
   font-style: italic;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
+  padding: 0 8px;
+  border-left: 2px solid rgba(201,168,76,0.3);
+  text-align: left;
 }
 .event-poem-em {
   color: #f0c840;
@@ -1695,11 +1706,8 @@ html, body {
         <div class="event-detail-value">5:00 PM onwards</div>
       </div>
     </div>
-    <div class="event-poem">
-      When henna darkens on her palms,<br>
-      his name is hidden within —<br>
-      <span class="event-poem-em">find it, and love begins.</span>
-    </div>
+    <div class="event-venue">📍 Circle Club, Kolkata</div>
+    <div class="event-poem"><span class="event-poem-em">When henna darkens on her palms, his name is hidden within — find it, and love begins.</span></div>
     <div class="screen-tap-hint">tap to continue ✦</div>
   </div>
   </div><!-- end mehendi-panel -->
@@ -1736,11 +1744,8 @@ html, body {
         <div class="event-detail-value">5:00 PM onwards</div>
       </div>
     </div>
-    <div class="event-poem">
-      The music that plays tonight<br>
-      will echo in our hearts forever —<br>
-      <span class="event-poem-em">come, dance with us.</span>
-    </div>
+    <div class="event-venue">📍 Circle Club, Kolkata</div>
+    <div class="event-poem"><span class="event-poem-em">The music that plays tonight will echo in our hearts forever — come, dance with us.</span></div>
     <div class="screen-tap-hint">tap to continue ✦</div>
   </div>
   </div><!-- end sangeet-panel -->
@@ -1777,11 +1782,8 @@ html, body {
         <div class="event-detail-value">11:00 AM onwards</div>
       </div>
     </div>
-    <div class="event-poem">
-      Turmeric on their skin,<br>
-      sunlight in their smiles —<br>
-      <span class="event-poem-em">this golden moment needs you.</span>
-    </div>
+    <div class="event-venue">📍 Circle Club, Kolkata</div>
+    <div class="event-poem"><span class="event-poem-em">Turmeric on their skin, sunlight in their smiles — this golden moment needs you.</span></div>
     <div class="screen-tap-hint">tap to continue ✦</div>
   </div>
   </div><!-- end haldi-panel -->
@@ -1800,13 +1802,12 @@ html, body {
   </div>
   <div class="event-particles" id="ep-wedding" style="z-index:2;"></div>
 
-  <div id="wedding-panel" style="position:absolute;bottom:0;left:0;right:0;height:55%;z-index:3;background:linear-gradient(to bottom,transparent 0%,rgba(5,1,0,0.88) 20%,#050100 50%);padding-top:20px;transform:translateY(100%);transition:transform 1.4s cubic-bezier(0.22,1,0.36,1);pointer-events:none;overflow:hidden;">
+  <div id="wedding-panel" style="position:absolute;bottom:0;left:0;right:0;height:50%;z-index:3;background:linear-gradient(to bottom,transparent 0%,rgba(5,1,0,0.88) 20%,#050100 50%);padding-top:20px;transform:translateY(100%);transition:transform 1.4s cubic-bezier(0.22,1,0.36,1);pointer-events:none;overflow:hidden;">
   <div class="event-wrap" id="wedding-invite" style="position:relative;opacity:0;transform:translateY(20px);transition:opacity 0.8s ease 0.5s,transform 0.8s ease 0.5s;pointer-events:none;">
     <div class="event-icon-big">💍</div>
     <div class="event-tag" style="background:rgba(255,200,60,0.15);border-color:rgba(255,200,60,0.3);color:#f0c840">The Wedding</div>
     <div class="event-title">Shubho Bibaho</div>
-    <div class="event-subtitle">The sacred union of two souls</div>
-    <div class="event-divider-line"></div>
+    <div class="event-divider-line" style="margin-bottom:6px;"></div>
     <div class="event-detail-row">
       <div class="event-detail">
         <div class="event-detail-label">Date</div>
@@ -1825,11 +1826,8 @@ html, body {
       </span>
       <span class="event-bengali-sub">As per Bengali calendar · ১১ই অগ্রহায়ণ<br>Shubho Lagna · ১২ই ডিসেম্বর রাত ২:৩০</span>
     </div>
-    <div class="event-poem">
-      Under the same stars that have witnessed<br>
-      a thousand love stories —<br>
-      <span class="event-poem-em">theirs begins tonight.</span>
-    </div>
+    <div class="event-venue">📍 Circle Club, Kolkata</div>
+    <div class="event-poem"><span class="event-poem-em">Under the same stars that have witnessed a thousand love stories — theirs begins tonight.</span></div>
     <div class="screen-tap-hint">tap to continue ✦</div>
   </div>
   </div><!-- end wedding-panel -->
