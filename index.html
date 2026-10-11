@@ -2797,12 +2797,10 @@ const _guestFull = (_sal ? _sal + '. ' : '') + (_guestRaw || 'Friend');
 const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _params.get('r') === '1';
 
 // Wire wedding screen → reception (VIP) or rsvp (everyone else)
-/* ── Safe video play/pause + next-video preloader (iOS Safari) ──
-   Only the current video buffers fully; next video preloads metadata
-   only (lightweight) so it's ready to start instantly when needed. */
+/* ── Safe video play/pause for iOS Safari ── */
 function safeVideoPlay(video) {
   if (!video) return;
-  try { video.pause(); } catch(e) {}
+  // On iOS Safari: reset then play — don't pause first as it causes jank
   video.currentTime = 0;
   var p = video.play();
   if (p !== undefined) { p.catch(function(){}); }
