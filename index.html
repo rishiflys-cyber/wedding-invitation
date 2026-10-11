@@ -3300,13 +3300,22 @@ function addToCalendar() {
   var endUTC   = '20261211T180000Z'; // 11:30pm IST — open ended
   var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
   if (isIOS) {
-    // On iOS, open Google Calendar in browser — opens Calendar app directly
-    var gcUrl = 'https://calendar.google.com/calendar/render?action=TEMPLATE' +
-      '&text=' + encodeURIComponent(title) +
-      '&dates=' + startUTC + '/' + endUTC +
-      '&details=' + encodeURIComponent(details) +
-      '&location=' + encodeURIComponent(location);
-    window.open(gcUrl, '_blank');
+    // On iOS, use data URI with text/calendar MIME type — opens Apple Calendar directly
+    var ics = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Wedding Invite//EN',
+      'BEGIN:VEVENT',
+      'DTSTART:' + startUTC,
+      'DTEND:' + endUTC,
+      'SUMMARY:' + title,
+      'LOCATION:' + location,
+      'DESCRIPTION:' + details,
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ].join('\r\n');
+    var dataUri = 'data:text/calendar;charset=utf8,' + encodeURIComponent(ics);
+    window.location.href = dataUri;
   } else {
     // Google Calendar for Android / others
     var gcUrl = 'https://calendar.google.com/calendar/render?action=TEMPLATE' +
