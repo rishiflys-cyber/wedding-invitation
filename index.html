@@ -2333,6 +2333,11 @@ function goTo(id) {
     var hideOn = ['screen-envelope','screen-ganesh'];
     cb.style.display = hideOn.indexOf(id) === -1 ? 'flex' : 'none';
   }
+  // Auto-advance Ganesh screen after 2s
+  if (id === 'screen-ganesh') {
+    setTimeout(function(){ if (current === 'screen-ganesh') goTo('screen-invite'); }, 2000);
+  }
+
   // Invite acts — cinematic trailer timing
   if (id === 'screen-invite') {
     setTimeout(function(){
