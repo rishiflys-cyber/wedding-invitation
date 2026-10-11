@@ -2800,7 +2800,6 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
 /* ── Safe video play/pause for iOS Safari ── */
 function safeVideoPlay(video) {
   if (!video) return;
-  // On iOS Safari: reset then play — don't pause first as it causes jank
   video.currentTime = 0;
   var p = video.play();
   if (p !== undefined) { p.catch(function(){}); }
@@ -2808,6 +2807,13 @@ function safeVideoPlay(video) {
 function safeVideoPause(video) {
   if (!video) return;
   try { video.pause(); } catch(e) {}
+}
+/* Preload the next video so it starts instantly */
+function preloadVideo(video) {
+  if (!video) return;
+  if (video.readyState < 3) {
+    video.load();
+  }
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -2868,6 +2874,8 @@ document.addEventListener('DOMContentLoaded', function() {
       if (mi) { mi.style.opacity = '0'; mi.style.transform = 'translateY(20px)'; mi.style.pointerEvents = 'none'; }
       if (mv) {
         safeVideoPlay(mv);
+        /* Preload next video while this one plays */
+        preloadVideo(document.getElementById('sangeet-video'));
         /* fallback timer based on video duration + buffer */
         var dur = (mv.duration && isFinite(mv.duration)) ? mv.duration * 1000 + 500 : 10000;
         mehendiTimer = setTimeout(showMehendiInvite, dur);
@@ -2926,6 +2934,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (si) { si.style.opacity = '0'; si.style.transform = 'translateY(20px)'; si.style.pointerEvents = 'none'; }
       if (sv) {
         safeVideoPlay(sv);
+        preloadVideo(document.getElementById('haldi-video'));
         var dur = (sv.duration && isFinite(sv.duration)) ? sv.duration * 1000 + 500 : 10000;
         sangeetTimer = setTimeout(showSangeetInvite, dur);
       } else {
@@ -2982,7 +2991,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (hi) { hi.style.opacity = '0'; hi.style.transform = 'translateY(20px)'; hi.style.pointerEvents = 'none'; }
       if (hv) {
         safeVideoPlay(hv);
-        /* Hard fallback: real duration + buffer, or 15s if metadata not yet loaded */
+        preloadVideo(document.getElementById('wedding-video'));
         var dur = (hv.duration && isFinite(hv.duration)) ? hv.duration * 1000 + 500 : 10000;
         haldiTimer = setTimeout(showHaldiInvite, dur);
       } else {
@@ -3037,6 +3046,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (wv) {
         wv.currentTime = 0;
         safeVideoPlay(wv);
+        preloadVideo(document.getElementById('reception-video'));
         wv.onended = function() { safeVideoPause(wv); showWeddingInvite(); };
         var dur = (wv.duration && isFinite(wv.duration)) ? wv.duration * 1000 + 500 : 12000;
         weddingTimer = setTimeout(showWeddingInvite, dur);
