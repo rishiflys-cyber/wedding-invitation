@@ -1567,7 +1567,7 @@ html, body {
 </div>
 
 <div id="particles"></div>
-<audio id="bgmusic" preload="auto"><source src="Ranjha.mp3" type="audio/mpeg"></audio>
+<audio id="bgmusic" preload="auto" playsinline><source src="Ranjha.mp3" type="audio/mpeg"></audio>
 
 <!-- Music toggle button -->
 <div id="music-btn" onclick="toggleMusic()" style="position:fixed;top:18px;right:18px;z-index:9999;display:none;align-items:center;justify-content:center;cursor:pointer;padding:5px 9px;border-radius:20px;background:rgba(0,0,0,0.35);backdrop-filter:blur(6px);border:1px solid rgba(201,168,76,0.3);gap:5px;">
@@ -2287,6 +2287,36 @@ let current = 'screen-envelope';
 let opened = false;
 
 var _history = [];
+
+// ── Android audio unlock ──
+// Some Android browsers need AudioContext resumed on first touch
+// We silently unlock it on the very first user interaction
+(function() {
+  var _audioUnlocked = false;
+  function unlockAudio() {
+    if (_audioUnlocked) return;
+    _audioUnlocked = true;
+    // Create and immediately suspend a silent AudioContext to unlock the audio stack
+    try {
+      var ctx = new (window.AudioContext || window.webkitAudioContext)();
+      var buf = ctx.createBuffer(1, 1, 22050);
+      var src = ctx.createBufferSource();
+      src.buffer = buf;
+      src.connect(ctx.destination);
+      src.start(0);
+      ctx.resume().then(function(){ ctx.close(); }).catch(function(){});
+    } catch(e) {}
+    // Also try to load the audio element so it's ready
+    var music = document.getElementById('bgmusic');
+    if (music && music.readyState === 0) { music.load(); }
+    document.removeEventListener('touchstart', unlockAudio, true);
+    document.removeEventListener('touchend', unlockAudio, true);
+    document.removeEventListener('click', unlockAudio, true);
+  }
+  document.addEventListener('touchstart', unlockAudio, true);
+  document.addEventListener('touchend', unlockAudio, true);
+  document.addEventListener('click', unlockAudio, true);
+})();
 
 /* ── Wake Lock: keep screen on during auto-advance ── */
 var _wakeLock = null;
