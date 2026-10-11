@@ -2121,7 +2121,7 @@ html, body {
      SCREEN MEHENDI
 ══════════════════════════════════════════ -->
 <div id="screen-mehendi" class="screen event-screen" onclick="goTo('screen-sangeet')">
-  <video id="mehendi-video" muted playsinline preload="metadata"
+  <video id="mehendi-video" muted playsinline preload="auto"
     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
     <source src="mehendi.mp4" type="video/mp4">
   </video>
@@ -2158,7 +2158,7 @@ html, body {
      SCREEN SANGEET
 ══════════════════════════════════════════ -->
 <div id="screen-sangeet" class="screen event-screen" onclick="goTo('screen-haldi')">
-  <video id="sangeet-video" muted playsinline preload="metadata"
+  <video id="sangeet-video" muted playsinline preload="auto"
     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
     <source src="sangeet.mp4" type="video/mp4">
   </video>
@@ -2195,7 +2195,7 @@ html, body {
      SCREEN HALDI
 ══════════════════════════════════════════ -->
 <div id="screen-haldi" class="screen event-screen" onclick="goTo('screen-wedding')">
-  <video id="haldi-video" muted playsinline preload="metadata"
+  <video id="haldi-video" muted playsinline preload="auto"
     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
     <source src="haldi.mp4" type="video/mp4">
   </video>
@@ -2830,7 +2830,6 @@ document.addEventListener('DOMContentLoaded', function() {
       if (mi) { mi.style.opacity = '0'; mi.style.transform = 'translateY(20px)'; mi.style.pointerEvents = 'none'; }
       if (mv) {
         mv.currentTime = 0;
-        mv.load();
         var playPromise = mv.play();
         if (playPromise !== undefined) {
           playPromise.catch(function() {
@@ -2903,7 +2902,6 @@ document.addEventListener('DOMContentLoaded', function() {
       if (si) { si.style.opacity = '0'; si.style.transform = 'translateY(20px)'; si.style.pointerEvents = 'none'; }
       if (sv) {
         sv.currentTime = 0;
-        sv.load();
         sv.play().catch(function() { showSangeetInvite(); });
         /* Hard fallback: real duration + buffer, or 15s if metadata not yet loaded */
         var dur = (sv.duration && isFinite(sv.duration)) ? sv.duration * 1000 + 800 : 15000;
@@ -2970,7 +2968,6 @@ document.addEventListener('DOMContentLoaded', function() {
       if (hi) { hi.style.opacity = '0'; hi.style.transform = 'translateY(20px)'; hi.style.pointerEvents = 'none'; }
       if (hv) {
         hv.currentTime = 0;
-        hv.load();
         hv.play().catch(function() { showHaldiInvite(); });
         /* Hard fallback: real duration + buffer, or 15s if metadata not yet loaded */
         var dur = (hv.duration && isFinite(hv.duration)) ? hv.duration * 1000 + 800 : 15000;
