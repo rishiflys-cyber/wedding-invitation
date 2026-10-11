@@ -1915,17 +1915,17 @@ html, body {
       <input type="text" id="rsvp-name-input" class="rsvp-name-input" placeholder="Your name" autocomplete="name" style="margin-bottom:10px;">
       <input type="tel" id="rsvp-phone-input" class="rsvp-name-input" placeholder="Phone number" autocomplete="tel" inputmode="tel">
       <div style="display:flex;gap:8px;margin-top:10px;width:100%;justify-content:center;">
-        <button id="meal-veg" onclick="selectMeal('Veg',this,event)" class="meal-pick">🌿 Veg</button>
-        <button id="meal-nonveg" onclick="selectMeal('Non-Veg',this,event)" class="meal-pick">🍗 Non-Veg</button>
-        <button id="meal-jain" onclick="selectMeal('Jain',this,event)" class="meal-pick">🪷 Jain</button>
+        <button type="button" id="meal-veg" onclick="selectMeal('Veg',this,event)" class="meal-pick">🌿 Veg</button>
+        <button type="button" id="meal-nonveg" onclick="selectMeal('Non-Veg',this,event)" class="meal-pick">🍗 Non-Veg</button>
+        <button type="button" id="meal-jain" onclick="selectMeal('Jain',this,event)" class="meal-pick">🪷 Jain</button>
       </div>
     </div>
     <div class="rsvp-buttons">
-      <button class="rsvp-btn rsvp-yes" onclick="submitRSVP('yes')">
+      <button type="button" class="rsvp-btn rsvp-yes" onclick="submitRSVP('yes')">
         <span class="rsvp-btn-icon">🎉</span>
         <span>Joyfully Accept</span>
       </button>
-      <button class="rsvp-btn rsvp-no" onclick="submitRSVP('no')">
+      <button type="button" class="rsvp-btn rsvp-no" onclick="submitRSVP('no')">
         <span class="rsvp-btn-icon">🙏</span>
         <span>Regretfully Decline</span>
       </button>
@@ -2881,7 +2881,7 @@ const RSVP_ENTRY_RESP = 'entry.000000002'; // replace with real entry ID
 
 var _selectedMeal = '';
 function selectMeal(meal, btn, e) {
-  if (e) { e.stopPropagation(); e.preventDefault(); }
+  if (e) e.stopPropagation();
   _selectedMeal = meal;
   document.querySelectorAll('.meal-pick').forEach(b => b.classList.remove('selected'));
   btn.classList.add('selected');
