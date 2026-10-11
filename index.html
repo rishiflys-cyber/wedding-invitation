@@ -1368,6 +1368,65 @@ html, body {
   0%,100% { opacity: 0.12; }
   50% { opacity: 0.22; }
 }
+@keyframes act1-kenburns {
+  0% { transform: scale(1) translate(0,0); }
+  100% { transform: scale(1.14) translate(-1.5%,-2%); }
+}
+@keyframes act2-kenburns {
+  0% { transform: scale(1) translate(0,0); }
+  100% { transform: scale(1.12) translate(1.5%,-1.5%); }
+}
+@keyframes act3-kenburns {
+  0% { transform: scale(1) translate(0,0); }
+  100% { transform: scale(1.1) translate(-1%,1.5%); }
+}
+@keyframes float-sparkle {
+  0%   { transform: translate(0,0) rotate(0deg);   opacity:0; }
+  10%  { opacity:1; }
+  90%  { opacity:0.6; }
+  100% { transform: translate(var(--sx),var(--sy)) rotate(var(--sr));  opacity:0; }
+}
+@keyframes shimmer-sweep {
+  0%   { background-position: -200% center; }
+  100% { background-position: 300% center; }
+}
+@keyframes name-reveal {
+  0%   { opacity:0; letter-spacing: 8px; transform: translateY(12px); }
+  100% { opacity:1; letter-spacing: 1px; transform: translateY(0); }
+}
+@keyframes act2-grand-enter {
+  0%   { opacity:0; transform: scale(0.68) translateY(28px); filter: blur(8px); }
+  60%  { filter: blur(0px); }
+  100% { opacity:1; transform: scale(1) translateY(0); filter: blur(0px); }
+}
+@keyframes act1-text-dramatic {
+  0%   { opacity:0; transform: translateY(40px) skewY(1.5deg); letter-spacing: 0.12em; }
+  100% { opacity:1; transform: translateY(0) skewY(0deg); letter-spacing: 0.04em; }
+}
+#screen-invite-bg-zoom {
+  position:absolute;inset:-8%;pointer-events:none;z-index:0;
+  background: inherit;
+  animation: act1-kenburns 6s ease-out forwards;
+}
+#screen-invite2-bg-zoom {
+  position:absolute;inset:-8%;pointer-events:none;z-index:0;
+  background: inherit;
+  animation: act2-kenburns 4.5s ease-out forwards;
+}
+#screen-invite3-bg-zoom {
+  position:absolute;inset:-8%;pointer-events:none;z-index:0;
+  background: inherit;
+  animation: act3-kenburns 5s ease-out forwards;
+}
+.shimmer-name {
+  display:inline-block;
+  background: linear-gradient(100deg, #f9e060 20%, #fff8c0 45%, #f9e060 55%, #c9a84c 80%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer-sweep 3s linear 1.2s infinite;
+}
 .act1-corner {
   position: absolute;
   width: 100px;
@@ -1717,6 +1776,7 @@ html, body {
      SCREEN 3a — INVITE ACT 1 (poem)
 ══════════════════════════════════════════ -->
 <div id="screen-invite" class="screen">
+  <div id="screen-invite-bg-zoom" style="background: radial-gradient(ellipse at 50% 0%, rgba(255,210,80,0.18) 0%, transparent 55%), radial-gradient(ellipse at 0% 60%, rgba(180,30,60,0.28) 0%, transparent 50%), radial-gradient(ellipse at 100% 60%, rgba(180,30,60,0.28) 0%, transparent 50%), radial-gradient(ellipse at 50% 105%, rgba(140,40,0,0.45) 0%, transparent 55%), linear-gradient(175deg, #2a1000 0%, #4a1a00 25%, #3a1000 60%, #120400 100%); animation-play-state:paused;"></div>
   <!-- Corner ornaments -->
   <div class="act1-corner" style="top:0;left:0;">
     <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
@@ -1752,7 +1812,7 @@ html, body {
   <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:60px 44px;text-align:center;position:relative;z-index:1;">
 
     <!-- Floral top motif -->
-    <div id="invite-act1-ornament" style="opacity:0;transition:opacity 2s ease;margin-bottom:28px;">
+    <div id="invite-act1-ornament" style="opacity:0;transform:scale(0.82);transition:opacity 1.8s ease,transform 1.8s cubic-bezier(0.16,1,0.3,1);margin-bottom:28px;">
       <svg width="220" height="36" viewBox="0 0 220 36" xmlns="http://www.w3.org/2000/svg">
         <line x1="0" y1="18" x2="72" y2="18" stroke="#c9a84c" stroke-width="0.8" opacity="0.5"/>
         <line x1="148" y1="18" x2="220" y2="18" stroke="#c9a84c" stroke-width="0.8" opacity="0.5"/>
@@ -1768,7 +1828,7 @@ html, body {
       </svg>
     </div>
 
-    <div id="invite-act1-text" style="font-family:'Cormorant Garamond',Garamond,Georgia,serif;font-size:22px;font-weight:300;line-height:2.1;letter-spacing:0.04em;color:#eddba8;opacity:0;transform:translateY(24px);transition:opacity 2.2s ease,transform 2.2s ease;">
+    <div id="invite-act1-text" style="font-family:'Cormorant Garamond',Garamond,Georgia,serif;font-size:22px;font-weight:300;line-height:2.1;letter-spacing:0.04em;color:#eddba8;opacity:0;transform:translateY(40px) skewY(1.5deg);">
       There are people in our lives<br>
       whose presence doesn't just fill a room —<br>
       <em style="font-style:normal;opacity:0.7;font-size:19px;">it makes every moment</em><br>
@@ -1790,6 +1850,7 @@ html, body {
      SCREEN 3b — INVITE ACT 2 (you are one)
 ══════════════════════════════════════════ -->
 <div id="screen-invite2" class="screen">
+  <div id="screen-invite2-bg-zoom" style="background: radial-gradient(ellipse at 50% 50%, rgba(255,220,100,0.18) 0%, transparent 60%), radial-gradient(ellipse at 5% 85%, rgba(180,30,60,0.28) 0%, transparent 45%), radial-gradient(ellipse at 95% 85%, rgba(180,30,60,0.28) 0%, transparent 45%), radial-gradient(ellipse at 50% 0%, rgba(120,50,10,0.3) 0%, transparent 50%), linear-gradient(160deg, #200c00 0%, #3a1200 30%, #2a0c00 65%, #0e0300 100%); animation-play-state:paused;"></div>
   <!-- Corner ornaments (same as act1) -->
   <div class="act1-corner" style="top:0;left:0;">
     <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
@@ -1832,7 +1893,7 @@ html, body {
       </svg>
     </div>
 
-    <div id="invite-act2-text" class="you-are-one" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:36px;font-weight:600;font-style:italic;letter-spacing:0.03em;line-height:1.35;color:#f9e8b0;text-shadow:0 0 40px rgba(249,224,96,0.45),0 0 80px rgba(255,160,0,0.2);opacity:0;transform:scale(0.85) translateY(16px);transition:opacity 1.6s ease,transform 1.6s cubic-bezier(0.16,1,0.3,1);">You are one of<br>those people.</div>
+    <div id="invite-act2-text" class="you-are-one" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:36px;font-weight:600;font-style:italic;letter-spacing:0.03em;line-height:1.35;color:#f9e8b0;text-shadow:0 0 60px rgba(249,224,96,0.6),0 0 120px rgba(255,160,0,0.3);opacity:0;transform:scale(0.68) translateY(28px);filter:blur(8px);">You are one of<br>those people.</div>
 
     <!-- Bottom micro ornament -->
     <div id="act2-bot-orn" style="opacity:0;transition:opacity 1.8s ease 0.5s;margin-top:36px;">
@@ -1852,6 +1913,7 @@ html, body {
      SCREEN 3c — INVITE ACT 3 (names + families)
 ══════════════════════════════════════════ -->
 <div id="screen-invite3" class="screen" onclick="goTo('screen-mehendi')">
+  <div id="screen-invite3-bg-zoom" style="background: radial-gradient(ellipse at 50% 15%, rgba(255,215,80,0.22) 0%, transparent 50%), radial-gradient(ellipse at 10% 75%, rgba(180,30,60,0.3) 0%, transparent 45%), radial-gradient(ellipse at 90% 75%, rgba(180,30,60,0.3) 0%, transparent 45%), radial-gradient(ellipse at 50% 100%, rgba(100,20,0,0.4) 0%, transparent 55%), linear-gradient(168deg, #1a0800 0%, #3a1200 28%, #2a0e00 58%, #0e0200 100%); animation-play-state:paused;"></div>
   <!-- Corner ornaments -->
   <div class="act1-corner" style="top:0;left:0;">
     <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
@@ -1882,16 +1944,16 @@ html, body {
 
   <div class="invite-screen-wrap" style="gap:14px;padding:80px 28px 36px;position:relative;z-index:1;">
 
-    <div id="invite-act3-text" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:17px;font-weight:300;font-style:italic;color:#e8d4a0;opacity:0;transition:opacity 1.4s ease;line-height:2;text-align:center;letter-spacing:0.05em;">
+    <div id="invite-act3-text" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:17px;font-weight:300;font-style:italic;color:#e8d4a0;opacity:0;transform:translateY(18px);transition:opacity 1.4s ease,transform 1.4s cubic-bezier(0.16,1,0.3,1);line-height:2;text-align:center;letter-spacing:0.05em;">
       And so, with hearts full of love,<br>we invite you to celebrate<br>our wedding with us —
     </div>
 
     <div style="display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:10px;position:relative;">
       <!-- subtle glow ring behind names -->
       <div style="position:absolute;inset:-20px -40px;background:radial-gradient(ellipse at 50% 50%,rgba(249,224,96,0.08) 0%,transparent 70%);pointer-events:none;border-radius:50%;"></div>
-      <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:600;font-style:italic;color:#f9e060;text-shadow:0 0 32px rgba(249,224,96,0.6),0 0 64px rgba(255,160,0,0.3);letter-spacing:1px;position:relative;">Rishabh Chattopadhyay</span>
-      <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:300;opacity:0.5;color:#f5dfa0;letter-spacing:6px;margin:2px 0;">&amp;</span>
-      <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:600;font-style:italic;color:#f9e060;text-shadow:0 0 32px rgba(249,224,96,0.6),0 0 64px rgba(255,160,0,0.3);letter-spacing:1px;position:relative;">Ananya Dash</span>
+      <span id="name-rishabh" class="shimmer-name" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:600;font-style:italic;letter-spacing:1px;position:relative;opacity:0;display:inline-block;">Rishabh Chattopadhyay</span>
+      <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:300;opacity:0;color:#f5dfa0;letter-spacing:6px;margin:2px 0;display:inline-block;" id="names-amp">&amp;</span>
+      <span id="name-ananya" class="shimmer-name" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:600;font-style:italic;letter-spacing:1px;position:relative;opacity:0;display:inline-block;">Ananya Dash</span>
     </div>
 
     <div class="invite-divider"></div>
@@ -2349,6 +2411,34 @@ function goTo(id) {
     document.body.style.pointerEvents = '';
   }, 750);
   try { window.navigator.vibrate([40]); } catch(e) {}
+  // Reset invite screen animation states when re-entering
+  (function resetInviteAnim(sid){
+    if(sid==='screen-invite'){
+      var bg=document.getElementById('screen-invite-bg-zoom');
+      if(bg){bg.style.animation='none';void bg.offsetWidth;bg.style.animation='act1-kenburns 6s ease-out forwards';bg.style.animationPlayState='paused';}
+      var orn=document.getElementById('invite-act1-ornament');
+      if(orn){orn.style.opacity='0';orn.style.transform='scale(0.82)';}
+      var el=document.getElementById('invite-act1-text');
+      if(el){el.style.animation='none';el.style.opacity='0';el.style.transform='translateY(40px) skewY(1.5deg)';}
+      var div=document.getElementById('invite-act1-divider');
+      if(div){div.style.opacity='0';}
+    } else if(sid==='screen-invite2'){
+      var bg2=document.getElementById('screen-invite2-bg-zoom');
+      if(bg2){bg2.style.animation='none';void bg2.offsetWidth;bg2.style.animation='act2-kenburns 4.5s ease-out forwards';bg2.style.animationPlayState='paused';}
+      var el2=document.getElementById('invite-act2-text');
+      if(el2){el2.style.animation='none';el2.style.opacity='0';el2.style.transform='scale(0.68) translateY(28px)';el2.style.filter='blur(8px)';}
+      var o1=document.getElementById('act2-top-orn');if(o1)o1.style.opacity='0';
+      var o2=document.getElementById('act2-bot-orn');if(o2)o2.style.opacity='0';
+    } else if(sid==='screen-invite3'){
+      var bg3=document.getElementById('screen-invite3-bg-zoom');
+      if(bg3){bg3.style.animation='none';void bg3.offsetWidth;bg3.style.animation='act3-kenburns 5s ease-out forwards';bg3.style.animationPlayState='paused';}
+      var el3=document.getElementById('invite-act3-text');
+      if(el3){el3.style.opacity='0';el3.style.transform='translateY(18px)';}
+      var r=document.getElementById('name-rishabh');if(r){r.style.animation='none';r.style.opacity='0';}
+      var amp=document.getElementById('names-amp');if(amp){amp.style.opacity='0';}
+      var a=document.getElementById('name-ananya');if(a){a.style.animation='none';a.style.opacity='0';}
+    }
+  })(id);
   _history.push(current);
   prev.classList.remove('active');
   next.classList.add('active');
@@ -2369,60 +2459,117 @@ function goTo(id) {
 
   // Invite acts — cinematic trailer timing
   if (id === 'screen-invite') {
+    // Start Ken Burns zoom
+    var bg1 = document.getElementById('screen-invite-bg-zoom');
+    if(bg1){ bg1.style.animationPlayState='running'; }
+    // Floating ambient sparkles
+    (function spawnAmbientSparkles(){
+      var shapes=['✦','✧','⋆','·','◆'];
+      var colors=['#f0c840','#ffe580','#c9a84c','#fff0a0','#e8c060'];
+      for(var i=0;i<18;i++){
+        (function(i){
+          setTimeout(function(){
+            if(current!=='screen-invite') return;
+            var p=document.createElement('div');
+            p.textContent=shapes[Math.floor(Math.random()*shapes.length)];
+            var x=5+Math.random()*90;
+            var startY=110+Math.random()*20;
+            var driftX=(Math.random()-0.5)*80;
+            var riseY=-(90+Math.random()*120);
+            var dur=3+Math.random()*2.5;
+            var size=8+Math.random()*10;
+            p.style.cssText='position:fixed;left:'+x+'%;top:'+startY+'%;font-size:'+size+'px;color:'+colors[Math.floor(Math.random()*colors.length)]+';z-index:2;pointer-events:none;opacity:0;will-change:transform,opacity;';
+            var screen1=document.getElementById('screen-invite');
+            if(screen1) screen1.appendChild(p);
+            requestAnimationFrame(function(){requestAnimationFrame(function(){
+              p.style.transition='transform '+dur+'s linear,opacity '+dur+'s ease';
+              p.style.transform='translate('+driftX+'px,'+riseY+'px) rotate('+(Math.random()*360)+'deg)';
+              p.style.opacity='0.55';
+              setTimeout(function(){ p.style.opacity='0'; },dur*700);
+            });});
+            setTimeout(function(){if(p.parentNode)p.parentNode.removeChild(p);},(dur+0.2)*1000);
+          },i*220);
+        })(i);
+      }
+    })();
+    // Ornament with scale-in
     setTimeout(function(){
       var orn=document.getElementById('invite-act1-ornament');
-      if(orn){ orn.style.opacity='1'; }
-    }, 200);
+      if(orn){ orn.style.transition='opacity 1.8s ease, transform 1.8s cubic-bezier(0.16,1,0.3,1)'; orn.style.opacity='1'; orn.style.transform='scale(1)'; }
+    }, 180);
+    // Dramatic text entrance — custom keyframe via JS
     setTimeout(function(){
       var el=document.getElementById('invite-act1-text');
-      if(el){ el.style.transition='opacity 2s ease, transform 2s ease'; el.style.opacity='1'; el.style.transform='translateY(0)'; }
+      if(el){
+        el.style.animation='act1-text-dramatic 1.6s cubic-bezier(0.16,1,0.3,1) forwards';
+      }
       var div=document.getElementById('invite-act1-divider');
       if(div){ div.style.opacity='1'; }
-    }, 600);
-    setTimeout(function(){ if(current==='screen-invite') goTo('screen-invite2'); }, 5000);
+    }, 680);
+    setTimeout(function(){ if(current==='screen-invite') goTo('screen-invite2'); }, 5500);
   }
   if (id === 'screen-invite2') {
+    // Ken Burns zoom
+    var bg2 = document.getElementById('screen-invite2-bg-zoom');
+    if(bg2){ bg2.style.animationPlayState='running'; }
     setTimeout(function(){
       var o1=document.getElementById('act2-top-orn'); if(o1) o1.style.opacity='1';
       var o2=document.getElementById('act2-bot-orn'); if(o2) o2.style.opacity='1';
-    }, 150);
+    }, 100);
     setTimeout(function(){
       var el=document.getElementById('invite-act2-text');
-      if(el){ el.style.transition='opacity 1.4s ease, transform 1.4s ease'; el.style.opacity='1'; el.style.transform='scale(1)'; }
-      // Golden confetti burst
-      var shapes = ['✦','✧','·','⋆','❋','◆','▲'];
-      var colors = ['#f0c840','#ffe580','#ffd700','#c9a84c','#fff8dc','#ffec6e'];
-      for(var i=0;i<60;i++){
+      if(el){ el.style.animation='act2-grand-enter 1.4s cubic-bezier(0.16,1,0.3,1) forwards'; }
+      // Massive golden confetti burst + ambient golden rain
+      var shapes = ['✦','✧','·','⋆','❋','◆','▲','✿','❀'];
+      var colors = ['#f0c840','#ffe580','#ffd700','#c9a84c','#fff8dc','#ffec6e','#ffe4a0'];
+      for(var i=0;i<90;i++){
         (function(i){
           setTimeout(function(){
             var p=document.createElement('div');
             p.textContent = shapes[Math.floor(Math.random()*shapes.length)];
-            var x = 20 + Math.random()*60;
-            var vx = (Math.random()-0.5)*200;
-            var vy = -(180+Math.random()*220);
-            var rot = (Math.random()-0.5)*720;
-            var size = 10+Math.random()*14;
-            var dur = 1.4+Math.random()*0.8;
-            p.style.cssText='position:fixed;left:'+x+'%;top:50%;font-size:'+size+'px;color:'+colors[Math.floor(Math.random()*colors.length)]+';z-index:9999;pointer-events:none;opacity:1;will-change:transform,opacity;';
+            var x = 10 + Math.random()*80;
+            var startY = 40 + Math.random()*20;
+            var vx = (Math.random()-0.5)*280;
+            var vy = -(150+Math.random()*300);
+            var rot = (Math.random()-0.5)*900;
+            var size = 9+Math.random()*16;
+            var dur = 1.2+Math.random()*1.2;
+            p.style.cssText='position:fixed;left:'+x+'%;top:'+startY+'%;font-size:'+size+'px;color:'+colors[Math.floor(Math.random()*colors.length)]+';z-index:9999;pointer-events:none;opacity:1;will-change:transform,opacity;';
             document.body.appendChild(p);
             requestAnimationFrame(function(){requestAnimationFrame(function(){
-              p.style.transition='transform '+dur+'s cubic-bezier(.2,.8,.4,1),opacity '+dur+'s ease-in';
+              p.style.transition='transform '+dur+'s cubic-bezier(.15,.85,.35,1),opacity '+dur+'s ease-in';
               p.style.transform='translate('+vx+'px,'+vy+'px) rotate('+rot+'deg)';
               p.style.opacity='0';
             });});
             setTimeout(function(){if(p.parentNode)p.parentNode.removeChild(p);},(dur+0.1)*1000);
-          },i*25);
+          },i*15);
         })(i);
       }
-    }, 300);
-    setTimeout(function(){ if(current==='screen-invite2') goTo('screen-invite3'); }, 3000);
+    }, 200);
+    setTimeout(function(){ if(current==='screen-invite2') goTo('screen-invite3'); }, 3500);
   }
   if (id === 'screen-invite3') {
+    // Ken Burns zoom
+    var bg3 = document.getElementById('screen-invite3-bg-zoom');
+    if(bg3){ bg3.style.animationPlayState='running'; }
     setTimeout(function(){
       var el=document.getElementById('invite-act3-text');
-      if(el){ el.style.transition='opacity 1.2s ease'; el.style.opacity='1'; }
-    }, 300);
-    setTimeout(function(){ if(current==='screen-invite3') goTo('screen-mehendi'); }, 4000);
+      if(el){ el.style.transition='opacity 1.4s ease, transform 1.4s cubic-bezier(0.16,1,0.3,1)'; el.style.opacity='1'; el.style.transform='translateY(0)'; }
+    }, 250);
+    // Staggered name reveal
+    setTimeout(function(){
+      var r=document.getElementById('name-rishabh');
+      if(r){ r.style.animation='name-reveal 1.2s cubic-bezier(0.16,1,0.3,1) forwards'; }
+    }, 900);
+    setTimeout(function(){
+      var amp=document.getElementById('names-amp');
+      if(amp){ amp.style.transition='opacity 0.8s ease'; amp.style.opacity='0.5'; }
+    }, 1300);
+    setTimeout(function(){
+      var a=document.getElementById('name-ananya');
+      if(a){ a.style.animation='name-reveal 1.2s cubic-bezier(0.16,1,0.3,1) forwards'; }
+    }, 1500);
+    setTimeout(function(){ if(current==='screen-invite3') goTo('screen-mehendi'); }, 5000);
   }
 }
 
