@@ -1570,11 +1570,9 @@ html, body {
 <audio id="bgmusic" preload="auto"><source src="Ranjha.mp3" type="audio/mpeg"></audio>
 
 <!-- Music toggle button -->
-<div id="music-btn" onclick="toggleMusic()" style="position:fixed;top:18px;right:18px;z-index:9999;width:38px;height:38px;display:none;align-items:center;justify-content:center;cursor:pointer;">
-  <span style="position:relative;display:inline-block;width:18px;height:18px;">
-    <span id="music-icon" style="font-size:18px;line-height:1;display:block;color:#c9a84c;">♪</span>
-    <svg id="music-mute-line" viewBox="0 0 18 18" style="position:absolute;top:0;left:0;width:18px;height:18px;display:none;pointer-events:none;"><line x1="1" y1="17" x2="17" y2="1" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round"/></svg>
-  </span>
+<div id="music-btn" onclick="toggleMusic()" style="position:fixed;top:18px;right:18px;z-index:9999;display:none;align-items:center;justify-content:center;cursor:pointer;padding:5px 9px;border-radius:20px;background:rgba(0,0,0,0.35);backdrop-filter:blur(6px);border:1px solid rgba(201,168,76,0.3);gap:5px;">
+  <span id="music-icon" style="font-size:11px;line-height:1;color:#c9a84c;letter-spacing:0.5px;font-family:system-ui,sans-serif;font-weight:500;transition:opacity 0.3s;">▶ audio</span>
+  <span id="music-icon-muted" style="font-size:11px;line-height:1;color:rgba(201,168,76,0.5);letter-spacing:0.5px;font-family:system-ui,sans-serif;font-weight:500;display:none;">✕ mute</span>
 </div>
 
 <!-- Close (X) button — centre-top between back and music -->
@@ -2407,9 +2405,9 @@ function closeInvitation() {
   var music = document.getElementById('bgmusic');
   if (music) { music.pause(); music.currentTime = 0; }
   var icon = document.getElementById('music-icon');
-  if (icon) icon.style.opacity = '1';
-  var muteLine = document.getElementById('music-mute-line');
-  if (muteLine) muteLine.style.display = 'none';
+  if (icon) icon.style.display = 'inline';
+  var iconMuted = document.getElementById('music-icon-muted');
+  if (iconMuted) iconMuted.style.display = 'none';
   // Hide buttons
   var mb = document.getElementById('music-btn');
   if (mb) mb.style.display = 'none';
@@ -2808,7 +2806,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var step = vol / 40;
         var fade = setInterval(function() {
           vol -= step;
-          if (vol <= 0) { music.volume = 0; music.pause(); clearInterval(fade); var ic = document.getElementById('music-icon'); if (ic) ic.style.opacity = '0.7'; var ml = document.getElementById('music-mute-line'); if (ml) ml.style.display = 'block'; }
+          if (vol <= 0) { music.volume = 0; music.pause(); clearInterval(fade); var ic = document.getElementById('music-icon'); if (ic) ic.style.display = 'none'; var im = document.getElementById('music-icon-muted'); if (im) im.style.display = 'inline'; }
           else { music.volume = vol; }
         }, 80);
       }
@@ -2821,17 +2819,17 @@ document.addEventListener('DOMContentLoaded', function() {
 function toggleMusic() {
   var music = document.getElementById('bgmusic');
   var icon = document.getElementById('music-icon');
+  var iconMuted = document.getElementById('music-icon-muted');
   if (!music) return;
-  var muteLine = document.getElementById('music-mute-line');
   if (music.paused) {
     music.volume = 0.5;
     music.play().catch(function(){});
-    if (icon) icon.style.opacity = '1';
-    if (muteLine) muteLine.style.display = 'none';
+    if (icon) icon.style.display = 'inline';
+    if (iconMuted) iconMuted.style.display = 'none';
   } else {
     music.pause();
-    if (icon) icon.style.opacity = '0.7';
-    if (muteLine) muteLine.style.display = 'block';
+    if (icon) icon.style.display = 'none';
+    if (iconMuted) iconMuted.style.display = 'inline';
   }
 }
 
@@ -2839,7 +2837,9 @@ function restartFromBeginning() {
   var music = document.getElementById('bgmusic');
   if (music) { music.pause(); music.currentTime = 0; music.volume = 0.5; }
   var icon = document.getElementById('music-icon');
-  if (icon) icon.style.opacity = '1';
+  if (icon) icon.style.display = 'inline';
+  var iconMuted = document.getElementById('music-icon-muted');
+  if (iconMuted) iconMuted.style.display = 'none';
   var mb = document.getElementById('music-btn');
   if (mb) mb.style.display = 'none';
 
