@@ -2354,7 +2354,7 @@ function goTo(id) {
       var div=document.getElementById('invite-act1-divider');
       if(div){ div.style.opacity='1'; }
     }, 600);
-    setTimeout(function(){ if(current==='screen-invite') goTo('screen-invite2'); }, 7500);
+    setTimeout(function(){ if(current==='screen-invite') goTo('screen-invite2'); }, 4000);
   }
   if (id === 'screen-invite2') {
     setTimeout(function(){
@@ -2390,13 +2390,14 @@ function goTo(id) {
         })(i);
       }
     }, 300);
-    setTimeout(function(){ if(current==='screen-invite2') goTo('screen-invite3'); }, 4500);
+    setTimeout(function(){ if(current==='screen-invite2') goTo('screen-invite3'); }, 2000);
   }
   if (id === 'screen-invite3') {
     setTimeout(function(){
       var el=document.getElementById('invite-act3-text');
       if(el){ el.style.transition='opacity 1.2s ease'; el.style.opacity='1'; }
     }, 300);
+    setTimeout(function(){ if(current==='screen-invite3') goTo('screen-mehendi'); }, 4000);
   }
 }
 
