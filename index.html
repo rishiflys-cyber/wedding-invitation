@@ -2797,33 +2797,19 @@ const _guestFull = (_sal ? _sal + '. ' : '') + (_guestRaw || 'Friend');
 const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _params.get('r') === '1';
 
 // Wire wedding screen → reception (VIP) or rsvp (everyone else)
-/* ── Safe video play helpers (iOS Safari) ──
-   Prevents "play() interrupted by pause()" errors on rapid tapping.
-   Global so all video logic blocks can use them. */
-var _playPromises = new WeakMap();
+/* ── Safe video play/pause helpers (iOS Safari) ──
+   pause() + currentTime = 0 + play() is the safest pattern.
+   No load() — that nukes duration and causes re-download on mobile. */
 function safeVideoPlay(video) {
   if (!video) return;
-  var pending = _playPromises.get(video);
-  if (pending) {
-    pending.then(function() {
-      video.currentTime = 0;
-      var p = video.play();
-      if (p !== undefined) { _playPromises.set(video, p); p.catch(function(){}); }
-    }).catch(function(){ _playPromises.delete(video); });
-  } else {
-    video.currentTime = 0;
-    var p = video.play();
-    if (p !== undefined) { _playPromises.set(video, p); p.catch(function(){}); }
-  }
+  try { video.pause(); } catch(e) {}
+  video.currentTime = 0;
+  var p = video.play();
+  if (p !== undefined) { p.catch(function(){}); }
 }
 function safeVideoPause(video) {
   if (!video) return;
-  var pending = _playPromises.get(video);
-  if (pending) {
-    pending.then(function() { try { video.pause(); } catch(e){} _playPromises.delete(video); }).catch(function(){ _playPromises.delete(video); });
-  } else {
-    try { video.pause(); } catch(e) {}
-  }
+  try { video.pause(); } catch(e) {}
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -2941,7 +2927,6 @@ document.addEventListener('DOMContentLoaded', function() {
       if (sp) { sp.style.transition = 'none'; sp.style.transform = 'translateY(100%)'; sp.style.pointerEvents = 'none'; }
       if (si) { si.style.opacity = '0'; si.style.transform = 'translateY(20px)'; si.style.pointerEvents = 'none'; }
       if (sv) {
-        sv.currentTime = 0;
         safeVideoPlay(sv);
         var dur = (sv.duration && isFinite(sv.duration)) ? sv.duration * 1000 + 500 : 10000;
         sangeetTimer = setTimeout(showSangeetInvite, dur);
@@ -2998,7 +2983,6 @@ document.addEventListener('DOMContentLoaded', function() {
       if (hp) { hp.style.transition = 'none'; hp.style.transform = 'translateY(100%)'; hp.style.pointerEvents = 'none'; }
       if (hi) { hi.style.opacity = '0'; hi.style.transform = 'translateY(20px)'; hi.style.pointerEvents = 'none'; }
       if (hv) {
-        hv.currentTime = 0;
         safeVideoPlay(hv);
         /* Hard fallback: real duration + buffer, or 15s if metadata not yet loaded */
         var dur = (hv.duration && isFinite(hv.duration)) ? hv.duration * 1000 + 500 : 10000;
