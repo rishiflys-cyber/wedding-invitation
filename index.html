@@ -3245,8 +3245,8 @@ function submitRSVP(answer) {
     }, { once: true });
     return;
   }
-  // Block submit until phone is entered
-  if (phoneInput && !phoneInput.value.trim()) {
+  // Phone required only for Yes
+  if (answer === 'yes' && phoneInput && !phoneInput.value.trim()) {
     phoneInput.focus();
     phoneInput.placeholder = 'Please enter your phone number ✦';
     phoneInput.style.borderColor = 'rgba(255,180,60,0.8)';
