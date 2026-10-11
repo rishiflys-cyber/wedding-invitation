@@ -1599,7 +1599,7 @@ html, body {
   <!-- Centre wax seal -->
   <div class="env-center">
     <div class="invite-label">Wedding Invitation</div>
-    <div class="wax-seal" ontouchstart="openEnvelope();event.preventDefault();" onclick="openEnvelope()" id="seal">
+    <div class="wax-seal" ontouchstart="openEnvelope();" onclick="openEnvelope()" id="seal">
       <div class="seal-outer">
         <div class="seal-ring"></div>
         <div class="seal-monogram">RA</div>
@@ -2472,7 +2472,12 @@ function updateBackBtn() {
   }
 }
 
+var _lastOpenTs = 0;
 function openEnvelope() {
+  // Debounce: ignore calls within 500ms of each other (ontouchstart + onclick double-fire)
+  var now = Date.now();
+  if (now - _lastOpenTs < 500) return;
+  _lastOpenTs = now;
   // Haptic — Android only (iOS doesn't support vibrate)
   try { window.navigator.vibrate([30, 50, 40]); } catch(e) {}
   if (opened) return;
