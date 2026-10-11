@@ -2921,7 +2921,7 @@ function submitRSVP(answer) {
   if (calBtn) calBtn.style.display = answer === 'yes' ? 'block' : 'none';
 
   // Save to dashboard db
-  saveRSVPtoDB(guestName, guestPhone, answer, _selectedMeal);
+  saveRSVPtoDB(guestName, guestPhone, answer, _selectedMeal, _isVIP);
 
   // Legacy Google Form (no-cors, silent)
   if (!RSVP_FORM_URL.includes('YOUR_FORM_ID')) {
@@ -2935,7 +2935,7 @@ function submitRSVP(answer) {
 // ── Paste your Apps Script Web App URL here after deploying ──
 var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxuiLfitewkxS7jAO4SiCuJEjrKFpsGvsoHra3l-KiLE72PAhyFRJnwRcIRWIKcRiNE/exec';
 
-async function saveRSVPtoDB(name, phone, answer, meal) {
+async function saveRSVPtoDB(name, phone, answer, meal, isVIP) {
   try {
     if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL') return;
     // Use URLSearchParams with no-cors — Apps Script reads e.parameter
@@ -2944,6 +2944,7 @@ async function saveRSVPtoDB(name, phone, answer, meal) {
     params.append('phone', phone || '');
     params.append('answer', answer || '');
     params.append('meal', meal || '');
+    params.append('invite_type', isVIP ? 'Wedding + Reception' : 'Wedding Only');
     fetch(APPS_SCRIPT_URL, {
       method: 'POST',
       mode: 'no-cors',
