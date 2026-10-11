@@ -3232,8 +3232,8 @@ function submitRSVP(answer) {
   const nameInput = document.getElementById('rsvp-name-input');
   const phoneInput = document.getElementById('rsvp-phone-input');
 
-  // Block decline until name is shared
-  if (answer === 'no' && nameInput && !nameInput.value.trim()) {
+  // Block submit until name is entered
+  if (nameInput && !nameInput.value.trim()) {
     nameInput.focus();
     nameInput.placeholder = 'Please share your name first ✦';
     nameInput.style.borderColor = 'rgba(255,180,60,0.8)';
