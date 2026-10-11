@@ -2478,7 +2478,8 @@ const _params = new URLSearchParams(window.location.search);
 const _guestRaw = _params.get('to') ? decodeURIComponent(_params.get('to')) : '';
 const _sal = _params.get('sal') || '';
 const _guestFull = (_sal ? _sal + '. ' : '') + (_guestRaw || 'Friend');
-const _isVIP = _params.get('vip') === '1';
+// VIP unlock: ?vip=1, ?vip=true, or short alias ?r=1
+const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _params.get('r') === '1';
 
 // Wire wedding screen → reception (VIP) or rsvp (everyone else)
 document.addEventListener('DOMContentLoaded', function() {
