@@ -2798,17 +2798,37 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
 
 // Wire wedding screen → reception (VIP) or rsvp (everyone else)
 /* ── Safe video play/pause for iOS Safari ── */
-function safeVideoPlay(video) {
-  if (!video) return;
+// Detect slow connection — skip videos on 2G/slow-2G/cellular
+var _slowConnection = (function() {
+  var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  if (!conn) return false;
+  if (conn.saveData) return true;
+  if (conn.effectiveType === '2g' || conn.effectiveType === 'slow-2g') return true;
+  return false;
+})();
+
+function safeVideoPlay(video, onSkip) {
+  if (!video) { if (onSkip) onSkip(); return; }
+  // On slow connection, skip video and call onSkip immediately
+  if (_slowConnection) { if (onSkip) onSkip(); return; }
   // If not loaded yet (preload=none), load first then play
+  // If canplay doesn't fire within 2.5s on mobile data, skip video
   if (video.readyState === 0) {
-    video.load();
-    video.addEventListener('canplay', function onCanPlay() {
+    var skipped = false;
+    var skipTimer = setTimeout(function() {
+      skipped = true;
       video.removeEventListener('canplay', onCanPlay);
+      if (onSkip) onSkip();
+    }, 2500);
+    function onCanPlay() {
+      if (skipped) return;
+      clearTimeout(skipTimer);
       video.currentTime = 0;
       var p = video.play();
       if (p !== undefined) { p.catch(function(){}); }
-    }, { once: true });
+    }
+    video.addEventListener('canplay', onCanPlay, { once: true });
+    video.load();
   } else {
     video.currentTime = 0;
     var p = video.play();
@@ -2877,10 +2897,9 @@ document.addEventListener('DOMContentLoaded', function() {
       if (mp) { mp.style.transition = 'none'; mp.style.transform = 'translateY(100%)'; mp.style.pointerEvents = 'none'; }
       if (mi) { mi.style.opacity = '0'; mi.style.transform = 'translateY(20px)'; mi.style.pointerEvents = 'none'; }
       if (mv) {
-        safeVideoPlay(mv);
-        /* fallback timer based on video duration + buffer */
-        var dur = (mv.duration && isFinite(mv.duration)) ? mv.duration * 1000 + 500 : 10000;
-        mehendiTimer = setTimeout(showMehendiInvite, dur);
+        safeVideoPlay(mv, showMehendiInvite);
+        /* hard cap 4s fallback */
+        mehendiTimer = setTimeout(showMehendiInvite, 4000);
       }
     }
   };
@@ -2935,9 +2954,8 @@ document.addEventListener('DOMContentLoaded', function() {
       if (sp) { sp.style.transition = 'none'; sp.style.transform = 'translateY(100%)'; sp.style.pointerEvents = 'none'; }
       if (si) { si.style.opacity = '0'; si.style.transform = 'translateY(20px)'; si.style.pointerEvents = 'none'; }
       if (sv) {
-        safeVideoPlay(sv);
-        var dur = (sv.duration && isFinite(sv.duration)) ? sv.duration * 1000 + 500 : 10000;
-        sangeetTimer = setTimeout(showSangeetInvite, dur);
+        safeVideoPlay(sv, showSangeetInvite);
+        sangeetTimer = setTimeout(showSangeetInvite, 4000);
       } else {
         sangeetTimer = setTimeout(showSangeetInvite, 1000);
       }
@@ -2991,9 +3009,8 @@ document.addEventListener('DOMContentLoaded', function() {
       if (hp) { hp.style.transition = 'none'; hp.style.transform = 'translateY(100%)'; hp.style.pointerEvents = 'none'; }
       if (hi) { hi.style.opacity = '0'; hi.style.transform = 'translateY(20px)'; hi.style.pointerEvents = 'none'; }
       if (hv) {
-        safeVideoPlay(hv);
-        var dur = (hv.duration && isFinite(hv.duration)) ? hv.duration * 1000 + 500 : 10000;
-        haldiTimer = setTimeout(showHaldiInvite, dur);
+        safeVideoPlay(hv, showHaldiInvite);
+        haldiTimer = setTimeout(showHaldiInvite, 4000);
       } else {
         haldiTimer = setTimeout(showHaldiInvite, 1000);
       }
@@ -3047,10 +3064,9 @@ document.addEventListener('DOMContentLoaded', function() {
       if (wi) { wi.style.opacity = '0'; wi.style.transform = 'translateY(20px)'; wi.style.pointerEvents = 'none'; }
       if (wv) {
         wv.currentTime = 0;
-        safeVideoPlay(wv);
+        safeVideoPlay(wv, showWeddingInvite);
         wv.onended = function() { safeVideoPause(wv); showWeddingInvite(); };
-        // Hard cap: always show invite within 6s regardless of video state
-        weddingTimer = setTimeout(showWeddingInvite, 6000);
+        weddingTimer = setTimeout(showWeddingInvite, 4000);
       } else {
         weddingTimer = setTimeout(showWeddingInvite, 1000);
       }
@@ -3101,10 +3117,9 @@ document.addEventListener('DOMContentLoaded', function() {
       if (ri) { ri.style.opacity = '0'; ri.style.transform = 'translateY(20px)'; ri.style.pointerEvents = 'none'; }
       if (rv) {
         rv.currentTime = 0;
-        safeVideoPlay(rv);
+        safeVideoPlay(rv, showReceptionInvite);
         rv.onended = function() { safeVideoPause(rv); showReceptionInvite(); };
-        var dur = (rv.duration && isFinite(rv.duration)) ? rv.duration * 1000 + 500 : 6000;
-        receptionTimer = setTimeout(showReceptionInvite, dur);
+        receptionTimer = setTimeout(showReceptionInvite, 4000);
       } else {
         receptionTimer = setTimeout(showReceptionInvite, 1000);
       }
