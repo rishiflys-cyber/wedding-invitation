@@ -2159,7 +2159,7 @@ html, body {
      SCREEN MEHENDI
 ══════════════════════════════════════════ -->
 <div id="screen-mehendi" class="screen event-screen" onclick="goTo('screen-sangeet')">
-  <video id="mehendi-video" autoplay muted playsinline preload="none"
+  <video id="mehendi-video" autoplay muted playsinline preload="auto"
     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
     <source src="mehendi.mp4" type="video/mp4">
   </video>
@@ -2196,7 +2196,7 @@ html, body {
      SCREEN SANGEET
 ══════════════════════════════════════════ -->
 <div id="screen-sangeet" class="screen event-screen" onclick="goTo('screen-haldi')">
-  <video id="sangeet-video" autoplay muted playsinline preload="none"
+  <video id="sangeet-video" autoplay muted playsinline preload="auto"
     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
     <source src="sangeet.mp4" type="video/mp4">
   </video>
@@ -2233,7 +2233,7 @@ html, body {
      SCREEN HALDI
 ══════════════════════════════════════════ -->
 <div id="screen-haldi" class="screen event-screen" onclick="goTo('screen-wedding')">
-  <video id="haldi-video" autoplay muted playsinline preload="none"
+  <video id="haldi-video" autoplay muted playsinline preload="auto"
     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
     <source src="haldi.mp4" type="video/mp4">
   </video>
@@ -2270,7 +2270,7 @@ html, body {
      SCREEN WEDDING
 ══════════════════════════════════════════ -->
 <div id="screen-wedding" class="screen event-screen">
-  <video id="wedding-video" muted playsinline preload="none"
+  <video id="wedding-video" muted playsinline preload="auto"
     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
     <source src="wedding.mp4" type="video/mp4">
   </video>
@@ -2310,7 +2310,7 @@ html, body {
      SCREEN RECEPTION (VIP only)
 ══════════════════════════════════════════ -->
 <div id="screen-reception" class="screen event-screen" onclick="goTo('screen-rsvp')">
-  <video id="reception-video" muted playsinline preload="none"
+  <video id="reception-video" muted playsinline preload="auto"
     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
     <source src="reception.mp4" type="video/mp4">
   </video>
@@ -2770,7 +2770,7 @@ function openEnvelope() {
   // Unlock ALL event videos during this user gesture so they can autoplay later
   ['mehendi-video','sangeet-video','haldi-video','wedding-video','reception-video'].forEach(function(vid) {
     var v = document.getElementById(vid);
-    if (v) { v.muted = true; v.preload = 'auto'; v.play().then(function(){ v.pause(); v.currentTime = 0; v.preload = 'none'; }).catch(function(){ v.preload = 'none'; }); }
+    if (v) { v.muted = true; v.play().then(function(){ v.pause(); v.currentTime = 0; }).catch(function(){}); }
   });
 
   // Trigger flaps flying outward
@@ -2800,33 +2800,12 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
 /* ── Safe video play/pause + next-video preloader (iOS Safari) ──
    Only the current video buffers fully; next video preloads metadata
    only (lightweight) so it's ready to start instantly when needed. */
-var _videoOrder = ['mehendi-video','sangeet-video','haldi-video','wedding-video','reception-video'];
-/* Staggered preload — load all videos but one at a time, 3s apart,
-   so iOS Safari isn't hit with 5 simultaneous network requests */
-(function staggeredPreload() {
-  var i = 0;
-  function loadNext() {
-    if (i >= _videoOrder.length) return;
-    var v = document.getElementById(_videoOrder[i++]);
-    if (v && v.preload !== 'auto') {
-      v.preload = 'auto';
-    }
-    setTimeout(loadNext, 3000);
-  }
-  // Start after a short delay so page render/music/envelope isn't competing
-  setTimeout(loadNext, 2000);
-})();
-function preloadNextVideo(currentVidId) {
-  // Already handled by staggered preload above; this is a no-op now
-}
 function safeVideoPlay(video) {
   if (!video) return;
   try { video.pause(); } catch(e) {}
-  video.preload = 'auto';
   video.currentTime = 0;
   var p = video.play();
   if (p !== undefined) { p.catch(function(){}); }
-  preloadNextVideo(video.id);
 }
 function safeVideoPause(video) {
   if (!video) return;
