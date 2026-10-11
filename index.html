@@ -1599,7 +1599,7 @@ html, body {
   <!-- Centre wax seal -->
   <div class="env-center">
     <div class="invite-label">Wedding Invitation</div>
-    <div class="wax-seal" ontouchstart="openEnvelope()" onclick="openEnvelope()" id="seal">
+    <div class="wax-seal" ontouchstart="openEnvelope();event.preventDefault();" onclick="openEnvelope()" id="seal">
       <div class="seal-outer">
         <div class="seal-ring"></div>
         <div class="seal-monogram">RA</div>
@@ -2469,11 +2469,13 @@ function openEnvelope() {
   var mb = document.getElementById('music-btn');
   if (mb) mb.style.display = 'flex';
 
-  // Unlock all event videos during this user gesture so they can autoplay later
-  ['sangeet-video','haldi-video','wedding-video','reception-video'].forEach(function(vid) {
-    var v = document.getElementById(vid);
-    if (v) { v.muted = true; v.play().then(function(){ v.pause(); v.currentTime = 0; }).catch(function(){}); }
-  });
+  // Unlock all event videos slightly after music starts (so music isn't interrupted)
+  setTimeout(function() {
+    ['sangeet-video','haldi-video','wedding-video','reception-video'].forEach(function(vid) {
+      var v = document.getElementById(vid);
+      if (v) { v.muted = true; v.play().then(function(){ v.pause(); v.currentTime = 0; }).catch(function(){}); }
+    });
+  }, 300);
 
   // Trigger flaps flying outward
   document.getElementById('screen-envelope').classList.add('opening');
