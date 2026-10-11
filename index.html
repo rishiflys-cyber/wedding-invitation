@@ -2327,7 +2327,7 @@ function goTo(id) {
     _navigating = false;
     document.body.style.pointerEvents = '';
   }, 750);
-  try { window.navigator.vibrate([20]); } catch(e) {}
+  try { window.navigator.vibrate([40]); } catch(e) {}
   _history.push(current);
   prev.classList.remove('active');
   next.classList.add('active');
@@ -2445,7 +2445,7 @@ function updateBackBtn() {
 
 function openEnvelope() {
   // Haptic — Android only (iOS doesn't support vibrate)
-  try { window.navigator.vibrate([20, 30, 20]); } catch(e) {}
+  try { window.navigator.vibrate([30, 50, 40]); } catch(e) {}
   if (opened) return;
   opened = true;
 
