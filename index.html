@@ -1281,11 +1281,12 @@ html, body {
 }
 .rsvp-done-icon { font-size: 52px; }
 .rsvp-done-text {
-  font-size: 16px;
+  font-size: 20px;
   color: var(--gold-light);
-  line-height: 1.7;
-  max-width: 270px;
-  opacity: 0.85;
+  line-height: 1.6;
+  max-width: 300px;
+  opacity: 0.95;
+  font-weight: 500;
 }
 .rsvp-name-input-wrap {
   width: 100%;
@@ -2073,11 +2074,11 @@ html, body {
     <div class="rsvp-ornament">✦</div>
     <div class="rsvp-title">Will you join us?</div>
     <div class="rsvp-sub">Kindly RSVP so we can celebrate together</div>
+    </div>
     <a href="https://maps.app.goo.gl/szpvXzzsr7EoVcER7" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;margin-top:2px;margin-bottom:2px;padding:8px 18px;border:1px solid rgba(201,168,76,0.35);border-radius:30px;background:rgba(201,168,76,0.07);color:#e8d5a3;font-size:12px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:background 0.2s;" ontouchstart="" onmousedown="this.style.background='rgba(201,168,76,0.18)'" onmouseup="this.style.background='rgba(201,168,76,0.07)'" onmouseleave="this.style.background='rgba(201,168,76,0.07)'">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="#c9a84c"/></svg>
       Circle Club Banquet, Kolkata
     </a>
-    </div>
     <div class="rsvp-name-input-wrap" id="rsvp-name-input-wrap">
       <input type="text" id="rsvp-name-input" class="rsvp-name-input" placeholder="Your name" autocomplete="name" style="margin-bottom:10px;">
       <input type="tel" id="rsvp-phone-input" class="rsvp-name-input" placeholder="Phone number" autocomplete="tel" inputmode="tel">
@@ -2110,27 +2111,27 @@ html, body {
             ✎ Change my RSVP
           </button>
         </div>
-        <!-- 4 circles below -->
-        <div style="display:flex;justify-content:center;gap:16px;flex-wrap:nowrap;">
+        <!-- 4 circles in 2x2 grid -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;justify-items:center;max-width:240px;margin:0 auto;">
           <!-- Send RSVP WhatsApp -->
-          <a id="rsvp-wa-link" href="#" target="_blank" rel="noopener" style="text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:6px;">
-            <div style="width:60px;height:60px;border-radius:50%;background:rgba(37,211,102,0.15);border:2px solid rgba(37,211,102,0.5);display:flex;align-items:center;justify-content:center;font-size:26px;">💬</div>
-            <span style="color:#25d366;font-size:9px;letter-spacing:1px;text-transform:uppercase;">RSVP</span>
+          <a id="rsvp-wa-link" href="#" target="_blank" rel="noopener" style="text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:7px;">
+            <div style="width:72px;height:72px;border-radius:50%;background:rgba(37,211,102,0.15);border:2px solid rgba(37,211,102,0.5);display:flex;align-items:center;justify-content:center;font-size:30px;">💬</div>
+            <span style="color:#25d366;font-size:10px;letter-spacing:1px;text-transform:uppercase;">Send RSVP</span>
           </a>
           <!-- Add to Calendar -->
-          <button onclick="addToCalendar()" style="background:none;border:none;padding:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;">
-            <div style="width:60px;height:60px;border-radius:50%;background:rgba(201,168,76,0.15);border:2px solid rgba(201,168,76,0.5);display:flex;align-items:center;justify-content:center;font-size:26px;">📅</div>
-            <span style="color:#c9a84c;font-size:9px;letter-spacing:1px;text-transform:uppercase;">Calendar</span>
+          <button onclick="addToCalendar()" style="background:none;border:none;padding:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:7px;">
+            <div style="width:72px;height:72px;border-radius:50%;background:rgba(201,168,76,0.15);border:2px solid rgba(201,168,76,0.5);display:flex;align-items:center;justify-content:center;font-size:30px;">📅</div>
+            <span style="color:#c9a84c;font-size:10px;letter-spacing:1px;text-transform:uppercase;">Calendar</span>
           </button>
           <!-- Countdown -->
-          <button onclick="goTo('screen-countdown')" style="background:none;border:none;padding:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;">
-            <div style="width:60px;height:60px;border-radius:50%;background:rgba(201,168,76,0.15);border:2px solid rgba(201,168,76,0.5);display:flex;align-items:center;justify-content:center;font-size:26px;">⏳</div>
-            <span style="color:#c9a84c;font-size:9px;letter-spacing:1px;text-transform:uppercase;">Countdown</span>
+          <button onclick="goTo('screen-countdown')" style="background:none;border:none;padding:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:7px;">
+            <div style="width:72px;height:72px;border-radius:50%;background:rgba(201,168,76,0.15);border:2px solid rgba(201,168,76,0.5);display:flex;align-items:center;justify-content:center;font-size:30px;">⏳</div>
+            <span style="color:#c9a84c;font-size:10px;letter-spacing:1px;text-transform:uppercase;">Countdown</span>
           </button>
           <!-- Explore Kolkata -->
-          <button onclick="goTo('screen-kolkata')" style="background:none;border:none;padding:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;">
-            <div style="width:60px;height:60px;border-radius:50%;background:rgba(201,168,76,0.15);border:2px solid rgba(201,168,76,0.5);display:flex;align-items:center;justify-content:center;font-size:26px;">🗺️</div>
-            <span style="color:#c9a84c;font-size:9px;letter-spacing:1px;text-transform:uppercase;">Explore</span>
+          <button onclick="goTo('screen-kolkata')" style="background:none;border:none;padding:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:7px;">
+            <div style="width:72px;height:72px;border-radius:50%;background:rgba(201,168,76,0.15);border:2px solid rgba(201,168,76,0.5);display:flex;align-items:center;justify-content:center;font-size:30px;">🗺️</div>
+            <span style="color:#c9a84c;font-size:10px;letter-spacing:1px;text-transform:uppercase;">Explore</span>
           </button>
         </div>
       </div>
