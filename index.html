@@ -7,6 +7,11 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" href="mehendi.mp4" as="video" type="video/mp4">
+<link rel="preload" href="sangeet.mp4" as="video" type="video/mp4">
+<link rel="preload" href="haldi.mp4" as="video" type="video/mp4">
+<link rel="preload" href="wedding.mp4" as="video" type="video/mp4">
+<link rel="preload" href="reception.mp4" as="video" type="video/mp4">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -2796,22 +2801,12 @@ const _guestFull = (_sal ? _sal + '. ' : '') + (_guestRaw || 'Friend');
 // VIP unlock: ?vip=1, ?vip=true, or short alias ?r=1
 const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _params.get('r') === '1';
 
-// Preload videos sequentially after page load — so they're cached before user reaches each screen
-window.addEventListener('load', function() {
-  var videos = ['mehendi-video','sangeet-video','haldi-video','wedding-video','reception-video'];
-  var i = 0;
-  function loadNext() {
-    if (i >= videos.length) return;
-    var v = document.getElementById(videos[i++]);
-    if (!v) { loadNext(); return; }
-    v.preload = 'auto';
-    v.addEventListener('canplaythrough', loadNext, { once: true });
-    v.addEventListener('error', loadNext, { once: true });
-    setTimeout(loadNext, 8000); // move on after 8s regardless
-    v.load();
-  }
-  // Start preloading 3 seconds after page load
-  setTimeout(loadNext, 3000);
+// Aggressively preload ALL videos immediately on page load
+['mehendi-video','sangeet-video','haldi-video','wedding-video','reception-video'].forEach(function(id) {
+  var v = document.getElementById(id);
+  if (!v) return;
+  v.preload = 'auto';
+  v.load();
 });
 
 // Wire wedding screen → reception (VIP) or rsvp (everyone else)
