@@ -2830,6 +2830,9 @@ document.addEventListener('DOMContentLoaded', function() {
     mehendiShown = true;
     if (mp) { mp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; mp.style.transform = 'translateY(0)'; mp.style.pointerEvents = 'auto'; }
     if (mi) { mi.style.opacity = '1'; mi.style.transform = 'translateY(0)'; mi.style.pointerEvents = 'auto'; }
+    /* Prime sangeet video decoder now so it's ready instantly */
+    var sv = document.getElementById('sangeet-video');
+    if (sv && sv.readyState < 4) { sv.load(); }
     var delay = mehendiVisited ? 8000 : 4000;
     mehendiVisited = true;
     setTimeout(function() { if (current === 'screen-mehendi') goTo('screen-sangeet'); }, delay);
@@ -2891,6 +2894,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (sv) safeVideoPause(sv);
     if (sp) { sp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; sp.style.transform = 'translateY(0)'; sp.style.pointerEvents = 'auto'; }
     if (si) { si.style.opacity = '1'; si.style.transform = 'translateY(0)'; si.style.pointerEvents = 'auto'; }
+    var hv2 = document.getElementById('haldi-video');
+    if (hv2 && hv2.readyState < 4) { hv2.load(); }
     var delay = sangeetVisited ? 8000 : 4000;
     sangeetVisited = true;
     setTimeout(function() { if (current === 'screen-sangeet') goTo('screen-haldi'); }, delay);
@@ -2949,6 +2954,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (haldiTimer) { clearTimeout(haldiTimer); haldiTimer = null; }
     if (hp) { hp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; hp.style.transform = 'translateY(0)'; hp.style.pointerEvents = 'auto'; }
     if (hi) { hi.style.opacity = '1'; hi.style.transform = 'translateY(0)'; hi.style.pointerEvents = 'auto'; }
+    var wv2 = document.getElementById('wedding-video');
+    if (wv2 && wv2.readyState < 4) { wv2.load(); }
     var delay = haldiVisited ? 8000 : 4000;
     haldiVisited = true;
     setTimeout(function() { if (current === 'screen-haldi') goTo('screen-wedding'); }, delay);
@@ -3004,6 +3011,8 @@ document.addEventListener('DOMContentLoaded', function() {
     weddingShown = true;
     if (wp) { wp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; wp.style.transform = 'translateY(0)'; wp.style.pointerEvents = 'auto'; }
     if (wi) { wi.style.opacity = '1'; wi.style.transform = 'translateY(0)'; wi.style.pointerEvents = 'auto'; }
+    var rv2 = document.getElementById('reception-video');
+    if (rv2 && rv2.readyState < 4) { rv2.load(); }
     // No auto-advance — user taps to continue from Shubho Bibaho
   }
 
