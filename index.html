@@ -2799,14 +2799,6 @@ document.addEventListener('DOMContentLoaded', function() {
   if (mv) {
     mv.loop = false;
     mv.addEventListener('error', showMehendiInvite);
-    mv.addEventListener('ended', showMehendiInvite);
-    mv.addEventListener('loadedmetadata', function() {
-      if (current === 'screen-mehendi' && mehendiTimer) {
-        clearTimeout(mehendiTimer);
-        var dur = mv.duration * 1000 + 800;
-        mehendiTimer = setTimeout(showMehendiInvite, dur);
-      }
-    });
   }
 
   /* Hook into goTo to reset/restore mehendi state */
@@ -2834,8 +2826,8 @@ document.addEventListener('DOMContentLoaded', function() {
             showMehendiInvite();
           });
         }
-        /* Hard fallback: real duration + buffer, or 15s if metadata not yet loaded */
-        var dur = (mv.duration && isFinite(mv.duration)) ? mv.duration * 1000 + 800 : 15000;
+        /* fallback timer based on video duration + buffer */
+        var dur = (mv.duration && isFinite(mv.duration)) ? mv.duration * 1000 + 500 : 10000;
         mehendiTimer = setTimeout(showMehendiInvite, dur);
       }
     }
@@ -2874,14 +2866,6 @@ document.addEventListener('DOMContentLoaded', function() {
   if (sv) {
     sv.loop = false;
     sv.addEventListener('error', showSangeetInvite);
-    sv.addEventListener('ended', showSangeetInvite);
-    sv.addEventListener('loadedmetadata', function() {
-      if (current === 'screen-sangeet' && sangeetTimer) {
-        clearTimeout(sangeetTimer);
-        var dur = sv.duration * 1000 + 800;
-        sangeetTimer = setTimeout(showSangeetInvite, dur);
-      }
-    });
   }
 
   var _origGoTo2 = goTo;
@@ -2901,8 +2885,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (sv) {
         sv.currentTime = 0;
         sv.play().catch(function() { showSangeetInvite(); });
-        /* Hard fallback: real duration + buffer, or 15s if metadata not yet loaded */
-        var dur = (sv.duration && isFinite(sv.duration)) ? sv.duration * 1000 + 800 : 15000;
+        var dur = (sv.duration && isFinite(sv.duration)) ? sv.duration * 1000 + 500 : 10000;
         sangeetTimer = setTimeout(showSangeetInvite, dur);
       } else {
         sangeetTimer = setTimeout(showSangeetInvite, 1000);
@@ -2942,14 +2925,6 @@ document.addEventListener('DOMContentLoaded', function() {
   if (hv) {
     hv.loop = false;
     hv.addEventListener('error', showHaldiInvite);
-    hv.addEventListener('ended', showHaldiInvite);
-    hv.addEventListener('loadedmetadata', function() {
-      if (current === 'screen-haldi' && haldiTimer) {
-        clearTimeout(haldiTimer);
-        var dur = hv.duration * 1000 + 800;
-        haldiTimer = setTimeout(showHaldiInvite, dur);
-      }
-    });
   }
 
   var _origGoTo3 = goTo;
@@ -2968,7 +2943,7 @@ document.addEventListener('DOMContentLoaded', function() {
         hv.currentTime = 0;
         hv.play().catch(function() { showHaldiInvite(); });
         /* Hard fallback: real duration + buffer, or 15s if metadata not yet loaded */
-        var dur = (hv.duration && isFinite(hv.duration)) ? hv.duration * 1000 + 800 : 15000;
+        var dur = (hv.duration && isFinite(hv.duration)) ? hv.duration * 1000 + 500 : 10000;
         haldiTimer = setTimeout(showHaldiInvite, dur);
       } else {
         haldiTimer = setTimeout(showHaldiInvite, 1000);
