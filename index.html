@@ -2799,6 +2799,15 @@ document.addEventListener('DOMContentLoaded', function() {
   if (mv) {
     mv.loop = false;
     mv.addEventListener('error', showMehendiInvite);
+    mv.addEventListener('ended', showMehendiInvite);
+    mv.addEventListener('loadedmetadata', function() {
+      /* Now we know the real duration — reset the fallback timer if mehendi is current */
+      if (current === 'screen-mehendi' && mehendiTimer) {
+        clearTimeout(mehendiTimer);
+        var dur = mv.duration * 1000 + 500;
+        mehendiTimer = setTimeout(showMehendiInvite, dur);
+      }
+    });
   }
 
   /* Hook into goTo to reset/restore mehendi state */
