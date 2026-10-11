@@ -2849,13 +2849,20 @@ document.addEventListener('DOMContentLoaded', function() {
         var playPromise = mv.play();
         if (playPromise !== undefined) {
           playPromise.catch(function() {
-            /* autoplay blocked — show invite immediately */
             showMehendiInvite();
           });
         }
-        /* fallback timer based on video duration + buffer */
-        var dur = (mv.duration && isFinite(mv.duration)) ? mv.duration * 1000 + 500 : 10000;
+        /* Hard fallback: real duration + buffer, or 8s max */
+        var dur = (mv.duration && isFinite(mv.duration)) ? Math.min(mv.duration * 1000 + 800, 12000) : 8000;
         mehendiTimer = setTimeout(showMehendiInvite, dur);
+        /* Watchdog: if no timeupdate within 2s, video is frozen — skip it */
+        var watchdog = setTimeout(function() {
+          if (current === 'screen-mehendi') showMehendiInvite();
+        }, 2000);
+        mv.addEventListener('timeupdate', function clearWatchdog() {
+          clearTimeout(watchdog);
+          mv.removeEventListener('timeupdate', clearWatchdog);
+        }, { once: true });
       }
     }
   };
@@ -2911,10 +2918,17 @@ document.addEventListener('DOMContentLoaded', function() {
       if (si) { si.style.opacity = '0'; si.style.transform = 'translateY(20px)'; si.style.pointerEvents = 'none'; }
       if (sv) {
         sv.currentTime = 0;
-        sv.play().catch(function() {});
+        sv.play().catch(function() { showSangeetInvite(); });
         sv.onended = function() { sv.pause(); showSangeetInvite(); };
-        var dur = (sv.duration && isFinite(sv.duration)) ? sv.duration * 1000 + 500 : 12000;
+        var dur = (sv.duration && isFinite(sv.duration)) ? Math.min(sv.duration * 1000 + 800, 12000) : 8000;
         sangeetTimer = setTimeout(showSangeetInvite, dur);
+        var swatchdog = setTimeout(function() {
+          if (current === 'screen-sangeet') showSangeetInvite();
+        }, 2000);
+        sv.addEventListener('timeupdate', function sclearWatchdog() {
+          clearTimeout(swatchdog);
+          sv.removeEventListener('timeupdate', sclearWatchdog);
+        }, { once: true });
       } else {
         sangeetTimer = setTimeout(showSangeetInvite, 1000);
       }
@@ -2969,10 +2983,17 @@ document.addEventListener('DOMContentLoaded', function() {
       if (hi) { hi.style.opacity = '0'; hi.style.transform = 'translateY(20px)'; hi.style.pointerEvents = 'none'; }
       if (hv) {
         hv.currentTime = 0;
-        hv.play().catch(function() {});
+        hv.play().catch(function() { showHaldiInvite(); });
         hv.onended = function() { hv.pause(); showHaldiInvite(); };
-        var dur = (hv.duration && isFinite(hv.duration)) ? hv.duration * 1000 + 500 : 12000;
+        var dur = (hv.duration && isFinite(hv.duration)) ? Math.min(hv.duration * 1000 + 800, 12000) : 8000;
         haldiTimer = setTimeout(showHaldiInvite, dur);
+        var hwatchdog = setTimeout(function() {
+          if (current === 'screen-haldi') showHaldiInvite();
+        }, 2000);
+        hv.addEventListener('timeupdate', function hclearWatchdog() {
+          clearTimeout(hwatchdog);
+          hv.removeEventListener('timeupdate', hclearWatchdog);
+        }, { once: true });
       } else {
         haldiTimer = setTimeout(showHaldiInvite, 1000);
       }
