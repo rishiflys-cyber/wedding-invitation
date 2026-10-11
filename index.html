@@ -1405,19 +1405,19 @@ html, body {
 }
 #screen-invite-bg-zoom {
   position:absolute;inset:-8%;pointer-events:none;z-index:0;
-  background: inherit;
-  animation: act1-kenburns 6s ease-out forwards;
+  will-change:transform;
 }
 #screen-invite2-bg-zoom {
   position:absolute;inset:-8%;pointer-events:none;z-index:0;
-  background: inherit;
-  animation: act2-kenburns 4.5s ease-out forwards;
+  will-change:transform;
 }
 #screen-invite3-bg-zoom {
   position:absolute;inset:-8%;pointer-events:none;z-index:0;
-  background: inherit;
-  animation: act3-kenburns 5s ease-out forwards;
+  will-change:transform;
 }
+#screen-invite-bg-zoom.zooming  { animation: act1-kenburns 6s ease-out forwards; }
+#screen-invite2-bg-zoom.zooming { animation: act2-kenburns 4.5s ease-out forwards; }
+#screen-invite3-bg-zoom.zooming { animation: act3-kenburns 5s ease-out forwards; }
 .shimmer-name {
   display:inline-block;
   background: linear-gradient(100deg, #f9e060 20%, #fff8c0 45%, #f9e060 55%, #c9a84c 80%);
@@ -1776,7 +1776,7 @@ html, body {
      SCREEN 3a — INVITE ACT 1 (poem)
 ══════════════════════════════════════════ -->
 <div id="screen-invite" class="screen">
-  <div id="screen-invite-bg-zoom" style="background: radial-gradient(ellipse at 50% 0%, rgba(255,210,80,0.18) 0%, transparent 55%), radial-gradient(ellipse at 0% 60%, rgba(180,30,60,0.28) 0%, transparent 50%), radial-gradient(ellipse at 100% 60%, rgba(180,30,60,0.28) 0%, transparent 50%), radial-gradient(ellipse at 50% 105%, rgba(140,40,0,0.45) 0%, transparent 55%), linear-gradient(175deg, #2a1000 0%, #4a1a00 25%, #3a1000 60%, #120400 100%); animation-play-state:paused;"></div>
+  <div id="screen-invite-bg-zoom" style="background: radial-gradient(ellipse at 50% 0%, rgba(255,210,80,0.18) 0%, transparent 55%), radial-gradient(ellipse at 0% 60%, rgba(180,30,60,0.28) 0%, transparent 50%), radial-gradient(ellipse at 100% 60%, rgba(180,30,60,0.28) 0%, transparent 50%), radial-gradient(ellipse at 50% 105%, rgba(140,40,0,0.45) 0%, transparent 55%), linear-gradient(175deg, #2a1000 0%, #4a1a00 25%, #3a1000 60%, #120400 100%);"></div>
   <!-- Corner ornaments -->
   <div class="act1-corner" style="top:0;left:0;">
     <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
@@ -1828,7 +1828,7 @@ html, body {
       </svg>
     </div>
 
-    <div id="invite-act1-text" style="font-family:'Cormorant Garamond',Garamond,Georgia,serif;font-size:22px;font-weight:300;line-height:2.1;letter-spacing:0.04em;color:#eddba8;opacity:0;transform:translateY(40px) skewY(1.5deg);">
+    <div id="invite-act1-text" style="font-family:'Cormorant Garamond',Garamond,Georgia,serif;font-size:22px;font-weight:300;line-height:2.1;letter-spacing:0.04em;color:#eddba8;opacity:0;transform:translateY(40px) skewY(1.5deg);will-change:transform,opacity;">
       There are people in our lives<br>
       whose presence doesn't just fill a room —<br>
       <em style="font-style:normal;opacity:0.7;font-size:19px;">it makes every moment</em><br>
@@ -1850,7 +1850,7 @@ html, body {
      SCREEN 3b — INVITE ACT 2 (you are one)
 ══════════════════════════════════════════ -->
 <div id="screen-invite2" class="screen">
-  <div id="screen-invite2-bg-zoom" style="background: radial-gradient(ellipse at 50% 50%, rgba(255,220,100,0.18) 0%, transparent 60%), radial-gradient(ellipse at 5% 85%, rgba(180,30,60,0.28) 0%, transparent 45%), radial-gradient(ellipse at 95% 85%, rgba(180,30,60,0.28) 0%, transparent 45%), radial-gradient(ellipse at 50% 0%, rgba(120,50,10,0.3) 0%, transparent 50%), linear-gradient(160deg, #200c00 0%, #3a1200 30%, #2a0c00 65%, #0e0300 100%); animation-play-state:paused;"></div>
+  <div id="screen-invite2-bg-zoom" style="background: radial-gradient(ellipse at 50% 50%, rgba(255,220,100,0.18) 0%, transparent 60%), radial-gradient(ellipse at 5% 85%, rgba(180,30,60,0.28) 0%, transparent 45%), radial-gradient(ellipse at 95% 85%, rgba(180,30,60,0.28) 0%, transparent 45%), radial-gradient(ellipse at 50% 0%, rgba(120,50,10,0.3) 0%, transparent 50%), linear-gradient(160deg, #200c00 0%, #3a1200 30%, #2a0c00 65%, #0e0300 100%);"></div>
   <!-- Corner ornaments (same as act1) -->
   <div class="act1-corner" style="top:0;left:0;">
     <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
@@ -1893,7 +1893,7 @@ html, body {
       </svg>
     </div>
 
-    <div id="invite-act2-text" class="you-are-one" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:36px;font-weight:600;font-style:italic;letter-spacing:0.03em;line-height:1.35;color:#f9e8b0;text-shadow:0 0 60px rgba(249,224,96,0.6),0 0 120px rgba(255,160,0,0.3);opacity:0;transform:scale(0.68) translateY(28px);filter:blur(8px);">You are one of<br>those people.</div>
+    <div id="invite-act2-text" class="you-are-one" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:36px;font-weight:600;font-style:italic;letter-spacing:0.03em;line-height:1.35;color:#f9e8b0;text-shadow:0 0 60px rgba(249,224,96,0.6),0 0 120px rgba(255,160,0,0.3);opacity:0;transform:scale(0.68) translateY(28px);filter:blur(8px);will-change:transform,opacity,filter;">You are one of<br>those people.</div>
 
     <!-- Bottom micro ornament -->
     <div id="act2-bot-orn" style="opacity:0;transition:opacity 1.8s ease 0.5s;margin-top:36px;">
@@ -1913,7 +1913,7 @@ html, body {
      SCREEN 3c — INVITE ACT 3 (names + families)
 ══════════════════════════════════════════ -->
 <div id="screen-invite3" class="screen" onclick="goTo('screen-mehendi')">
-  <div id="screen-invite3-bg-zoom" style="background: radial-gradient(ellipse at 50% 15%, rgba(255,215,80,0.22) 0%, transparent 50%), radial-gradient(ellipse at 10% 75%, rgba(180,30,60,0.3) 0%, transparent 45%), radial-gradient(ellipse at 90% 75%, rgba(180,30,60,0.3) 0%, transparent 45%), radial-gradient(ellipse at 50% 100%, rgba(100,20,0,0.4) 0%, transparent 55%), linear-gradient(168deg, #1a0800 0%, #3a1200 28%, #2a0e00 58%, #0e0200 100%); animation-play-state:paused;"></div>
+  <div id="screen-invite3-bg-zoom" style="background: radial-gradient(ellipse at 50% 15%, rgba(255,215,80,0.22) 0%, transparent 50%), radial-gradient(ellipse at 10% 75%, rgba(180,30,60,0.3) 0%, transparent 45%), radial-gradient(ellipse at 90% 75%, rgba(180,30,60,0.3) 0%, transparent 45%), radial-gradient(ellipse at 50% 100%, rgba(100,20,0,0.4) 0%, transparent 55%), linear-gradient(168deg, #1a0800 0%, #3a1200 28%, #2a0e00 58%, #0e0200 100%);"></div>
   <!-- Corner ornaments -->
   <div class="act1-corner" style="top:0;left:0;">
     <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
@@ -2415,27 +2415,27 @@ function goTo(id) {
   (function resetInviteAnim(sid){
     if(sid==='screen-invite'){
       var bg=document.getElementById('screen-invite-bg-zoom');
-      if(bg){bg.style.animation='none';void bg.offsetWidth;bg.style.animation='act1-kenburns 6s ease-out forwards';bg.style.animationPlayState='paused';}
+      if(bg){bg.classList.remove('zooming');}
       var orn=document.getElementById('invite-act1-ornament');
-      if(orn){orn.style.opacity='0';orn.style.transform='scale(0.82)';}
+      if(orn){orn.style.transition='none';orn.style.opacity='0';orn.style.transform='scale(0.82)';}
       var el=document.getElementById('invite-act1-text');
       if(el){el.style.animation='none';el.style.opacity='0';el.style.transform='translateY(40px) skewY(1.5deg)';}
       var div=document.getElementById('invite-act1-divider');
-      if(div){div.style.opacity='0';}
+      if(div){div.style.transition='none';div.style.opacity='0';}
     } else if(sid==='screen-invite2'){
       var bg2=document.getElementById('screen-invite2-bg-zoom');
-      if(bg2){bg2.style.animation='none';void bg2.offsetWidth;bg2.style.animation='act2-kenburns 4.5s ease-out forwards';bg2.style.animationPlayState='paused';}
+      if(bg2){bg2.classList.remove('zooming');}
       var el2=document.getElementById('invite-act2-text');
       if(el2){el2.style.animation='none';el2.style.opacity='0';el2.style.transform='scale(0.68) translateY(28px)';el2.style.filter='blur(8px)';}
-      var o1=document.getElementById('act2-top-orn');if(o1)o1.style.opacity='0';
-      var o2=document.getElementById('act2-bot-orn');if(o2)o2.style.opacity='0';
+      var o1=document.getElementById('act2-top-orn');if(o1){o1.style.transition='none';o1.style.opacity='0';}
+      var o2=document.getElementById('act2-bot-orn');if(o2){o2.style.transition='none';o2.style.opacity='0';}
     } else if(sid==='screen-invite3'){
       var bg3=document.getElementById('screen-invite3-bg-zoom');
-      if(bg3){bg3.style.animation='none';void bg3.offsetWidth;bg3.style.animation='act3-kenburns 5s ease-out forwards';bg3.style.animationPlayState='paused';}
+      if(bg3){bg3.classList.remove('zooming');}
       var el3=document.getElementById('invite-act3-text');
-      if(el3){el3.style.opacity='0';el3.style.transform='translateY(18px)';}
+      if(el3){el3.style.transition='none';el3.style.opacity='0';el3.style.transform='translateY(18px)';}
       var r=document.getElementById('name-rishabh');if(r){r.style.animation='none';r.style.opacity='0';}
-      var amp=document.getElementById('names-amp');if(amp){amp.style.opacity='0';}
+      var amp=document.getElementById('names-amp');if(amp){amp.style.transition='none';amp.style.opacity='0';}
       var a=document.getElementById('name-ananya');if(a){a.style.animation='none';a.style.opacity='0';}
     }
   })(id);
@@ -2459,11 +2459,11 @@ function goTo(id) {
 
   // Invite acts — cinematic trailer timing
   if (id === 'screen-invite') {
-    // Start Ken Burns zoom
+    // Start Ken Burns zoom (defer 1 frame so screen transition paints first)
     var bg1 = document.getElementById('screen-invite-bg-zoom');
-    if(bg1){ bg1.style.animationPlayState='running'; }
-    // Floating ambient sparkles
-    (function spawnAmbientSparkles(){
+    if(bg1){ requestAnimationFrame(function(){ bg1.classList.add('zooming'); }); }
+    // Floating ambient sparkles — delayed past nav transition to avoid paint jank
+    setTimeout(function(){(function spawnAmbientSparkles(){
       var shapes=['✦','✧','⋆','·','◆'];
       var colors=['#f0c840','#ffe580','#c9a84c','#fff0a0','#e8c060'];
       for(var i=0;i<18;i++){
@@ -2491,7 +2491,7 @@ function goTo(id) {
           },i*220);
         })(i);
       }
-    })();
+    })();}, 800);
     // Ornament with scale-in
     setTimeout(function(){
       var orn=document.getElementById('invite-act1-ornament');
@@ -2511,7 +2511,7 @@ function goTo(id) {
   if (id === 'screen-invite2') {
     // Ken Burns zoom
     var bg2 = document.getElementById('screen-invite2-bg-zoom');
-    if(bg2){ bg2.style.animationPlayState='running'; }
+    if(bg2){ requestAnimationFrame(function(){ bg2.classList.add('zooming'); }); }
     setTimeout(function(){
       var o1=document.getElementById('act2-top-orn'); if(o1) o1.style.opacity='1';
       var o2=document.getElementById('act2-bot-orn'); if(o2) o2.style.opacity='1';
@@ -2551,7 +2551,7 @@ function goTo(id) {
   if (id === 'screen-invite3') {
     // Ken Burns zoom
     var bg3 = document.getElementById('screen-invite3-bg-zoom');
-    if(bg3){ bg3.style.animationPlayState='running'; }
+    if(bg3){ requestAnimationFrame(function(){ bg3.classList.add('zooming'); }); }
     setTimeout(function(){
       var el=document.getElementById('invite-act3-text');
       if(el){ el.style.transition='opacity 1.4s ease, transform 1.4s cubic-bezier(0.16,1,0.3,1)'; el.style.opacity='1'; el.style.transform='translateY(0)'; }
