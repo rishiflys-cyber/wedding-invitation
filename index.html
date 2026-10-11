@@ -2802,12 +2802,18 @@ document.addEventListener('DOMContentLoaded', function() {
     mv.addEventListener('error', showMehendiInvite);
     mv.addEventListener('ended', showMehendiInvite);
     mv.addEventListener('loadedmetadata', function() {
-      /* Now we know the real duration — reset the fallback timer if mehendi is current */
       if (current === 'screen-mehendi' && mehendiTimer) {
         clearTimeout(mehendiTimer);
         var dur = mv.duration * 1000 + 800;
         mehendiTimer = setTimeout(showMehendiInvite, dur);
       }
+    });
+    /* Stall rescue: retry play() if video freezes — does NOT skip */
+    mv.addEventListener('stalled', function() {
+      if (current === 'screen-mehendi' && !mehendiShown) setTimeout(function(){ mv.play().catch(function(){}); }, 300);
+    });
+    mv.addEventListener('waiting', function() {
+      if (current === 'screen-mehendi' && !mehendiShown) setTimeout(function(){ mv.play().catch(function(){}); }, 300);
     });
   }
 
@@ -2884,6 +2890,12 @@ document.addEventListener('DOMContentLoaded', function() {
         sangeetTimer = setTimeout(showSangeetInvite, dur);
       }
     });
+    sv.addEventListener('stalled', function() {
+      if (current === 'screen-sangeet' && !sangeetShown) setTimeout(function(){ sv.play().catch(function(){}); }, 300);
+    });
+    sv.addEventListener('waiting', function() {
+      if (current === 'screen-sangeet' && !sangeetShown) setTimeout(function(){ sv.play().catch(function(){}); }, 300);
+    });
   }
 
   var _origGoTo2 = goTo;
@@ -2951,6 +2963,12 @@ document.addEventListener('DOMContentLoaded', function() {
         var dur = hv.duration * 1000 + 800;
         haldiTimer = setTimeout(showHaldiInvite, dur);
       }
+    });
+    hv.addEventListener('stalled', function() {
+      if (current === 'screen-haldi' && !haldiShown) setTimeout(function(){ hv.play().catch(function(){}); }, 300);
+    });
+    hv.addEventListener('waiting', function() {
+      if (current === 'screen-haldi' && !haldiShown) setTimeout(function(){ hv.play().catch(function(){}); }, 300);
     });
   }
 
