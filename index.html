@@ -2536,7 +2536,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   if (mv) {
     mv.loop = false;
-    mv.addEventListener('ended', function() { mv.pause(); showMehendiInvite(); });
     mv.addEventListener('error', showMehendiInvite);
   }
 
@@ -2605,7 +2604,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   if (sv) {
     sv.loop = false;
-    sv.addEventListener('ended', function() { sv.pause(); showSangeetInvite(); });
     sv.addEventListener('error', showSangeetInvite);
   }
 
@@ -2666,7 +2664,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   if (hv) {
     hv.loop = false;
-    hv.addEventListener('ended', function() { hv.pause(); showHaldiInvite(); });
     hv.addEventListener('error', showHaldiInvite);
   }
 
@@ -2722,7 +2719,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   if (wv) {
     wv.loop = false;
-    wv.addEventListener('ended', function() { wv.pause(); showWeddingInvite(); });
     wv.addEventListener('error', showWeddingInvite);
   }
 
@@ -2776,7 +2772,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   if (rv) {
     rv.loop = false;
-    rv.addEventListener('ended', function() { rv.pause(); showReceptionInvite(); });
     rv.addEventListener('error', showReceptionInvite);
   }
 
