@@ -2804,10 +2804,26 @@ document.addEventListener('DOMContentLoaded', function() {
       /* Now we know the real duration — reset the fallback timer if mehendi is current */
       if (current === 'screen-mehendi' && mehendiTimer) {
         clearTimeout(mehendiTimer);
-        var dur = mv.duration * 1000 + 500;
+        var dur = mv.duration * 1000 + 800;
         mehendiTimer = setTimeout(showMehendiInvite, dur);
       }
     });
+    /* Mobile: video can stall/suspend mid-play and never fire ended */
+    var stallTimer = null;
+    function onStall() {
+      if (current !== 'screen-mehendi') return;
+      if (stallTimer) clearTimeout(stallTimer);
+      stallTimer = setTimeout(function() {
+        if (current === 'screen-mehendi') showMehendiInvite();
+      }, 4000); /* if still stuck after 4s, move on */
+    }
+    function onProgress() {
+      if (stallTimer) { clearTimeout(stallTimer); stallTimer = null; }
+    }
+    mv.addEventListener('stalled', onStall);
+    mv.addEventListener('waiting', onStall);
+    mv.addEventListener('timeupdate', onProgress);
+    mv.addEventListener('playing', onProgress);
   }
 
   /* Hook into goTo to reset/restore mehendi state */
