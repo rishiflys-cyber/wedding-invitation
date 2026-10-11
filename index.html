@@ -2303,14 +2303,18 @@ async function requestWakeLock() {
 function releaseWakeLock() {
   if (_wakeLock) { _wakeLock.release(); _wakeLock = null; }
 }
-// Re-acquire if page becomes visible again (e.g. tab switch)
+// Screens that need the wake lock (anything before RSVP/countdown)
+var _noWakeLockScreens = ['screen-rsvp','screen-countdown','screen-envelope'];
+// Re-acquire if page becomes visible again (e.g. tab switch, phone unlock)
 document.addEventListener('visibilitychange', function() {
   var music = document.getElementById('bgmusic');
   if (document.visibilityState === 'hidden') {
     if (music && !music.paused) { music.pause(); _musicPausedByHide = true; }
+    if (_wakeLock) { _wakeLock.release(); _wakeLock = null; }
   } else {
     if (music && _musicPausedByHide) { music.play().catch(function(){}); _musicPausedByHide = false; }
-    if (_wakeLock === null) { requestWakeLock(); }
+    // Re-acquire if we're on a screen that needs it
+    if (_noWakeLockScreens.indexOf(current) === -1) { requestWakeLock(); }
   }
 });
 
@@ -2451,6 +2455,7 @@ function openEnvelope() {
   try { window.navigator.vibrate([30, 50, 40]); } catch(e) {}
   if (opened) return;
   opened = true;
+  requestWakeLock();
 
   // Start music from beginning
   const music = document.getElementById('bgmusic');
