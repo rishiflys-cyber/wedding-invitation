@@ -751,7 +751,7 @@ html, body {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 0 24px 14px;
+  padding: 0 24px calc(16px + env(safe-area-inset-bottom, 0px));
   width: 100%;
   max-width: 420px;
   gap: 0;
@@ -2241,7 +2241,7 @@ html, body {
   </div>
   <div class="event-particles" id="ep-wedding" style="z-index:2;"></div>
 
-  <div id="wedding-panel" style="position:absolute;bottom:0;left:0;right:0;height:50%;z-index:3;background:linear-gradient(to bottom,transparent 0%,rgba(5,1,0,0.88) 20%,#050100 50%);padding-top:20px;transform:translateY(100%);transition:transform 1.4s cubic-bezier(0.22,1,0.36,1);pointer-events:none;overflow:hidden;">
+  <div id="wedding-panel" style="position:absolute;bottom:0;left:0;right:0;height:56%;z-index:3;background:linear-gradient(to bottom,transparent 0%,rgba(5,1,0,0.88) 18%,#050100 40%);padding-top:20px;transform:translateY(100%);transition:transform 1.4s cubic-bezier(0.22,1,0.36,1);pointer-events:none;overflow:hidden;">
   <div class="event-wrap" id="wedding-invite" style="position:relative;opacity:0;transform:translateY(20px);transition:opacity 0.8s ease 0.5s,transform 0.8s ease 0.5s;pointer-events:none;">
     <div class="event-icon-big">💍</div>
     <div class="event-tag" style="background:rgba(255,200,60,0.15);border-color:rgba(255,200,60,0.3);color:#f0c840">The Wedding</div>
@@ -2284,7 +2284,7 @@ html, body {
     <img src="5-reception_4k.jpg" alt="Reception" loading="lazy">
   </div>
   <div class="event-particles" id="ep-reception" style="z-index:2;"></div>
-  <div id="reception-panel" style="position:absolute;bottom:0;left:0;right:0;height:42%;z-index:3;background:linear-gradient(to bottom,transparent 0%,rgba(5,1,0,0.92) 18%,#050100 40%);padding-top:20px;transform:translateY(100%);transition:transform 1.4s cubic-bezier(0.22,1,0.36,1);pointer-events:none;overflow:hidden;">
+  <div id="reception-panel" style="position:absolute;bottom:0;left:0;right:0;height:30%;z-index:3;background:linear-gradient(to bottom,transparent 0%,rgba(5,1,0,0.92) 20%,#050100 45%);padding-top:8px;transform:translateY(100%);transition:transform 1.4s cubic-bezier(0.22,1,0.36,1);pointer-events:none;overflow:hidden;">
   <div class="event-wrap" id="reception-invite" style="position:relative;opacity:0;transform:translateY(20px);transition:opacity 0.8s ease 0.5s,transform 0.8s ease 0.5s;pointer-events:none;">
     <div class="event-icon-big">🥂</div>
     <div class="event-tag" style="background:rgba(255,150,80,0.15);border-color:rgba(255,150,80,0.3);color:#f0a870">Reception</div>
