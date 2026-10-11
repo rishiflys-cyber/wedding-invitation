@@ -2797,9 +2797,17 @@ const _guestFull = (_sal ? _sal + '. ' : '') + (_guestRaw || 'Friend');
 const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _params.get('r') === '1';
 
 // Wire wedding screen → reception (VIP) or rsvp (everyone else)
-/* ── Safe video play/pause helpers (iOS Safari) ──
-   pause() + currentTime = 0 + play() is the safest pattern.
-   No load() — that nukes duration and causes re-download on mobile. */
+/* ── Safe video play/pause + next-video preloader (iOS Safari) ──
+   Only the current video buffers fully; next video preloads metadata
+   only (lightweight) so it's ready to start instantly when needed. */
+var _videoOrder = ['mehendi-video','sangeet-video','haldi-video','wedding-video','reception-video'];
+function preloadNextVideo(currentVidId) {
+  var idx = _videoOrder.indexOf(currentVidId);
+  if (idx === -1 || idx >= _videoOrder.length - 1) return;
+  var nextId = _videoOrder[idx + 1];
+  var next = document.getElementById(nextId);
+  if (next && next.preload === 'none') { next.preload = 'metadata'; }
+}
 function safeVideoPlay(video) {
   if (!video) return;
   try { video.pause(); } catch(e) {}
@@ -2807,11 +2815,11 @@ function safeVideoPlay(video) {
   video.currentTime = 0;
   var p = video.play();
   if (p !== undefined) { p.catch(function(){}); }
+  preloadNextVideo(video.id);
 }
 function safeVideoPause(video) {
   if (!video) return;
   try { video.pause(); } catch(e) {}
-  video.preload = 'none';
 }
 
 document.addEventListener('DOMContentLoaded', function() {
