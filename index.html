@@ -2472,12 +2472,7 @@ function updateBackBtn() {
   }
 }
 
-var _lastOpenTs = 0;
 function openEnvelope() {
-  // Debounce: ignore calls within 500ms of each other (ontouchstart + onclick double-fire)
-  var now = Date.now();
-  if (now - _lastOpenTs < 500) return;
-  _lastOpenTs = now;
   // Haptic — Android only (iOS doesn't support vibrate)
   try { window.navigator.vibrate([30, 50, 40]); } catch(e) {}
   if (opened) return;
@@ -2487,30 +2482,20 @@ function openEnvelope() {
   const music = document.getElementById('bgmusic');
   music.currentTime = 0;
   music.volume = 0.5;
-  music.play().then(function() {
-    // Playing — show "on" state
-    var ic = document.getElementById('music-icon');
-    var im = document.getElementById('music-icon-muted');
-    if (ic) ic.style.display = 'inline';
-    if (im) im.style.display = 'none';
-  }).catch(function() {
-    // Blocked — show "off" state so user knows to tap
-    var ic = document.getElementById('music-icon');
-    var im = document.getElementById('music-icon-muted');
-    if (ic) ic.style.display = 'none';
-    if (im) im.style.display = 'inline';
-  });
-  // Show music toggle button
+  music.play().catch(() => {});
+  // Show music toggle button and set icon to "on" state immediately (synchronous)
   var mb = document.getElementById('music-btn');
   if (mb) mb.style.display = 'flex';
+  var ic = document.getElementById('music-icon');
+  var im = document.getElementById('music-icon-muted');
+  if (ic) ic.style.display = 'inline';
+  if (im) im.style.display = 'none';
 
-  // Unlock all event videos slightly after music starts (so music isn't interrupted)
-  setTimeout(function() {
-    ['sangeet-video','haldi-video','wedding-video','reception-video'].forEach(function(vid) {
-      var v = document.getElementById(vid);
-      if (v) { v.muted = true; v.play().then(function(){ v.pause(); v.currentTime = 0; }).catch(function(){}); }
-    });
-  }, 300);
+  // Unlock all event videos during this user gesture so they can autoplay later
+  ['sangeet-video','haldi-video','wedding-video','reception-video'].forEach(function(vid) {
+    var v = document.getElementById(vid);
+    if (v) { v.muted = true; v.play().then(function(){ v.pause(); v.currentTime = 0; }).catch(function(){}); }
+  });
 
   // Trigger flaps flying outward
   document.getElementById('screen-envelope').classList.add('opening');
