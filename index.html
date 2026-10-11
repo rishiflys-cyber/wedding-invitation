@@ -44,12 +44,6 @@ html, body {
   opacity: 1;
   pointer-events: all;
 }
-.screen.leaving {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.7s ease;
-  z-index: 10;
-}
 
 /* ══════════════════════════════════════════
    SCREEN 1 — ENVELOPE
@@ -2527,19 +2521,9 @@ function goTo(id) {
     }
   })(id);
   _history.push(current);
-  // Crossfade between event screens for a seamless transition
-  var eventScreens = ['screen-mehendi','screen-sangeet','screen-haldi','screen-wedding'];
-  var isEventCrossfade = eventScreens.indexOf(current) !== -1 && eventScreens.indexOf(id) !== -1;
-  if (isEventCrossfade) {
-    prev.classList.add('leaving');
-    next.classList.add('active');
-    current = id;
-    setTimeout(function() { prev.classList.remove('active'); prev.classList.remove('leaving'); }, 750);
-  } else {
-    prev.classList.remove('active');
-    next.classList.add('active');
-    current = id;
-  }
+  prev.classList.remove('active');
+  next.classList.add('active');
+  current = id;
   updateBackBtn();
   // Show close button from screen-invite onwards; hide on envelope/ganesh
   var cb = document.getElementById('close-btn');
