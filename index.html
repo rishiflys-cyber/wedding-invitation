@@ -1679,6 +1679,7 @@ html, body {
 </style>
 </head>
 <body>
+<div id="scene-cut" style="position:fixed;inset:0;background:#000;opacity:0;pointer-events:none;z-index:9999;transition:opacity 0.18s ease;"></div>
 <!-- Global back button -->
 <div id="back-btn" onclick="goBack()">
   <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
@@ -2521,6 +2522,17 @@ function goTo(id) {
     }
   })(id);
   _history.push(current);
+  var eventScreens = ['screen-mehendi','screen-sangeet','screen-haldi','screen-wedding'];
+  var isCinematic = eventScreens.indexOf(current) !== -1 && eventScreens.indexOf(id) !== -1;
+  if (isCinematic) {
+    var cut = document.getElementById('scene-cut');
+    if (cut) { cut.style.transition = 'opacity 0.18s ease'; cut.style.opacity = '1'; }
+    setTimeout(function() {
+      prev.classList.remove('active');
+      next.classList.add('active');
+      if (cut) { cut.style.transition = 'opacity 0.28s ease'; cut.style.opacity = '0'; }
+    }, 190);
+  }
   prev.classList.remove('active');
   next.classList.add('active');
   current = id;
