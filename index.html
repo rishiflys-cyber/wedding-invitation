@@ -1400,8 +1400,8 @@ html, body {
   100% { opacity:1; transform: scale(1) translateY(0); filter: blur(0px); }
 }
 @keyframes act1-text-dramatic {
-  0%   { opacity:0; transform: translateY(40px) skewY(1.5deg); letter-spacing: 0.12em; }
-  100% { opacity:1; transform: translateY(0) skewY(0deg); letter-spacing: 0.04em; }
+  0%   { opacity:0; transform: translateY(36px); }
+  100% { opacity:1; transform: translateY(0); }
 }
 #screen-invite-bg-zoom {
   position:absolute;inset:-8%;pointer-events:none;z-index:0;
@@ -1828,7 +1828,7 @@ html, body {
       </svg>
     </div>
 
-    <div id="invite-act1-text" style="font-family:'Cormorant Garamond',Garamond,Georgia,serif;font-size:22px;font-weight:300;line-height:2.1;letter-spacing:0.04em;color:#eddba8;opacity:0;transform:translateY(40px) skewY(1.5deg);will-change:transform,opacity;">
+    <div id="invite-act1-text" style="font-family:'Cormorant Garamond',Garamond,Georgia,serif;font-size:22px;font-weight:300;line-height:2.1;letter-spacing:0.04em;color:#eddba8;opacity:0;transform:translateY(36px);will-change:transform,opacity;">
       There are people in our lives<br>
       whose presence doesn't just fill a room —<br>
       <em style="font-style:normal;opacity:0.7;font-size:19px;">it makes every moment</em><br>
@@ -2419,7 +2419,7 @@ function goTo(id) {
       var orn=document.getElementById('invite-act1-ornament');
       if(orn){orn.style.transition='none';orn.style.opacity='0';orn.style.transform='scale(0.82)';}
       var el=document.getElementById('invite-act1-text');
-      if(el){el.style.animation='none';el.style.opacity='0';el.style.transform='translateY(40px) skewY(1.5deg)';}
+      if(el){el.style.animation='none';el.style.opacity='0';el.style.transform='translateY(36px)';}
       var div=document.getElementById('invite-act1-divider');
       if(div){div.style.transition='none';div.style.opacity='0';}
     } else if(sid==='screen-invite2'){
