@@ -3004,7 +3004,7 @@ document.addEventListener('DOMContentLoaded', function() {
     weddingShown = true;
     if (wp) { wp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; wp.style.transform = 'translateY(0)'; wp.style.pointerEvents = 'auto'; }
     if (wi) { wi.style.opacity = '1'; wi.style.transform = 'translateY(0)'; wi.style.pointerEvents = 'auto'; }
-    // No auto-advance — user taps to continue from Shubho Bibaho
+    // User taps to continue from Shubho Bibaho
   }
 
   function resetWedding() {
@@ -3018,6 +3018,8 @@ document.addEventListener('DOMContentLoaded', function() {
   if (wv) {
     wv.loop = false;
     wv.addEventListener('error', showWeddingInvite);
+    wv.addEventListener('stalled', function() { setTimeout(showWeddingInvite, 1000); });
+    wv.addEventListener('waiting', function() { setTimeout(showWeddingInvite, 2000); });
   }
 
   var _origGoTo4 = goTo;
@@ -3036,8 +3038,8 @@ document.addEventListener('DOMContentLoaded', function() {
         wv.currentTime = 0;
         safeVideoPlay(wv);
         wv.onended = function() { safeVideoPause(wv); showWeddingInvite(); };
-        var dur = (wv.duration && isFinite(wv.duration)) ? wv.duration * 1000 + 500 : 12000;
-        weddingTimer = setTimeout(showWeddingInvite, dur);
+        // Hard cap: always show invite within 6s regardless of video state
+        weddingTimer = setTimeout(showWeddingInvite, 6000);
       } else {
         weddingTimer = setTimeout(showWeddingInvite, 1000);
       }
