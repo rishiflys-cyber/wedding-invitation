@@ -2121,7 +2121,7 @@ html, body {
      SCREEN MEHENDI
 ══════════════════════════════════════════ -->
 <div id="screen-mehendi" class="screen event-screen" onclick="goTo('screen-sangeet')">
-  <video id="mehendi-video" muted playsinline preload="auto"
+  <video id="mehendi-video" muted playsinline preload="metadata"
     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
     <source src="mehendi.mp4" type="video/mp4">
   </video>
@@ -2158,7 +2158,7 @@ html, body {
      SCREEN SANGEET
 ══════════════════════════════════════════ -->
 <div id="screen-sangeet" class="screen event-screen" onclick="goTo('screen-haldi')">
-  <video id="sangeet-video" muted playsinline preload="auto"
+  <video id="sangeet-video" muted playsinline preload="metadata"
     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
     <source src="sangeet.mp4" type="video/mp4">
   </video>
@@ -2195,7 +2195,7 @@ html, body {
      SCREEN HALDI
 ══════════════════════════════════════════ -->
 <div id="screen-haldi" class="screen event-screen" onclick="goTo('screen-wedding')">
-  <video id="haldi-video" muted playsinline preload="auto"
+  <video id="haldi-video" muted playsinline preload="metadata"
     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
     <source src="haldi.mp4" type="video/mp4">
   </video>
@@ -2809,22 +2809,6 @@ document.addEventListener('DOMContentLoaded', function() {
         mehendiTimer = setTimeout(showMehendiInvite, dur);
       }
     });
-    /* Mobile: video can stall/suspend mid-play and never fire ended */
-    var stallTimer = null;
-    function onStall() {
-      if (current !== 'screen-mehendi') return;
-      if (stallTimer) clearTimeout(stallTimer);
-      stallTimer = setTimeout(function() {
-        if (current === 'screen-mehendi') showMehendiInvite();
-      }, 4000); /* if still stuck after 4s, move on */
-    }
-    function onProgress() {
-      if (stallTimer) { clearTimeout(stallTimer); stallTimer = null; }
-    }
-    mv.addEventListener('stalled', onStall);
-    mv.addEventListener('waiting', onStall);
-    mv.addEventListener('timeupdate', onProgress);
-    mv.addEventListener('playing', onProgress);
   }
 
   /* Hook into goTo to reset/restore mehendi state */
@@ -2846,23 +2830,16 @@ document.addEventListener('DOMContentLoaded', function() {
       if (mi) { mi.style.opacity = '0'; mi.style.transform = 'translateY(20px)'; mi.style.pointerEvents = 'none'; }
       if (mv) {
         mv.currentTime = 0;
+        mv.load();
         var playPromise = mv.play();
         if (playPromise !== undefined) {
           playPromise.catch(function() {
             showMehendiInvite();
           });
         }
-        /* Hard fallback: real duration + buffer, or 8s max */
-        var dur = (mv.duration && isFinite(mv.duration)) ? Math.min(mv.duration * 1000 + 800, 12000) : 8000;
+        /* Hard fallback: real duration + buffer, or 15s if metadata not yet loaded */
+        var dur = (mv.duration && isFinite(mv.duration)) ? mv.duration * 1000 + 800 : 15000;
         mehendiTimer = setTimeout(showMehendiInvite, dur);
-        /* Watchdog: if no timeupdate within 2s, video is frozen — skip it */
-        var watchdog = setTimeout(function() {
-          if (current === 'screen-mehendi') showMehendiInvite();
-        }, 2000);
-        mv.addEventListener('timeupdate', function clearWatchdog() {
-          clearTimeout(watchdog);
-          mv.removeEventListener('timeupdate', clearWatchdog);
-        }, { once: true });
       }
     }
   };
@@ -2900,6 +2877,14 @@ document.addEventListener('DOMContentLoaded', function() {
   if (sv) {
     sv.loop = false;
     sv.addEventListener('error', showSangeetInvite);
+    sv.addEventListener('ended', showSangeetInvite);
+    sv.addEventListener('loadedmetadata', function() {
+      if (current === 'screen-sangeet' && sangeetTimer) {
+        clearTimeout(sangeetTimer);
+        var dur = sv.duration * 1000 + 800;
+        sangeetTimer = setTimeout(showSangeetInvite, dur);
+      }
+    });
   }
 
   var _origGoTo2 = goTo;
@@ -2918,17 +2903,11 @@ document.addEventListener('DOMContentLoaded', function() {
       if (si) { si.style.opacity = '0'; si.style.transform = 'translateY(20px)'; si.style.pointerEvents = 'none'; }
       if (sv) {
         sv.currentTime = 0;
+        sv.load();
         sv.play().catch(function() { showSangeetInvite(); });
-        sv.onended = function() { sv.pause(); showSangeetInvite(); };
-        var dur = (sv.duration && isFinite(sv.duration)) ? Math.min(sv.duration * 1000 + 800, 12000) : 8000;
+        /* Hard fallback: real duration + buffer, or 15s if metadata not yet loaded */
+        var dur = (sv.duration && isFinite(sv.duration)) ? sv.duration * 1000 + 800 : 15000;
         sangeetTimer = setTimeout(showSangeetInvite, dur);
-        var swatchdog = setTimeout(function() {
-          if (current === 'screen-sangeet') showSangeetInvite();
-        }, 2000);
-        sv.addEventListener('timeupdate', function sclearWatchdog() {
-          clearTimeout(swatchdog);
-          sv.removeEventListener('timeupdate', sclearWatchdog);
-        }, { once: true });
       } else {
         sangeetTimer = setTimeout(showSangeetInvite, 1000);
       }
@@ -2967,6 +2946,14 @@ document.addEventListener('DOMContentLoaded', function() {
   if (hv) {
     hv.loop = false;
     hv.addEventListener('error', showHaldiInvite);
+    hv.addEventListener('ended', showHaldiInvite);
+    hv.addEventListener('loadedmetadata', function() {
+      if (current === 'screen-haldi' && haldiTimer) {
+        clearTimeout(haldiTimer);
+        var dur = hv.duration * 1000 + 800;
+        haldiTimer = setTimeout(showHaldiInvite, dur);
+      }
+    });
   }
 
   var _origGoTo3 = goTo;
@@ -2983,17 +2970,11 @@ document.addEventListener('DOMContentLoaded', function() {
       if (hi) { hi.style.opacity = '0'; hi.style.transform = 'translateY(20px)'; hi.style.pointerEvents = 'none'; }
       if (hv) {
         hv.currentTime = 0;
+        hv.load();
         hv.play().catch(function() { showHaldiInvite(); });
-        hv.onended = function() { hv.pause(); showHaldiInvite(); };
-        var dur = (hv.duration && isFinite(hv.duration)) ? Math.min(hv.duration * 1000 + 800, 12000) : 8000;
+        /* Hard fallback: real duration + buffer, or 15s if metadata not yet loaded */
+        var dur = (hv.duration && isFinite(hv.duration)) ? hv.duration * 1000 + 800 : 15000;
         haldiTimer = setTimeout(showHaldiInvite, dur);
-        var hwatchdog = setTimeout(function() {
-          if (current === 'screen-haldi') showHaldiInvite();
-        }, 2000);
-        hv.addEventListener('timeupdate', function hclearWatchdog() {
-          clearTimeout(hwatchdog);
-          hv.removeEventListener('timeupdate', hclearWatchdog);
-        }, { once: true });
       } else {
         haldiTimer = setTimeout(showHaldiInvite, 1000);
       }
