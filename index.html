@@ -2801,12 +2801,23 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
    Only the current video buffers fully; next video preloads metadata
    only (lightweight) so it's ready to start instantly when needed. */
 var _videoOrder = ['mehendi-video','sangeet-video','haldi-video','wedding-video','reception-video'];
+/* Staggered preload — load all videos but one at a time, 3s apart,
+   so iOS Safari isn't hit with 5 simultaneous network requests */
+(function staggeredPreload() {
+  var i = 0;
+  function loadNext() {
+    if (i >= _videoOrder.length) return;
+    var v = document.getElementById(_videoOrder[i++]);
+    if (v && v.preload !== 'auto') {
+      v.preload = 'auto';
+    }
+    setTimeout(loadNext, 3000);
+  }
+  // Start after a short delay so page render/music/envelope isn't competing
+  setTimeout(loadNext, 2000);
+})();
 function preloadNextVideo(currentVidId) {
-  var idx = _videoOrder.indexOf(currentVidId);
-  if (idx === -1 || idx >= _videoOrder.length - 1) return;
-  var nextId = _videoOrder[idx + 1];
-  var next = document.getElementById(nextId);
-  if (next && next.preload === 'none') { next.preload = 'metadata'; }
+  // Already handled by staggered preload above; this is a no-op now
 }
 function safeVideoPlay(video) {
   if (!video) return;
