@@ -2339,6 +2339,8 @@ function goTo(id) {
     var hideOn = ['screen-envelope','screen-ganesh'];
     cb.style.display = hideOn.indexOf(id) === -1 ? 'flex' : 'none';
   }
+  // Release wake lock when reaching final screens (no more auto-advance)
+  if (id === 'screen-rsvp' || id === 'screen-countdown') { releaseWakeLock(); }
   // Auto-advance Ganesh screen after 2s
   if (id === 'screen-ganesh') {
     setTimeout(function(){ if (current === 'screen-ganesh') goTo('screen-invite'); }, 2000);
@@ -2463,8 +2465,8 @@ function openEnvelope() {
   if (ic) ic.style.display = 'inline';
   if (im) im.style.display = 'none';
 
-  // Unlock all event videos during this user gesture so they can autoplay later
-  ['sangeet-video','haldi-video','wedding-video','reception-video'].forEach(function(vid) {
+  // Unlock ALL event videos during this user gesture so they can autoplay later
+  ['mehendi-video','sangeet-video','haldi-video','wedding-video','reception-video'].forEach(function(vid) {
     var v = document.getElementById(vid);
     if (v) { v.muted = true; v.play().then(function(){ v.pause(); v.currentTime = 0; }).catch(function(){}); }
   });
@@ -2700,7 +2702,6 @@ document.addEventListener('DOMContentLoaded', function() {
   function showWeddingInvite() {
     if (weddingShown) return;
     weddingShown = true;
-    releaseWakeLock();
     if (wp) { wp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; wp.style.transform = 'translateY(0)'; wp.style.pointerEvents = 'auto'; }
     if (wi) { wi.style.opacity = '1'; wi.style.transform = 'translateY(0)'; wi.style.pointerEvents = 'auto'; }
     // No auto-advance — user taps to continue from Shubho Bibaho
