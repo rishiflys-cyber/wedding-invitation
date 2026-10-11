@@ -1994,11 +1994,11 @@ html, body {
   <div class="invite-screen-wrap" style="gap:14px;padding:80px 28px 36px;position:relative;z-index:1;">
 
     <div id="invite-act3-text" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:16px;font-weight:300;font-style:italic;color:#d4b882;opacity:0;transform:translateY(18px);transition:opacity 1.4s ease,transform 1.4s cubic-bezier(0.16,1,0.3,1);line-height:2;text-align:center;letter-spacing:0.08em;text-transform:uppercase;">
-      With hearts full of joy &amp; love
+      With joyful hearts, we invite you to celebrate the wedding of
     </div>
 
     <!-- ornamental SVG separator between preamble and names -->
-    <div style="display:flex;align-items:center;justify-content:center;width:100%;max-width:260px;gap:0;margin:2px 0;">
+    <div id="act3-lotus-orn" style="display:flex;align-items:center;justify-content:center;width:100%;max-width:260px;gap:0;margin:2px 0;opacity:0;transition:opacity 0.9s ease;">
       <div style="flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.4));"></div>
       <svg width="38" height="22" viewBox="0 0 38 22" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;margin:0 4px;">
         <!-- central lotus/medallion -->
@@ -2037,9 +2037,9 @@ html, body {
       <span id="name-ananya" class="shimmer-name" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:32px;font-weight:700;font-style:italic;letter-spacing:1px;position:relative;opacity:0;display:inline-block;">Ananya Dash</span>
     </div>
 
-    <div class="invite-divider"><span class="invite-divider-diamond"></span></div>
+    <div id="act3-divider" class="invite-divider" style="opacity:0;transition:opacity 0.9s ease;"><span class="invite-divider-diamond"></span></div>
 
-    <div class="invite-parents">
+    <div id="act3-parents" class="invite-parents" style="opacity:0;transition:opacity 1s ease;">
       <div class="invite-parents-label" style="font-family:'Cormorant Garamond',Georgia,serif;letter-spacing:3px;">Blessed by our families</div>
       <div class="invite-family">
         <div class="invite-family-side">
@@ -2518,6 +2518,9 @@ function goTo(id) {
       var r=document.getElementById('name-rishabh');if(r){r.style.animation='none';r.style.opacity='0';}
       var amp=document.getElementById('names-amp');if(amp){amp.style.transition='none';amp.style.opacity='0';}
       var a=document.getElementById('name-ananya');if(a){a.style.animation='none';a.style.opacity='0';}
+      var lo=document.getElementById('act3-lotus-orn');if(lo){lo.style.transition='none';lo.style.opacity='0';}
+      var dv=document.getElementById('act3-divider');if(dv){dv.style.transition='none';dv.style.opacity='0';}
+      var pr=document.getElementById('act3-parents');if(pr){pr.style.transition='none';pr.style.opacity='0';}
     }
   })(id);
   _history.push(current);
@@ -2633,24 +2636,38 @@ function goTo(id) {
     // Ken Burns zoom
     var bg3 = document.getElementById('screen-invite3-bg-zoom');
     if(bg3){ requestAnimationFrame(function(){ bg3.classList.add('zooming'); }); }
+    // 1. Preamble text fades in first
     setTimeout(function(){
       var el=document.getElementById('invite-act3-text');
       if(el){ el.style.transition='opacity 1.4s ease, transform 1.4s cubic-bezier(0.16,1,0.3,1)'; el.style.opacity='1'; el.style.transform='translateY(0)'; }
-    }, 250);
-    // Staggered name reveal
+    }, 300);
+    // 2. Lotus ornament fades in
+    setTimeout(function(){
+      var orn=document.getElementById('act3-lotus-orn');
+      if(orn){ orn.style.opacity='1'; }
+    }, 900);
+    // 3. Names reveal staggered
     setTimeout(function(){
       var r=document.getElementById('name-rishabh');
       if(r){ r.style.animation='name-reveal 1.2s cubic-bezier(0.16,1,0.3,1) forwards'; }
-    }, 900);
+    }, 1200);
     setTimeout(function(){
       var amp=document.getElementById('names-amp');
       if(amp){ amp.style.transition='opacity 0.8s ease'; amp.style.opacity='0.5'; }
-    }, 1300);
+    }, 1700);
     setTimeout(function(){
       var a=document.getElementById('name-ananya');
       if(a){ a.style.animation='name-reveal 1.2s cubic-bezier(0.16,1,0.3,1) forwards'; }
-    }, 1500);
-    setTimeout(function(){ if(current==='screen-invite3') goTo('screen-mehendi'); }, 5000);
+    }, 2000);
+    // 4. Diamond divider + family box fade in
+    setTimeout(function(){
+      var div=document.getElementById('act3-divider');
+      if(div){ div.style.opacity='1'; }
+      var par=document.getElementById('act3-parents');
+      if(par){ par.style.opacity='1'; }
+    }, 2800);
+    // Auto-advance after everything is visible
+    setTimeout(function(){ if(current==='screen-invite3') goTo('screen-mehendi'); }, 7000);
   }
 }
 
