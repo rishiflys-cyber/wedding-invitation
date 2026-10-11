@@ -2117,11 +2117,16 @@ html, body {
      SCREEN RECEPTION (VIP only)
 ══════════════════════════════════════════ -->
 <div id="screen-reception" class="screen event-screen" onclick="goTo('screen-rsvp')">
-  <div class="event-img-wrap">
+  <video id="reception-video" muted playsinline preload="auto"
+    style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
+    <source src="reception.mp4" type="video/mp4">
+  </video>
+  <div class="event-img-wrap" id="reception-bg-img" style="z-index:0;">
     <img src="5-reception_4k.jpg" alt="Reception" loading="lazy">
   </div>
-  <div class="event-particles" id="ep-reception"></div>
-  <div class="event-wrap">
+  <div class="event-particles" id="ep-reception" style="z-index:2;"></div>
+  <div id="reception-panel" style="position:absolute;bottom:0;left:0;right:0;height:42%;z-index:3;background:linear-gradient(to bottom,transparent 0%,rgba(5,1,0,0.92) 18%,#050100 40%);padding-top:20px;transform:translateY(100%);transition:transform 1.4s cubic-bezier(0.22,1,0.36,1);pointer-events:none;overflow:hidden;">
+  <div class="event-wrap" id="reception-invite" style="position:relative;opacity:0;transform:translateY(20px);transition:opacity 0.8s ease 0.5s,transform 0.8s ease 0.5s;pointer-events:none;">
     <div class="event-icon-big">🥂</div>
     <div class="event-tag" style="background:rgba(255,150,80,0.15);border-color:rgba(255,150,80,0.3);color:#f0a870">Reception</div>
     <div class="event-title">An Evening to Remember</div>
@@ -2138,12 +2143,13 @@ html, body {
         <div class="event-detail-value">7:30 PM onwards</div>
       </div>
     </div>
+    <div class="event-venue">📍 <a href="https://maps.google.com/?q=The+Citi+Residenci,+Shahid+Khudiram+Sarani,+City+Centre,+Durgapur+713216" target="_blank" style="color:#f0a870;text-decoration:none;">The Citi Residenci, City Centre, Durgapur</a></div>
     <div class="event-poem">
       You are amongst the few<br>
       who hold a special place in our hearts —<br>
       <span class="event-poem-em">this evening is for you.</span>
     </div>
-    <div class="screen-tap-hint">tap to continue ✦</div>
+  </div>
   </div>
 </div>
 
@@ -2453,7 +2459,7 @@ function openEnvelope() {
   if (mb) mb.style.display = 'flex';
 
   // Unlock all event videos during this user gesture so they can autoplay later
-  ['sangeet-video','haldi-video','wedding-video'].forEach(function(vid) {
+  ['sangeet-video','haldi-video','wedding-video','reception-video'].forEach(function(vid) {
     var v = document.getElementById(vid);
     if (v) { v.muted = true; v.play().then(function(){ v.pause(); v.currentTime = 0; }).catch(function(){}); }
   });
@@ -2729,6 +2735,60 @@ document.addEventListener('DOMContentLoaded', function() {
         weddingTimer = setTimeout(showWeddingInvite, dur);
       } else {
         weddingTimer = setTimeout(showWeddingInvite, 1000);
+      }
+    }
+  };
+})();
+
+/* ── Reception video logic ── */
+(function(){
+  var rv = document.getElementById('reception-video');
+  var ri = document.getElementById('reception-invite');
+  var rp = document.getElementById('reception-panel');
+  var receptionShown = false;
+  var receptionTimer = null;
+
+  function showReceptionInvite() {
+    if (receptionShown) return;
+    receptionShown = true;
+    if (rp) { rp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; rp.style.transform = 'translateY(0)'; rp.style.pointerEvents = 'auto'; }
+    if (ri) { ri.style.opacity = '1'; ri.style.transform = 'translateY(0)'; ri.style.pointerEvents = 'auto'; }
+  }
+
+  function resetReception() {
+    receptionShown = false;
+    if (receptionTimer) { clearTimeout(receptionTimer); receptionTimer = null; }
+    if (rp) { rp.style.transition = 'none'; rp.style.transform = 'translateY(100%)'; rp.style.pointerEvents = 'none'; }
+    if (ri) { ri.style.opacity = '0'; ri.style.transform = 'translateY(20px)'; ri.style.pointerEvents = 'none'; }
+    if (rv) { rv.pause(); rv.currentTime = 0; }
+  }
+
+  if (rv) {
+    rv.loop = false;
+    rv.addEventListener('ended', function() { rv.pause(); showReceptionInvite(); });
+    rv.addEventListener('error', showReceptionInvite);
+  }
+
+  var _origGoTo5 = goTo;
+  goTo = function(id) {
+    var from = current;
+    _origGoTo5(id);
+    if (from === 'screen-reception' && id !== 'screen-reception') {
+      resetReception();
+    }
+    if (id === 'screen-reception') {
+      receptionShown = false;
+      if (receptionTimer) { clearTimeout(receptionTimer); receptionTimer = null; }
+      if (rp) { rp.style.transition = 'none'; rp.style.transform = 'translateY(100%)'; rp.style.pointerEvents = 'none'; }
+      if (ri) { ri.style.opacity = '0'; ri.style.transform = 'translateY(20px)'; ri.style.pointerEvents = 'none'; }
+      if (rv) {
+        rv.currentTime = 0;
+        rv.play().catch(function() {});
+        rv.onended = function() { rv.pause(); showReceptionInvite(); };
+        var dur = (rv.duration && isFinite(rv.duration)) ? rv.duration * 1000 + 500 : 6000;
+        receptionTimer = setTimeout(showReceptionInvite, dur);
+      } else {
+        receptionTimer = setTimeout(showReceptionInvite, 1000);
       }
     }
   };
