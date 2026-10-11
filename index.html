@@ -2783,6 +2783,7 @@ document.addEventListener('DOMContentLoaded', function() {
       resetReception();
     }
     if (id === 'screen-reception') {
+      requestWakeLock();
       receptionShown = false;
       if (receptionTimer) { clearTimeout(receptionTimer); receptionTimer = null; }
       if (rp) { rp.style.transition = 'none'; rp.style.transform = 'translateY(100%)'; rp.style.pointerEvents = 'none'; }
