@@ -2797,40 +2797,41 @@ const _guestFull = (_sal ? _sal + '. ' : '') + (_guestRaw || 'Friend');
 const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _params.get('r') === '1';
 
 // Wire wedding screen → reception (VIP) or rsvp (everyone else)
+/* ── Safe video play helpers (iOS Safari) ──
+   Prevents "play() interrupted by pause()" errors on rapid tapping.
+   Global so all video logic blocks can use them. */
+var _playPromises = new WeakMap();
+function safeVideoPlay(video) {
+  if (!video) return;
+  var pending = _playPromises.get(video);
+  if (pending) {
+    pending.then(function() {
+      video.currentTime = 0;
+      var p = video.play();
+      if (p !== undefined) { _playPromises.set(video, p); p.catch(function(){}); }
+    }).catch(function(){ _playPromises.delete(video); });
+  } else {
+    video.currentTime = 0;
+    var p = video.play();
+    if (p !== undefined) { _playPromises.set(video, p); p.catch(function(){}); }
+  }
+}
+function safeVideoPause(video) {
+  if (!video) return;
+  var pending = _playPromises.get(video);
+  if (pending) {
+    pending.then(function() { try { video.pause(); } catch(e){} _playPromises.delete(video); }).catch(function(){ _playPromises.delete(video); });
+  } else {
+    try { video.pause(); } catch(e) {}
+  }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
   var weddingScreen = document.getElementById('screen-wedding');
   if (weddingScreen) {
     weddingScreen.onclick = function() {
       goTo(_isVIP ? 'screen-reception' : 'screen-rsvp');
     };
-  }
-
-  /* ── Safe video play helper (iOS Safari) ──
-     Prevents "play() interrupted by pause()" errors on rapid tapping. */
-  var _playPromises = new WeakMap();
-  function safeVideoPlay(video) {
-    if (!video) return;
-    var pending = _playPromises.get(video);
-    if (pending) {
-      pending.then(function() {
-        video.currentTime = 0;
-        var p = video.play();
-        if (p !== undefined) { _playPromises.set(video, p); p.catch(function(){}); }
-      }).catch(function(){ _playPromises.delete(video); });
-    } else {
-      video.currentTime = 0;
-      var p = video.play();
-      if (p !== undefined) { _playPromises.set(video, p); p.catch(function(){}); }
-    }
-  }
-  function safeVideoPause(video) {
-    if (!video) return;
-    var pending = _playPromises.get(video);
-    if (pending) {
-      pending.then(function() { try { video.pause(); } catch(e){} _playPromises.delete(video); }).catch(function(){ _playPromises.delete(video); });
-    } else {
-      try { video.pause(); } catch(e) {}
-    }
   }
 
   /* Mehendi: video plays once → dark panel slides up, invite fades in */
