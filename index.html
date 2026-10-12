@@ -2980,9 +2980,12 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
     function onVideoReady() {
       ready++;
       if (ready >= total) {
-        if (btn) btn.style.display = 'block';
-        var sub = loader.querySelector('.loader-subtitle');
-        if (sub) sub.textContent = 'Your invitation is ready';
+        // All videos decoded — wait 2 extra seconds for iOS to fully settle
+        setTimeout(function() {
+          if (btn) btn.style.display = 'block';
+          var sub = loader.querySelector('.loader-subtitle');
+          if (sub) sub.textContent = 'Your invitation is ready';
+        }, 2000);
       }
     }
     videos.forEach(function(src) {
@@ -2993,14 +2996,14 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
         else { el.addEventListener('loadeddata', onVideoReady, { once: true }); }
       } else { onVideoReady(); }
     });
-    // Fallback: show button after 1.5s regardless
+    // Fallback: show button after 3s regardless
     setTimeout(function() {
       if (btn && btn.style.display === 'none') {
         btn.style.display = 'block';
         var sub = loader.querySelector('.loader-subtitle');
         if (sub) sub.textContent = 'Your invitation is ready';
       }
-    }, 1500);
+    }, 3000);
   }
 
   window.openInvitation = function() {
