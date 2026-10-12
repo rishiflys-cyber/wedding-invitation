@@ -3015,8 +3015,8 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
   var el = document.getElementById('loader-greeting');
   if (!el) return;
   el.innerHTML = _guestRaw
-    ? 'A special invitation for<br><span style="font-size:1.25em;font-style:italic;color:#f9e060;">' + _guestRaw + '</span>'
-    : 'A special invitation for you';
+    ? '<span style="font-size:0.75em;letter-spacing:3px;opacity:0.6;">YOU\'RE INVITED</span><br><span style="font-size:1.25em;font-style:italic;color:#f9e060;">' + _guestRaw + '</span>'
+    : '<span style="font-size:0.75em;letter-spacing:3px;opacity:0.6;">YOU\'RE INVITED</span>';
 })();
 
 
