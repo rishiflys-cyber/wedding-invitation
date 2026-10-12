@@ -10,6 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { touch-action: pan-y; overscroll-behavior: none; }
 
 :root {
   --gold: #f5c842;
@@ -2731,10 +2732,24 @@ document.addEventListener('visibilitychange', function() {
 var _navigating = false;
 var _lastNavTime = 0;
 
-// Block multi-touch from triggering screen taps
+// Block ALL multi-touch and zoom gestures
 document.addEventListener('touchstart', function(e) {
   if (e.touches.length > 1) { e.preventDefault(); e.stopPropagation(); }
 }, { passive: false, capture: true });
+document.addEventListener('touchmove', function(e) {
+  if (e.touches.length > 1) { e.preventDefault(); e.stopPropagation(); }
+}, { passive: false, capture: true });
+document.addEventListener('touchend', function(e) {
+  if (e.changedTouches.length > 1 || e.touches.length > 0) { e.preventDefault(); }
+}, { passive: false, capture: true });
+// Block gesture events (iOS Safari pinch)
+document.addEventListener('gesturestart', function(e) { e.preventDefault(); }, { passive: false });
+document.addEventListener('gesturechange', function(e) { e.preventDefault(); }, { passive: false });
+document.addEventListener('gestureend', function(e) { e.preventDefault(); }, { passive: false });
+// Block wheel zoom (Ctrl+scroll on desktop)
+document.addEventListener('wheel', function(e) {
+  if (e.ctrlKey) e.preventDefault();
+}, { passive: false });
 
 function goTo(id) {
   var now = Date.now();
