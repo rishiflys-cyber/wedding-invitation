@@ -4,25 +4,34 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <script>
-// Reset zoom if browser somehow allows it (must run before body loads)
 (function(){
-  function resetZoom() {
+  // 1. Block browser back/forward — push state so back button stays on page
+  history.pushState(null, '', location.href);
+  window.addEventListener('popstate', function() {
+    history.pushState(null, '', location.href);
+  });
+
+  // 2. Block all unload/beforeunload — prevent page from leaving
+  window.addEventListener('beforeunload', function(e) {
+    e.preventDefault(); e.returnValue = ''; return '';
+  });
+
+  // 3. Catch all JS errors — prevent white screen crash
+  window.addEventListener('error', function(e) { e.preventDefault(); return true; });
+  window.addEventListener('unhandledrejection', function(e) { e.preventDefault(); });
+
+  // 4. Reset zoom via visualViewport
+  function resetViewport() {
     var mv = document.querySelector('meta[name=viewport]');
-    if (mv) {
-      mv.setAttribute('content', 'width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
-    }
+    if (!mv) return;
+    mv.setAttribute('content', 'width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover');
   }
-  // Detect zoom via window.visualViewport scale
   if (window.visualViewport) {
     window.visualViewport.addEventListener('resize', function() {
-      if (window.visualViewport.scale !== 1) {
-        resetZoom();
-        // Force scale back by toggling viewport
-        var mv = document.querySelector('meta[name=viewport]');
-        if (mv) {
-          mv.setAttribute('content', 'width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no');
-          setTimeout(function(){ mv.setAttribute('content', 'width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover'); }, 50);
-        }
+      if (Math.abs(window.visualViewport.scale - 1) > 0.05) {
+        resetViewport();
+        setTimeout(resetViewport, 50);
+        setTimeout(resetViewport, 200);
       }
     });
   }
