@@ -422,7 +422,7 @@ html, body {
 }
 
 .tap-hint {
-  font-size: 50px;
+  font-size: 20px;
   letter-spacing: 3px;
   color: var(--gold-light);
   text-transform: uppercase;
@@ -1928,7 +1928,7 @@ html, body {
 </div>
 
 <!-- Seal toast — outside envelope so overflow:hidden doesn't clip it -->
-<div id="seal-toast" style="position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.6s ease;opacity:0;visibility:hidden;">
+<div id="seal-toast" style="position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;pointer-events:none;display:none;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.6s ease;opacity:0;">
   <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
     <div style="background:rgba(20,5,0,0.88);border:1.5px solid rgba(245,200,66,0.6);border-radius:40px;padding:16px 32px;display:flex;align-items:center;gap:12px;box-shadow:0 4px 32px rgba(245,200,66,0.25);">
       <span style="font-size:30px;">👆</span>
@@ -3205,23 +3205,21 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
     if (_sealToastTimer) { clearTimeout(_sealToastTimer); _sealToastTimer = null; }
     var toast = document.getElementById('seal-toast');
     if (!toast) return;
-    // Make sure it's renderable
-    toast.style.visibility = 'visible';
-    toast.style.display = 'flex';
     function show() {
-      toast.style.opacity = '1';
+      toast.style.display = 'flex';
+      setTimeout(function(){ toast.style.opacity = '1'; }, 20);
       _sealToastTimer = setTimeout(function() {
         toast.style.opacity = '0';
+        setTimeout(function(){ toast.style.display = 'none'; }, 600);
         _sealToastTimer = setTimeout(show, 5000);
       }, 3000);
     }
-    // Show after 2s
     _sealToastTimer = setTimeout(show, 2000);
-  }
+  };
   window.stopSealToast = function stopSealToast() {
     if (_sealToastTimer) { clearTimeout(_sealToastTimer); _sealToastTimer = null; }
     var toast = document.getElementById('seal-toast');
-    if (toast) { toast.style.opacity = '0'; toast.style.visibility = 'hidden'; toast.style.display = 'none'; }
+    if (toast) { toast.style.opacity = '0'; toast.style.display = 'none'; }
   };
 
   window.openInvitation = function() {
