@@ -3015,7 +3015,9 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
 (function() {
   var el = document.getElementById('loader-greeting');
   if (!el) return;
-  el.textContent = _guestRaw ? 'Dear ' + _guestRaw : 'Dear Guest';
+  el.innerHTML = _guestRaw
+    ? 'We\'ve been waiting for you,<br><span style="font-size:1.3em;font-style:italic;color:#f9e060;">' + _guestRaw + '</span>'
+    : 'We\'ve been waiting for you';
 })();
 
 
