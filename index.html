@@ -152,25 +152,32 @@ html, body {
   transition: width 0.3s ease;
   box-shadow: 0 0 8px rgba(245,200,66,0.6);
 }
-.loader-open-btn {
+.loader-open-btn { display: none; }
+.loader-countdown {
   display: none;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 20px;
-  letter-spacing: 0.25em;
-  color: #1a0008;
-  background: linear-gradient(135deg, #f5c842, #ffe080);
-  border: none;
-  border-radius: 40px;
-  padding: 18px 52px;
-  cursor: pointer;
-  box-shadow: 0 4px 24px rgba(245,200,66,0.4);
-  animation: btn-glow 2s ease-in-out infinite;
-  text-transform: uppercase;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
-.loader-open-btn:active { transform: scale(0.96); }
-@keyframes btn-glow {
-  0%,100% { box-shadow: 0 4px 24px rgba(245,200,66,0.4); }
-  50%      { box-shadow: 0 4px 36px rgba(245,200,66,0.7); }
+.loader-countdown-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: rgba(245,200,66,0.7);
+}
+.loader-countdown-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 72px;
+  font-weight: 700;
+  color: #f5c842;
+  line-height: 1;
+  animation: countdown-pulse 1s ease-in-out;
+}
+@keyframes countdown-pulse {
+  0%   { transform: scale(1.4); opacity: 0; }
+  40%  { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 /* ── SCREEN SYSTEM ── */
@@ -1883,7 +1890,10 @@ html, body {
   <div id="loader-greeting" class="loader-title">Honoured Guest,</div>
   <div class="loader-subtitle">Preparing your invitation</div>
   <div class="loader-bar-wrap"><div class="loader-bar" id="loader-bar"></div></div>
-  <button class="loader-open-btn" id="loader-open-btn" onclick="openInvitation()">Open Invitation ✦</button>
+  <div class="loader-countdown" id="loader-countdown">
+    <div class="loader-countdown-label">Opening in</div>
+    <div class="loader-countdown-number" id="loader-countdown-number">3</div>
+  </div>
   <div style="position:absolute;bottom:36px;left:0;right:0;text-align:center;">
     <div style="font-family:'Cormorant Garamond',serif;font-size:12px;letter-spacing:4px;text-transform:uppercase;color:rgba(245,200,66,0.4);">from</div>
     <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;font-style:italic;color:rgba(249,224,96,0.75);letter-spacing:1px;">Rishabh &amp; Ananya</div>
@@ -3157,13 +3167,8 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
     function onVideoReady() {
       ready++;
       if (ready >= total) {
-        // All videos decoded — wait 2 extra seconds for iOS to fully settle
-        setTimeout(function() {
-          if (btn) btn.style.display = 'block';
-          var sub = loader.querySelector('.loader-subtitle');
-          if (sub) sub.textContent = 'Your invitation is ready';
-          setTimeout(function() { startLoaderToast(); }, 3000);
-        }, 2000);
+        // All videos decoded — wait 1 extra second then start countdown
+        setTimeout(startCountdown, 1000);
       }
     }
     videos.forEach(function(src) {
@@ -3174,15 +3179,38 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
         else { el.addEventListener('loadeddata', onVideoReady, { once: true }); }
       } else { onVideoReady(); }
     });
-    // Fallback: show button after 3s regardless
-    setTimeout(function() {
-      if (btn && btn.style.display === 'none') {
-        btn.style.display = 'block';
-        var sub = loader.querySelector('.loader-subtitle');
-        if (sub) sub.textContent = 'Your invitation is ready';
-        setTimeout(function() { startLoaderToast(); }, 3000);
+    // Fallback: start countdown after 5s regardless
+    var _fallbackTimer = setTimeout(startCountdown, 5000);
+
+    var _countdownStarted = false;
+    function startCountdown() {
+      if (_countdownStarted) return;
+      _countdownStarted = true;
+      clearTimeout(_fallbackTimer);
+      updateBar(100);
+      var sub = loader.querySelector('.loader-subtitle');
+      if (sub) sub.textContent = 'Your invitation is ready';
+      var countdown = document.getElementById('loader-countdown');
+      var numEl = document.getElementById('loader-countdown-number');
+      if (countdown) countdown.style.display = 'flex';
+      var count = 3;
+      function tick() {
+        if (numEl) {
+          numEl.textContent = count;
+          // Re-trigger animation
+          numEl.style.animation = 'none';
+          void numEl.offsetWidth;
+          numEl.style.animation = 'countdown-pulse 1s ease-in-out';
+        }
+        if (count <= 0) {
+          openInvitation();
+          return;
+        }
+        count--;
+        setTimeout(tick, 1000);
       }
-    }, 3000);
+      tick();
+    }
   }
 
   var _toastTimer = null;
