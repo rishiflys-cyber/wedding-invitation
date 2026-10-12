@@ -2178,7 +2178,8 @@ html, body {
       <div style="position:absolute;inset:-30px -20px;background:radial-gradient(ellipse at 50% 50%,rgba(249,224,96,0.12) 0%,transparent 65%);pointer-events:none;border-radius:50%;"></div>
       <span id="name-rishabh" class="shimmer-name" style="font-family:'Playfair Display','Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:900;font-style:italic;letter-spacing:0px;position:relative;opacity:0;display:inline-block;white-space:nowrap;">Rishabh Chattopadhyay</span>
       <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:18px;font-weight:300;opacity:0;color:#f5dfa0;letter-spacing:8px;margin:2px 0;display:inline-block;white-space:nowrap;" id="names-amp">&amp;</span>
-      <span id="name-ananya" class="shimmer-name" style="font-family:'Playfair Display','Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:900;font-style:italic;letter-spacing:0px;position:relative;opacity:0;display:inline-flex;flex-direction:column;align-items:center;white-space:nowrap;text-align:center;">Ananya Dash<span style="font-size:14px;font-weight:400;opacity:0.75;letter-spacing:2px;font-family:'Cormorant Garamond',serif;font-style:normal;white-space:nowrap;">(Acharya)</span></span>
+      <span id="name-ananya" class="shimmer-name" style="font-family:'Playfair Display','Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:900;font-style:italic;letter-spacing:0px;position:relative;opacity:0;display:inline-block;white-space:nowrap;">Ananya Dash</span>
+      <span id="name-acharya" style="display:block;font-family:'Cormorant Garamond',Georgia,serif;font-size:13px;font-weight:400;color:#f5dfa0;letter-spacing:3px;opacity:0;margin-top:-2px;text-align:center;font-style:normal;transition:opacity 1s ease 2.2s;">(Acharya)</span>
     </div>
 
     <div id="act3-divider" class="invite-divider" style="opacity:0;transition:opacity 0.9s ease;"><span class="invite-divider-diamond"></span></div>
@@ -2699,6 +2700,7 @@ function goTo(id) {
       var r=document.getElementById('name-rishabh');if(r){r.style.animation='none';r.style.opacity='0';}
       var amp=document.getElementById('names-amp');if(amp){amp.style.transition='none';amp.style.opacity='0';}
       var a=document.getElementById('name-ananya');if(a){a.style.animation='none';a.style.opacity='0';}
+      var ac=document.getElementById('name-acharya');if(ac){ac.style.transition='none';ac.style.opacity='0';}
       var lo=document.getElementById('act3-lotus-orn');if(lo){lo.style.transition='none';lo.style.opacity='0';}
       var dv=document.getElementById('act3-divider');if(dv){dv.style.transition='none';dv.style.opacity='0';}
       var pr=document.getElementById('act3-parents');if(pr){pr.style.transition='none';pr.style.opacity='0';}
@@ -2840,6 +2842,10 @@ function goTo(id) {
     setTimeout(function(){
       var a=document.getElementById('name-ananya');
       if(a){ a.style.animation='name-reveal 1.2s cubic-bezier(0.16,1,0.3,1) forwards'; }
+      setTimeout(function(){
+        var ac=document.getElementById('name-acharya');
+        if(ac){ ac.style.opacity='0.75'; }
+      }, 1200);
     }, 2000);
     // 4. Diamond divider + family box fade in
     setTimeout(function(){
