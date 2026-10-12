@@ -2960,17 +2960,26 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
 
   function onAllDone() {
     updateBar(100);
-    // Assign blob URLs and pre-decode first frame of every video
-    // so iOS has the frame ready before the screen even appears
+    // Assign blob URLs and fully prime every video decoder
+    // iOS: seek to 0 after loadeddata forces first-frame decode
+    // Android: play()+pause() primes the decoder pipeline
     videos.forEach(function(src) {
       var id = src.replace('.mp4', '') + '-video';
       var el = document.getElementById(id);
       if (el && blobs[src]) {
         el.src = blobs[src];
+        el.muted = true;
         el.load();
-        // Seek to 0 after load so iOS decodes the first frame now
         el.addEventListener('loadeddata', function() {
           el.currentTime = 0;
+          // Prime Android decoder: silent play then immediate pause
+          var p = el.play();
+          if (p !== undefined) {
+            p.then(function() {
+              el.pause();
+              el.currentTime = 0;
+            }).catch(function() {});
+          }
         }, { once: true });
       }
     });
