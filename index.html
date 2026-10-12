@@ -12,10 +12,16 @@
     mv.setAttribute('content', 'width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover');
   }
   if (window.visualViewport) {
+    var _zrt = null;
     window.visualViewport.addEventListener('resize', function() {
       if (Math.abs(window.visualViewport.scale - 1) > 0.05) {
-        resetViewport();
-        setTimeout(resetViewport, 100);
+        if (_zrt) clearTimeout(_zrt);
+        _zrt = setTimeout(function() {
+          resetViewport();
+          window.scrollTo(0, 0);
+          document.documentElement.scrollTop = 0;
+          document.body.scrollTop = 0;
+        }, 300);
       }
     });
   }
