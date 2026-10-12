@@ -2696,7 +2696,8 @@ function goTo(id) {
       var pr=document.getElementById('act3-parents');if(pr){pr.style.transition='none';pr.style.opacity='0';}
     }
   })(id);
-  _history.push(current);
+  // Never push envelope onto history — it has no back button
+  if (id !== 'screen-envelope') _history.push(current);
   prev.classList.remove('active');
   next.classList.add('active');
   current = id;
