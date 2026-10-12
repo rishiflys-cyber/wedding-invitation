@@ -1504,8 +1504,8 @@ html, body {
   100% { background-position: 300% center; }
 }
 @keyframes name-reveal {
-  0%   { opacity:0; letter-spacing: 8px; transform: translateY(12px); }
-  100% { opacity:1; letter-spacing: 1px; transform: translateY(0); }
+  0%   { opacity:0; letter-spacing: 2px; transform: translateY(12px); }
+  100% { opacity:1; letter-spacing: 0px; transform: translateY(0); }
 }
 @keyframes act2-grand-enter {
   0%   { opacity:0; transform: scale(0.68) translateY(28px); filter: blur(8px); }
@@ -3160,7 +3160,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (mehendiTimer) { clearTimeout(mehendiTimer); mehendiTimer = null; }
     if (mp) { mp.style.transition = 'none'; mp.style.transform = 'translateY(100%)'; mp.style.pointerEvents = 'none'; }
     if (mi) { mi.style.opacity = '0'; mi.style.transform = 'translateY(20px)'; mi.style.pointerEvents = 'none'; }
-    if (mv) { safeVideoPause(mv); mv.currentTime = 0; }
+    if (mv) { safeVideoPause(mv); mv.ontimeupdate = null; mv.onended = null; mv.currentTime = 0; }
   }
 
   if (mv) {
@@ -3187,8 +3187,15 @@ document.addEventListener('DOMContentLoaded', function() {
       if (mi) { mi.style.opacity = '0'; mi.style.transform = 'translateY(20px)'; mi.style.pointerEvents = 'none'; }
       if (mv) {
         mv.onended = function() { safeVideoPause(mv); showMehendiInvite(); };
+        // timeupdate fallback: catch end even if onended doesn't fire
+        mv.ontimeupdate = function() {
+          if (mv.duration && mv.currentTime >= mv.duration - 0.3) {
+            mv.ontimeupdate = null;
+            safeVideoPause(mv);
+            showMehendiInvite();
+          }
+        };
         safeVideoPlay(mv, showMehendiInvite);
-        // Hard fallback: if video never fires onended, show invite after 12s
         mehendiTimer = setTimeout(showMehendiInvite, 60000);
       }
     }
@@ -3221,7 +3228,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (sangeetTimer) { clearTimeout(sangeetTimer); sangeetTimer = null; }
     if (sp) { sp.style.transition = 'none'; sp.style.transform = 'translateY(100%)'; sp.style.pointerEvents = 'none'; }
     if (si) { si.style.opacity = '0'; si.style.transform = 'translateY(20px)'; si.style.pointerEvents = 'none'; }
-    if (sv) { safeVideoPause(sv); sv.currentTime = 0; }
+    if (sv) { safeVideoPause(sv); sv.ontimeupdate = null; sv.onended = null; sv.currentTime = 0; }
   }
 
   if (sv) {
@@ -3245,6 +3252,11 @@ document.addEventListener('DOMContentLoaded', function() {
       if (si) { si.style.opacity = '0'; si.style.transform = 'translateY(20px)'; si.style.pointerEvents = 'none'; }
       if (sv) {
         sv.onended = function() { safeVideoPause(sv); showSangeetInvite(); };
+        sv.ontimeupdate = function() {
+          if (sv.duration && sv.currentTime >= sv.duration - 0.3) {
+            sv.ontimeupdate = null; safeVideoPause(sv); showSangeetInvite();
+          }
+        };
         safeVideoPlay(sv, showSangeetInvite);
         sangeetTimer = setTimeout(showSangeetInvite, 60000);
       } else {
@@ -3279,7 +3291,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (haldiTimer) { clearTimeout(haldiTimer); haldiTimer = null; }
     if (hp) { hp.style.transition = 'none'; hp.style.transform = 'translateY(100%)'; hp.style.pointerEvents = 'none'; }
     if (hi) { hi.style.opacity = '0'; hi.style.transform = 'translateY(20px)'; hi.style.pointerEvents = 'none'; }
-    if (hv) { safeVideoPause(hv); hv.currentTime = 0; }
+    if (hv) { safeVideoPause(hv); hv.ontimeupdate = null; hv.onended = null; hv.currentTime = 0; }
   }
 
   if (hv) {
@@ -3301,6 +3313,11 @@ document.addEventListener('DOMContentLoaded', function() {
       if (hi) { hi.style.opacity = '0'; hi.style.transform = 'translateY(20px)'; hi.style.pointerEvents = 'none'; }
       if (hv) {
         hv.onended = function() { safeVideoPause(hv); showHaldiInvite(); };
+        hv.ontimeupdate = function() {
+          if (hv.duration && hv.currentTime >= hv.duration - 0.3) {
+            hv.ontimeupdate = null; safeVideoPause(hv); showHaldiInvite();
+          }
+        };
         safeVideoPlay(hv, showHaldiInvite);
         haldiTimer = setTimeout(showHaldiInvite, 60000);
       } else {
@@ -3334,7 +3351,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (weddingTimer) { clearTimeout(weddingTimer); weddingTimer = null; }
     if (wp) { wp.style.transition = 'none'; wp.style.transform = 'translateY(100%)'; wp.style.pointerEvents = 'none'; }
     if (wi) { wi.style.opacity = '0'; wi.style.transform = 'translateY(20px)'; wi.style.pointerEvents = 'none'; }
-    if (wv) { safeVideoPause(wv); wv.currentTime = 0; }
+    if (wv) { safeVideoPause(wv); wv.ontimeupdate = null; wv.onended = null; wv.currentTime = 0; }
   }
 
   if (wv) {
@@ -3356,8 +3373,13 @@ document.addEventListener('DOMContentLoaded', function() {
       if (wi) { wi.style.opacity = '0'; wi.style.transform = 'translateY(20px)'; wi.style.pointerEvents = 'none'; }
       if (wv) {
         wv.currentTime = 0;
-        safeVideoPlay(wv, showWeddingInvite);
         wv.onended = function() { safeVideoPause(wv); showWeddingInvite(); };
+        wv.ontimeupdate = function() {
+          if (wv.duration && wv.currentTime >= wv.duration - 0.3) {
+            wv.ontimeupdate = null; safeVideoPause(wv); showWeddingInvite();
+          }
+        };
+        safeVideoPlay(wv, showWeddingInvite);
         weddingTimer = setTimeout(showWeddingInvite, 60000);
       } else {
         weddingTimer = setTimeout(showWeddingInvite, 1000);
@@ -3386,7 +3408,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (receptionTimer) { clearTimeout(receptionTimer); receptionTimer = null; }
     if (rp) { rp.style.transition = 'none'; rp.style.transform = 'translateY(100%)'; rp.style.pointerEvents = 'none'; }
     if (ri) { ri.style.opacity = '0'; ri.style.transform = 'translateY(20px)'; ri.style.pointerEvents = 'none'; }
-    if (rv) { safeVideoPause(rv); rv.currentTime = 0; }
+    if (rv) { safeVideoPause(rv); rv.ontimeupdate = null; rv.onended = null; rv.currentTime = 0; }
   }
 
   if (rv) {
@@ -3408,9 +3430,13 @@ document.addEventListener('DOMContentLoaded', function() {
       if (rp) { rp.style.transition = 'none'; rp.style.transform = 'translateY(100%)'; rp.style.pointerEvents = 'none'; }
       if (ri) { ri.style.opacity = '0'; ri.style.transform = 'translateY(20px)'; ri.style.pointerEvents = 'none'; }
       if (rv) {
-        rv.currentTime = 0;
-        safeVideoPlay(rv, showReceptionInvite);
         rv.onended = function() { safeVideoPause(rv); showReceptionInvite(); };
+        rv.ontimeupdate = function() {
+          if (rv.duration && rv.currentTime >= rv.duration - 0.3) {
+            rv.ontimeupdate = null; safeVideoPause(rv); showReceptionInvite();
+          }
+        };
+        safeVideoPlay(rv, showReceptionInvite);
         receptionTimer = setTimeout(showReceptionInvite, 60000);
       } else {
         receptionTimer = setTimeout(showReceptionInvite, 1000);
