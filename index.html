@@ -2817,24 +2817,19 @@ function safeVideoPause(video) {
 }
 
 // playVideoThenCall(video, onDone)
-// Plays video from start. Calls onDone when:
-//   - video ends naturally (onended)
-//   - video stalls for >3s with no progress (watchdog)
-//   - video fails to start within 4s (canplay timeout)
-//   - any error occurs
-// onDone is guaranteed to be called exactly once.
+// Plays video from start. Calls onDone ONLY when video ends naturally.
+// If video stalls, it retries play() to keep it going — never skips.
+// onDone is guaranteed to be called exactly once (on natural end or error).
 function playVideoThenCall(video, onDone) {
   if (!video) { onDone(); return; }
 
   var done = false;
-  var startTimer = null;
   var stallTimer = null;
-  var lastTime = -1;
+  var retryCount = 0;
 
   function finish() {
     if (done) return;
     done = true;
-    clearTimeout(startTimer);
     clearTimeout(stallTimer);
     video.removeEventListener('ended', onEnded);
     video.removeEventListener('error', onError);
@@ -2844,47 +2839,56 @@ function playVideoThenCall(video, onDone) {
   }
 
   function onEnded() { finish(); }
-  function onError() { finish(); }
+  function onError() {
+    // On error, retry play up to 3 times before giving up
+    if (retryCount < 3 && !done) {
+      retryCount++;
+      setTimeout(function() {
+        if (!done) { var p = video.play(); if (p && p.catch) p.catch(function(){}); }
+      }, 500);
+    } else {
+      finish();
+    }
+  }
 
   function onTimeUpdate() {
     // Video is making progress — reset stall watchdog
     clearTimeout(stallTimer);
     stallTimer = setTimeout(function() {
-      // No timeupdate for 3s while supposedly playing → stalled
-      if (!done && !video.paused && !video.ended) finish();
+      // No progress for 3s while playing → try to kick it back alive
+      if (!done && !video.ended) {
+        var p = video.play();
+        if (p && p.catch) p.catch(function(){});
+        // Reset watchdog — keep watching
+        onTimeUpdate();
+      }
     }, 3000);
-    lastTime = video.currentTime;
   }
 
   video.addEventListener('ended', onEnded, { once: true });
-  video.addEventListener('error', onError, { once: true });
+  video.addEventListener('error', onError);
   video.addEventListener('timeupdate', onTimeUpdate);
 
-  // If video not ready, wait up to 4s for canplay
-  if (video.readyState < 3) {
-    startTimer = setTimeout(function() {
-      // Took too long to start — skip
-      finish();
-    }, 4000);
-    var onCanPlay = function() {
-      clearTimeout(startTimer);
-      startTimer = null;
-      video.currentTime = 0;
-      var p = video.play();
-      if (p && p.catch) p.catch(function() { finish(); });
-      // Start stall watchdog — if no timeupdate in 3s after play attempt
-      stallTimer = setTimeout(function() {
-        if (!done) finish();
-      }, 3000);
-    };
-    video.addEventListener('canplay', onCanPlay, { once: true });
-    // Trigger load in case browser hasn't started
-    try { video.load(); } catch(e) {}
-  } else {
-    // Video already buffered — play immediately
+  function startPlay() {
     video.currentTime = 0;
     var p = video.play();
-    if (p && p.catch) p.catch(function() { finish(); });
+    if (p && p.catch) p.catch(function() {
+      // Play rejected (autoplay policy) — retry once after short delay
+      setTimeout(function() {
+        if (!done) { var p2 = video.play(); if (p2 && p2.catch) p2.catch(function(){}); }
+      }, 300);
+    });
+  }
+
+  // If video not ready yet, wait for canplay then start
+  if (video.readyState < 3) {
+    video.addEventListener('canplay', function onCanPlay() {
+      video.removeEventListener('canplay', onCanPlay);
+      startPlay();
+    });
+    try { video.load(); } catch(e) {}
+  } else {
+    startPlay();
     // Start stall watchdog
     stallTimer = setTimeout(function() {
       if (!done) finish();
