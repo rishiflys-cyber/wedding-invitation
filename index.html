@@ -1843,7 +1843,7 @@ html, body {
     <div class="loader-petal"><svg viewBox="0 0 38 60"><ellipse cx="19" cy="35" rx="13" ry="28" fill="rgba(220,140,40,0.65)" /></svg></div>
     <div class="loader-center-dot"></div>
   </div>
-  <div class="loader-title">Dear Guest</div>
+  <div id="loader-greeting" class="loader-title">Dear Guest</div>
   <div id="loader-dear" style="font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;letter-spacing:0.12em;color:rgba(245,200,66,0.7);margin-bottom:6px;"></div>
   <div class="loader-subtitle">Preparing your invitation</div>
   <div class="loader-bar-wrap"><div class="loader-bar" id="loader-bar"></div></div>
@@ -3010,6 +3010,13 @@ const _guestFull = (_sal ? _sal + '. ' : '') + (_guestRaw || 'Friend');
 (function(){ var el = document.getElementById('loader-dear'); if(el) el.textContent = 'Dear ' + _guestFull + ','; })();
 // VIP unlock: ?vip=1, ?vip=true, or short alias ?r=1
 const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _params.get('r') === '1';
+
+// Personalise loader greeting
+(function() {
+  var el = document.getElementById('loader-greeting');
+  if (!el) return;
+  el.textContent = _guestRaw ? 'Dear ' + _guestRaw : 'Dear Guest';
+})();
 
 
 /* ── LOADER: fetch all videos before showing invitation ── */
