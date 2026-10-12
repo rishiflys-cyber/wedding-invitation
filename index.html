@@ -1844,7 +1844,6 @@ html, body {
     <div class="loader-center-dot"></div>
   </div>
   <div id="loader-greeting" class="loader-title">Dear Guest</div>
-  <div id="loader-dear" style="font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;letter-spacing:0.12em;color:rgba(245,200,66,0.7);margin-bottom:6px;"></div>
   <div class="loader-subtitle">Preparing your invitation</div>
   <div class="loader-bar-wrap"><div class="loader-bar" id="loader-bar"></div></div>
   <button class="loader-open-btn" id="loader-open-btn" onclick="openInvitation()">Open Invitation ✦</button>
@@ -3016,8 +3015,8 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
   var el = document.getElementById('loader-greeting');
   if (!el) return;
   el.innerHTML = _guestRaw
-    ? 'We\'ve been waiting for you,<br><span style="font-size:1.3em;font-style:italic;color:#f9e060;">' + _guestRaw + '</span>'
-    : 'We\'ve been waiting for you';
+    ? 'A special invitation for<br><span style="font-size:1.25em;font-style:italic;color:#f9e060;">' + _guestRaw + '</span>'
+    : 'A special invitation for you';
 })();
 
 
