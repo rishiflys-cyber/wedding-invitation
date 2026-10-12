@@ -1855,6 +1855,13 @@ html, body {
      SCREEN 1 — ENVELOPE
 ══════════════════════════════════════════ -->
 <!-- ══ LOADING SCREEN ══ -->
+<!-- Open in browser banner — shown only inside WhatsApp/Instagram in-app browser -->
+<div id="open-browser-banner" style="display:none;position:fixed;top:0;left:0;right:0;z-index:99999;background:linear-gradient(135deg,#1a0008,#3a0010);border-bottom:1px solid rgba(245,200,66,0.4);padding:14px 20px;text-align:center;">
+  <div style="font-family:'Playfair Display',serif;font-size:14px;color:#ffe87a;margin-bottom:8px;">⚠️ For the best experience, open in your browser</div>
+  <div style="font-size:11px;color:rgba(245,200,66,0.65);letter-spacing:1px;margin-bottom:10px;">Tap the ⋯ menu → "Open in Browser" / "Open in Chrome" / "Open in Safari"</div>
+  <button onclick="document.getElementById('open-browser-banner').style.display='none'" style="background:rgba(245,200,66,0.15);border:1px solid rgba(245,200,66,0.4);border-radius:20px;color:rgba(245,200,66,0.8);font-size:11px;padding:6px 18px;cursor:pointer;">Dismiss</button>
+</div>
+
 <div id="screen-loader">
   <div class="loader-florals">
     <div class="loader-petal"><svg viewBox="0 0 38 60"><ellipse cx="19" cy="35" rx="13" ry="28" fill="rgba(245,180,50,0.7)" /></svg></div>
@@ -2387,7 +2394,7 @@ html, body {
      SCREEN MEHENDI
 ══════════════════════════════════════════ -->
 <div id="screen-mehendi" class="screen event-screen" onclick="goTo('screen-sangeet')">
-  <video id="mehendi-video" muted playsinline preload="none"
+  <video id="mehendi-video" muted playsinline preload="auto"
     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
     <source src="mehendi.mp4" type="video/mp4">
   </video>
@@ -2424,7 +2431,7 @@ html, body {
      SCREEN SANGEET
 ══════════════════════════════════════════ -->
 <div id="screen-sangeet" class="screen event-screen" onclick="goTo('screen-haldi')">
-  <video id="sangeet-video" muted playsinline preload="none"
+  <video id="sangeet-video" muted playsinline preload="auto"
     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
     <source src="sangeet.mp4" type="video/mp4">
   </video>
@@ -2461,7 +2468,7 @@ html, body {
      SCREEN HALDI
 ══════════════════════════════════════════ -->
 <div id="screen-haldi" class="screen event-screen" onclick="goTo('screen-wedding')">
-  <video id="haldi-video" muted playsinline preload="none"
+  <video id="haldi-video" muted playsinline preload="auto"
     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
     <source src="haldi.mp4" type="video/mp4">
   </video>
@@ -2498,7 +2505,7 @@ html, body {
      SCREEN WEDDING
 ══════════════════════════════════════════ -->
 <div id="screen-wedding" class="screen event-screen" onclick="showWeddingInviteNow()">
-  <video id="wedding-video" muted playsinline preload="none"
+  <video id="wedding-video" muted playsinline preload="auto"
     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
     <source src="wedding.mp4" type="video/mp4">
   </video>
@@ -2538,7 +2545,7 @@ html, body {
      SCREEN RECEPTION (VIP only)
 ══════════════════════════════════════════ -->
 <div id="screen-reception" class="screen event-screen" onclick="goTo('screen-rsvp')">
-  <video id="reception-video" muted playsinline preload="none"
+  <video id="reception-video" muted playsinline preload="auto"
     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
     <source src="reception.mp4" type="video/mp4">
   </video>
@@ -2746,6 +2753,16 @@ document.addEventListener('visibilitychange', function() {
     if (_noWakeLockScreens.indexOf(current) === -1) { requestWakeLock(); }
   }
 });
+
+// Detect in-app browser (WhatsApp, Instagram, Facebook) and show open-in-browser prompt
+(function(){
+  var ua = navigator.userAgent || '';
+  var isInApp = /FBAN|FBAV|Instagram|WhatsApp|Line\/|MicroMessenger|GSA\//.test(ua);
+  if (isInApp) {
+    var banner = document.getElementById('open-browser-banner');
+    if (banner) banner.style.display = 'block';
+  }
+})();
 
 var _navigating = false;
 var _lastNavTime = 0;
@@ -3381,7 +3398,7 @@ document.addEventListener('DOMContentLoaded', function() {
             showMehendiInvite();
           }
         };
-        if(mv.readyState===0){mv.load();} safeVideoPlay(mv, showMehendiInvite);
+        safeVideoPlay(mv, showMehendiInvite);
         mehendiTimer = setTimeout(showMehendiInvite, 60000);
       }
     }
@@ -3443,7 +3460,7 @@ document.addEventListener('DOMContentLoaded', function() {
             sv.ontimeupdate = null; safeVideoPause(sv); showSangeetInvite();
           }
         };
-        if(sv.readyState===0){sv.load();} safeVideoPlay(sv, showSangeetInvite);
+        safeVideoPlay(sv, showSangeetInvite);
         sangeetTimer = setTimeout(showSangeetInvite, 60000);
       } else {
         sangeetTimer = setTimeout(showSangeetInvite, 1000);
@@ -3504,7 +3521,7 @@ document.addEventListener('DOMContentLoaded', function() {
             hv.ontimeupdate = null; safeVideoPause(hv); showHaldiInvite();
           }
         };
-        if(hv.readyState===0){hv.load();} safeVideoPlay(hv, showHaldiInvite);
+        safeVideoPlay(hv, showHaldiInvite);
         haldiTimer = setTimeout(showHaldiInvite, 60000);
       } else {
         haldiTimer = setTimeout(showHaldiInvite, 1000);
@@ -3565,7 +3582,7 @@ document.addEventListener('DOMContentLoaded', function() {
             wv.ontimeupdate = null; safeVideoPause(wv); showWeddingInvite();
           }
         };
-        if(wv.readyState===0){wv.load();} safeVideoPlay(wv, showWeddingInvite);
+        safeVideoPlay(wv, showWeddingInvite);
         weddingTimer = setTimeout(showWeddingInvite, 60000);
       } else {
         weddingTimer = setTimeout(showWeddingInvite, 1000);
@@ -3622,7 +3639,7 @@ document.addEventListener('DOMContentLoaded', function() {
             rv.ontimeupdate = null; safeVideoPause(rv); showReceptionInvite();
           }
         };
-        if(rv.readyState===0){rv.load();} safeVideoPlay(rv, showReceptionInvite);
+        safeVideoPlay(rv, showReceptionInvite);
         receptionTimer = setTimeout(showReceptionInvite, 60000);
       } else {
         receptionTimer = setTimeout(showReceptionInvite, 1000);
