@@ -3433,17 +3433,20 @@ document.addEventListener('DOMContentLoaded', function() {
       if (mp) { mp.style.transition = 'none'; mp.style.transform = 'translateY(100%)'; mp.style.pointerEvents = 'none'; }
       if (mi) { mi.style.opacity = '0'; mi.style.transform = 'translateY(20px)'; mi.style.pointerEvents = 'none'; }
       if (mv) {
-        mv.onended = function() { safeVideoPause(mv); showMehendiInvite(); };
-        // timeupdate fallback: catch end even if onended doesn't fire
-        mv.ontimeupdate = function() {
-          if (mv.duration && mv.currentTime >= mv.duration - 0.3) {
-            mv.ontimeupdate = null;
-            safeVideoPause(mv);
-            showMehendiInvite();
-          }
-        };
-        safeVideoPlay(mv, showMehendiInvite);
-        mehendiTimer = setTimeout(showMehendiInvite, 60000);
+        mehendiTimer = setTimeout(function() {
+          if (current !== 'screen-mehendi') return;
+          mv.onended = function() { safeVideoPause(mv); showMehendiInvite(); };
+          // timeupdate fallback: catch end even if onended doesn't fire
+          mv.ontimeupdate = function() {
+            if (mv.duration && mv.currentTime >= mv.duration - 0.3) {
+              mv.ontimeupdate = null;
+              safeVideoPause(mv);
+              showMehendiInvite();
+            }
+          };
+          safeVideoPlay(mv, showMehendiInvite);
+          mehendiTimer = setTimeout(showMehendiInvite, 60000);
+        }, 2000);
       }
     }
   };
@@ -3498,14 +3501,17 @@ document.addEventListener('DOMContentLoaded', function() {
       if (sp) { sp.style.transition = 'none'; sp.style.transform = 'translateY(100%)'; sp.style.pointerEvents = 'none'; }
       if (si) { si.style.opacity = '0'; si.style.transform = 'translateY(20px)'; si.style.pointerEvents = 'none'; }
       if (sv) {
-        sv.onended = function() { safeVideoPause(sv); showSangeetInvite(); };
-        sv.ontimeupdate = function() {
-          if (sv.duration && sv.currentTime >= sv.duration - 0.3) {
-            sv.ontimeupdate = null; safeVideoPause(sv); showSangeetInvite();
-          }
-        };
-        safeVideoPlay(sv, showSangeetInvite);
-        sangeetTimer = setTimeout(showSangeetInvite, 60000);
+        sangeetTimer = setTimeout(function() {
+          if (current !== 'screen-sangeet') return;
+          sv.onended = function() { safeVideoPause(sv); showSangeetInvite(); };
+          sv.ontimeupdate = function() {
+            if (sv.duration && sv.currentTime >= sv.duration - 0.3) {
+              sv.ontimeupdate = null; safeVideoPause(sv); showSangeetInvite();
+            }
+          };
+          safeVideoPlay(sv, showSangeetInvite);
+          sangeetTimer = setTimeout(showSangeetInvite, 60000);
+        }, 2000);
       } else {
         sangeetTimer = setTimeout(showSangeetInvite, 1000);
       }
@@ -3559,14 +3565,17 @@ document.addEventListener('DOMContentLoaded', function() {
       if (hp) { hp.style.transition = 'none'; hp.style.transform = 'translateY(100%)'; hp.style.pointerEvents = 'none'; }
       if (hi) { hi.style.opacity = '0'; hi.style.transform = 'translateY(20px)'; hi.style.pointerEvents = 'none'; }
       if (hv) {
-        hv.onended = function() { safeVideoPause(hv); showHaldiInvite(); };
-        hv.ontimeupdate = function() {
-          if (hv.duration && hv.currentTime >= hv.duration - 0.3) {
-            hv.ontimeupdate = null; safeVideoPause(hv); showHaldiInvite();
-          }
-        };
-        safeVideoPlay(hv, showHaldiInvite);
-        haldiTimer = setTimeout(showHaldiInvite, 60000);
+        haldiTimer = setTimeout(function() {
+          if (current !== 'screen-haldi') return;
+          hv.onended = function() { safeVideoPause(hv); showHaldiInvite(); };
+          hv.ontimeupdate = function() {
+            if (hv.duration && hv.currentTime >= hv.duration - 0.3) {
+              hv.ontimeupdate = null; safeVideoPause(hv); showHaldiInvite();
+            }
+          };
+          safeVideoPlay(hv, showHaldiInvite);
+          haldiTimer = setTimeout(showHaldiInvite, 60000);
+        }, 2000);
       } else {
         haldiTimer = setTimeout(showHaldiInvite, 1000);
       }
@@ -3620,14 +3629,17 @@ document.addEventListener('DOMContentLoaded', function() {
       if (wi) { wi.style.opacity = '0'; wi.style.transform = 'translateY(20px)'; wi.style.pointerEvents = 'none'; }
       if (wv) {
         wv.currentTime = 0;
-        wv.onended = function() { safeVideoPause(wv); showWeddingInvite(); };
-        wv.ontimeupdate = function() {
-          if (wv.duration && wv.currentTime >= wv.duration - 0.3) {
-            wv.ontimeupdate = null; safeVideoPause(wv); showWeddingInvite();
-          }
-        };
-        safeVideoPlay(wv, showWeddingInvite);
-        weddingTimer = setTimeout(showWeddingInvite, 60000);
+        weddingTimer = setTimeout(function() {
+          if (current !== 'screen-wedding') return;
+          wv.onended = function() { safeVideoPause(wv); showWeddingInvite(); };
+          wv.ontimeupdate = function() {
+            if (wv.duration && wv.currentTime >= wv.duration - 0.3) {
+              wv.ontimeupdate = null; safeVideoPause(wv); showWeddingInvite();
+            }
+          };
+          safeVideoPlay(wv, showWeddingInvite);
+          weddingTimer = setTimeout(showWeddingInvite, 60000);
+        }, 2000);
       } else {
         weddingTimer = setTimeout(showWeddingInvite, 1000);
       }
@@ -3677,14 +3689,17 @@ document.addEventListener('DOMContentLoaded', function() {
       if (rp) { rp.style.transition = 'none'; rp.style.transform = 'translateY(100%)'; rp.style.pointerEvents = 'none'; }
       if (ri) { ri.style.opacity = '0'; ri.style.transform = 'translateY(20px)'; ri.style.pointerEvents = 'none'; }
       if (rv) {
-        rv.onended = function() { safeVideoPause(rv); showReceptionInvite(); };
-        rv.ontimeupdate = function() {
-          if (rv.duration && rv.currentTime >= rv.duration - 0.3) {
-            rv.ontimeupdate = null; safeVideoPause(rv); showReceptionInvite();
-          }
-        };
-        safeVideoPlay(rv, showReceptionInvite);
-        receptionTimer = setTimeout(showReceptionInvite, 60000);
+        receptionTimer = setTimeout(function() {
+          if (current !== 'screen-reception') return;
+          rv.onended = function() { safeVideoPause(rv); showReceptionInvite(); };
+          rv.ontimeupdate = function() {
+            if (rv.duration && rv.currentTime >= rv.duration - 0.3) {
+              rv.ontimeupdate = null; safeVideoPause(rv); showReceptionInvite();
+            }
+          };
+          safeVideoPlay(rv, showReceptionInvite);
+          receptionTimer = setTimeout(showReceptionInvite, 60000);
+        }, 2000);
       } else {
         receptionTimer = setTimeout(showReceptionInvite, 1000);
       }
