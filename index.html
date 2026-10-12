@@ -2910,9 +2910,10 @@ document.addEventListener('DOMContentLoaded', function() {
       if (mp) { mp.style.transition = 'none'; mp.style.transform = 'translateY(100%)'; mp.style.pointerEvents = 'none'; }
       if (mi) { mi.style.opacity = '0'; mi.style.transform = 'translateY(20px)'; mi.style.pointerEvents = 'none'; }
       if (mv) {
+        mv.onended = function() { safeVideoPause(mv); showMehendiInvite(); };
         safeVideoPlay(mv, showMehendiInvite);
-        /* hard cap 4s fallback */
-        mehendiTimer = setTimeout(showMehendiInvite, 4000);
+        /* fallback in case ended never fires */
+        mehendiTimer = setTimeout(showMehendiInvite, 15000);
       }
     }
   };
@@ -2967,8 +2968,10 @@ document.addEventListener('DOMContentLoaded', function() {
       if (sp) { sp.style.transition = 'none'; sp.style.transform = 'translateY(100%)'; sp.style.pointerEvents = 'none'; }
       if (si) { si.style.opacity = '0'; si.style.transform = 'translateY(20px)'; si.style.pointerEvents = 'none'; }
       if (sv) {
+        sv.onended = function() { safeVideoPause(sv); showSangeetInvite(); };
         safeVideoPlay(sv, showSangeetInvite);
-        sangeetTimer = setTimeout(showSangeetInvite, 4000);
+        /* fallback in case ended never fires */
+        sangeetTimer = setTimeout(showSangeetInvite, 15000);
       } else {
         sangeetTimer = setTimeout(showSangeetInvite, 1000);
       }
