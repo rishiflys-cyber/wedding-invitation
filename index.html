@@ -7,11 +7,6 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" href="mehendi.mp4" as="video" type="video/mp4">
-<link rel="preload" href="sangeet.mp4" as="video" type="video/mp4">
-<link rel="preload" href="haldi.mp4" as="video" type="video/mp4">
-<link rel="preload" href="wedding.mp4" as="video" type="video/mp4">
-<link rel="preload" href="reception.mp4" as="video" type="video/mp4">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -2164,7 +2159,7 @@ html, body {
      SCREEN MEHENDI
 ══════════════════════════════════════════ -->
 <div id="screen-mehendi" class="screen event-screen" onclick="goTo('screen-sangeet')">
-  <video id="mehendi-video" muted playsinline preload="auto"
+  <video id="mehendi-video" muted playsinline preload="none"
     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
     <source src="mehendi.mp4" type="video/mp4">
   </video>
@@ -2201,7 +2196,7 @@ html, body {
      SCREEN SANGEET
 ══════════════════════════════════════════ -->
 <div id="screen-sangeet" class="screen event-screen" onclick="goTo('screen-haldi')">
-  <video id="sangeet-video" muted playsinline preload="auto"
+  <video id="sangeet-video" muted playsinline preload="none"
     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
     <source src="sangeet.mp4" type="video/mp4">
   </video>
@@ -2238,7 +2233,7 @@ html, body {
      SCREEN HALDI
 ══════════════════════════════════════════ -->
 <div id="screen-haldi" class="screen event-screen" onclick="goTo('screen-wedding')">
-  <video id="haldi-video" muted playsinline preload="auto"
+  <video id="haldi-video" muted playsinline preload="none"
     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
     <source src="haldi.mp4" type="video/mp4">
   </video>
@@ -2275,7 +2270,7 @@ html, body {
      SCREEN WEDDING
 ══════════════════════════════════════════ -->
 <div id="screen-wedding" class="screen event-screen" onclick="showWeddingInviteNow()">
-  <video id="wedding-video" muted playsinline preload="auto"
+  <video id="wedding-video" muted playsinline preload="none"
     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
     <source src="wedding.mp4" type="video/mp4">
   </video>
@@ -2315,7 +2310,7 @@ html, body {
      SCREEN RECEPTION (VIP only)
 ══════════════════════════════════════════ -->
 <div id="screen-reception" class="screen event-screen" onclick="goTo('screen-rsvp')">
-  <video id="reception-video" muted playsinline preload="auto"
+  <video id="reception-video" muted playsinline preload="none"
     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
     <source src="reception.mp4" type="video/mp4">
   </video>
@@ -2801,14 +2796,6 @@ const _guestFull = (_sal ? _sal + '. ' : '') + (_guestRaw || 'Friend');
 // VIP unlock: ?vip=1, ?vip=true, or short alias ?r=1
 const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _params.get('r') === '1';
 
-// Aggressively preload ALL videos immediately on page load
-['mehendi-video','sangeet-video','haldi-video','wedding-video','reception-video'].forEach(function(id) {
-  var v = document.getElementById(id);
-  if (!v) return;
-  v.preload = 'auto';
-  v.load();
-});
-
 // Wire wedding screen → reception (VIP) or rsvp (everyone else)
 /* ── Bulletproof video play/pause for iOS Safari ── */
 function safeVideoPause(video) {
@@ -2817,83 +2804,36 @@ function safeVideoPause(video) {
 }
 
 // playVideoThenCall(video, onDone)
-// Plays video from start. Calls onDone ONLY when video ends naturally.
-// If video stalls, it retries play() to keep it going — never skips.
-// onDone is guaranteed to be called exactly once (on natural end or error).
+// Loads and plays a single video. Calls onDone when it ends naturally.
+// One video at a time = no iOS throttling = no freezes.
 function playVideoThenCall(video, onDone) {
   if (!video) { onDone(); return; }
 
   var done = false;
-  var stallTimer = null;
-  var retryCount = 0;
 
   function finish() {
     if (done) return;
     done = true;
-    clearTimeout(stallTimer);
     video.removeEventListener('ended', onEnded);
-    video.removeEventListener('error', onError);
-    video.removeEventListener('timeupdate', onTimeUpdate);
     safeVideoPause(video);
     onDone();
   }
 
   function onEnded() { finish(); }
-  function onError() {
-    // On error, retry play up to 3 times before giving up
-    if (retryCount < 3 && !done) {
-      retryCount++;
-      setTimeout(function() {
-        if (!done) { var p = video.play(); if (p && p.catch) p.catch(function(){}); }
-      }, 500);
-    } else {
-      finish();
-    }
-  }
-
-  function onTimeUpdate() {
-    // Video is making progress — reset stall watchdog
-    clearTimeout(stallTimer);
-    stallTimer = setTimeout(function() {
-      // No progress for 3s while playing → try to kick it back alive
-      if (!done && !video.ended) {
-        var p = video.play();
-        if (p && p.catch) p.catch(function(){});
-        // Reset watchdog — keep watching
-        onTimeUpdate();
-      }
-    }, 3000);
-  }
-
   video.addEventListener('ended', onEnded, { once: true });
-  video.addEventListener('error', onError);
-  video.addEventListener('timeupdate', onTimeUpdate);
 
-  function startPlay() {
+  // Load this video fresh (preload="none" means nothing loaded yet)
+  video.preload = 'auto';
+  video.currentTime = 0;
+
+  video.addEventListener('canplaythrough', function go() {
+    video.removeEventListener('canplaythrough', go);
     video.currentTime = 0;
     var p = video.play();
-    if (p && p.catch) p.catch(function() {
-      // Play rejected (autoplay policy) — retry once after short delay
-      setTimeout(function() {
-        if (!done) { var p2 = video.play(); if (p2 && p2.catch) p2.catch(function(){}); }
-      }, 300);
-    });
-  }
+    if (p && p.catch) p.catch(function(){});
+  }, { once: true });
 
-  // If video not ready yet, wait for canplay then start
-  if (video.readyState < 3) {
-    video.addEventListener('canplay', function onCanPlay() {
-      video.removeEventListener('canplay', onCanPlay);
-      startPlay();
-    });
-    try { video.load(); } catch(e) {}
-  } else {
-    startPlay();
-    // Start stall watchdog
-    stallTimer = setTimeout(function() {
-      if (!done) finish();
-    }, 3000);
-  }
+  video.load();
 }
 
 // Legacy wrapper — keep safeVideoPlay name used elsewhere
