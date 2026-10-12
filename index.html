@@ -3189,7 +3189,7 @@ document.addEventListener('DOMContentLoaded', function() {
         mv.onended = function() { safeVideoPause(mv); showMehendiInvite(); };
         safeVideoPlay(mv, showMehendiInvite);
         // Hard fallback: if video never fires onended, show invite after 12s
-        mehendiTimer = setTimeout(showMehendiInvite, 12000);
+        mehendiTimer = setTimeout(showMehendiInvite, 4000);
       }
     }
   };
@@ -3246,7 +3246,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (sv) {
         sv.onended = function() { safeVideoPause(sv); showSangeetInvite(); };
         safeVideoPlay(sv, showSangeetInvite);
-        sangeetTimer = setTimeout(showSangeetInvite, 12000);
+        sangeetTimer = setTimeout(showSangeetInvite, 4000);
       } else {
         sangeetTimer = setTimeout(showSangeetInvite, 1000);
       }
@@ -3302,7 +3302,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (hv) {
         hv.onended = function() { safeVideoPause(hv); showHaldiInvite(); };
         safeVideoPlay(hv, showHaldiInvite);
-        haldiTimer = setTimeout(showHaldiInvite, 12000);
+        haldiTimer = setTimeout(showHaldiInvite, 4000);
       } else {
         haldiTimer = setTimeout(showHaldiInvite, 1000);
       }
@@ -3358,7 +3358,7 @@ document.addEventListener('DOMContentLoaded', function() {
         wv.currentTime = 0;
         safeVideoPlay(wv, showWeddingInvite);
         wv.onended = function() { safeVideoPause(wv); showWeddingInvite(); };
-        weddingTimer = setTimeout(showWeddingInvite, 12000);
+        weddingTimer = setTimeout(showWeddingInvite, 4000);
       } else {
         weddingTimer = setTimeout(showWeddingInvite, 1000);
       }
@@ -3411,7 +3411,7 @@ document.addEventListener('DOMContentLoaded', function() {
         rv.currentTime = 0;
         safeVideoPlay(rv, showReceptionInvite);
         rv.onended = function() { safeVideoPause(rv); showReceptionInvite(); };
-        receptionTimer = setTimeout(showReceptionInvite, 12000);
+        receptionTimer = setTimeout(showReceptionInvite, 4000);
       } else {
         receptionTimer = setTimeout(showReceptionInvite, 1000);
       }
