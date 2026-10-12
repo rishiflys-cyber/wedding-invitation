@@ -2176,9 +2176,9 @@ html, body {
     <div style="display:flex;flex-direction:column;align-items:center;gap:4px;margin-top:4px;position:relative;">
       <!-- gold glow halo behind names -->
       <div style="position:absolute;inset:-30px -20px;background:radial-gradient(ellipse at 50% 50%,rgba(249,224,96,0.12) 0%,transparent 65%);pointer-events:none;border-radius:50%;"></div>
-      <span id="name-rishabh" class="shimmer-name" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:32px;font-weight:700;font-style:italic;letter-spacing:1px;position:relative;opacity:0;display:inline-block;">Rishabh Chattopadhyay</span>
-      <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:20px;font-weight:300;opacity:0;color:#f5dfa0;letter-spacing:10px;margin:4px 0;display:inline-block;" id="names-amp">&amp;</span>
-      <span id="name-ananya" class="shimmer-name" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:32px;font-weight:700;font-style:italic;letter-spacing:1px;position:relative;opacity:0;display:inline-block;">Ananya Dash</span>
+      <span id="name-rishabh" class="shimmer-name" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:32px;font-weight:700;font-style:italic;letter-spacing:1px;position:relative;opacity:0;display:inline-block;white-space:nowrap;">Rishabh Chattopadhyay</span>
+      <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:20px;font-weight:300;opacity:0;color:#f5dfa0;letter-spacing:10px;margin:4px 0;display:inline-block;white-space:nowrap;" id="names-amp">&amp;</span>
+      <span id="name-ananya" class="shimmer-name" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:32px;font-weight:700;font-style:italic;letter-spacing:1px;position:relative;opacity:0;display:inline-block;white-space:nowrap;">Ananya Dash</span>
     </div>
 
     <div id="act3-divider" class="invite-divider" style="opacity:0;transition:opacity 0.9s ease;"><span class="invite-divider-diamond"></span></div>
@@ -2841,7 +2841,7 @@ function goTo(id) {
       if(par){ par.style.opacity='1'; }
     }, 2800);
     // Auto-advance after everything is visible
-    setTimeout(function(){ if(current==='screen-invite3') goTo('screen-mehendi'); }, 5000);
+    setTimeout(function(){ if(current==='screen-invite3') goTo('screen-mehendi'); }, 5500);
   }
 }
 
