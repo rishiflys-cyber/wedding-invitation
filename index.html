@@ -2973,12 +2973,17 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
         el.addEventListener('loadeddata', function() {
           el.currentTime = 0;
           // Prime Android decoder: silent play then immediate pause
+          // Use a flag so this primer never interferes with real playback later
+          el._priming = true;
           var p = el.play();
           if (p !== undefined) {
             p.then(function() {
               el.pause();
               el.currentTime = 0;
-            }).catch(function() {});
+              el._priming = false;
+            }).catch(function() { el._priming = false; });
+          } else {
+            el._priming = false;
           }
         }, { once: true });
       }
@@ -3076,12 +3081,28 @@ var _slowConnection = (function() {
 function safeVideoPlay(video, onSkip) {
   if (!video) { if (onSkip) onSkip(); return; }
 
+  // If still priming (Android decoder init), wait for it to finish first
+  if (video._priming) {
+    setTimeout(function() { safeVideoPlay(video, onSkip); }, 100);
+    return;
+  }
+
   // Clear any previously stacked onended to prevent double-firing on revisit
   video.onended = null;
 
   function doPlay() {
-    var p = video.play();
-    if (p !== undefined) { p.catch(function(){}); }
+    try { video.pause(); } catch(e) {}
+    video.currentTime = 0;
+    var started = false;
+    function play() {
+      if (started) return;
+      started = true;
+      var p = video.play();
+      if (p !== undefined) { p.catch(function(){}); }
+    }
+    video.addEventListener('seeked', function() { play(); }, { once: true });
+    // Fallback in case seeked doesn't fire (already at 0)
+    setTimeout(play, 80);
   }
 
   if (video.readyState === 0) {
@@ -3095,27 +3116,12 @@ function safeVideoPlay(video, onSkip) {
     function onCanPlay() {
       if (skipped) return;
       clearTimeout(skipTimer);
-      video.currentTime = 0;
       doPlay();
     }
     video.addEventListener('canplay', onCanPlay, { once: true });
     video.load();
   } else {
-    // Blob already loaded — pause first, seek to 0, then play
-    // A tiny setTimeout after seek lets iOS flush the seek before play
-    try { video.pause(); } catch(e) {}
-    video.currentTime = 0;
-    var seeked = false;
-    function onSeeked() {
-      if (seeked) return;
-      seeked = true;
-      doPlay();
-    }
-    video.addEventListener('seeked', onSeeked, { once: true });
-    // Fallback: if seeked never fires (already at 0), play after 80ms
-    setTimeout(function() {
-      if (!seeked) { seeked = true; doPlay(); }
-    }, 80);
+    doPlay();
   }
 }
 function safeVideoPause(video) {
@@ -3182,7 +3188,8 @@ document.addEventListener('DOMContentLoaded', function() {
       if (mv) {
         mv.onended = function() { safeVideoPause(mv); showMehendiInvite(); };
         safeVideoPlay(mv, showMehendiInvite);
-        mehendiTimer = setTimeout(showMehendiInvite, 30000);
+        // Hard fallback: if video never fires onended, show invite after 12s
+        mehendiTimer = setTimeout(showMehendiInvite, 12000);
       }
     }
   };
@@ -3239,7 +3246,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (sv) {
         sv.onended = function() { safeVideoPause(sv); showSangeetInvite(); };
         safeVideoPlay(sv, showSangeetInvite);
-        sangeetTimer = setTimeout(showSangeetInvite, 30000);
+        sangeetTimer = setTimeout(showSangeetInvite, 12000);
       } else {
         sangeetTimer = setTimeout(showSangeetInvite, 1000);
       }
@@ -3295,7 +3302,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (hv) {
         hv.onended = function() { safeVideoPause(hv); showHaldiInvite(); };
         safeVideoPlay(hv, showHaldiInvite);
-        haldiTimer = setTimeout(showHaldiInvite, 30000);
+        haldiTimer = setTimeout(showHaldiInvite, 12000);
       } else {
         haldiTimer = setTimeout(showHaldiInvite, 1000);
       }
@@ -3351,7 +3358,7 @@ document.addEventListener('DOMContentLoaded', function() {
         wv.currentTime = 0;
         safeVideoPlay(wv, showWeddingInvite);
         wv.onended = function() { safeVideoPause(wv); showWeddingInvite(); };
-        weddingTimer = setTimeout(showWeddingInvite, 30000);
+        weddingTimer = setTimeout(showWeddingInvite, 12000);
       } else {
         weddingTimer = setTimeout(showWeddingInvite, 1000);
       }
@@ -3404,7 +3411,7 @@ document.addEventListener('DOMContentLoaded', function() {
         rv.currentTime = 0;
         safeVideoPlay(rv, showReceptionInvite);
         rv.onended = function() { safeVideoPause(rv); showReceptionInvite(); };
-        receptionTimer = setTimeout(showReceptionInvite, 30000);
+        receptionTimer = setTimeout(showReceptionInvite, 12000);
       } else {
         receptionTimer = setTimeout(showReceptionInvite, 1000);
       }
