@@ -3076,11 +3076,11 @@ function openEnvelope() {
   opened = true;
   requestWakeLock();
 
-  // Start music from beginning
+  // Start music from beginning (1s delay)
   const music = document.getElementById('bgmusic');
   music.currentTime = 0;
   music.volume = 0.5;
-  music.play().catch(() => {});
+  setTimeout(function() { music.play().catch(function(){}); }, 1000);
   // Show music toggle button and set icon to "on" state immediately (synchronous)
   var mb = document.getElementById('music-btn');
   if (mb) mb.style.display = 'flex';
