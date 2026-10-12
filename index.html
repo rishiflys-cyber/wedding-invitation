@@ -1846,14 +1846,14 @@ html, body {
   <div class="loader-title">Rishabh &amp; Ananya</div>
   <div class="loader-subtitle">Preparing your invitation</div>
   <div class="loader-bar-wrap"><div class="loader-bar" id="loader-bar"></div></div>
-  <div style="margin-bottom:18px;padding:0 32px;text-align:center;">
-    <div style="font-family:'Cormorant Garamond',serif;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(245,200,66,0.55);line-height:1.8;">✦ Interactive Invitation ✦</div>
-    <div style="font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:0.08em;color:rgba(245,200,66,0.4);margin-top:4px;line-height:1.7;">This invitation is interactive — tap to explore</div>
-  </div>
   <button class="loader-open-btn" id="loader-open-btn" onclick="openInvitation()">Open Invitation ✦</button>
-  <div id="loader-nudge" style="display:none;margin-top:22px;text-align:center;">
-    <div style="font-size:42px;animation:bounce-arrow 1s ease-in-out infinite;">👆</div>
-    <div style="font-family:'Playfair Display',serif;font-size:20px;letter-spacing:4px;text-transform:uppercase;color:rgba(245,200,66,1);font-weight:700;margin-top:8px;">Tap to Open</div>
+  <!-- Floating cloud toast -->
+  <div id="loader-toast" style="display:none;position:absolute;bottom:80px;left:50%;transform:translateX(-50%);pointer-events:none;text-align:center;transition:opacity 0.8s ease;opacity:0;">
+    <div style="background:rgba(20,8,0,0.82);backdrop-filter:blur(10px);border:1px solid rgba(245,200,66,0.35);border-radius:40px;padding:12px 26px;display:inline-flex;align-items:center;gap:10px;box-shadow:0 4px 32px rgba(0,0,0,0.5);">
+      <span style="font-size:22px;">👆</span>
+      <span style="font-family:'Cormorant Garamond',serif;font-size:15px;letter-spacing:2px;color:rgba(245,200,66,0.95);font-weight:600;">Tap to Open</span>
+    </div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(245,200,66,0.45);margin-top:8px;">✦ Interactive Invitation ✦</div>
   </div>
 </div>
 
@@ -3064,10 +3064,7 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
           if (btn) btn.style.display = 'block';
           var sub = loader.querySelector('.loader-subtitle');
           if (sub) sub.textContent = 'Your invitation is ready';
-          setTimeout(function() {
-            var nudge = document.getElementById('loader-nudge');
-            if (nudge && btn && btn.style.display !== 'none') nudge.style.display = 'block';
-          }, 3000);
+          setTimeout(function() { startLoaderToast(); }, 3000);
         }, 2000);
       }
     }
@@ -3085,18 +3082,31 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
         btn.style.display = 'block';
         var sub = loader.querySelector('.loader-subtitle');
         if (sub) sub.textContent = 'Your invitation is ready';
-        setTimeout(function() {
-          var nudge = document.getElementById('loader-nudge');
-          if (nudge) nudge.style.display = 'block';
-        }, 3000);
+        setTimeout(function() { startLoaderToast(); }, 3000);
       }
     }, 3000);
   }
 
+  var _toastTimer = null;
+  function startLoaderToast() {
+    var toast = document.getElementById('loader-toast');
+    if (!toast) return;
+    toast.style.display = 'block';
+    function show() {
+      toast.style.opacity = '1';
+      _toastTimer = setTimeout(function() {
+        toast.style.opacity = '0';
+        _toastTimer = setTimeout(show, 5000); // hide 0.8s + wait 5s then reappear
+      }, 3000); // visible for 3s
+    }
+    show();
+  }
+
   window.openInvitation = function() {
-    // Hide nudge immediately on tap
-    var nudge = document.getElementById('loader-nudge');
-    if (nudge) nudge.style.display = 'none';
+    // Stop toast cycle
+    if (_toastTimer) { clearTimeout(_toastTimer); _toastTimer = null; }
+    var toast = document.getElementById('loader-toast');
+    if (toast) toast.style.display = 'none';
     // Just fade out loader and show envelope — music starts on R&A seal tap
     if (loader) loader.classList.add('hide');
     setTimeout(function() {
