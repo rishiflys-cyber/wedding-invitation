@@ -2517,8 +2517,8 @@ html, body {
   </div>
   <div class="event-particles" id="ep-wedding" style="z-index:2;"></div>
 
-  <!-- Press here floater -->
-  <div id="wedding-press-hint" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:4;display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:none;transition:opacity 0.5s ease;opacity:1;">
+  <!-- Press here floater — appears 3s after panel slides up -->
+  <div id="wedding-press-hint" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:4;display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:none;transition:opacity 0.6s ease;opacity:0;">
     <div style="font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,200,66,0.9);text-shadow:0 0 12px rgba(245,180,30,0.6);">Press Here</div>
     <div style="font-size:22px;color:rgba(245,200,66,0.9);text-shadow:0 0 12px rgba(245,180,30,0.6);animation:bounce-arrow 1.2s ease-in-out infinite;">↓</div>
   </div>
@@ -3596,9 +3596,11 @@ document.addEventListener('DOMContentLoaded', function() {
     if (weddingShown) return;
     weddingShown = true;
     if (weddingTimer) { clearTimeout(weddingTimer); weddingTimer = null; }
-    var hint = document.getElementById('wedding-press-hint');
-    if (hint) hint.style.opacity = '0';
     if (wp) { wp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; wp.style.transform = 'translateY(0)'; wp.style.pointerEvents = 'auto'; }
+    setTimeout(function() {
+      var hint = document.getElementById('wedding-press-hint');
+      if (hint && current === 'screen-wedding') hint.style.opacity = '1';
+    }, 3000);
     if (wi) { wi.style.opacity = '1'; wi.style.transform = 'translateY(0)'; wi.style.pointerEvents = 'auto'; }
   }
 
@@ -3612,7 +3614,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (wi) { wi.style.opacity = '0'; wi.style.transform = 'translateY(20px)'; wi.style.pointerEvents = 'none'; }
     if (wv) { safeVideoPause(wv); wv.ontimeupdate = null; wv.onended = null; wv.currentTime = 0; }
     var hint = document.getElementById('wedding-press-hint');
-    if (hint) hint.style.opacity = '1';
+    if (hint) hint.style.opacity = '0';
   }
 
   if (wv) {
