@@ -2,7 +2,32 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<script>
+// Reset zoom if browser somehow allows it (must run before body loads)
+(function(){
+  function resetZoom() {
+    var mv = document.querySelector('meta[name=viewport]');
+    if (mv) {
+      mv.setAttribute('content', 'width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
+    }
+  }
+  // Detect zoom via window.visualViewport scale
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', function() {
+      if (window.visualViewport.scale !== 1) {
+        resetZoom();
+        // Force scale back by toggling viewport
+        var mv = document.querySelector('meta[name=viewport]');
+        if (mv) {
+          mv.setAttribute('content', 'width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no');
+          setTimeout(function(){ mv.setAttribute('content', 'width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover'); }, 50);
+        }
+      }
+    });
+  }
+})();
+</script>
 <title>Rishabh & Ananya — Wedding Invitation</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
