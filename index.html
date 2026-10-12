@@ -3020,6 +3020,14 @@ function closeInvitation() {
   closeTab();
   // Fallback: if tab didn't close, go back to envelope after short delay
   setTimeout(function() {
+    // Stop music and reset state
+    var music = document.getElementById('bgmusic');
+    if (music) { music.pause(); music.currentTime = 0; }
+    // Stop any playing event videos
+    ['mehendi','sangeet','haldi','wedding','reception'].forEach(function(n) {
+      var v = document.getElementById(n + '-video');
+      if (v) { try { v.pause(); v.currentTime = 0; } catch(e) {} }
+    });
     var icon = document.getElementById('music-icon');
     if (icon) icon.style.display = 'inline';
     var iconMuted = document.getElementById('music-icon-muted');
@@ -3028,6 +3036,9 @@ function closeInvitation() {
     if (mb) mb.style.display = 'none';
     var cb = document.getElementById('close-btn');
     if (cb) cb.style.display = 'none';
+    // Reset envelope so seal is tappable again
+    var env = document.getElementById('screen-envelope');
+    if (env) env.classList.remove('opening');
     _history = [];
     goTo('screen-envelope');
   }, 600);
