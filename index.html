@@ -661,11 +661,12 @@ html, body {
 }
 
 .screen-tap-hint {
-  font-size: 9px;
+  font-size: 13px;
   letter-spacing: 3px;
   color: var(--gold-light);
   text-transform: uppercase;
-  opacity: 0.35;
+  font-weight: 700;
+  opacity: 0.85;
   animation: breathe 2.5s ease-in-out infinite;
   margin-top: 4px;
 }
@@ -2075,6 +2076,12 @@ html, body {
       <span style="font-family:'Playfair Display',serif;font-size:46px;font-style:italic;font-weight:900;color:#f9e060;letter-spacing:-0.01em;line-height:1.1;display:inline-block;margin-top:4px;text-shadow:0 0 50px rgba(249,224,96,0.75),0 0 20px rgba(249,224,96,0.45),0 3px 0 rgba(0,0,0,0.6);">feel complete.</span>
     </div>
 
+    <!-- Tap hint -->
+    <div style="position:absolute;bottom:32px;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:4px;pointer-events:none;">
+      <div class="screen-tap-hint">tap to continue ✦</div>
+      <div style="font-size:18px;animation:bounce-arrow 1.2s ease-in-out infinite;color:rgba(240,210,120,0.85);">↓</div>
+    </div>
+
     <!-- Bottom divider -->
     <div id="invite-act1-divider" style="margin-top:24px;opacity:0;transition:opacity 2s ease 0.5s;">
       <svg width="200" height="22" viewBox="0 0 200 22" xmlns="http://www.w3.org/2000/svg">
@@ -2117,6 +2124,12 @@ html, body {
     </div>
 
     <div id="invite-act2-text" class="you-are-one" style="font-family:'Playfair Display','Cormorant Garamond',Georgia,serif;font-size:48px;font-weight:900;font-style:italic;letter-spacing:-0.01em;line-height:1.2;color:#f9e8b0;text-shadow:0 0 80px rgba(249,224,96,0.7),0 0 140px rgba(255,160,0,0.4),0 3px 0 rgba(0,0,0,0.6);opacity:0;transform:scale(0.68) translateY(28px);filter:blur(8px);will-change:transform,opacity,filter;">You are one of<br><span style="font-size:56px;color:#f9e060;">those people.</span></div>
+
+    <!-- Tap hint -->
+    <div style="position:absolute;bottom:32px;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:4px;pointer-events:none;">
+      <div class="screen-tap-hint">tap to continue ✦</div>
+      <div style="font-size:18px;animation:bounce-arrow 1.2s ease-in-out infinite;color:rgba(240,210,120,0.85);">↓</div>
+    </div>
 
     <!-- Royal bottom ornament -->
     <div id="act2-bot-orn" style="opacity:0;transition:opacity 1.8s ease 0.5s;margin-top:32px;">
