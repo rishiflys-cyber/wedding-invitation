@@ -3139,7 +3139,9 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
     if (_sealToastTimer) { clearTimeout(_sealToastTimer); _sealToastTimer = null; }
     var toast = document.getElementById('seal-toast');
     if (!toast) return;
+    // Make sure it's renderable
     toast.style.visibility = 'visible';
+    toast.style.display = 'flex';
     function show() {
       toast.style.opacity = '1';
       _sealToastTimer = setTimeout(function() {
@@ -3147,12 +3149,13 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
         _sealToastTimer = setTimeout(show, 5000);
       }, 3000);
     }
-    _sealToastTimer = setTimeout(show, 3000);
+    // Show after 2s
+    _sealToastTimer = setTimeout(show, 2000);
   }
   function stopSealToast() {
     if (_sealToastTimer) { clearTimeout(_sealToastTimer); _sealToastTimer = null; }
     var toast = document.getElementById('seal-toast');
-    if (toast) { toast.style.opacity = '0'; toast.style.visibility = 'hidden'; }
+    if (toast) { toast.style.opacity = '0'; toast.style.visibility = 'hidden'; toast.style.display = 'none'; }
   }
 
   window.openInvitation = function() {
