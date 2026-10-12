@@ -1860,7 +1860,7 @@ html, body {
 </div>
 
 <!-- Close (X) button — centre-top between back and music -->
-<div id="close-btn" onclick="closeInvitation()" style="position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:9999;width:38px;height:38px;display:none;align-items:center;justify-content:center;cursor:pointer;">
+<div id="close-btn" onclick="returnToSeal()" style="position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:9999;width:38px;height:38px;display:none;align-items:center;justify-content:center;cursor:pointer;">
   <svg viewBox="0 0 24 24" width="16" height="16" stroke="#c9a84c" stroke-width="2" fill="none" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
 </div>
 
@@ -2997,6 +2997,24 @@ function closeTab() {
   setTimeout(function() {
     try { window.close(); } catch(e) {}
   }, 100);
+}
+
+function returnToSeal() {
+  // Stop music and videos, then go back to RA seal screen
+  var music = document.getElementById('bgmusic');
+  if (music) { music.pause(); music.currentTime = 0; }
+  ['mehendi','sangeet','haldi','wedding','reception'].forEach(function(n) {
+    var v = document.getElementById(n + '-video');
+    if (v) { try { v.pause(); v.currentTime = 0; } catch(e) {} }
+  });
+  var mb = document.getElementById('music-btn');
+  if (mb) mb.style.display = 'none';
+  var cb = document.getElementById('close-btn');
+  if (cb) cb.style.display = 'none';
+  var env = document.getElementById('screen-envelope');
+  if (env) env.classList.remove('opening');
+  _history = [];
+  goTo('screen-envelope');
 }
 
 function closeInvitation() {
