@@ -2810,47 +2810,91 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
 });
 
 // Wire wedding screen → reception (VIP) or rsvp (everyone else)
-/* ── Safe video play/pause for iOS Safari ── */
-// Detect slow connection — skip videos on 2G/slow-2G/cellular
-var _slowConnection = (function() {
-  var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-  if (!conn) return false;
-  if (conn.saveData) return true;
-  if (conn.effectiveType === '2g' || conn.effectiveType === 'slow-2g') return true;
-  return false;
-})();
-
-function safeVideoPlay(video, onSkip) {
-  if (!video) { if (onSkip) onSkip(); return; }
-  // On slow connection, skip video and call onSkip immediately
-  if (_slowConnection) { if (onSkip) onSkip(); return; }
-  // If not loaded yet (preload=none), load first then play
-  // If canplay doesn't fire within 2.5s on mobile data, skip video
-  if (video.readyState === 0) {
-    var skipped = false;
-    var skipTimer = setTimeout(function() {
-      skipped = true;
-      video.removeEventListener('canplay', onCanPlay);
-      if (onSkip) onSkip();
-    }, 2500);
-    function onCanPlay() {
-      if (skipped) return;
-      clearTimeout(skipTimer);
-      video.currentTime = 0;
-      var p = video.play();
-      if (p !== undefined) { p.catch(function(){}); }
-    }
-    video.addEventListener('canplay', onCanPlay, { once: true });
-    video.load();
-  } else {
-    video.currentTime = 0;
-    var p = video.play();
-    if (p !== undefined) { p.catch(function(){}); }
-  }
-}
+/* ── Bulletproof video play/pause for iOS Safari ── */
 function safeVideoPause(video) {
   if (!video) return;
   try { video.pause(); } catch(e) {}
+}
+
+// playVideoThenCall(video, onDone)
+// Plays video from start. Calls onDone when:
+//   - video ends naturally (onended)
+//   - video stalls for >3s with no progress (watchdog)
+//   - video fails to start within 4s (canplay timeout)
+//   - any error occurs
+// onDone is guaranteed to be called exactly once.
+function playVideoThenCall(video, onDone) {
+  if (!video) { onDone(); return; }
+
+  var done = false;
+  var startTimer = null;
+  var stallTimer = null;
+  var lastTime = -1;
+
+  function finish() {
+    if (done) return;
+    done = true;
+    clearTimeout(startTimer);
+    clearTimeout(stallTimer);
+    video.removeEventListener('ended', onEnded);
+    video.removeEventListener('error', onError);
+    video.removeEventListener('timeupdate', onTimeUpdate);
+    safeVideoPause(video);
+    onDone();
+  }
+
+  function onEnded() { finish(); }
+  function onError() { finish(); }
+
+  function onTimeUpdate() {
+    // Video is making progress — reset stall watchdog
+    clearTimeout(stallTimer);
+    stallTimer = setTimeout(function() {
+      // No timeupdate for 3s while supposedly playing → stalled
+      if (!done && !video.paused && !video.ended) finish();
+    }, 3000);
+    lastTime = video.currentTime;
+  }
+
+  video.addEventListener('ended', onEnded, { once: true });
+  video.addEventListener('error', onError, { once: true });
+  video.addEventListener('timeupdate', onTimeUpdate);
+
+  // If video not ready, wait up to 4s for canplay
+  if (video.readyState < 3) {
+    startTimer = setTimeout(function() {
+      // Took too long to start — skip
+      finish();
+    }, 4000);
+    var onCanPlay = function() {
+      clearTimeout(startTimer);
+      startTimer = null;
+      video.currentTime = 0;
+      var p = video.play();
+      if (p && p.catch) p.catch(function() { finish(); });
+      // Start stall watchdog — if no timeupdate in 3s after play attempt
+      stallTimer = setTimeout(function() {
+        if (!done) finish();
+      }, 3000);
+    };
+    video.addEventListener('canplay', onCanPlay, { once: true });
+    // Trigger load in case browser hasn't started
+    try { video.load(); } catch(e) {}
+  } else {
+    // Video already buffered — play immediately
+    video.currentTime = 0;
+    var p = video.play();
+    if (p && p.catch) p.catch(function() { finish(); });
+    // Start stall watchdog
+    stallTimer = setTimeout(function() {
+      if (!done) finish();
+    }, 3000);
+  }
+}
+
+// Legacy wrapper — keep safeVideoPlay name used elsewhere
+function safeVideoPlay(video, onSkip) {
+  playVideoThenCall(video, onSkip || function(){});
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -2910,10 +2954,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (mp) { mp.style.transition = 'none'; mp.style.transform = 'translateY(100%)'; mp.style.pointerEvents = 'none'; }
       if (mi) { mi.style.opacity = '0'; mi.style.transform = 'translateY(20px)'; mi.style.pointerEvents = 'none'; }
       if (mv) {
-        mv.onended = function() { safeVideoPause(mv); showMehendiInvite(); };
-        safeVideoPlay(mv, showMehendiInvite);
-        /* fallback in case ended never fires */
-        mehendiTimer = setTimeout(showMehendiInvite, 15000);
+        playVideoThenCall(mv, showMehendiInvite);
       }
     }
   };
@@ -2968,12 +3009,9 @@ document.addEventListener('DOMContentLoaded', function() {
       if (sp) { sp.style.transition = 'none'; sp.style.transform = 'translateY(100%)'; sp.style.pointerEvents = 'none'; }
       if (si) { si.style.opacity = '0'; si.style.transform = 'translateY(20px)'; si.style.pointerEvents = 'none'; }
       if (sv) {
-        sv.onended = function() { safeVideoPause(sv); showSangeetInvite(); };
-        safeVideoPlay(sv, showSangeetInvite);
-        /* fallback in case ended never fires */
-        sangeetTimer = setTimeout(showSangeetInvite, 15000);
+        playVideoThenCall(sv, showSangeetInvite);
       } else {
-        sangeetTimer = setTimeout(showSangeetInvite, 1000);
+        setTimeout(showSangeetInvite, 500);
       }
     }
   };
@@ -3025,10 +3063,9 @@ document.addEventListener('DOMContentLoaded', function() {
       if (hp) { hp.style.transition = 'none'; hp.style.transform = 'translateY(100%)'; hp.style.pointerEvents = 'none'; }
       if (hi) { hi.style.opacity = '0'; hi.style.transform = 'translateY(20px)'; hi.style.pointerEvents = 'none'; }
       if (hv) {
-        safeVideoPlay(hv, showHaldiInvite);
-        haldiTimer = setTimeout(showHaldiInvite, 4000);
+        playVideoThenCall(hv, showHaldiInvite);
       } else {
-        haldiTimer = setTimeout(showHaldiInvite, 1000);
+        setTimeout(showHaldiInvite, 500);
       }
     }
   };
@@ -3079,12 +3116,9 @@ document.addEventListener('DOMContentLoaded', function() {
       if (wp) { wp.style.transition = 'none'; wp.style.transform = 'translateY(100%)'; wp.style.pointerEvents = 'none'; }
       if (wi) { wi.style.opacity = '0'; wi.style.transform = 'translateY(20px)'; wi.style.pointerEvents = 'none'; }
       if (wv) {
-        wv.currentTime = 0;
-        safeVideoPlay(wv, showWeddingInvite);
-        wv.onended = function() { safeVideoPause(wv); showWeddingInvite(); };
-        weddingTimer = setTimeout(showWeddingInvite, 4000);
+        playVideoThenCall(wv, showWeddingInvite);
       } else {
-        weddingTimer = setTimeout(showWeddingInvite, 1000);
+        setTimeout(showWeddingInvite, 500);
       }
     }
   };
@@ -3132,12 +3166,9 @@ document.addEventListener('DOMContentLoaded', function() {
       if (rp) { rp.style.transition = 'none'; rp.style.transform = 'translateY(100%)'; rp.style.pointerEvents = 'none'; }
       if (ri) { ri.style.opacity = '0'; ri.style.transform = 'translateY(20px)'; ri.style.pointerEvents = 'none'; }
       if (rv) {
-        rv.currentTime = 0;
-        safeVideoPlay(rv, showReceptionInvite);
-        rv.onended = function() { safeVideoPause(rv); showReceptionInvite(); };
-        receptionTimer = setTimeout(showReceptionInvite, 4000);
+        playVideoThenCall(rv, showReceptionInvite);
       } else {
-        receptionTimer = setTimeout(showReceptionInvite, 1000);
+        setTimeout(showReceptionInvite, 500);
       }
     }
   };
