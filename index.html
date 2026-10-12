@@ -3135,7 +3135,7 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
   }
 
   var _sealToastTimer = null;
-  function startSealToast() {
+  window.startSealToast = function startSealToast() {
     if (_sealToastTimer) { clearTimeout(_sealToastTimer); _sealToastTimer = null; }
     var toast = document.getElementById('seal-toast');
     if (!toast) return;
@@ -3152,11 +3152,11 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
     // Show after 2s
     _sealToastTimer = setTimeout(show, 2000);
   }
-  function stopSealToast() {
+  window.stopSealToast = function stopSealToast() {
     if (_sealToastTimer) { clearTimeout(_sealToastTimer); _sealToastTimer = null; }
     var toast = document.getElementById('seal-toast');
     if (toast) { toast.style.opacity = '0'; toast.style.visibility = 'hidden'; toast.style.display = 'none'; }
-  }
+  };
 
   window.openInvitation = function() {
     // Stop toast cycle
