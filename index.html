@@ -2720,7 +2720,7 @@ function goTo(id) {
   if (id === 'screen-rsvp' || id === 'screen-countdown') { releaseWakeLock(); }
   // Auto-advance Ganesh screen after 2s
   if (id === 'screen-ganesh') {
-    setTimeout(function(){ if (current === 'screen-ganesh') goTo('screen-invite'); }, 2000);
+    setTimeout(function(){ if (current === 'screen-ganesh') goTo('screen-invite'); }, 2500);
   }
 
   // Invite acts — cinematic trailer timing
