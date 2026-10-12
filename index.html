@@ -197,8 +197,8 @@ html, body {
 /* The 4 envelope flaps */
 .env-flap {
   position: absolute;
-  transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1),
-              opacity 0.7s ease 0.3s;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.35s ease 0.1s;
   z-index: 5;
   will-change: transform;
 }
@@ -2956,7 +2956,7 @@ function openEnvelope() {
     // Remove opening class so envelope is clean if user goes back
     document.getElementById('screen-envelope').classList.remove('opening');
     opened = false;
-  }, 1600);
+  }, 1100);
 }
 
 // Read guest name + salutation from URL params
