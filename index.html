@@ -1890,13 +1890,13 @@ html, body {
   </div>
 
   <!-- Floating seal toast -->
-  <div id="seal-toast" style="display:none;position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.6s ease;opacity:0;">
+  <div id="seal-toast" style="position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.6s ease;opacity:0;visibility:hidden;">
     <div style="margin-top:-20px;display:flex;flex-direction:column;align-items:center;gap:6px;">
-      <div style="background:rgba(20,5,0,0.82);backdrop-filter:blur(8px);border:1px solid rgba(245,200,66,0.35);border-radius:40px;padding:12px 28px;display:flex;align-items:center;gap:10px;">
-        <span style="font-size:26px;">👆</span>
-        <span style="font-family:'Playfair Display',serif;font-size:16px;color:rgba(249,224,96,0.95);font-style:italic;letter-spacing:1px;">Tap the Seal to Open</span>
+      <div style="background:rgba(20,5,0,0.85);backdrop-filter:blur(8px);border:1px solid rgba(245,200,66,0.5);border-radius:40px;padding:14px 30px;display:flex;align-items:center;gap:10px;">
+        <span style="font-size:28px;">👆</span>
+        <span style="font-family:'Playfair Display',serif;font-size:17px;color:rgba(249,224,96,0.98);font-style:italic;letter-spacing:1px;">Tap the Seal to Open</span>
       </div>
-      <div style="font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,200,66,0.55);">✦ tap to reveal your invitation ✦</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,200,66,0.65);">✦ tap to reveal your invitation ✦</div>
     </div>
   </div>
 
@@ -3132,9 +3132,10 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
 
   var _sealToastTimer = null;
   function startSealToast() {
+    if (_sealToastTimer) { clearTimeout(_sealToastTimer); _sealToastTimer = null; }
     var toast = document.getElementById('seal-toast');
     if (!toast) return;
-    toast.style.display = 'flex';
+    toast.style.visibility = 'visible';
     function show() {
       toast.style.opacity = '1';
       _sealToastTimer = setTimeout(function() {
@@ -3147,7 +3148,7 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
   function stopSealToast() {
     if (_sealToastTimer) { clearTimeout(_sealToastTimer); _sealToastTimer = null; }
     var toast = document.getElementById('seal-toast');
-    if (toast) { toast.style.opacity = '0'; toast.style.display = 'none'; }
+    if (toast) { toast.style.opacity = '0'; toast.style.visibility = 'hidden'; }
   }
 
   window.openInvitation = function() {
