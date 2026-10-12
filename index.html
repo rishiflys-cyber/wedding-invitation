@@ -2309,12 +2309,14 @@ html, body {
     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
     <source src="mehendi.mp4" type="video/mp4">
   </video>
+  <!-- Gradient overlay on top of video -->
+  <div style="position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(ellipse at 50% 80%,rgba(80,230,60,0.18) 0%,transparent 60%),linear-gradient(to bottom,rgba(0,0,0,0.18) 0%,transparent 40%,transparent 60%,rgba(0,0,0,0.35) 100%);"></div>
   <div class="event-img-wrap" id="mehendi-bg-img" style="z-index:0;">
     <img src="1-mehendi_4k.jpg" alt="Mehendi" loading="lazy">
   </div>
-  <div class="event-particles" id="ep-mehendi" style="z-index:2;"></div>
+  <div class="event-particles" id="ep-mehendi" style="z-index:3;"></div>
   <!-- Dark panel slides up from bottom after video ends -->
-  <div id="mehendi-panel" style="position:absolute;bottom:0;left:0;right:0;height:30%;z-index:3;background:linear-gradient(to bottom,transparent 0%,rgba(5,20,3,0.94) 20%,#04120a 45%);padding-top:8px;transform:translateY(100%);transition:transform 1.4s cubic-bezier(0.22,1,0.36,1);pointer-events:none;overflow:hidden;">
+  <div id="mehendi-panel" style="position:absolute;bottom:0;left:0;right:0;height:30%;z-index:4;background:linear-gradient(to bottom,transparent 0%,rgba(5,20,3,0.94) 20%,#04120a 45%);padding-top:8px;transform:translateY(100%);transition:transform 1.4s cubic-bezier(0.22,1,0.36,1);pointer-events:none;overflow:hidden;">
   <div class="event-wrap" id="mehendi-invite" style="position:relative;opacity:0;transform:translateY(20px);transition:opacity 0.8s ease 0.5s,transform 0.8s ease 0.5s;pointer-events:none;">
     <div class="event-icon-big">🌿</div>
     <div class="event-tag" style="background:rgba(60,200,70,0.2);border-color:rgba(60,200,70,0.55);color:#50ee55">Mehendi</div>
