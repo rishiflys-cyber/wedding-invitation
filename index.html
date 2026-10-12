@@ -1847,6 +1847,10 @@ html, body {
   <div class="loader-subtitle">Preparing your invitation</div>
   <div class="loader-bar-wrap"><div class="loader-bar" id="loader-bar"></div></div>
   <button class="loader-open-btn" id="loader-open-btn" onclick="openInvitation()">Open Invitation ✦</button>
+  <div id="loader-nudge" style="display:none;margin-top:18px;text-align:center;animation:breathe 2s ease-in-out infinite;">
+    <div style="font-size:22px;animation:bounce-arrow 1s ease-in-out infinite;">👆</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,200,66,0.9);font-weight:600;margin-top:4px;">Tap to open</div>
+  </div>
 </div>
 
 <div id="screen-envelope" class="screen">
@@ -3056,6 +3060,10 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
           if (btn) btn.style.display = 'block';
           var sub = loader.querySelector('.loader-subtitle');
           if (sub) sub.textContent = 'Your invitation is ready';
+          setTimeout(function() {
+            var nudge = document.getElementById('loader-nudge');
+            if (nudge && btn && btn.style.display !== 'none') nudge.style.display = 'block';
+          }, 3000);
         }, 2000);
       }
     }
@@ -3073,11 +3081,18 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
         btn.style.display = 'block';
         var sub = loader.querySelector('.loader-subtitle');
         if (sub) sub.textContent = 'Your invitation is ready';
+        setTimeout(function() {
+          var nudge = document.getElementById('loader-nudge');
+          if (nudge) nudge.style.display = 'block';
+        }, 3000);
       }
     }, 3000);
   }
 
   window.openInvitation = function() {
+    // Hide nudge immediately on tap
+    var nudge = document.getElementById('loader-nudge');
+    if (nudge) nudge.style.display = 'none';
     // Just fade out loader and show envelope — music starts on R&A seal tap
     if (loader) loader.classList.add('hide');
     setTimeout(function() {
