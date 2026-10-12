@@ -995,22 +995,22 @@ html, body {
 }
 @keyframes ep-fall {
   0%   { opacity: 0;   transform: translateY(-10px) rotate(0deg) scale(1); }
-  10%  { opacity: 0.99; }
-  85%  { opacity: 0.99; }
+  10%  { opacity: 0.85; }
+  85%  { opacity: 0.6; }
   100% { opacity: 0;   transform: translateY(105vh) rotate(360deg) scale(0.4); }
 }
 
 /* Mehendi — green henna leaves drift down */
-#screen-mehendi .ep { color: #00ff44; font-size: 22px; font-weight: 900; opacity: 1; text-shadow: none; }
+#screen-mehendi .ep { color: #5fe84a; font-size: 10px; }
 
 /* Sangeet — purple sparkles & music notes */
-#screen-sangeet .ep { color: #ff44ff; font-size: 24px; font-weight: 900; opacity: 1; text-shadow: none; }
+#screen-sangeet .ep { color: #e080ff; font-size: 11px; }
 
 /* Haldi — golden turmeric dust */
-#screen-haldi .ep { color: #ffd700; font-size: 22px; font-weight: 900; opacity: 1; text-shadow: none; }
+#screen-haldi .ep { color: #ffda30; font-size: 9px; }
 
 /* Wedding — white flower petals */
-#screen-wedding .ep { color: #ffffff; font-size: 24px; font-weight: 900; opacity: 1; text-shadow: none; }
+#screen-wedding .ep { color: rgba(255,255,255,0.95); font-size: 11px; }
 
 /* Reception — pink bokeh circles */
 #screen-reception .ep { color: #ff90c0; font-size: 12px; }
@@ -3839,10 +3839,10 @@ function launchConfetti() {
 // Event screen particles
 (function(){
   const configs = {
-    'ep-mehendi':  { symbols: ['✿','❀','🌿','✾','❋'], colors: ['#7ec850','#a8e080','#5db840','#c8f0a0'], count: 35 },
-    'ep-sangeet':  { symbols: ['✦','♪','♫','✵','⋆','❋'], colors: ['#d090f8','#b060e0','#f0c0ff','#ffffff'], count: 38 },
-    'ep-haldi':    { symbols: ['✦','❋','✿','❀','•'], colors: ['#f0c840','#ffd860','#ffe090','#d4a020'], count: 35 },
-    'ep-wedding':  { symbols: ['✿','❀','✾','❋','✦'], colors: ['rgba(255,255,255,0.95)','rgba(255,220,180,0.9)','rgba(255,200,120,0.85)'], count: 40 },
+    'ep-mehendi':  { symbols: ['✿','❀','🌿','·','✾'], colors: ['#7ec850','#a8e080','#5db840','#c8f0a0'], count: 18 },
+    'ep-sangeet':  { symbols: ['✦','♪','♫','·','✵','⋆'], colors: ['#d090f8','#b060e0','#f0c0ff','#ffffff'], count: 22 },
+    'ep-haldi':    { symbols: ['·','•','✦','❋','✿'], colors: ['#f0c840','#ffd860','#ffe090','#d4a020'], count: 20 },
+    'ep-wedding':  { symbols: ['✿','❀','·','✾','°'], colors: ['rgba(255,255,255,0.9)','rgba(255,220,180,0.8)','rgba(255,200,120,0.7)'], count: 25 },
     'ep-reception':{ symbols: ['✦','·','°','⋆','○'], colors: ['#f8b4c8','#ffd0e0','#ffffff','#ffe0f0'], count: 20 }
   };
   Object.entries(configs).forEach(([id, cfg]) => {
