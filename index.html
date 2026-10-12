@@ -3433,13 +3433,13 @@ document.addEventListener('DOMContentLoaded', function() {
       if (mp) { mp.style.transition = 'none'; mp.style.transform = 'translateY(100%)'; mp.style.pointerEvents = 'none'; }
       if (mi) { mi.style.opacity = '0'; mi.style.transform = 'translateY(20px)'; mi.style.pointerEvents = 'none'; }
       if (mv) {
-        mv.onended = function() { safeVideoPause(mv); setTimeout(showMehendiInvite, 2000); };
+        mv.onended = function() { safeVideoPause(mv); showMehendiInvite(); };
         // timeupdate fallback: catch end even if onended doesn't fire
         mv.ontimeupdate = function() {
           if (mv.duration && mv.currentTime >= mv.duration - 0.3) {
             mv.ontimeupdate = null;
             safeVideoPause(mv);
-            setTimeout(showMehendiInvite, 2000);
+            showMehendiInvite();
           }
         };
         safeVideoPlay(mv, showMehendiInvite);
@@ -3498,10 +3498,10 @@ document.addEventListener('DOMContentLoaded', function() {
       if (sp) { sp.style.transition = 'none'; sp.style.transform = 'translateY(100%)'; sp.style.pointerEvents = 'none'; }
       if (si) { si.style.opacity = '0'; si.style.transform = 'translateY(20px)'; si.style.pointerEvents = 'none'; }
       if (sv) {
-        sv.onended = function() { safeVideoPause(sv); setTimeout(showSangeetInvite, 2000); };
+        sv.onended = function() { safeVideoPause(sv); showSangeetInvite(); };
         sv.ontimeupdate = function() {
           if (sv.duration && sv.currentTime >= sv.duration - 0.3) {
-            sv.ontimeupdate = null; safeVideoPause(sv); setTimeout(showSangeetInvite, 2000);
+            sv.ontimeupdate = null; safeVideoPause(sv); showSangeetInvite();
           }
         };
         safeVideoPlay(sv, showSangeetInvite);
@@ -3559,10 +3559,10 @@ document.addEventListener('DOMContentLoaded', function() {
       if (hp) { hp.style.transition = 'none'; hp.style.transform = 'translateY(100%)'; hp.style.pointerEvents = 'none'; }
       if (hi) { hi.style.opacity = '0'; hi.style.transform = 'translateY(20px)'; hi.style.pointerEvents = 'none'; }
       if (hv) {
-        hv.onended = function() { safeVideoPause(hv); setTimeout(showHaldiInvite, 2000); };
+        hv.onended = function() { safeVideoPause(hv); showHaldiInvite(); };
         hv.ontimeupdate = function() {
           if (hv.duration && hv.currentTime >= hv.duration - 0.3) {
-            hv.ontimeupdate = null; safeVideoPause(hv); setTimeout(showHaldiInvite, 2000);
+            hv.ontimeupdate = null; safeVideoPause(hv); showHaldiInvite();
           }
         };
         safeVideoPlay(hv, showHaldiInvite);
@@ -3620,10 +3620,10 @@ document.addEventListener('DOMContentLoaded', function() {
       if (wi) { wi.style.opacity = '0'; wi.style.transform = 'translateY(20px)'; wi.style.pointerEvents = 'none'; }
       if (wv) {
         wv.currentTime = 0;
-        wv.onended = function() { safeVideoPause(wv); setTimeout(showWeddingInvite, 2000); };
+        wv.onended = function() { safeVideoPause(wv); showWeddingInvite(); };
         wv.ontimeupdate = function() {
           if (wv.duration && wv.currentTime >= wv.duration - 0.3) {
-            wv.ontimeupdate = null; safeVideoPause(wv); setTimeout(showWeddingInvite, 2000);
+            wv.ontimeupdate = null; safeVideoPause(wv); showWeddingInvite();
           }
         };
         safeVideoPlay(wv, showWeddingInvite);
@@ -3677,10 +3677,10 @@ document.addEventListener('DOMContentLoaded', function() {
       if (rp) { rp.style.transition = 'none'; rp.style.transform = 'translateY(100%)'; rp.style.pointerEvents = 'none'; }
       if (ri) { ri.style.opacity = '0'; ri.style.transform = 'translateY(20px)'; ri.style.pointerEvents = 'none'; }
       if (rv) {
-        rv.onended = function() { safeVideoPause(rv); setTimeout(showReceptionInvite, 2000); };
+        rv.onended = function() { safeVideoPause(rv); showReceptionInvite(); };
         rv.ontimeupdate = function() {
           if (rv.duration && rv.currentTime >= rv.duration - 0.3) {
-            rv.ontimeupdate = null; safeVideoPause(rv); setTimeout(showReceptionInvite, 2000);
+            rv.ontimeupdate = null; safeVideoPause(rv); showReceptionInvite();
           }
         };
         safeVideoPlay(rv, showReceptionInvite);
