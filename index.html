@@ -3037,9 +3037,17 @@ var _slowConnection = (function() {
 
 function safeVideoPlay(video, onSkip) {
   if (!video) { if (onSkip) onSkip(); return; }
-  // If not loaded yet (preload=none), load first then play
-  // If canplay doesn't fire within 2.5s on mobile data, skip video
+
+  // Clear any previously stacked onended to prevent double-firing on revisit
+  video.onended = null;
+
+  function doPlay() {
+    var p = video.play();
+    if (p !== undefined) { p.catch(function(){}); }
+  }
+
   if (video.readyState === 0) {
+    // Blob not assigned yet — wait for canplay
     var skipped = false;
     var skipTimer = setTimeout(function() {
       skipped = true;
@@ -3050,15 +3058,26 @@ function safeVideoPlay(video, onSkip) {
       if (skipped) return;
       clearTimeout(skipTimer);
       video.currentTime = 0;
-      var p = video.play();
-      if (p !== undefined) { p.catch(function(){}); }
+      doPlay();
     }
     video.addEventListener('canplay', onCanPlay, { once: true });
     video.load();
   } else {
+    // Blob already loaded — pause first, seek to 0, then play
+    // A tiny setTimeout after seek lets iOS flush the seek before play
+    try { video.pause(); } catch(e) {}
     video.currentTime = 0;
-    var p = video.play();
-    if (p !== undefined) { p.catch(function(){}); }
+    var seeked = false;
+    function onSeeked() {
+      if (seeked) return;
+      seeked = true;
+      doPlay();
+    }
+    video.addEventListener('seeked', onSeeked, { once: true });
+    // Fallback: if seeked never fires (already at 0), play after 80ms
+    setTimeout(function() {
+      if (!seeked) { seeked = true; doPlay(); }
+    }, 80);
   }
 }
 function safeVideoPause(video) {
