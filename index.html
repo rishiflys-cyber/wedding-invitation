@@ -2222,7 +2222,7 @@ html, body {
     <div class="rsvp-title">Will you join us?</div>
     <div class="rsvp-sub">Kindly RSVP so we can celebrate together</div>
     </div>
-    <a href="https://maps.app.goo.gl/szpvXzzsr7EoVcER7" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;margin-top:2px;margin-bottom:2px;padding:8px 18px;border:1px solid rgba(201,168,76,0.35);border-radius:30px;background:rgba(201,168,76,0.07);color:#e8d5a3;font-size:12px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:background 0.2s;" ontouchstart="" onmousedown="this.style.background='rgba(201,168,76,0.18)'" onmouseup="this.style.background='rgba(201,168,76,0.07)'" onmouseleave="this.style.background='rgba(201,168,76,0.07)'">
+    <a href="https://maps.google.com/?q=Circle+Club+Banquet+Kolkata" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;margin-top:2px;margin-bottom:2px;padding:8px 18px;border:1px solid rgba(201,168,76,0.35);border-radius:30px;background:rgba(201,168,76,0.07);color:#e8d5a3;font-size:12px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:background 0.2s;" ontouchstart="" onmousedown="this.style.background='rgba(201,168,76,0.18)'" onmouseup="this.style.background='rgba(201,168,76,0.07)'" onmouseleave="this.style.background='rgba(201,168,76,0.07)'">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="#c9a84c"/></svg>
       Circle Club Banquet, Kolkata
     </a>
@@ -2283,17 +2283,17 @@ html, body {
         </div>
         <!-- Close Invitation -->
         <div style="margin-top:18px;display:flex;justify-content:center;">
-          <button onclick="window.close();" style="background:none;border:1px solid rgba(255,255,255,0.12);border-radius:20px;color:rgba(255,255,255,0.3);font-family:inherit;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;padding:7px 18px;">
+          <button onclick="closeInvitation();" style="background:none;border:1px solid rgba(255,255,255,0.12);border-radius:20px;color:rgba(255,255,255,0.3);font-family:inherit;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;padding:7px 18px;">
             Close Invitation
           </button>
         </div>
       </div>
       <!-- Change RSVP + Close for decline — shown after no -->
-      <div id="rsvp-change-btn" style="display:none;margin-top:14px;display:none;flex-direction:column;align-items:center;gap:10px;">
+      <div id="rsvp-change-btn" style="display:none;margin-top:14px;flex-direction:column;align-items:center;gap:10px;">
         <button onclick="changeRSVP()" style="background:none;border:1px solid rgba(201,168,76,0.4);border-radius:20px;color:rgba(201,168,76,0.75);font-family:inherit;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;padding:7px 18px;">
           ✎ Change my RSVP
         </button>
-        <button onclick="window.close();" style="background:none;border:1px solid rgba(255,255,255,0.12);border-radius:20px;color:rgba(255,255,255,0.3);font-family:inherit;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;padding:7px 18px;">
+        <button onclick="closeInvitation();" style="background:none;border:1px solid rgba(255,255,255,0.12);border-radius:20px;color:rgba(255,255,255,0.3);font-family:inherit;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;padding:7px 18px;">
           Close Invitation
         </button>
       </div>
@@ -3543,17 +3543,47 @@ function submitRSVP(answer) {
   const nameInput = document.getElementById('rsvp-name-input');
   const phoneInput = document.getElementById('rsvp-phone-input');
 
-  // Block decline until name is shared
-  if (answer === 'no' && nameInput && !nameInput.value.trim()) {
+  // Validate name
+  if (!nameInput || !nameInput.value.trim()) {
     nameInput.focus();
-    nameInput.placeholder = 'Please share your name first ✦';
-    nameInput.style.borderColor = 'rgba(255,180,60,0.8)';
-    nameInput.style.boxShadow = '0 0 12px rgba(255,160,40,0.4)';
+    nameInput.placeholder = 'Please enter your name ✦';
+    nameInput.style.borderColor = 'rgba(255,120,60,0.9)';
+    nameInput.style.boxShadow = '0 0 12px rgba(255,100,40,0.5)';
     nameInput.addEventListener('input', function() {
       nameInput.placeholder = 'Your name';
       nameInput.style.borderColor = '';
       nameInput.style.boxShadow = '';
     }, { once: true });
+    return;
+  }
+
+  // Validate phone
+  if (!phoneInput || !phoneInput.value.trim()) {
+    phoneInput.focus();
+    phoneInput.placeholder = 'Please enter your phone number ✦';
+    phoneInput.style.borderColor = 'rgba(255,120,60,0.9)';
+    phoneInput.style.boxShadow = '0 0 12px rgba(255,100,40,0.5)';
+    phoneInput.addEventListener('input', function() {
+      phoneInput.placeholder = 'Phone number';
+      phoneInput.style.borderColor = '';
+      phoneInput.style.boxShadow = '';
+    }, { once: true });
+    return;
+  }
+
+  // Validate meal preference (only for 'yes')
+  if (answer === 'yes' && !_selectedMeal) {
+    var mealWrap = document.querySelector('.meal-pick');
+    if (mealWrap) {
+      var mealButtons = document.querySelectorAll('.meal-pick');
+      mealButtons.forEach(function(b) {
+        b.style.borderColor = 'rgba(255,120,60,0.9)';
+        b.style.boxShadow = '0 0 8px rgba(255,100,40,0.4)';
+        setTimeout(function() { b.style.borderColor=''; b.style.boxShadow=''; }, 2000);
+      });
+      // scroll to meal buttons
+      mealWrap.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
     return;
   }
 
@@ -3638,23 +3668,35 @@ function addToCalendar() {
   var startUTC = '20261211T140000Z';
   var endUTC   = '20261211T180000Z'; // 11:30pm IST — open ended
   var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  var ics = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Wedding Invite//EN',
+    'BEGIN:VEVENT',
+    'DTSTART:' + startUTC,
+    'DTEND:' + endUTC,
+    'SUMMARY:' + title,
+    'LOCATION:' + location,
+    'DESCRIPTION:' + details,
+    'END:VEVENT',
+    'END:VCALENDAR'
+  ].join('\r\n');
   if (isIOS) {
-    // On iOS, use data URI with text/calendar MIME type — opens Apple Calendar directly
-    var ics = [
-      'BEGIN:VCALENDAR',
-      'VERSION:2.0',
-      'PRODID:-//Wedding Invite//EN',
-      'BEGIN:VEVENT',
-      'DTSTART:' + startUTC,
-      'DTEND:' + endUTC,
-      'SUMMARY:' + title,
-      'LOCATION:' + location,
-      'DESCRIPTION:' + details,
-      'END:VEVENT',
-      'END:VCALENDAR'
-    ].join('\r\n');
-    var dataUri = 'data:text/calendar;charset=utf8,' + encodeURIComponent(ics);
-    window.location.href = dataUri;
+    // iOS: use Blob + object URL — Safari can open .ics files from blob links
+    try {
+      var blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'wedding.ics';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(function() { URL.revokeObjectURL(url); }, 2000);
+    } catch(e) {
+      // fallback: Google Calendar
+      window.open('https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(title) + '&dates=' + startUTC + '/' + endUTC + '&details=' + encodeURIComponent(details) + '&location=' + encodeURIComponent(location), '_blank');
+    }
   } else {
     // Google Calendar for Android / others
     var gcUrl = 'https://calendar.google.com/calendar/render?action=TEMPLATE' +
