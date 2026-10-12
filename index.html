@@ -2960,21 +2960,47 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
 
   function onAllDone() {
     updateBar(100);
-    // Assign blob URLs to video elements so they play from memory
+    // Assign blob URLs and pre-decode first frame of every video
+    // so iOS has the frame ready before the screen even appears
     videos.forEach(function(src) {
       var id = src.replace('.mp4', '') + '-video';
       var el = document.getElementById(id);
       if (el && blobs[src]) {
         el.src = blobs[src];
         el.load();
+        // Seek to 0 after load so iOS decodes the first frame now
+        el.addEventListener('loadeddata', function() {
+          el.currentTime = 0;
+        }, { once: true });
       }
     });
-    // Show open button
+    // Show open button only after all videos have first-frame decoded
+    var ready = 0;
+    var total = videos.length;
+    function onVideoReady() {
+      ready++;
+      if (ready >= total) {
+        if (btn) btn.style.display = 'block';
+        var sub = loader.querySelector('.loader-subtitle');
+        if (sub) sub.textContent = 'Your invitation is ready';
+      }
+    }
+    videos.forEach(function(src) {
+      var id = src.replace('.mp4', '') + '-video';
+      var el = document.getElementById(id);
+      if (el) {
+        if (el.readyState >= 2) { onVideoReady(); }
+        else { el.addEventListener('loadeddata', onVideoReady, { once: true }); }
+      } else { onVideoReady(); }
+    });
+    // Fallback: show button after 1.5s regardless
     setTimeout(function() {
-      if (btn) btn.style.display = 'block';
-      var sub = loader.querySelector('.loader-subtitle');
-      if (sub) sub.textContent = 'Your invitation is ready';
-    }, 400);
+      if (btn && btn.style.display === 'none') {
+        btn.style.display = 'block';
+        var sub = loader.querySelector('.loader-subtitle');
+        if (sub) sub.textContent = 'Your invitation is ready';
+      }
+    }, 1500);
   }
 
   window.openInvitation = function() {
