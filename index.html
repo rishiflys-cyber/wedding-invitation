@@ -7,11 +7,6 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" href="mehendi.mp4" as="video" type="video/mp4">
-<link rel="preload" href="sangeet.mp4" as="video" type="video/mp4">
-<link rel="preload" href="haldi.mp4" as="video" type="video/mp4">
-<link rel="preload" href="wedding.mp4" as="video" type="video/mp4">
-<link rel="preload" href="reception.mp4" as="video" type="video/mp4">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -31,6 +26,125 @@ html, body {
   font-family: 'Georgia', serif;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
+}
+
+/* ── LOADING SCREEN ── */
+#screen-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: radial-gradient(ellipse at 50% 50%, #1a0008 0%, #0d0004 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.8s ease;
+}
+#screen-loader.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+.loader-florals {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  margin-bottom: 32px;
+}
+.loader-petal {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 38px; height: 60px;
+  margin-left: -19px; margin-top: -30px;
+  transform-origin: 50% 100%;
+  animation: petal-bloom 3s ease-in-out infinite;
+}
+.loader-petal svg { width: 100%; height: 100%; }
+.loader-petal:nth-child(1)  { transform: rotate(0deg);    animation-delay: 0s; }
+.loader-petal:nth-child(2)  { transform: rotate(45deg);   animation-delay: 0.15s; }
+.loader-petal:nth-child(3)  { transform: rotate(90deg);   animation-delay: 0.3s; }
+.loader-petal:nth-child(4)  { transform: rotate(135deg);  animation-delay: 0.45s; }
+.loader-petal:nth-child(5)  { transform: rotate(180deg);  animation-delay: 0.6s; }
+.loader-petal:nth-child(6)  { transform: rotate(225deg);  animation-delay: 0.75s; }
+.loader-petal:nth-child(7)  { transform: rotate(270deg);  animation-delay: 0.9s; }
+.loader-petal:nth-child(8)  { transform: rotate(315deg);  animation-delay: 1.05s; }
+@keyframes petal-bloom {
+  0%,100% { opacity: 0.3; transform: rotate(var(--r)) scaleY(0.7); }
+  50%      { opacity: 1;   transform: rotate(var(--r)) scaleY(1.1); }
+}
+.loader-petal:nth-child(1)  { --r: 0deg; }
+.loader-petal:nth-child(2)  { --r: 45deg; }
+.loader-petal:nth-child(3)  { --r: 90deg; }
+.loader-petal:nth-child(4)  { --r: 135deg; }
+.loader-petal:nth-child(5)  { --r: 180deg; }
+.loader-petal:nth-child(6)  { --r: 225deg; }
+.loader-petal:nth-child(7)  { --r: 270deg; }
+.loader-petal:nth-child(8)  { --r: 315deg; }
+.loader-center-dot {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 18px; height: 18px;
+  margin: -9px 0 0 -9px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffe080, #f5c842);
+  box-shadow: 0 0 18px 6px rgba(245,200,66,0.5);
+  animation: dot-pulse 2s ease-in-out infinite;
+}
+@keyframes dot-pulse {
+  0%,100% { transform: scale(1); box-shadow: 0 0 18px 6px rgba(245,200,66,0.5); }
+  50%      { transform: scale(1.3); box-shadow: 0 0 28px 10px rgba(245,200,66,0.7); }
+}
+.loader-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 300;
+  letter-spacing: 0.18em;
+  color: #f5c842;
+  margin-bottom: 8px;
+  opacity: 0.9;
+}
+.loader-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  letter-spacing: 0.25em;
+  color: rgba(245,200,66,0.5);
+  margin-bottom: 36px;
+  text-transform: uppercase;
+}
+.loader-bar-wrap {
+  width: 200px;
+  height: 2px;
+  background: rgba(245,200,66,0.15);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 40px;
+}
+.loader-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #c9960a, #f5c842, #ffe080);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+  box-shadow: 0 0 8px rgba(245,200,66,0.6);
+}
+.loader-open-btn {
+  display: none;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  letter-spacing: 0.25em;
+  color: #1a0008;
+  background: linear-gradient(135deg, #f5c842, #ffe080);
+  border: none;
+  border-radius: 40px;
+  padding: 14px 40px;
+  cursor: pointer;
+  box-shadow: 0 4px 24px rgba(245,200,66,0.4);
+  animation: btn-glow 2s ease-in-out infinite;
+  text-transform: uppercase;
+}
+.loader-open-btn:active { transform: scale(0.96); }
+@keyframes btn-glow {
+  0%,100% { box-shadow: 0 4px 24px rgba(245,200,66,0.4); }
+  50%      { box-shadow: 0 4px 36px rgba(245,200,66,0.7); }
 }
 
 /* ── SCREEN SYSTEM ── */
@@ -1711,7 +1825,26 @@ html, body {
 <!-- ══════════════════════════════════════════
      SCREEN 1 — ENVELOPE
 ══════════════════════════════════════════ -->
-<div id="screen-envelope" class="screen active">
+<!-- ══ LOADING SCREEN ══ -->
+<div id="screen-loader">
+  <div class="loader-florals">
+    <div class="loader-petal"><svg viewBox="0 0 38 60"><ellipse cx="19" cy="35" rx="13" ry="28" fill="rgba(245,180,50,0.7)" /></svg></div>
+    <div class="loader-petal"><svg viewBox="0 0 38 60"><ellipse cx="19" cy="35" rx="13" ry="28" fill="rgba(220,140,40,0.65)" /></svg></div>
+    <div class="loader-petal"><svg viewBox="0 0 38 60"><ellipse cx="19" cy="35" rx="13" ry="28" fill="rgba(245,180,50,0.7)" /></svg></div>
+    <div class="loader-petal"><svg viewBox="0 0 38 60"><ellipse cx="19" cy="35" rx="13" ry="28" fill="rgba(220,140,40,0.65)" /></svg></div>
+    <div class="loader-petal"><svg viewBox="0 0 38 60"><ellipse cx="19" cy="35" rx="13" ry="28" fill="rgba(245,180,50,0.7)" /></svg></div>
+    <div class="loader-petal"><svg viewBox="0 0 38 60"><ellipse cx="19" cy="35" rx="13" ry="28" fill="rgba(220,140,40,0.65)" /></svg></div>
+    <div class="loader-petal"><svg viewBox="0 0 38 60"><ellipse cx="19" cy="35" rx="13" ry="28" fill="rgba(245,180,50,0.7)" /></svg></div>
+    <div class="loader-petal"><svg viewBox="0 0 38 60"><ellipse cx="19" cy="35" rx="13" ry="28" fill="rgba(220,140,40,0.65)" /></svg></div>
+    <div class="loader-center-dot"></div>
+  </div>
+  <div class="loader-title">Rishabh &amp; Ananya</div>
+  <div class="loader-subtitle">Preparing your invitation</div>
+  <div class="loader-bar-wrap"><div class="loader-bar" id="loader-bar"></div></div>
+  <button class="loader-open-btn" id="loader-open-btn" onclick="openInvitation()">Open Invitation ✦</button>
+</div>
+
+<div id="screen-envelope" class="screen">
 
   <!-- Ganesh world glows behind as flaps open — just a radiant OM -->
   <div id="ganesh-world">
@@ -2801,13 +2934,98 @@ const _guestFull = (_sal ? _sal + '. ' : '') + (_guestRaw || 'Friend');
 // VIP unlock: ?vip=1, ?vip=true, or short alias ?r=1
 const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _params.get('r') === '1';
 
-// Aggressively preload ALL videos immediately on page load
-['mehendi-video','sangeet-video','haldi-video','wedding-video','reception-video'].forEach(function(id) {
-  var v = document.getElementById(id);
-  if (!v) return;
-  v.preload = 'auto';
-  v.load();
-});
+/* ── LOADER: fetch all videos before showing invitation ── */
+(function() {
+  var videos = ['mehendi.mp4','sangeet.mp4','haldi.mp4','wedding.mp4','reception.mp4'];
+  var bar = document.getElementById('loader-bar');
+  var btn = document.getElementById('loader-open-btn');
+  var loader = document.getElementById('screen-loader');
+  var loaded = 0;
+  var totalBytes = 0;
+  var loadedBytes = 0;
+  var blobs = {};
+
+  function updateBar(pct) {
+    if (bar) bar.style.width = Math.min(100, pct) + '%';
+  }
+
+  function onAllDone() {
+    updateBar(100);
+    // Assign blob URLs to video elements so they play from memory
+    videos.forEach(function(src) {
+      var id = src.replace('.mp4', '') + '-video';
+      var el = document.getElementById(id);
+      if (el && blobs[src]) {
+        el.src = blobs[src];
+        el.load();
+      }
+    });
+    // Show open button
+    setTimeout(function() {
+      if (btn) btn.style.display = 'block';
+      var sub = loader.querySelector('.loader-subtitle');
+      if (sub) sub.textContent = 'Your invitation is ready';
+    }, 400);
+  }
+
+  window.openInvitation = function() {
+    // Start music (needs user gesture)
+    var music = document.getElementById('bgmusic');
+    if (music) { music.volume = 0; music.play().catch(function(){}); }
+    // Fade out loader, show envelope
+    if (loader) loader.classList.add('hide');
+    setTimeout(function() {
+      if (loader) loader.style.display = 'none';
+      var env = document.getElementById('screen-envelope');
+      if (env) env.classList.add('active');
+      // Fade music in
+      if (music) {
+        var vol = 0;
+        var fade = setInterval(function() {
+          vol = Math.min(0.35, vol + 0.02);
+          music.volume = vol;
+          if (vol >= 0.35) clearInterval(fade);
+        }, 80);
+      }
+    }, 800);
+  };
+
+  // Fetch each video, track bytes for progress bar
+  var remaining = videos.length;
+  videos.forEach(function(src) {
+    fetch(src)
+      .then(function(res) {
+        var total = parseInt(res.headers.get('content-length') || '800000');
+        totalBytes += total;
+        var reader = res.body.getReader();
+        var chunks = [];
+        function read() {
+          return reader.read().then(function(r) {
+            if (r.done) {
+              var blob = new Blob(chunks, { type: 'video/mp4' });
+              blobs[src] = URL.createObjectURL(blob);
+              loaded++;
+              remaining--;
+              if (remaining === 0) onAllDone();
+              return;
+            }
+            chunks.push(r.value);
+            loadedBytes += r.value.length;
+            updateBar(totalBytes > 0 ? (loadedBytes / totalBytes) * 100 : (loaded / videos.length) * 100);
+            return read();
+          });
+        }
+        return read();
+      })
+      .catch(function() {
+        // If fetch fails for one, still count it done
+        loaded++;
+        remaining--;
+        blobs[src] = src; // fall back to original src
+        if (remaining === 0) onAllDone();
+      });
+  });
+})();
 
 // Wire wedding screen → reception (VIP) or rsvp (everyone else)
 /* ── Safe video play/pause for iOS Safari ── */
