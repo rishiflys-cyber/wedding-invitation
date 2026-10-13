@@ -1898,7 +1898,34 @@ html, body {
   background:linear-gradient(180deg,rgba(255,220,100,0.07) 0%,transparent 55%);
   pointer-events:none;
 }
+@keyframes hint-fade {
+  0%   { opacity:0; transform:translateX(-50%) translateY(-4px); }
+  15%  { opacity:1; transform:translateX(-50%) translateY(0); }
+  70%  { opacity:1; transform:translateX(-50%) translateY(0); }
+  100% { opacity:0; transform:translateX(-50%) translateY(4px); }
+}
+#ctrl-hint {
+  position:fixed;
+  top:72px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:9998;
+  display:none;
+  white-space:nowrap;
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:12px;
+  letter-spacing:1.5px;
+  color:rgba(245,215,120,0.85);
+  background:rgba(12,4,8,0.72);
+  border:1px solid rgba(201,168,76,0.22);
+  border-radius:20px;
+  padding:5px 14px;
+  backdrop-filter:blur(8px);
+  pointer-events:none;
+  animation:hint-fade 5s ease forwards;
+}
 </style>
+<div id="ctrl-hint">‹ back &nbsp;·&nbsp; ❚❚ pause to read &nbsp;·&nbsp; ✕ close</div>
 <div id="ctrl-bar" style="position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:9999;display:none;align-items:center;gap:12px;backdrop-filter:blur(10px) saturate(1.4);">
   <!-- X close -->
   <div id="close-btn" class="ctrl-btn" onclick="returnToSeal()">
@@ -2317,19 +2344,19 @@ html, body {
       <div class="invite-parents-label" style="font-family:'Cormorant Garamond',Georgia,serif;letter-spacing:3px;">Blessed by our families</div>
       <div class="invite-family">
         <div class="invite-family-side">
-          <div class="invite-family-names" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:15px;line-height:1.7;">
+          <div class="invite-family-names" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:17px;line-height:1.8;">
             Partha Sarathi Chattopadhyay
-            <span style="display:block;opacity:0.45;font-size:12px;letter-spacing:1px;">&amp;</span>
+            <span style="display:block;opacity:0.55;font-size:14px;letter-spacing:1px;">&amp;</span>
             Soma Chattopadhyay
           </div>
           <div class="invite-family-relation" style="font-family:'Cormorant Garamond',Georgia,serif;letter-spacing:2px;">Groom's Parents</div>
         </div>
         <div class="invite-family-divider"></div>
         <div class="invite-family-side">
-          <div class="invite-family-names" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:15px;line-height:1.7;">
-            Atanu Kumar Dash <span style="font-size:12px;opacity:0.6;">(Acharya)</span>
-            <span style="display:block;opacity:0.45;font-size:12px;letter-spacing:1px;">&amp;</span>
-            Aparna Dash <span style="font-size:12px;opacity:0.6;">(Acharya)</span>
+          <div class="invite-family-names" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:17px;line-height:1.8;">
+            Atanu Kumar Dash <span style="font-size:14px;opacity:0.85;color:#f5dfa0;">(Acharya)</span>
+            <span style="display:block;opacity:0.55;font-size:14px;letter-spacing:1px;">&amp;</span>
+            Aparna Dash <span style="font-size:14px;opacity:0.85;color:#f5dfa0;">(Acharya)</span>
           </div>
           <div class="invite-family-relation" style="font-family:'Cormorant Garamond',Georgia,serif;letter-spacing:2px;">Bride's Parents</div>
         </div>
@@ -2903,6 +2930,15 @@ function goTo(id) {
   var videoScreens = ['screen-mehendi','screen-sangeet','screen-haldi','screen-wedding','screen-reception'];
   if (ctrlBar) ctrlBar.style.display = hideOn.indexOf(id) === -1 ? 'flex' : 'none';
   if (pb) pb.style.display = videoScreens.indexOf(id) !== -1 ? 'flex' : 'none';
+  // Show floating hint on first entry (fades in, then auto-fades after 5s)
+  var hint = document.getElementById('ctrl-hint');
+  if (hint && hideOn.indexOf(id) === -1) {
+    hint.style.display = 'block';
+    hint.style.animation = 'none';
+    void hint.offsetWidth; // force reflow to restart animation
+    hint.style.animation = 'hint-fade 5s ease forwards';
+    hint.addEventListener('animationend', function(){ hint.style.display='none'; }, {once:true});
+  }
   // Cancel any pending auto-advance timer from previous screen
   if (window._advanceTimer) { clearTimeout(window._advanceTimer); window._advanceTimer = null; }
   // Reset pause state on every screen change
@@ -3087,6 +3123,8 @@ function returnToSeal() {
   if (ctrlBar2) ctrlBar2.style.display = 'none';
   var pb2 = document.getElementById('pause-btn');
   if (pb2) pb2.style.display = 'none';
+  var hint2 = document.getElementById('ctrl-hint');
+  if (hint2) { hint2.style.display='none'; hint2.style.animation='none'; }
   _videoPaused = false;
   var env = document.getElementById('screen-envelope');
   if (env) env.classList.remove('opening');
