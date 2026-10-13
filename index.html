@@ -2822,7 +2822,7 @@ var _navigatingBack = false;
     var music = document.getElementById('bgmusic');
     if (!music) return;
     // Only auto-resume if we expect music to be playing (not muted by user, not on early screens)
-    var earlyScreens = ['screen-envelope','screen-ganesh','screen-invite','screen-invite2'];
+    var earlyScreens = ['screen-envelope','screen-ganesh'];
     if (earlyScreens.indexOf(current) !== -1) return;
     // If music should be on (_musicMuted flag false) and it's paused unexpectedly, resume
     if (!window._musicMuted && music.paused && !_musicPausedByHide && music.currentTime > 0) {
@@ -2988,6 +2988,7 @@ function goTo(id) {
       var ic = document.getElementById('music-icon');
       var im = document.getElementById('music-icon-muted');
       function _startMusic() {
+        window._musicStarted = true;
         mus.currentTime = 0;
         mus.volume = 0.5;
         mus.play().then(function(){
@@ -3257,12 +3258,16 @@ function openEnvelope() {
   // (browsers block audio started outside a user gesture — this primes the element)
   const music = document.getElementById('bgmusic');
   window._musicUnlocked = false;
+  window._musicStarted = false; // set true when real playback begins
   music.currentTime = 0;
   music.volume = 0;
   music.play().then(function(){
-    music.pause();
-    music.currentTime = 0;
-    music.volume = 0.5;
+    // Only reset if real music hasn't started yet — avoids killing playback
+    if (!window._musicStarted) {
+      music.pause();
+      music.currentTime = 0;
+      music.volume = 0.5;
+    }
     window._musicUnlocked = true;
   }).catch(function(){ window._musicUnlocked = false; });
   // ctrl-bar hidden on Ganesh screen; music actually starts at end of Ganesh via setTimeout
