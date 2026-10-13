@@ -3238,25 +3238,24 @@ function openEnvelope() {
   opened = true;
   requestWakeLock();
 
-  // Start music immediately on seal tap, play through Ganesh slide
+  // Start music 200ms after seal tap, play through Ganesh slide
   const music = document.getElementById('bgmusic');
   window._musicUnlocked = true;
   window._musicStarted = true;
   window._musicMutedByUser = false;
-  music.currentTime = 0;
-  music.volume = 0.5;
-  music.play().then(function(){
-    var ic = document.getElementById('music-icon');
-    var im = document.getElementById('music-icon-muted');
-    if (ic) ic.style.display = 'inline';
-    if (im) im.style.display = 'none';
-  }).catch(function(){
-    // Retry once if browser blocks (shouldn't happen — this IS a user gesture)
-    setTimeout(function(){
-      music.currentTime = 0; music.volume = 0.5;
-      music.play().catch(function(){});
-    }, 100);
-  });
+  // Prime the element during this gesture so delayed play() is allowed
+  music.volume = 0;
+  music.play().then(function(){ music.pause(); music.currentTime = 0; }).catch(function(){});
+  setTimeout(function(){
+    music.currentTime = 0;
+    music.volume = 0.5;
+    music.play().then(function(){
+      var ic = document.getElementById('music-icon');
+      var im = document.getElementById('music-icon-muted');
+      if (ic) ic.style.display = 'inline';
+      if (im) im.style.display = 'none';
+    }).catch(function(){});
+  }, 200);
 
   // Unlock ALL event videos during this user gesture so they can autoplay later
   ['mehendi-video','sangeet-video','haldi-video','wedding-video','reception-video'].forEach(function(vid) {
