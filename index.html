@@ -2953,11 +2953,15 @@ function goTo(id) {
   if (id === 'screen-rsvp' || id === 'screen-countdown') { releaseWakeLock(); }
   // Auto-advance Ganesh screen after 2s
   if (id === 'screen-ganesh') {
-    // Start music at the very last moment of Ganesh slide (0.1s before auto-advance)
+    // Start music right as Ganesh slide ends — song begins fresh at transition
     setTimeout(function(){
       if (current !== 'screen-ganesh') return;
       var mus = document.getElementById('bgmusic');
-      if (mus && mus.paused) { mus.play().catch(function(){}); }
+      if (mus) {
+        mus.currentTime = 0;
+        mus.volume = 0.5;
+        mus.play().catch(function(){});
+      }
       var ic = document.getElementById('music-icon');
       var im = document.getElementById('music-icon-muted');
       if (ic) ic.style.display = 'inline';
@@ -3203,18 +3207,12 @@ function openEnvelope() {
   opened = true;
   requestWakeLock();
 
-  // Start music from beginning (1s delay)
+  // Music starts later — triggered at the end of the Ganesh slide
+  // Just prepare the audio element here
   const music = document.getElementById('bgmusic');
   music.currentTime = 0;
   music.volume = 0.5;
-  setTimeout(function() { music.play().catch(function(){}); }, 1000);
-  // Show ctrl-bar (music + close + pause) and set music icon to "on"
-  var ctrlBar4 = document.getElementById('ctrl-bar');
-  if (ctrlBar4) ctrlBar4.style.display = 'flex';
-  var ic = document.getElementById('music-icon');
-  var im = document.getElementById('music-icon-muted');
-  if (ic) ic.style.display = 'inline';
-  if (im) im.style.display = 'none';
+  // ctrl-bar hidden on Ganesh screen; shown from goTo() once past it
 
   // Unlock ALL event videos during this user gesture so they can autoplay later
   ['mehendi-video','sangeet-video','haldi-video','wedding-video','reception-video'].forEach(function(vid) {
