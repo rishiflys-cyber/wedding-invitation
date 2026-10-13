@@ -2984,9 +2984,6 @@ function goTo(id) {
     var _ganeshDelay = _navigatingBack ? 5000 : 5500;
     window._advanceCallback = function(){
       if (current !== 'screen-ganesh') return;
-      // Stop music at end of Ganesh — invite-1 will restart it fresh
-      var _gmus = document.getElementById('bgmusic');
-      if (_gmus && !window._musicMutedByUser) { _gmus.pause(); _gmus.currentTime = 0; }
       goTo('screen-invite');
     };
     window._advanceTimer = setTimeout(window._advanceCallback, _ganeshDelay);
@@ -3243,19 +3240,9 @@ function openEnvelope() {
   window._musicUnlocked = true;
   window._musicStarted = true;
   window._musicMutedByUser = false;
-  // Prime the element during this gesture so delayed play() is allowed
+  // Only unlock the audio element during this gesture so invite-1 can autoplay later
   music.volume = 0;
-  music.play().then(function(){ music.pause(); music.currentTime = 0; }).catch(function(){});
-  setTimeout(function(){
-    music.currentTime = 0;
-    music.volume = 0.5;
-    music.play().then(function(){
-      var ic = document.getElementById('music-icon');
-      var im = document.getElementById('music-icon-muted');
-      if (ic) ic.style.display = 'inline';
-      if (im) im.style.display = 'none';
-    }).catch(function(){});
-  }, 200);
+  music.play().then(function(){ music.pause(); music.currentTime = 0; window._musicUnlocked = true; }).catch(function(){ window._musicUnlocked = false; });
 
   // Unlock ALL event videos during this user gesture so they can autoplay later
   ['mehendi-video','sangeet-video','haldi-video','wedding-video','reception-video'].forEach(function(vid) {
