@@ -2861,6 +2861,8 @@ function goTo(id) {
   if (pb) pb.style.display = videoScreens.indexOf(id) !== -1 ? 'flex' : 'none';
   // Reset pause state on every screen change
   _videoPaused = false;
+  window._advanceCallback = null;
+  window._advanceRemaining = 0;
   var pauseIcon = document.getElementById('pause-btn-icon');
   if (pauseIcon) pauseIcon.innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
   // Release wake lock when reaching final screens (no more auto-advance)
@@ -3421,7 +3423,11 @@ document.addEventListener('DOMContentLoaded', function() {
     if (mi) { mi.style.opacity = '1'; mi.style.transform = 'translateY(0)'; mi.style.pointerEvents = 'auto'; }
     var delay = mehendiVisited ? 11500 : 6500;
     mehendiVisited = true;
-    setTimeout(function() { if (current === 'screen-mehendi') goTo('screen-sangeet'); }, delay);
+    window._advanceCallback = function() { if (current === 'screen-mehendi') goTo('screen-sangeet'); };
+    window._advanceTimer = setTimeout(window._advanceCallback, delay);
+    window._advanceDelay = delay;
+    window._advanceStart = Date.now();
+    window._advanceRemaining = delay;
   }
 
   function resetMehendi() {
@@ -3489,7 +3495,11 @@ document.addEventListener('DOMContentLoaded', function() {
     if (si) { si.style.opacity = '1'; si.style.transform = 'translateY(0)'; si.style.pointerEvents = 'auto'; }
     var delay = sangeetVisited ? 11500 : 7000;
     sangeetVisited = true;
-    setTimeout(function() { if (current === 'screen-sangeet') goTo('screen-haldi'); }, delay);
+    window._advanceCallback = function() { if (current === 'screen-sangeet') goTo('screen-haldi'); };
+    window._advanceTimer = setTimeout(window._advanceCallback, delay);
+    window._advanceDelay = delay;
+    window._advanceStart = Date.now();
+    window._advanceRemaining = delay;
   }
 
   function resetSangeet() {
@@ -3552,7 +3562,11 @@ document.addEventListener('DOMContentLoaded', function() {
     if (hi) { hi.style.opacity = '1'; hi.style.transform = 'translateY(0)'; hi.style.pointerEvents = 'auto'; }
     var delay = haldiVisited ? 11500 : 7000;
     haldiVisited = true;
-    setTimeout(function() { if (current === 'screen-haldi') goTo('screen-wedding'); }, delay);
+    window._advanceCallback = function() { if (current === 'screen-haldi') goTo('screen-wedding'); };
+    window._advanceTimer = setTimeout(window._advanceCallback, delay);
+    window._advanceDelay = delay;
+    window._advanceStart = Date.now();
+    window._advanceRemaining = delay;
   }
 
   function resetHaldi() {
@@ -3782,9 +3796,23 @@ function toggleVideoPause() {
     if (_videoPaused) {
       vid._forcePaused = true;
       vid.pause();
+      // Cancel the auto-advance timer and save remaining time
+      if (window._advanceTimer) {
+        var elapsed = Date.now() - (window._advanceStart || Date.now());
+        window._advanceRemaining = Math.max(0, (window._advanceDelay || 0) - elapsed);
+        clearTimeout(window._advanceTimer);
+        window._advanceTimer = null;
+      }
     } else {
       vid._forcePaused = false;
       vid.play().catch(function(){});
+      // Resume auto-advance with remaining time
+      if (window._advanceRemaining > 0 && window._advanceCallback) {
+        var cb = window._advanceCallback;
+        window._advanceTimer = setTimeout(cb, window._advanceRemaining);
+        window._advanceStart = Date.now();
+        window._advanceDelay = window._advanceRemaining;
+      }
     }
   }
   if (music) {
