@@ -3365,6 +3365,7 @@ function safeVideoPlay(video, onSkip) {
     function play() {
       if (started) return;
       started = true;
+      if (video._forcePaused) return; // respect manual pause
       var p = video.play();
       if (p !== undefined) { p.catch(function(){}); }
     }
@@ -3428,7 +3429,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (mehendiTimer) { clearTimeout(mehendiTimer); mehendiTimer = null; }
     if (mp) { mp.style.transition = 'none'; mp.style.transform = 'translateY(100%)'; mp.style.pointerEvents = 'none'; }
     if (mi) { mi.style.opacity = '0'; mi.style.transform = 'translateY(20px)'; mi.style.pointerEvents = 'none'; }
-    if (mv) { safeVideoPause(mv); mv.ontimeupdate = null; mv.onended = null; mv.currentTime = 0; }
+    if (mv) { safeVideoPause(mv); mv.ontimeupdate = null; mv.onended = null; mv.currentTime = 0; mv._forcePaused = false; }
   }
 
   if (mv) {
@@ -3496,7 +3497,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (sangeetTimer) { clearTimeout(sangeetTimer); sangeetTimer = null; }
     if (sp) { sp.style.transition = 'none'; sp.style.transform = 'translateY(100%)'; sp.style.pointerEvents = 'none'; }
     if (si) { si.style.opacity = '0'; si.style.transform = 'translateY(20px)'; si.style.pointerEvents = 'none'; }
-    if (sv) { safeVideoPause(sv); sv.ontimeupdate = null; sv.onended = null; sv.currentTime = 0; }
+    if (sv) { safeVideoPause(sv); sv.ontimeupdate = null; sv.onended = null; sv.currentTime = 0; sv._forcePaused = false; }
   }
 
   if (sv) {
@@ -3559,7 +3560,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (haldiTimer) { clearTimeout(haldiTimer); haldiTimer = null; }
     if (hp) { hp.style.transition = 'none'; hp.style.transform = 'translateY(100%)'; hp.style.pointerEvents = 'none'; }
     if (hi) { hi.style.opacity = '0'; hi.style.transform = 'translateY(20px)'; hi.style.pointerEvents = 'none'; }
-    if (hv) { safeVideoPause(hv); hv.ontimeupdate = null; hv.onended = null; hv.currentTime = 0; }
+    if (hv) { safeVideoPause(hv); hv.ontimeupdate = null; hv.onended = null; hv.currentTime = 0; hv._forcePaused = false; }
   }
 
   if (hv) {
@@ -3623,7 +3624,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (weddingTimer) { clearTimeout(weddingTimer); weddingTimer = null; }
     if (wp) { wp.style.transition = 'none'; wp.style.transform = 'translateY(100%)'; wp.style.pointerEvents = 'none'; }
     if (wi) { wi.style.opacity = '0'; wi.style.transform = 'translateY(20px)'; wi.style.pointerEvents = 'none'; }
-    if (wv) { safeVideoPause(wv); wv.ontimeupdate = null; wv.onended = null; wv.currentTime = 0; }
+    if (wv) { safeVideoPause(wv); wv.ontimeupdate = null; wv.onended = null; wv.currentTime = 0; wv._forcePaused = false; }
     var hint = document.getElementById('wedding-press-hint');
     if (hint) hint.style.opacity = '0';
   }
@@ -3682,7 +3683,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (receptionTimer) { clearTimeout(receptionTimer); receptionTimer = null; }
     if (rp) { rp.style.transition = 'none'; rp.style.transform = 'translateY(100%)'; rp.style.pointerEvents = 'none'; }
     if (ri) { ri.style.opacity = '0'; ri.style.transform = 'translateY(20px)'; ri.style.pointerEvents = 'none'; }
-    if (rv) { safeVideoPause(rv); rv.ontimeupdate = null; rv.onended = null; rv.currentTime = 0; }
+    if (rv) { safeVideoPause(rv); rv.ontimeupdate = null; rv.onended = null; rv.currentTime = 0; rv._forcePaused = false; }
   }
 
   if (rv) {
@@ -3744,31 +3745,35 @@ document.addEventListener('DOMContentLoaded', function() {
 })();
 
 var _videoPaused = false;
+var _screenToVideo = {
+  'screen-mehendi': 'mehendi-video',
+  'screen-sangeet': 'sangeet-video',
+  'screen-haldi':   'haldi-video',
+  'screen-wedding': 'wedding-video',
+  'screen-reception': 'reception-video'
+};
+function _getCurrentVid() {
+  return document.getElementById(_screenToVideo[current]);
+}
 function toggleVideoPause() {
   var music = document.getElementById('bgmusic');
   var icon = document.getElementById('pause-btn-icon');
   _videoPaused = !_videoPaused;
-  // Only act on the video for the current screen
-  var screenToVideo = {
-    'screen-mehendi': 'mehendi-video',
-    'screen-sangeet': 'sangeet-video',
-    'screen-haldi':   'haldi-video',
-    'screen-wedding': 'wedding-video',
-    'screen-reception': 'reception-video'
-  };
-  var vid = document.getElementById(screenToVideo[current]);
+  var vid = _getCurrentVid();
   if (vid) {
     if (_videoPaused) {
-      try { vid.pause(); } catch(e) {}
+      // pause + keep pausing until released (fights async play promises)
+      vid.pause();
+      vid._forcePaused = true;
     } else {
-      try { vid.play().catch(function(){}); } catch(e) {}
+      vid._forcePaused = false;
+      vid.play().catch(function(){});
     }
   }
   if (music) {
     if (_videoPaused) { music.pause(); }
     else { music.play().catch(function(){}); }
   }
-  // Swap icon: pause bars ↔ play triangle
   if (icon) {
     if (_videoPaused) {
       icon.innerHTML = '<polygon points="5,3 19,12 5,21"/>';
