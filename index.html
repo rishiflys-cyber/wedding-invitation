@@ -2592,7 +2592,7 @@ html, body {
     </div>
     <div class="event-venue">📍 Circle Club, Kolkata</div>
     <div class="event-poem"><span class="event-poem-em">Under the same stars that have witnessed a thousand love stories — and their story begins on 11th December.</span></div>
-    <div class="screen-tap-hint" style="font-weight:600;opacity:0.85;">tap to continue ✦</div>
+    <div class="screen-tap-hint" style="font-weight:600;opacity:0.85;font-size:17px;">tap to continue ✦</div>
   </div>
   </div><!-- end wedding-panel -->
 </div>
@@ -2913,7 +2913,17 @@ function goTo(id) {
   if (id === 'screen-rsvp' || id === 'screen-countdown') { releaseWakeLock(); }
   // Auto-advance Ganesh screen after 2s
   if (id === 'screen-ganesh') {
-    setTimeout(function(){ if (current === 'screen-ganesh') goTo('screen-invite'); }, 4500);
+    // Start music near end of Ganesh slide (1.5s before auto-advance)
+    setTimeout(function(){
+      if (current !== 'screen-ganesh') return;
+      var mus = document.getElementById('bgmusic');
+      if (mus && mus.paused) { mus.play().catch(function(){}); }
+      var ic = document.getElementById('music-icon');
+      var im = document.getElementById('music-icon-muted');
+      if (ic) ic.style.display = 'inline';
+      if (im) im.style.display = 'none';
+    }, 4000);
+    setTimeout(function(){ if (current === 'screen-ganesh') goTo('screen-invite'); }, 5500);
   }
 
   // Invite acts — cinematic trailer timing
