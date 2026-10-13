@@ -1789,11 +1789,11 @@ html, body {
   pointer-events: none;
 }
 .invite-parents-label {
-  font-size: 9px;
-  letter-spacing: 4px;
+  font-size: 13px;
+  letter-spacing: 3px;
   text-transform: uppercase;
   color: var(--gold);
-  opacity: 0.7;
+  opacity: 0.85;
   margin-bottom: 12px;
   display: flex;
   align-items: center;
@@ -1827,11 +1827,11 @@ html, body {
   opacity: 0.9;
 }
 .invite-family-relation {
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--gold);
-  opacity: 0.65;
+  opacity: 0.8;
   margin-top: 4px;
 }
 .invite-family-divider {
@@ -2806,6 +2806,7 @@ let current = 'screen-envelope';
 let opened = false;
 
 var _history = [];
+var _navigatingBack = false;
 
 // (AudioContext pre-unlock removed — direct play() in openEnvelope is sufficient)
 
@@ -2928,8 +2929,9 @@ function goTo(id) {
   var pb = document.getElementById('pause-btn');
   var hideOn = ['screen-envelope','screen-ganesh'];
   var videoScreens = ['screen-mehendi','screen-sangeet','screen-haldi','screen-wedding','screen-reception'];
+  var pauseScreens = videoScreens.concat(['screen-invite','screen-invite2','screen-invite3']);
   if (ctrlBar) ctrlBar.style.display = hideOn.indexOf(id) === -1 ? 'flex' : 'none';
-  if (pb) pb.style.display = videoScreens.indexOf(id) !== -1 ? 'flex' : 'none';
+  if (pb) pb.style.display = pauseScreens.indexOf(id) !== -1 ? 'flex' : 'none';
   // Show floating hint on first entry (fades in, then auto-fades after 5s)
   var hint = document.getElementById('ctrl-hint');
   if (hint && hideOn.indexOf(id) === -1) {
@@ -2951,7 +2953,7 @@ function goTo(id) {
   if (id === 'screen-rsvp' || id === 'screen-countdown') { releaseWakeLock(); }
   // Auto-advance Ganesh screen after 2s
   if (id === 'screen-ganesh') {
-    // Start music right at the end of Ganesh slide (0.4s before auto-advance)
+    // Start music at the very last moment of Ganesh slide (0.1s before auto-advance)
     setTimeout(function(){
       if (current !== 'screen-ganesh') return;
       var mus = document.getElementById('bgmusic');
@@ -2960,8 +2962,8 @@ function goTo(id) {
       var im = document.getElementById('music-icon-muted');
       if (ic) ic.style.display = 'inline';
       if (im) im.style.display = 'none';
-    }, 5100);
-    window._advanceTimer = setTimeout(function(){ if (current === 'screen-ganesh') goTo('screen-invite'); }, 5500);
+    }, 5400);
+    if (!_navigatingBack) window._advanceTimer = setTimeout(function(){ if (current === 'screen-ganesh') goTo('screen-invite'); }, 5500);
   }
 
   // Invite acts — cinematic trailer timing
@@ -3013,7 +3015,12 @@ function goTo(id) {
       var div=document.getElementById('invite-act1-divider');
       if(div){ div.style.opacity='1'; }
     }, 680);
-    window._advanceTimer = setTimeout(function(){ if(current==='screen-invite') goTo('screen-invite2'); }, 7500);
+    if (!_navigatingBack) {
+      var _inv1Delay = 7500;
+      window._advanceCallback = function(){ if(current==='screen-invite') goTo('screen-invite2'); };
+      window._advanceTimer = setTimeout(window._advanceCallback, _inv1Delay);
+      window._advanceStart = Date.now(); window._advanceDelay = _inv1Delay; window._advanceRemaining = _inv1Delay;
+    }
   }
   if (id === 'screen-invite2') {
     // Ken Burns zoom
@@ -3053,7 +3060,12 @@ function goTo(id) {
         })(i);
       }
     }, 200);
-    window._advanceTimer = setTimeout(function(){ if(current==='screen-invite2') goTo('screen-invite3'); }, 3500);
+    if (!_navigatingBack) {
+      var _inv2Delay = 3500;
+      window._advanceCallback = function(){ if(current==='screen-invite2') goTo('screen-invite3'); };
+      window._advanceTimer = setTimeout(window._advanceCallback, _inv2Delay);
+      window._advanceStart = Date.now(); window._advanceDelay = _inv2Delay; window._advanceRemaining = _inv2Delay;
+    }
   }
   if (id === 'screen-invite3') {
     // Ken Burns zoom
@@ -3093,8 +3105,13 @@ function goTo(id) {
       var par=document.getElementById('act3-parents');
       if(par){ par.style.opacity='1'; }
     }, 2800);
-    // Auto-advance after everything is visible
-    window._advanceTimer = setTimeout(function(){ if(current==='screen-invite3') goTo('screen-mehendi'); }, 12000);
+    // Auto-advance after everything is visible (skip if navigating back)
+    if (!_navigatingBack) {
+      var _inv3Delay = 12000;
+      window._advanceCallback = function(){ if(current==='screen-invite3') goTo('screen-mehendi'); };
+      window._advanceTimer = setTimeout(window._advanceCallback, _inv3Delay);
+      window._advanceStart = Date.now(); window._advanceDelay = _inv3Delay; window._advanceRemaining = _inv3Delay;
+    }
   }
 }
 
@@ -3161,13 +3178,13 @@ function closeInvitation() {
 function goBack() {
   if (_history.length === 0) return;
   const prevId = _history[_history.length - 1]; // peek without popping
-  // Use goTo so all video hooks fire; goTo will push current onto history
-  // then we remove the duplicate
+  _navigatingBack = true;
   goTo(prevId);
   // goTo pushed the old current AND prevId is now current
   // history now has [..., prevId, oldCurrent] — remove the last two and keep [...]
   _history.pop(); // remove oldCurrent (just pushed by goTo)
   _history.pop(); // remove prevId (the peek we left)
+  _navigatingBack = false;
 }
 
 function updateBackBtn() {
@@ -3900,6 +3917,23 @@ function toggleVideoPause() {
       if (window._advanceRemaining > 0 && window._advanceCallback) {
         var cb = window._advanceCallback;
         window._advanceTimer = setTimeout(cb, window._advanceRemaining);
+        window._advanceStart = Date.now();
+        window._advanceDelay = window._advanceRemaining;
+      }
+    }
+  } else {
+    // Non-video screens (invite slides) — just pause/resume the timer
+    if (_videoPaused) {
+      if (window._advanceTimer) {
+        var elapsedNV = Date.now() - (window._advanceStart || Date.now());
+        window._advanceRemaining = Math.max(0, (window._advanceDelay || 0) - elapsedNV);
+        clearTimeout(window._advanceTimer);
+        window._advanceTimer = null;
+      }
+    } else {
+      if (window._advanceRemaining > 0 && window._advanceCallback) {
+        var cbNV = window._advanceCallback;
+        window._advanceTimer = setTimeout(cbNV, window._advanceRemaining);
         window._advanceStart = Date.now();
         window._advanceDelay = window._advanceRemaining;
       }
