@@ -3755,16 +3755,33 @@ var _screenToVideo = {
 function _getCurrentVid() {
   return document.getElementById(_screenToVideo[current]);
 }
+// Re-pause handler — attached once per video to fight async play promises
+function _setupForcePauseListener(vid) {
+  if (vid._forcePauseListenerAdded) return;
+  vid._forcePauseListenerAdded = true;
+  vid.addEventListener('playing', function() {
+    if (vid._forcePaused) {
+      vid.pause();
+    }
+  });
+}
+// Set up listeners on all event videos once DOM ready
+document.addEventListener('DOMContentLoaded', function() {
+  ['mehendi-video','sangeet-video','haldi-video','wedding-video','reception-video'].forEach(function(id) {
+    var v = document.getElementById(id);
+    if (v) _setupForcePauseListener(v);
+  });
+});
 function toggleVideoPause() {
   var music = document.getElementById('bgmusic');
   var icon = document.getElementById('pause-btn-icon');
   _videoPaused = !_videoPaused;
   var vid = _getCurrentVid();
   if (vid) {
+    _setupForcePauseListener(vid);
     if (_videoPaused) {
-      // pause + keep pausing until released (fights async play promises)
-      vid.pause();
       vid._forcePaused = true;
+      vid.pause();
     } else {
       vid._forcePaused = false;
       vid.play().catch(function(){});
