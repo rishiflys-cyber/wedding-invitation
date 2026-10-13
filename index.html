@@ -3207,12 +3207,13 @@ function openEnvelope() {
   opened = true;
   requestWakeLock();
 
-  // Music starts later — triggered at the end of the Ganesh slide
-  // Just prepare the audio element here
+  // Unlock audio during this user gesture so the later setTimeout play() is allowed
+  // (browsers block audio started outside a user gesture — this primes the element)
   const music = document.getElementById('bgmusic');
   music.currentTime = 0;
-  music.volume = 0.5;
-  // ctrl-bar hidden on Ganesh screen; shown from goTo() once past it
+  music.volume = 0;
+  music.play().then(function(){ music.pause(); music.currentTime = 0; music.volume = 0.5; }).catch(function(){});
+  // ctrl-bar hidden on Ganesh screen; music actually starts at end of Ganesh via setTimeout
 
   // Unlock ALL event videos during this user gesture so they can autoplay later
   ['mehendi-video','sangeet-video','haldi-video','wedding-video','reception-video'].forEach(function(vid) {
