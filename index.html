@@ -2984,6 +2984,7 @@ function goTo(id) {
     // Play ganapathi tone
     var _ga2 = document.getElementById('ganapathi-audio');
     if (_ga2 && !window._musicMutedByUser) {
+      window._ganapathiStarted = true;
       _ga2.currentTime = 0;
       _ga2.volume = 0.7;
       _ga2.play().catch(function(){});
@@ -3281,8 +3282,9 @@ function openEnvelope() {
     if (v) { v.muted = true; v.play().then(function(){ v.pause(); v.currentTime = 0; }).catch(function(){}); }
   });
   // Also unlock ganapathi audio
+  window._ganapathiStarted = false;
   var _ga = document.getElementById('ganapathi-audio');
-  if (_ga) { _ga.volume = 0; _ga.play().then(function(){ _ga.pause(); _ga.currentTime = 0; _ga.volume = 0.7; window._ganapathiUnlocked = true; }).catch(function(){}); }
+  if (_ga) { _ga.volume = 0; _ga.play().then(function(){ if (!window._ganapathiStarted) { _ga.pause(); _ga.currentTime = 0; _ga.volume = 0.7; } window._ganapathiUnlocked = true; }).catch(function(){}); }
 
   // Trigger flaps flying outward
   document.getElementById('screen-envelope').classList.add('opening');
