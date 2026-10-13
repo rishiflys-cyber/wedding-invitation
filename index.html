@@ -2815,7 +2815,23 @@ let opened = false;
 var _history = [];
 var _navigatingBack = false;
 
-// (AudioContext pre-unlock removed — direct play() in openEnvelope is sufficient)
+// Global tap listener — resumes music if it should be playing but got suspended
+// (browser audio contexts can silently pause after tab switches, lock screen, etc.)
+(function() {
+  function _resumeMusicIfNeeded() {
+    var music = document.getElementById('bgmusic');
+    if (!music) return;
+    // Only auto-resume if we expect music to be playing (not muted by user, not on early screens)
+    var earlyScreens = ['screen-envelope','screen-ganesh','screen-invite','screen-invite2'];
+    if (earlyScreens.indexOf(current) !== -1) return;
+    // If music should be on (_musicMuted flag false) and it's paused unexpectedly, resume
+    if (!window._musicMuted && music.paused && !_musicPausedByHide && music.currentTime > 0) {
+      music.play().catch(function(){});
+    }
+  }
+  document.addEventListener('touchstart', _resumeMusicIfNeeded, {passive: true, capture: true});
+  document.addEventListener('click', _resumeMusicIfNeeded, {capture: true});
+})();
 
 /* ── Wake Lock: keep screen on during auto-advance ── */
 var _wakeLock = null;
@@ -2964,15 +2980,34 @@ function goTo(id) {
     setTimeout(function(){
       if (current !== 'screen-ganesh') return;
       var mus = document.getElementById('bgmusic');
-      if (mus) {
-        mus.currentTime = 0;
-        mus.volume = 0.5;
-        mus.play().catch(function(){});
-      }
+      if (!mus) return;
       var ic = document.getElementById('music-icon');
       var im = document.getElementById('music-icon-muted');
-      if (ic) ic.style.display = 'inline';
-      if (im) im.style.display = 'none';
+      function _startMusic() {
+        mus.currentTime = 0;
+        mus.volume = 0.5;
+        mus.play().then(function(){
+          if (ic) ic.style.display = 'inline';
+          if (im) im.style.display = 'none';
+        }).catch(function(){
+          // Retry once after 300ms in case unlock promise hadn't resolved yet
+          setTimeout(function(){
+            if (current !== 'screen-ganesh' && current !== 'screen-invite') return;
+            mus.currentTime = 0;
+            mus.volume = 0.5;
+            mus.play().then(function(){
+              if (ic) ic.style.display = 'inline';
+              if (im) im.style.display = 'none';
+            }).catch(function(){});
+          }, 300);
+        });
+      }
+      // If unlock .then() hasn't resolved yet, wait a tick
+      if (!window._musicUnlocked) {
+        setTimeout(_startMusic, 200);
+      } else {
+        _startMusic();
+      }
     }, 5400);
     var _ganeshDelay = _navigatingBack ? 5000 : 5500;
     window._advanceCallback = function(){ if (current === 'screen-ganesh') goTo('screen-invite'); };
@@ -3217,9 +3252,15 @@ function openEnvelope() {
   // Unlock audio during this user gesture so the later setTimeout play() is allowed
   // (browsers block audio started outside a user gesture — this primes the element)
   const music = document.getElementById('bgmusic');
+  window._musicUnlocked = false;
   music.currentTime = 0;
   music.volume = 0;
-  music.play().then(function(){ music.pause(); music.currentTime = 0; music.volume = 0.5; }).catch(function(){});
+  music.play().then(function(){
+    music.pause();
+    music.currentTime = 0;
+    music.volume = 0.5;
+    window._musicUnlocked = true;
+  }).catch(function(){ window._musicUnlocked = false; });
   // ctrl-bar hidden on Ganesh screen; music actually starts at end of Ganesh via setTimeout
 
   // Unlock ALL event videos during this user gesture so they can autoplay later
