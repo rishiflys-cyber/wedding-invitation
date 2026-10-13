@@ -1652,8 +1652,8 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
-  padding: 90px 28px 40px;
+  gap: 10px;
+  padding: 72px 28px 28px;
   width: 100%;
   max-width: 380px;
   animation: fade-rise 0.9s ease-out;
@@ -1909,23 +1909,23 @@ html, body {
 }
 #ctrl-hint {
   position:fixed;
-  top:62px;
+  top:60px;
   left:50%;
   transform:translateX(-50%);
   z-index:9998;
   display:none;
   white-space:nowrap;
   font-family:'Cormorant Garamond',Georgia,serif;
-  font-size:12px;
-  letter-spacing:1.5px;
-  color:rgba(245,215,120,0.85);
-  background:rgba(12,4,8,0.72);
-  border:1px solid rgba(201,168,76,0.22);
-  border-radius:20px;
-  padding:5px 14px;
+  font-size:11px;
+  letter-spacing:1.2px;
+  color:rgba(245,215,120,0.8);
+  background:rgba(12,4,8,0.68);
+  border:1px solid rgba(201,168,76,0.18);
+  border-radius:16px;
+  padding:3px 11px;
   backdrop-filter:blur(8px);
   pointer-events:none;
-  animation:hint-fade 5s ease forwards;
+  animation:hint-fade 4s ease forwards;
 }
 </style>
 <div id="ctrl-hint">❚❚ pause to read &nbsp;·&nbsp; ✕ close</div>
@@ -2298,14 +2298,14 @@ html, body {
   <div class="act1-corner" style="bottom:0;left:0;transform:scaleY(-1);"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M8 8 L72 8" stroke="#c9a84c" stroke-width="1.2" fill="none" opacity="0.7"/><path d="M8 8 L8 72" stroke="#c9a84c" stroke-width="1.2" fill="none" opacity="0.7"/><circle cx="8" cy="8" r="4" fill="#c9a84c" opacity="0.6"/><circle cx="8" cy="8" r="2" fill="#f9e060" opacity="0.8"/><circle cx="26" cy="8" r="1.5" fill="#c9a84c" opacity="0.5"/><circle cx="8" cy="26" r="1.5" fill="#c9a84c" opacity="0.5"/></svg></div>
   <div class="act1-corner" style="bottom:0;right:0;transform:scale(-1,-1);"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M8 8 L72 8" stroke="#c9a84c" stroke-width="1.2" fill="none" opacity="0.7"/><path d="M8 8 L8 72" stroke="#c9a84c" stroke-width="1.2" fill="none" opacity="0.7"/><circle cx="8" cy="8" r="4" fill="#c9a84c" opacity="0.6"/><circle cx="8" cy="8" r="2" fill="#f9e060" opacity="0.8"/><circle cx="26" cy="8" r="1.5" fill="#c9a84c" opacity="0.5"/><circle cx="8" cy="26" r="1.5" fill="#c9a84c" opacity="0.5"/></svg></div>
 
-  <div class="invite-screen-wrap" style="gap:14px;padding:112px 28px 36px;position:relative;z-index:1;">
+  <div class="invite-screen-wrap" style="gap:10px;padding:72px 28px 24px;position:relative;z-index:1;">
 
-    <div id="invite-act3-text" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:17px;font-weight:600;font-style:italic;color:#ffe87a;opacity:0;transform:translateY(18px);transition:opacity 1.4s ease,transform 1.4s cubic-bezier(0.16,1,0.3,1);line-height:2;text-align:center;letter-spacing:0.18em;text-transform:uppercase;text-shadow:0 0 18px rgba(255,220,80,0.35);">
+    <div id="invite-act3-text" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:15px;font-weight:600;font-style:italic;color:#ffe87a;opacity:0;transform:translateY(18px);transition:opacity 1.4s ease,transform 1.4s cubic-bezier(0.16,1,0.3,1);line-height:1.8;text-align:center;letter-spacing:0.15em;text-transform:uppercase;text-shadow:0 0 18px rgba(255,220,80,0.35);">
       With joyful hearts &amp; the blessings of our families,<br>we invite you to celebrate the wedding of
     </div>
 
     <!-- ornamental SVG separator between preamble and names -->
-    <div id="act3-lotus-orn" style="display:flex;align-items:center;justify-content:center;width:100%;max-width:260px;gap:0;margin:2px 0;opacity:0;transition:opacity 0.9s ease;">
+    <div id="act3-lotus-orn" style="display:flex;align-items:center;justify-content:center;width:100%;max-width:260px;gap:0;margin:0;opacity:0;transition:opacity 0.9s ease;">
       <div style="flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.4));"></div>
       <svg width="38" height="22" viewBox="0 0 38 22" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;margin:0 4px;">
         <!-- central lotus/medallion -->
@@ -2336,7 +2336,7 @@ html, body {
       <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(201,168,76,0.4),transparent);"></div>
     </div>
 
-    <div style="display:flex;flex-direction:column;align-items:center;gap:4px;margin-top:4px;position:relative;">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:2px;position:relative;">
       <!-- gold glow halo behind names -->
       <div style="position:absolute;inset:-30px -20px;background:radial-gradient(ellipse at 50% 50%,rgba(249,224,96,0.12) 0%,transparent 65%);pointer-events:none;border-radius:50%;"></div>
       <span id="name-rishabh" class="shimmer-name" style="font-family:'Playfair Display','Cormorant Garamond',Georgia,serif;font-size:26px;font-weight:900;font-style:italic;letter-spacing:0px;position:relative;opacity:0;display:inline-block;white-space:nowrap;">Rishabh Chattopadhyay</span>
