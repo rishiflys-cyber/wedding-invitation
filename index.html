@@ -2859,6 +2859,10 @@ function goTo(id) {
   var videoScreens = ['screen-mehendi','screen-sangeet','screen-haldi','screen-wedding','screen-reception'];
   if (cb) cb.style.display = hideOn.indexOf(id) === -1 ? 'flex' : 'none';
   if (pb) pb.style.display = videoScreens.indexOf(id) !== -1 ? 'flex' : 'none';
+  // Reset pause state on every screen change
+  _videoPaused = false;
+  var pauseIcon = document.getElementById('pause-btn-icon');
+  if (pauseIcon) pauseIcon.innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
   // Release wake lock when reaching final screens (no more auto-advance)
   if (id === 'screen-rsvp' || id === 'screen-countdown') { releaseWakeLock(); }
   // Auto-advance Ganesh screen after 2s
@@ -3741,16 +3745,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
 var _videoPaused = false;
 function toggleVideoPause() {
-  var videoNames = ['mehendi','sangeet','haldi','wedding','reception'];
   var music = document.getElementById('bgmusic');
   var icon = document.getElementById('pause-btn-icon');
   _videoPaused = !_videoPaused;
-  videoNames.forEach(function(n) {
-    var v = document.getElementById(n + '-video');
-    if (!v) return;
-    if (_videoPaused) { try { v.pause(); } catch(e) {} }
-    else { try { v.play().catch(function(){}); } catch(e) {} }
-  });
+  // Only act on the video for the current screen
+  var screenToVideo = {
+    'screen-mehendi': 'mehendi-video',
+    'screen-sangeet': 'sangeet-video',
+    'screen-haldi':   'haldi-video',
+    'screen-wedding': 'wedding-video',
+    'screen-reception': 'reception-video'
+  };
+  var vid = document.getElementById(screenToVideo[current]);
+  if (vid) {
+    if (_videoPaused) {
+      try { vid.pause(); } catch(e) {}
+    } else {
+      try { vid.play().catch(function(){}); } catch(e) {}
+    }
+  }
   if (music) {
     if (_videoPaused) { music.pause(); }
     else { music.play().catch(function(){}); }
