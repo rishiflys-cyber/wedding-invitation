@@ -2951,7 +2951,7 @@ function goTo(id) {
   if (id === 'screen-rsvp' || id === 'screen-countdown') { releaseWakeLock(); }
   // Auto-advance Ganesh screen after 2s
   if (id === 'screen-ganesh') {
-    // Start music near end of Ganesh slide (1.5s before auto-advance)
+    // Start music right at the end of Ganesh slide (0.4s before auto-advance)
     setTimeout(function(){
       if (current !== 'screen-ganesh') return;
       var mus = document.getElementById('bgmusic');
@@ -2960,7 +2960,7 @@ function goTo(id) {
       var im = document.getElementById('music-icon-muted');
       if (ic) ic.style.display = 'inline';
       if (im) im.style.display = 'none';
-    }, 4000);
+    }, 5100);
     window._advanceTimer = setTimeout(function(){ if (current === 'screen-ganesh') goTo('screen-invite'); }, 5500);
   }
 
