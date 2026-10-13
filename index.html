@@ -1867,6 +1867,9 @@ html, body {
 <div id="close-btn" onclick="returnToSeal()" style="position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:9999;width:38px;height:38px;display:none;align-items:center;justify-content:center;cursor:pointer;">
   <svg viewBox="0 0 24 24" width="16" height="16" stroke="#c9a84c" stroke-width="2" fill="none" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
 </div>
+<div id="pause-btn" onclick="toggleVideoPause()" style="position:fixed;top:64px;left:50%;transform:translateX(-50%);z-index:9999;width:38px;height:38px;display:none;align-items:center;justify-content:center;cursor:pointer;background:rgba(0,0,0,0.35);backdrop-filter:blur(6px);border:1px solid rgba(201,168,76,0.3);border-radius:50%;">
+  <svg id="pause-btn-icon" viewBox="0 0 24 24" width="14" height="14" fill="#c9a84c"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+</div>
 
 <!-- ══════════════════════════════════════════
      SCREEN 1 — ENVELOPE
@@ -2851,10 +2854,11 @@ function goTo(id) {
   updateBackBtn();
   // Show close button from screen-invite onwards; hide on envelope/ganesh
   var cb = document.getElementById('close-btn');
-  if (cb) {
-    var hideOn = ['screen-envelope','screen-ganesh'];
-    cb.style.display = hideOn.indexOf(id) === -1 ? 'flex' : 'none';
-  }
+  var pb = document.getElementById('pause-btn');
+  var hideOn = ['screen-envelope','screen-ganesh'];
+  var videoScreens = ['screen-mehendi','screen-sangeet','screen-haldi','screen-wedding','screen-reception'];
+  if (cb) cb.style.display = hideOn.indexOf(id) === -1 ? 'flex' : 'none';
+  if (pb) pb.style.display = videoScreens.indexOf(id) !== -1 ? 'flex' : 'none';
   // Release wake lock when reaching final screens (no more auto-advance)
   if (id === 'screen-rsvp' || id === 'screen-countdown') { releaseWakeLock(); }
   // Auto-advance Ganesh screen after 2s
@@ -3021,6 +3025,9 @@ function returnToSeal() {
   if (mb) mb.style.display = 'none';
   var cb = document.getElementById('close-btn');
   if (cb) cb.style.display = 'none';
+  var pb = document.getElementById('pause-btn');
+  if (pb) pb.style.display = 'none';
+  _videoPaused = false;
   var env = document.getElementById('screen-envelope');
   if (env) env.classList.remove('opening');
   _history = [];
@@ -3731,6 +3738,32 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   };
 })();
+
+var _videoPaused = false;
+function toggleVideoPause() {
+  var videoNames = ['mehendi','sangeet','haldi','wedding','reception'];
+  var music = document.getElementById('bgmusic');
+  var icon = document.getElementById('pause-btn-icon');
+  _videoPaused = !_videoPaused;
+  videoNames.forEach(function(n) {
+    var v = document.getElementById(n + '-video');
+    if (!v) return;
+    if (_videoPaused) { try { v.pause(); } catch(e) {} }
+    else { try { v.play().catch(function(){}); } catch(e) {} }
+  });
+  if (music) {
+    if (_videoPaused) { music.pause(); }
+    else { music.play().catch(function(){}); }
+  }
+  // Swap icon: pause bars ↔ play triangle
+  if (icon) {
+    if (_videoPaused) {
+      icon.innerHTML = '<polygon points="5,3 19,12 5,21"/>';
+    } else {
+      icon.innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
+    }
+  }
+}
 
 function toggleMusic() {
   var music = document.getElementById('bgmusic');
