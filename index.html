@@ -2980,37 +2980,15 @@ function goTo(id) {
   if (id === 'screen-rsvp' || id === 'screen-countdown') { releaseWakeLock(); }
   // Auto-advance Ganesh screen after 2s
   if (id === 'screen-ganesh') {
-    // Start music at beginning of Ganesh slide so it plays through
-    var ic = document.getElementById('music-icon');
-    var im = document.getElementById('music-icon-muted');
-    function _startGaneshMusic() {
-      var mus = document.getElementById('bgmusic');
-      if (!mus) return;
-      window._musicStarted = true;
-      mus.currentTime = 0;
-      mus.volume = 0.5;
-      mus.play().then(function(){
-        if (ic) ic.style.display = 'inline';
-        if (im) im.style.display = 'none';
-      }).catch(function(){
-        setTimeout(function(){
-          var mus2 = document.getElementById('bgmusic');
-          if (!mus2) return;
-          mus2.currentTime = 0; mus2.volume = 0.5;
-          mus2.play().then(function(){
-            if (ic) ic.style.display = 'inline';
-            if (im) im.style.display = 'none';
-          }).catch(function(){});
-        }, 300);
-      });
-    }
-    if (!window._musicUnlocked) {
-      setTimeout(_startGaneshMusic, 200);
-    } else {
-      _startGaneshMusic();
-    }
+    // Music already playing from seal tap — just auto-advance after Ganesh duration
     var _ganeshDelay = _navigatingBack ? 5000 : 5500;
-    window._advanceCallback = function(){ if (current === 'screen-ganesh') goTo('screen-invite'); };
+    window._advanceCallback = function(){
+      if (current !== 'screen-ganesh') return;
+      // Stop music at end of Ganesh — invite-1 will restart it fresh
+      var _gmus = document.getElementById('bgmusic');
+      if (_gmus && !window._musicMutedByUser) { _gmus.pause(); _gmus.currentTime = 0; }
+      goTo('screen-invite');
+    };
     window._advanceTimer = setTimeout(window._advanceCallback, _ganeshDelay);
     window._advanceStart = Date.now(); window._advanceDelay = _ganeshDelay; window._advanceRemaining = _ganeshDelay;
   }
@@ -3260,23 +3238,25 @@ function openEnvelope() {
   opened = true;
   requestWakeLock();
 
-  // Unlock audio during this user gesture so the later setTimeout play() is allowed
-  // (browsers block audio started outside a user gesture — this primes the element)
+  // Start music immediately on seal tap, play through Ganesh slide
   const music = document.getElementById('bgmusic');
-  window._musicUnlocked = false;
-  window._musicStarted = false; // set true when real playback begins
+  window._musicUnlocked = true;
+  window._musicStarted = true;
+  window._musicMutedByUser = false;
   music.currentTime = 0;
-  music.volume = 0;
+  music.volume = 0.5;
   music.play().then(function(){
-    // Only reset if real music hasn't started yet — avoids killing playback
-    if (!window._musicStarted) {
-      music.pause();
-      music.currentTime = 0;
-      music.volume = 0.5;
-    }
-    window._musicUnlocked = true;
-  }).catch(function(){ window._musicUnlocked = false; });
-  // ctrl-bar hidden on Ganesh screen; music actually starts at end of Ganesh via setTimeout
+    var ic = document.getElementById('music-icon');
+    var im = document.getElementById('music-icon-muted');
+    if (ic) ic.style.display = 'inline';
+    if (im) im.style.display = 'none';
+  }).catch(function(){
+    // Retry once if browser blocks (shouldn't happen — this IS a user gesture)
+    setTimeout(function(){
+      music.currentTime = 0; music.volume = 0.5;
+      music.play().catch(function(){});
+    }, 100);
+  });
 
   // Unlock ALL event videos during this user gesture so they can autoplay later
   ['mehendi-video','sangeet-video','haldi-video','wedding-video','reception-video'].forEach(function(vid) {
