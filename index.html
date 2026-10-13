@@ -1857,6 +1857,7 @@ html, body {
 
 <div id="particles"></div>
 <audio id="bgmusic" preload="auto" playsinline><source src="Ranjha.mp3" type="audio/mpeg"></audio>
+<audio id="ganapathi-audio" preload="auto" playsinline><source src="ganapathi.mp3" type="audio/mpeg"></audio>
 
 <!-- ── TOP CONTROL BAR: X · II · ♪ in one royal pill ── -->
 <style>
@@ -2978,12 +2979,36 @@ function goTo(id) {
   if (pauseIcon) pauseIcon.innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
   // Release wake lock when reaching final screens (no more auto-advance)
   if (id === 'screen-rsvp' || id === 'screen-countdown') { releaseWakeLock(); }
-  // Auto-advance Ganesh screen after 2s
+  // Ganesh slide — play ganapathi tone, then advance to invite-1
   if (id === 'screen-ganesh') {
-    // Music already playing from seal tap — just auto-advance after Ganesh duration
+    // Play ganapathi tone
+    var _ga2 = document.getElementById('ganapathi-audio');
+    if (_ga2 && !window._musicMutedByUser) {
+      _ga2.currentTime = 0;
+      _ga2.volume = 0.7;
+      _ga2.play().catch(function(){});
+    }
+    // Tone is 16.5s — fade it out starting at 15s, advance at 17s
     var _ganeshDelay = _navigatingBack ? 5000 : 5500;
+    // Fade out ganapathi in last 1s (at 4.5s mark)
+    if (!_navigatingBack) {
+      setTimeout(function(){
+        if (current !== 'screen-ganesh') return;
+        var _gaFade = document.getElementById('ganapathi-audio');
+        if (!_gaFade) return;
+        var _startVol = _gaFade.volume, _fadeSteps = 10;
+        var _fadeInt = setInterval(function(){
+          if (_fadeSteps <= 0) { clearInterval(_fadeInt); if (_gaFade) { _gaFade.pause(); _gaFade.currentTime = 0; } return; }
+          _gaFade.volume = Math.max(0, _gaFade.volume - (_startVol / 10));
+          _fadeSteps--;
+        }, 100);
+      }, 4500);
+    }
     window._advanceCallback = function(){
       if (current !== 'screen-ganesh') return;
+      // Ensure ganapathi is stopped
+      var _gaStop = document.getElementById('ganapathi-audio');
+      if (_gaStop) { _gaStop.pause(); _gaStop.currentTime = 0; }
       goTo('screen-invite');
     };
     window._advanceTimer = setTimeout(window._advanceCallback, _ganeshDelay);
@@ -2992,16 +3017,22 @@ function goTo(id) {
 
   // Invite acts — cinematic trailer timing
   if (id === 'screen-invite') {
-    // Restart song from beginning on invite-1
+    // Fade in Ranjha from beginning on invite-1
     var _invMus = document.getElementById('bgmusic');
     if (_invMus && !window._musicMutedByUser) {
       _invMus.currentTime = 0;
-      _invMus.volume = 0.5;
-      _invMus.play().catch(function(){});
-      var _iic = document.getElementById('music-icon');
-      var _iim = document.getElementById('music-icon-muted');
-      if (_iic) _iic.style.display = 'inline';
-      if (_iim) _iim.style.display = 'none';
+      _invMus.volume = 0;
+      _invMus.play().then(function(){
+        var _iic = document.getElementById('music-icon');
+        var _iim = document.getElementById('music-icon-muted');
+        if (_iic) _iic.style.display = 'inline';
+        if (_iim) _iim.style.display = 'none';
+        // Fade in over 1.5s
+        var _fi = setInterval(function(){
+          if (_invMus.volume >= 0.5) { _invMus.volume = 0.5; clearInterval(_fi); return; }
+          _invMus.volume = Math.min(0.5, _invMus.volume + 0.05);
+        }, 150);
+      }).catch(function(){});
     }
     // Start Ken Burns zoom (defer 1 frame so screen transition paints first)
     var bg1 = document.getElementById('screen-invite-bg-zoom');
@@ -3249,6 +3280,9 @@ function openEnvelope() {
     var v = document.getElementById(vid);
     if (v) { v.muted = true; v.play().then(function(){ v.pause(); v.currentTime = 0; }).catch(function(){}); }
   });
+  // Also unlock ganapathi audio
+  var _ga = document.getElementById('ganapathi-audio');
+  if (_ga) { _ga.volume = 0; _ga.play().then(function(){ _ga.pause(); _ga.currentTime = 0; _ga.volume = 0.7; window._ganapathiUnlocked = true; }).catch(function(){}); }
 
   // Trigger flaps flying outward
   document.getElementById('screen-envelope').classList.add('opening');
