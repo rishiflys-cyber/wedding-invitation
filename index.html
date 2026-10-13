@@ -2903,6 +2903,8 @@ function goTo(id) {
   var videoScreens = ['screen-mehendi','screen-sangeet','screen-haldi','screen-wedding','screen-reception'];
   if (ctrlBar) ctrlBar.style.display = hideOn.indexOf(id) === -1 ? 'flex' : 'none';
   if (pb) pb.style.display = videoScreens.indexOf(id) !== -1 ? 'flex' : 'none';
+  // Cancel any pending auto-advance timer from previous screen
+  if (window._advanceTimer) { clearTimeout(window._advanceTimer); window._advanceTimer = null; }
   // Reset pause state on every screen change
   _videoPaused = false;
   window._advanceCallback = null;
@@ -2923,7 +2925,7 @@ function goTo(id) {
       if (ic) ic.style.display = 'inline';
       if (im) im.style.display = 'none';
     }, 4000);
-    setTimeout(function(){ if (current === 'screen-ganesh') goTo('screen-invite'); }, 5500);
+    window._advanceTimer = setTimeout(function(){ if (current === 'screen-ganesh') goTo('screen-invite'); }, 5500);
   }
 
   // Invite acts — cinematic trailer timing
@@ -2975,7 +2977,7 @@ function goTo(id) {
       var div=document.getElementById('invite-act1-divider');
       if(div){ div.style.opacity='1'; }
     }, 680);
-    setTimeout(function(){ if(current==='screen-invite') goTo('screen-invite2'); }, 7500);
+    window._advanceTimer = setTimeout(function(){ if(current==='screen-invite') goTo('screen-invite2'); }, 7500);
   }
   if (id === 'screen-invite2') {
     // Ken Burns zoom
@@ -3015,7 +3017,7 @@ function goTo(id) {
         })(i);
       }
     }, 200);
-    setTimeout(function(){ if(current==='screen-invite2') goTo('screen-invite3'); }, 3500);
+    window._advanceTimer = setTimeout(function(){ if(current==='screen-invite2') goTo('screen-invite3'); }, 3500);
   }
   if (id === 'screen-invite3') {
     // Ken Burns zoom
@@ -3056,7 +3058,7 @@ function goTo(id) {
       if(par){ par.style.opacity='1'; }
     }, 2800);
     // Auto-advance after everything is visible
-    setTimeout(function(){ if(current==='screen-invite3') goTo('screen-mehendi'); }, 12000);
+    window._advanceTimer = setTimeout(function(){ if(current==='screen-invite3') goTo('screen-mehendi'); }, 12000);
   }
 }
 
