@@ -2951,18 +2951,22 @@ function goTo(id) {
   var ctrlBar = document.getElementById('ctrl-bar');
   var pb = document.getElementById('pause-btn');
   var hideOn = ['screen-envelope','screen-ganesh'];
+  var noHintOn = ['screen-rsvp','screen-countdown'];
   var videoScreens = ['screen-mehendi','screen-sangeet','screen-haldi','screen-wedding','screen-reception'];
   var pauseScreens = videoScreens.concat(['screen-invite','screen-invite2','screen-invite3']);
   if (ctrlBar) ctrlBar.style.display = hideOn.indexOf(id) === -1 ? 'flex' : 'none';
   if (pb) pb.style.display = pauseScreens.indexOf(id) !== -1 ? 'flex' : 'none';
-  // Show floating hint on first entry (fades in, then auto-fades after 5s)
+  // Show floating hint only on screens that benefit from it (not RSVP/countdown)
   var hint = document.getElementById('ctrl-hint');
-  if (hint && hideOn.indexOf(id) === -1) {
+  var showHint = hideOn.indexOf(id) === -1 && noHintOn.indexOf(id) === -1;
+  if (hint && showHint) {
     hint.style.display = 'block';
     hint.style.animation = 'none';
     void hint.offsetWidth; // force reflow to restart animation
-    hint.style.animation = 'hint-fade 5s ease forwards';
+    hint.style.animation = 'hint-fade 4s ease forwards';
     hint.addEventListener('animationend', function(){ hint.style.display='none'; }, {once:true});
+  } else if (hint) {
+    hint.style.display = 'none';
   }
   // Cancel any pending auto-advance timer from previous screen
   if (window._advanceTimer) { clearTimeout(window._advanceTimer); window._advanceTimer = null; }
