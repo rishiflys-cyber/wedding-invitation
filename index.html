@@ -2980,40 +2980,35 @@ function goTo(id) {
   if (id === 'screen-rsvp' || id === 'screen-countdown') { releaseWakeLock(); }
   // Auto-advance Ganesh screen after 2s
   if (id === 'screen-ganesh') {
-    // Start music right as Ganesh slide ends — song begins fresh at transition
-    setTimeout(function(){
-      if (current !== 'screen-ganesh') return;
+    // Start music at beginning of Ganesh slide so it plays through
+    var ic = document.getElementById('music-icon');
+    var im = document.getElementById('music-icon-muted');
+    function _startGaneshMusic() {
       var mus = document.getElementById('bgmusic');
       if (!mus) return;
-      var ic = document.getElementById('music-icon');
-      var im = document.getElementById('music-icon-muted');
-      function _startMusic() {
-        window._musicStarted = true;
-        mus.currentTime = 0;
-        mus.volume = 0.5;
-        mus.play().then(function(){
-          if (ic) ic.style.display = 'inline';
-          if (im) im.style.display = 'none';
-        }).catch(function(){
-          // Retry once after 300ms in case unlock promise hadn't resolved yet
-          setTimeout(function(){
-            if (current !== 'screen-ganesh' && current !== 'screen-invite') return;
-            mus.currentTime = 0;
-            mus.volume = 0.5;
-            mus.play().then(function(){
-              if (ic) ic.style.display = 'inline';
-              if (im) im.style.display = 'none';
-            }).catch(function(){});
-          }, 300);
-        });
-      }
-      // If unlock .then() hasn't resolved yet, wait a tick
-      if (!window._musicUnlocked) {
-        setTimeout(_startMusic, 200);
-      } else {
-        _startMusic();
-      }
-    }, 5400);
+      window._musicStarted = true;
+      mus.currentTime = 0;
+      mus.volume = 0.5;
+      mus.play().then(function(){
+        if (ic) ic.style.display = 'inline';
+        if (im) im.style.display = 'none';
+      }).catch(function(){
+        setTimeout(function(){
+          var mus2 = document.getElementById('bgmusic');
+          if (!mus2) return;
+          mus2.currentTime = 0; mus2.volume = 0.5;
+          mus2.play().then(function(){
+            if (ic) ic.style.display = 'inline';
+            if (im) im.style.display = 'none';
+          }).catch(function(){});
+        }, 300);
+      });
+    }
+    if (!window._musicUnlocked) {
+      setTimeout(_startGaneshMusic, 200);
+    } else {
+      _startGaneshMusic();
+    }
     var _ganeshDelay = _navigatingBack ? 5000 : 5500;
     window._advanceCallback = function(){ if (current === 'screen-ganesh') goTo('screen-invite'); };
     window._advanceTimer = setTimeout(window._advanceCallback, _ganeshDelay);
@@ -3022,6 +3017,17 @@ function goTo(id) {
 
   // Invite acts — cinematic trailer timing
   if (id === 'screen-invite') {
+    // Restart song from beginning on invite-1
+    var _invMus = document.getElementById('bgmusic');
+    if (_invMus && !window._musicMutedByUser) {
+      _invMus.currentTime = 0;
+      _invMus.volume = 0.5;
+      _invMus.play().catch(function(){});
+      var _iic = document.getElementById('music-icon');
+      var _iim = document.getElementById('music-icon-muted');
+      if (_iic) _iic.style.display = 'inline';
+      if (_iim) _iim.style.display = 'none';
+    }
     // Start Ken Burns zoom (defer 1 frame so screen transition paints first)
     var bg1 = document.getElementById('screen-invite-bg-zoom');
     if(bg1){ requestAnimationFrame(function(){ bg1.classList.add('zooming'); }); }
@@ -4018,11 +4024,13 @@ function toggleMusic() {
   var iconMuted = document.getElementById('music-icon-muted');
   if (!music) return;
   if (music.paused) {
+    window._musicMutedByUser = false;
     music.volume = 0.5;
     music.play().catch(function(){});
     if (icon) icon.style.display = 'inline';
     if (iconMuted) iconMuted.style.display = 'none';
   } else {
+    window._musicMutedByUser = true;
     music.pause();
     if (icon) icon.style.display = 'none';
     if (iconMuted) iconMuted.style.display = 'inline';
