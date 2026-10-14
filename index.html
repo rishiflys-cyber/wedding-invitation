@@ -2994,19 +2994,19 @@ function goTo(id) {
     }
     // Tone is 16.5s — fade it out starting at 15s, advance at 17s
     var _ganeshDelay = _navigatingBack ? 5000 : 5500;
-    // Fade out ganapathi in last 1s (at 4.5s mark)
+    // Fade out ganapathi over 1.5s starting at 3.8s — reaches 0 at 5.3s, 0.2s before slide advances
     if (!_navigatingBack) {
       setTimeout(function(){
         if (current !== 'screen-ganesh') return;
         var _gaFade = document.getElementById('ganapathi-audio');
         if (!_gaFade) return;
-        var _startVol = _gaFade.volume, _fadeSteps = 10;
+        var _startVol = _gaFade.volume, _fadeSteps = 15;
         var _fadeInt = setInterval(function(){
-          if (_fadeSteps <= 0) { clearInterval(_fadeInt); if (_gaFade) { _gaFade.pause(); _gaFade.currentTime = 0; } return; }
-          _gaFade.volume = Math.max(0, _gaFade.volume - (_startVol / 10));
+          if (_fadeSteps <= 0) { clearInterval(_fadeInt); if (_gaFade) { _gaFade.volume = 0; _gaFade.pause(); _gaFade.currentTime = 0; } return; }
+          _gaFade.volume = Math.max(0, _gaFade.volume - (_startVol / 15));
           _fadeSteps--;
         }, 100);
-      }, 4500);
+      }, 3800);
     }
     window._advanceCallback = function(){
       if (current !== 'screen-ganesh') return;
