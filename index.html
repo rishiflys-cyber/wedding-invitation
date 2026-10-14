@@ -2979,8 +2979,11 @@ function goTo(id) {
   if (pauseIcon) pauseIcon.innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
   // Release wake lock when reaching final screens (no more auto-advance)
   if (id === 'screen-rsvp' || id === 'screen-countdown') { releaseWakeLock(); }
-  // Ganesh slide — play ganapathi tone, then advance to invite-1
+  // Ganesh slide — pause bgmusic, play ganapathi tone, then advance to invite-1
   if (id === 'screen-ganesh') {
+    // Stop Ranjha — it will restart fresh on invite-1
+    var _ganeshBg = document.getElementById('bgmusic');
+    if (_ganeshBg && !_ganeshBg.paused) { _ganeshBg.pause(); _ganeshBg.currentTime = 0; }
     // Play ganapathi tone
     var _ga2 = document.getElementById('ganapathi-audio');
     if (_ga2 && !window._musicMutedByUser) {
