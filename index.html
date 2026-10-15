@@ -2825,7 +2825,7 @@ var _navigatingBack = false;
     var earlyScreens = ['screen-envelope','screen-ganesh'];
     if (earlyScreens.indexOf(current) !== -1) return;
     // If music should be on (_musicMuted flag false) and it's paused unexpectedly, resume
-    if (!window._musicMuted && music.paused && !_musicPausedByHide && music.currentTime > 0) {
+    if (!window._musicMuted && !window._musicMutedByUser && music.paused && !_musicPausedByHide && music.currentTime > 0) {
       music.play().catch(function(){});
     }
   }
