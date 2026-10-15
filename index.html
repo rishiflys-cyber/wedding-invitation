@@ -3024,6 +3024,7 @@ function goTo(id) {
     // Fade in Ranjha from beginning on invite-1
     var _invMus = document.getElementById('bgmusic');
     if (_invMus && !window._musicMutedByUser) {
+      window._musicStarted = true;
       _invMus.currentTime = 0;
       _invMus.volume = 0;
       _invMus.play().then(function(){
@@ -3270,12 +3271,11 @@ function openEnvelope() {
   opened = true;
   requestWakeLock();
 
-  // Start music 200ms after seal tap, play through Ganesh slide
+  // Unlock audio during this gesture so it can autoplay later — no music on seal/envelope slide
   const music = document.getElementById('bgmusic');
-  window._musicUnlocked = true;
-  window._musicStarted = true;
+  window._musicUnlocked = false;
+  window._musicStarted = false;
   window._musicMutedByUser = false;
-  // Only unlock the audio element during this gesture so invite-1 can autoplay later
   music.volume = 0;
   music.play().then(function(){ music.pause(); music.currentTime = 0; window._musicUnlocked = true; }).catch(function(){ window._musicUnlocked = false; });
 
