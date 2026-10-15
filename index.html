@@ -2970,6 +2970,8 @@ function goTo(id) {
   }
   // Cancel any pending auto-advance timer from previous screen
   if (window._advanceTimer) { clearTimeout(window._advanceTimer); window._advanceTimer = null; }
+  if (window._ganeshFadeInt) { clearInterval(window._ganeshFadeInt); window._ganeshFadeInt = null; }
+  if (window._inviteFadeInt) { clearInterval(window._inviteFadeInt); window._inviteFadeInt = null; }
   // Reset pause state on every screen change
   _videoPaused = false;
   window._advanceCallback = null;
@@ -2996,8 +2998,8 @@ function goTo(id) {
         var _gFade = document.getElementById('bgmusic');
         if (!_gFade) return;
         var _startVol = _gFade.volume, _fadeSteps = 25;
-        var _fadeInt = setInterval(function(){
-          if (_fadeSteps <= 0) { clearInterval(_fadeInt); if (_gFade) { _gFade.volume = 0; _gFade.pause(); _gFade.currentTime = 0; } return; }
+        window._ganeshFadeInt = setInterval(function(){
+          if (_fadeSteps <= 0) { clearInterval(window._ganeshFadeInt); window._ganeshFadeInt = null; if (_gFade) { _gFade.volume = 0; _gFade.pause(); _gFade.currentTime = 0; } return; }
           _gFade.volume = Math.max(0, _gFade.volume - (_startVol / 25));
           _fadeSteps--;
         }, 100);
@@ -3025,8 +3027,8 @@ function goTo(id) {
         if (_iic) _iic.style.display = 'inline';
         if (_iim) _iim.style.display = 'none';
         // Fade in over 1.5s
-        var _fi = setInterval(function(){
-          if (_invMus.volume >= 0.5) { _invMus.volume = 0.5; clearInterval(_fi); return; }
+        window._inviteFadeInt = setInterval(function(){
+          if (_invMus.volume >= 0.5) { _invMus.volume = 0.5; clearInterval(window._inviteFadeInt); window._inviteFadeInt = null; return; }
           _invMus.volume = Math.min(0.5, _invMus.volume + 0.05);
         }, 150);
       }).catch(function(){});
