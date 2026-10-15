@@ -2979,40 +2979,33 @@ function goTo(id) {
   if (pauseIcon) pauseIcon.innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
   // Release wake lock when reaching final screens (no more auto-advance)
   if (id === 'screen-rsvp' || id === 'screen-countdown') { releaseWakeLock(); }
-  // Ganesh slide — pause bgmusic, play ganapathi tone, then advance to invite-1
+  // Ganesh slide — play Ranjha, fade out over 2.5s, then restart on invite-1
   if (id === 'screen-ganesh') {
-    // Stop Ranjha — it will restart fresh on invite-1
+    // Play Ranjha from beginning
     var _ganeshBg = document.getElementById('bgmusic');
-    if (_ganeshBg && !_ganeshBg.paused) { _ganeshBg.pause(); _ganeshBg.currentTime = 0; }
-    // Play ganapathi tone
-    var _ga2 = document.getElementById('ganapathi-audio');
-    if (_ga2 && !window._musicMutedByUser) {
-      window._ganapathiStarted = true;
-      _ga2.currentTime = 0;
-      _ga2.volume = 0.7;
-      _ga2.play().catch(function(){});
+    if (_ganeshBg && !window._musicMutedByUser) {
+      window._musicStarted = true;
+      _ganeshBg.currentTime = 0;
+      _ganeshBg.volume = 0.5;
+      _ganeshBg.play().catch(function(){});
     }
-    // Tone is 16.5s — fade it out starting at 15s, advance at 17s
     var _ganeshDelay = _navigatingBack ? 5000 : 5500;
-    // Fade out ganapathi over 2.5s starting at 2.8s — reaches 0 at 5.3s, 0.2s before slide advances
+    // Fade out Ranjha over 2.5s starting at 2.8s — reaches 0 at 5.3s, 0.2s before slide advances
     if (!_navigatingBack) {
       setTimeout(function(){
         if (current !== 'screen-ganesh') return;
-        var _gaFade = document.getElementById('ganapathi-audio');
-        if (!_gaFade) return;
-        var _startVol = _gaFade.volume, _fadeSteps = 25;
+        var _gFade = document.getElementById('bgmusic');
+        if (!_gFade) return;
+        var _startVol = _gFade.volume, _fadeSteps = 25;
         var _fadeInt = setInterval(function(){
-          if (_fadeSteps <= 0) { clearInterval(_fadeInt); if (_gaFade) { _gaFade.volume = 0; _gaFade.pause(); _gaFade.currentTime = 0; } return; }
-          _gaFade.volume = Math.max(0, _gaFade.volume - (_startVol / 25));
+          if (_fadeSteps <= 0) { clearInterval(_fadeInt); if (_gFade) { _gFade.volume = 0; _gFade.pause(); _gFade.currentTime = 0; } return; }
+          _gFade.volume = Math.max(0, _gFade.volume - (_startVol / 25));
           _fadeSteps--;
         }, 100);
       }, 2800);
     }
     window._advanceCallback = function(){
       if (current !== 'screen-ganesh') return;
-      // Ensure ganapathi is stopped
-      var _gaStop = document.getElementById('ganapathi-audio');
-      if (_gaStop) { _gaStop.pause(); _gaStop.currentTime = 0; }
       goTo('screen-invite');
     };
     window._advanceTimer = setTimeout(window._advanceCallback, _ganeshDelay);
