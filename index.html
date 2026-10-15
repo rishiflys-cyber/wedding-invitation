@@ -1857,7 +1857,6 @@ html, body {
 
 <div id="particles"></div>
 <audio id="bgmusic" preload="auto" playsinline><source src="Ranjha.mp3" type="audio/mpeg"></audio>
-<audio id="ganapathi-audio" preload="auto" playsinline><source src="ganapathi.mp3" type="audio/mpeg"></audio>
 
 <!-- ── TOP CONTROL BAR: X · II · ♪ in one royal pill ── -->
 <style>
@@ -3277,10 +3276,6 @@ function openEnvelope() {
     var v = document.getElementById(vid);
     if (v) { v.muted = true; v.play().then(function(){ v.pause(); v.currentTime = 0; }).catch(function(){}); }
   });
-  // Also unlock ganapathi audio
-  window._ganapathiStarted = false;
-  var _ga = document.getElementById('ganapathi-audio');
-  if (_ga) { _ga.volume = 0; _ga.play().then(function(){ if (!window._ganapathiStarted) { _ga.pause(); _ga.currentTime = 0; _ga.volume = 0.7; } window._ganapathiUnlocked = true; }).catch(function(){}); }
 
   // Trigger flaps flying outward
   document.getElementById('screen-envelope').classList.add('opening');
