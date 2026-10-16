@@ -2987,13 +2987,20 @@ function goTo(id) {
     var _vm = document.getElementById('bgmusic');
     if (!_vm || window._musicMutedByUser) return;
     var _lateScreens = ['screen-reception','screen-rsvp','screen-countdown'];
-    var _targetVol = _lateScreens.indexOf(id) !== -1 ? 0.3 : 0.5;
+    var _isLate = _lateScreens.indexOf(id) !== -1;
+    var _targetVol = _isLate ? 0.3 : 0.5;
+    // If music is paused/stopped on a late screen, resume it at target volume
+    if (_vm.paused && _isLate && window._musicStarted) {
+      _vm.volume = _targetVol;
+      _vm.play().catch(function(){});
+      return;
+    }
     if (Math.abs(_vm.volume - _targetVol) < 0.01) return;
     var _vStep = _vm.volume < _targetVol ? 0.02 : -0.02;
     var _vInt = setInterval(function(){
       if ((_vStep > 0 && _vm.volume >= _targetVol) || (_vStep < 0 && _vm.volume <= _targetVol)) {
         _vm.volume = _targetVol; clearInterval(_vInt);
-      } else { _vm.volume = Math.max(0, Math.min(0.5, _vm.volume + _vStep)); }
+      } else { _vm.volume = Math.max(0, Math.min(1, _vm.volume + _vStep)); }
     }, 50);
   })();
   // Ganesh slide — play Ranjha, fade out over 2.5s, then restart on invite-1
