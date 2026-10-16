@@ -2978,6 +2978,20 @@ function goTo(id) {
   if (pauseIcon) pauseIcon.innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
   // Release wake lock when reaching final screens (no more auto-advance)
   if (id === 'screen-rsvp' || id === 'screen-countdown') { releaseWakeLock(); }
+  // Fade music down to 30% on reception/rsvp/countdown, back to 50% on earlier screens
+  (function(){
+    var _vm = document.getElementById('bgmusic');
+    if (!_vm || window._musicMutedByUser) return;
+    var _lateScreens = ['screen-reception','screen-rsvp','screen-countdown'];
+    var _targetVol = _lateScreens.indexOf(id) !== -1 ? 0.3 : 0.5;
+    if (Math.abs(_vm.volume - _targetVol) < 0.01) return;
+    var _vStep = _vm.volume < _targetVol ? 0.02 : -0.02;
+    var _vInt = setInterval(function(){
+      if ((_vStep > 0 && _vm.volume >= _targetVol) || (_vStep < 0 && _vm.volume <= _targetVol)) {
+        _vm.volume = _targetVol; clearInterval(_vInt);
+      } else { _vm.volume = Math.max(0, Math.min(0.5, _vm.volume + _vStep)); }
+    }, 50);
+  })();
   // Ganesh slide — play Ranjha, fade out over 2.5s, then restart on invite-1
   if (id === 'screen-ganesh') {
     // Play Ranjha from beginning with fade-in over 0.8s
