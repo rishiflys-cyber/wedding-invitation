@@ -2598,11 +2598,6 @@ html, body {
   </div>
   <div class="event-particles" id="ep-wedding" style="z-index:2;"></div>
 
-  <!-- Press here floater — appears 3s after panel slides up -->
-  <div id="wedding-press-hint" style="position:absolute;bottom:52%;left:50%;transform:translate(-50%,50%);z-index:4;display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:none;transition:opacity 0.6s ease;opacity:0;">
-    <div style="font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,200,66,0.9);text-shadow:0 0 12px rgba(245,180,30,0.6);">Press Here</div>
-    <div style="font-size:22px;color:rgba(245,200,66,0.9);text-shadow:0 0 12px rgba(245,180,30,0.6);animation:bounce-arrow 1.2s ease-in-out infinite;">↓</div>
-  </div>
 
   <div id="wedding-panel" style="position:absolute;bottom:0;left:0;right:0;height:48%;z-index:3;background:linear-gradient(to bottom,transparent 0%,rgba(18,8,0,0.98) 16%,#100500 32%);padding-top:20px;transform:translateY(100%);transition:transform 1.4s cubic-bezier(0.22,1,0.36,1);pointer-events:none;overflow:hidden;">
   <div class="event-wrap" id="wedding-invite" style="position:relative;opacity:0;transform:translateY(20px);transition:opacity 0.8s ease 0.5s,transform 0.8s ease 0.5s;pointer-events:none;">
@@ -2626,6 +2621,10 @@ html, body {
     </div>
     <div class="event-venue">📍 Circle Club, Kolkata</div>
     <div class="event-poem"><span class="event-poem-em">Under the same stars that have witnessed a thousand love stories — and their story begins on 11th December.</span></div>
+    <div id="wedding-press-hint" style="display:flex;flex-direction:column;align-items:center;gap:4px;pointer-events:none;transition:opacity 0.6s ease;opacity:0;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,200,66,0.9);text-shadow:0 0 12px rgba(245,180,30,0.6);">Press Here</div>
+      <div style="font-size:22px;color:rgba(245,200,66,0.9);text-shadow:0 0 12px rgba(245,180,30,0.6);animation:bounce-arrow 1.2s ease-in-out infinite;">↓</div>
+    </div>
     <div class="screen-tap-hint" style="font-weight:600;opacity:0.85;font-size:17px;">tap to continue ✦</div>
   </div>
   </div><!-- end wedding-panel -->
