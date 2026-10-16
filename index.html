@@ -2624,7 +2624,7 @@ html, body {
     <div id="wedding-press-hint" style="pointer-events:none;transition:opacity 0.6s ease;opacity:0;text-align:center;">
       <div style="font-family:'Playfair Display',serif;font-size:18px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-light);font-weight:700;animation:breathe 2.5s ease-in-out infinite;">✦ press here ✦</div>
     </div>
-    <div id="wedding-tap-hint" class="screen-tap-hint" style="font-weight:600;font-size:17px;opacity:0;transition:opacity 0.6s ease;">tap to continue ✦</div>
+    <div class="screen-tap-hint" style="font-weight:600;opacity:0.85;font-size:17px;">tap to continue ✦</div>
   </div>
   </div><!-- end wedding-panel -->
 </div>
@@ -3789,19 +3789,12 @@ document.addEventListener('DOMContentLoaded', function() {
     weddingTapped = true;
     var _wph = document.getElementById('wedding-press-hint');
     if (_wph) _wph.style.opacity = '0';
-    var _wth = document.getElementById('wedding-tap-hint');
-    if (_wth) _wth.style.opacity = '0';
     if (weddingTimer) { clearTimeout(weddingTimer); weddingTimer = null; }
     if (wp) { wp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; wp.style.transform = 'translateY(0)'; wp.style.pointerEvents = 'auto'; }
     setTimeout(function() {
       if (current !== 'screen-wedding' || weddingTapped) return;
       var hint = document.getElementById('wedding-press-hint');
       if (hint) hint.style.opacity = '1';
-      setTimeout(function() {
-        if (current !== 'screen-wedding' || weddingTapped) return;
-        var tap = document.getElementById('wedding-tap-hint');
-        if (tap) tap.style.opacity = '0.85';
-      }, 3000);
     }, 7000);
     if (wi) { wi.style.opacity = '1'; wi.style.transform = 'translateY(0)'; wi.style.pointerEvents = 'auto'; }
   }
@@ -3818,8 +3811,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (wv) { safeVideoPause(wv); wv.ontimeupdate = null; wv.onended = null; wv.currentTime = 0; wv._forcePaused = false; }
     var hint = document.getElementById('wedding-press-hint');
     if (hint) hint.style.opacity = '0';
-    var taph = document.getElementById('wedding-tap-hint');
-    if (taph) taph.style.opacity = '0';
   }
 
   if (wv) {
