@@ -3344,6 +3344,17 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
     }, 800);
   };
 
+  // Hard timeout — if loading takes > 20s, just proceed anyway
+  var _hardTimeout = setTimeout(function() {
+    if (remaining > 0) {
+      remaining = 0;
+      videos.forEach(function(s) { if (!blobs[s]) blobs[s] = s; });
+      onAllDone();
+    }
+  }, 20000);
+  var _origOnAllDone = onAllDone;
+  onAllDone = function() { clearTimeout(_hardTimeout); _origOnAllDone(); };
+
   // Fetch each video, track bytes for progress bar
   var remaining = videos.length;
   videos.forEach(function(src) {
