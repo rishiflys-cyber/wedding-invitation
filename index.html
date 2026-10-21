@@ -3195,79 +3195,50 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
 })();
 
 
-/* ── LOADER: preload videos before showing invitation ── */
+/* ── LOADER ── */
 (function() {
-  var videos = ['wedding.mp4','reception.mp4'];
   var bar = document.getElementById('loader-bar');
-  var btn = document.getElementById('loader-open-btn');
   var loader = document.getElementById('screen-loader');
-  var loaded = 0;
-  var blobs = {};
 
   function updateBar(pct) {
     if (bar) bar.style.width = Math.min(100, pct) + '%';
   }
 
-  function onAllDone() {
-    updateBar(100);
-    // Videos already have src set and are preloaded — just prime decoders
-    videos.forEach(function(src) {
-      var id = src.replace('.mp4', '') + '-video';
-      var el = document.getElementById(id);
-      if (el) {
-        el.currentTime = 0;
-      }
-    });
-    // Show open button only after all videos have first-frame decoded
-    var ready = 0;
-    var total = videos.length;
-    function onVideoReady() {
-      ready++;
-      if (ready >= total) {
-        // All videos decoded — wait 1 extra second then start countdown
-        setTimeout(startCountdown, 1000);
-      }
+  // Animate bar 0→100% over 2s then open
+  var startTime = Date.now();
+  var barInterval = setInterval(function() {
+    var elapsed = Date.now() - startTime;
+    var pct = Math.min(100, (elapsed / 2000) * 100);
+    updateBar(pct);
+    if (pct >= 100) {
+      clearInterval(barInterval);
+      startCountdown();
     }
-    videos.forEach(function(src) {
-      var id = src.replace('.mp4', '') + '-video';
-      var el = document.getElementById(id);
-      if (el) {
-        if (el.readyState >= 2) { onVideoReady(); }
-        else { el.addEventListener('loadeddata', onVideoReady, { once: true }); }
-      } else { onVideoReady(); }
-    });
-    // Fallback: start countdown after 5s regardless
-    var _fallbackTimer = setTimeout(startCountdown, 5000);
+  }, 50);
 
-    var _countdownStarted = false;
-    function startCountdown() {
-      if (_countdownStarted) return;
-      _countdownStarted = true;
-      clearTimeout(_fallbackTimer);
-      updateBar(100);
-      var sub = loader.querySelector('.loader-subtitle');
-      if (sub) sub.textContent = 'Your invitation is ready';
-      var countdown = document.getElementById('loader-countdown');
-      var numEl = document.getElementById('loader-countdown-number');
-      if (countdown) countdown.style.display = 'flex';
-      var count = 3;
-      function tick() {
-        if (numEl) {
-          numEl.textContent = count;
-          // Re-trigger animation
-          numEl.style.animation = 'none';
-          void numEl.offsetWidth;
-          numEl.style.animation = 'countdown-pulse 1s ease-in-out';
-        }
-        if (count <= 0) {
-          openInvitation();
-          return;
-        }
-        count--;
-        setTimeout(tick, 1000);
+  var _countdownStarted = false;
+  function startCountdown() {
+    if (_countdownStarted) return;
+    _countdownStarted = true;
+    updateBar(100);
+    var sub = loader ? loader.querySelector('.loader-subtitle') : null;
+    if (sub) sub.textContent = 'Your invitation is ready';
+    var countdown = document.getElementById('loader-countdown');
+    var numEl = document.getElementById('loader-countdown-number');
+    if (countdown) countdown.style.display = 'flex';
+    var count = 3;
+    function tick() {
+      if (numEl) {
+        numEl.textContent = count;
+        numEl.style.animation = 'none';
+        void numEl.offsetWidth;
+        numEl.style.animation = 'countdown-pulse 1s ease-in-out';
       }
-      tick();
+      if (count <= 0) { openInvitation(); return; }
+      count--;
+      setTimeout(tick, 1000);
     }
+    tick();
   }
 
   var _toastTimer = null;
@@ -3322,47 +3293,6 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
     }, 800);
   };
 
-  // Hard timeout — if loading takes > 8s, just proceed anyway
-  var _hardTimeout = setTimeout(function() {
-    videos.forEach(function(s) { if (!blobs[s]) blobs[s] = s; });
-    onAllDone();
-  }, 8000);
-  var _allDoneCalled = false;
-  var _origOnAllDone = onAllDone;
-  onAllDone = function() {
-    if (_allDoneCalled) return;
-    _allDoneCalled = true;
-    clearTimeout(_hardTimeout);
-    _origOnAllDone();
-  };
-
-  // Use canplaythrough events — no fetch needed for small files
-  var remaining = videos.length;
-  videos.forEach(function(src, i) {
-    var id = src.replace('.mp4', '') + '-video';
-    var el = document.getElementById(id);
-    if (!el) {
-      blobs[src] = src;
-      loaded++;
-      remaining--;
-      updateBar((loaded / videos.length) * 100);
-      if (remaining === 0) onAllDone();
-      return;
-    }
-    el.src = src;
-    el.muted = true;
-    el.preload = 'auto';
-    function onReady() {
-      blobs[src] = src;
-      loaded++;
-      remaining--;
-      updateBar((loaded / videos.length) * 100);
-      if (remaining === 0) onAllDone();
-    }
-    el.addEventListener('canplaythrough', onReady, { once: true });
-    el.addEventListener('error', onReady, { once: true });
-    el.load();
-  });
 })();
 
 // Wire wedding screen → reception (VIP) or rsvp (everyone else)
