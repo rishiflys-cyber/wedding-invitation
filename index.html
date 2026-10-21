@@ -1048,15 +1048,6 @@ html, body {
   100% { opacity: 0;   transform: translateY(105vh) rotate(360deg) scale(0.4); }
 }
 
-/* Mehendi — green henna leaves drift down */
-#screen-mehendi .ep { color: #5fe84a; font-size: 10px; }
-
-/* Sangeet — purple sparkles & music notes */
-#screen-sangeet .ep { color: #e080ff; font-size: 18px; }
-
-/* Haldi — golden turmeric dust */
-#screen-haldi .ep { color: #ffda30; font-size: 9px; }
-
 /* Wedding — white flower petals */
 #screen-wedding .ep { color: rgba(255,255,255,0.95); font-size: 11px; }
 
@@ -1064,34 +1055,6 @@ html, body {
 #screen-reception .ep { color: #ff90c0; font-size: 12px; }
 
 /* Glow pulse on event image overlay for each theme */
-#screen-mehendi .event-img-wrap::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: radial-gradient(ellipse at 50% 80%, rgba(80,230,60,0.18) 0%, transparent 60%);
-  animation: theme-pulse 4s ease-in-out infinite;
-}
-#screen-sangeet .event-img-wrap img {
-  object-position: center center;
-  transform-origin: center center;
-}
-#screen-sangeet .event-img-wrap::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: radial-gradient(ellipse at 50% 50%, rgba(200,60,255,0.2) 0%, transparent 60%);
-  animation: theme-pulse 2s ease-in-out infinite;
-}
-#screen-haldi .event-img-wrap::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: radial-gradient(ellipse at 50% 40%, rgba(255,220,0,0.22) 0%, transparent 55%);
-  animation: theme-pulse 3.5s ease-in-out infinite;
-}
 #screen-wedding .event-img-wrap::before {
   content: '';
   position: absolute;
@@ -2294,7 +2257,7 @@ html, body {
 <!-- ══════════════════════════════════════════
      SCREEN 3c — INVITE ACT 3 (names + families)
 ══════════════════════════════════════════ -->
-<div id="screen-invite3" class="screen" onclick="safeGoTo('screen-mehendi')">
+<div id="screen-invite3" class="screen" onclick="safeGoTo('screen-wedding')">
   <div id="screen-invite3-bg-zoom" style="background: radial-gradient(ellipse at 50% 12%, rgba(255,215,100,0.24) 0%, transparent 45%), radial-gradient(ellipse at 5% 70%, rgba(140,10,40,0.55) 0%, transparent 45%), radial-gradient(ellipse at 95% 70%, rgba(140,10,40,0.55) 0%, transparent 45%), radial-gradient(ellipse at 50% 105%, rgba(160,40,0,0.45) 0%, transparent 50%), linear-gradient(180deg, #0a0206 0%, #1c0610 28%, #130408 58%, #080103 100%);"></div>
   <div class="royal-frame"></div>
   <div class="act1-corner" style="top:0;left:0;"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M8 8 L72 8" stroke="#c9a84c" stroke-width="1.2" fill="none" opacity="0.7"/><path d="M8 8 L8 72" stroke="#c9a84c" stroke-width="1.2" fill="none" opacity="0.7"/><path d="M16 8 L16 16 L8 16" stroke="#f0c840" stroke-width="0.8" fill="none" opacity="0.5"/><circle cx="8" cy="8" r="4" fill="#c9a84c" opacity="0.6"/><circle cx="8" cy="8" r="2" fill="#f9e060" opacity="0.8"/><path d="M22 8 C28 14 34 8 40 14 C46 20 52 14 58 20" stroke="#c9a84c" stroke-width="0.7" fill="none" opacity="0.4"/><path d="M8 22 C14 28 8 34 14 40 C20 46 14 52 20 58" stroke="#c9a84c" stroke-width="0.7" fill="none" opacity="0.4"/><circle cx="26" cy="8" r="1.5" fill="#c9a84c" opacity="0.5"/><circle cx="8" cy="26" r="1.5" fill="#c9a84c" opacity="0.5"/></svg></div>
@@ -2481,114 +2444,6 @@ html, body {
 <!-- ══════════════════════════════════════════
      SCREEN MEHENDI
 ══════════════════════════════════════════ -->
-<div id="screen-mehendi" class="screen event-screen" onclick="safeGoTo('screen-sangeet')">
-  <video id="mehendi-video" muted playsinline preload="auto"
-    style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
-    <source src="mehendi.mp4" type="video/mp4">
-  </video>
-  <div class="event-img-wrap" id="mehendi-bg-img" style="z-index:0;">
-    <img src="1-mehendi_4k.jpg" alt="Mehendi" loading="lazy">
-  </div>
-  <div class="event-particles" id="ep-mehendi" style="z-index:3;"></div>
-  <!-- Dark panel slides up from bottom after video ends -->
-  <div id="mehendi-panel" style="position:absolute;bottom:0;left:0;right:0;height:38%;z-index:4;background:linear-gradient(to bottom,transparent 0%,rgba(5,30,5,0.98) 18%,#041508 38%);box-shadow:0 -60px 100px rgba(60,200,60,0.22);padding-top:8px;transform:translateY(100%);transition:transform 1.4s cubic-bezier(0.22,1,0.36,1);pointer-events:none;overflow:hidden;">
-  <div class="event-wrap" id="mehendi-invite" style="position:relative;opacity:0;transform:translateY(20px);transition:opacity 0.8s ease 0.5s,transform 0.8s ease 0.5s;pointer-events:none;">
-    <div class="event-icon-big">🌿</div>
-    <div class="event-tag" style="background:rgba(60,200,70,0.35);border-color:rgba(80,240,80,0.9);color:#ffffff;font-weight:700;">Mehendi</div>
-    <div class="event-title">Henna & Happiness</div>
-    <div class="event-subtitle">An evening of henna, laughter &amp; love</div>
-    <div class="event-divider-line"></div>
-    <div class="event-detail-row">
-      <div class="event-detail">
-        <div class="event-detail-label">Date</div>
-        <div class="event-detail-value">10th December 2026</div>
-      </div>
-      <div class="event-detail-sep"></div>
-      <div class="event-detail">
-        <div class="event-detail-label">Time</div>
-        <div class="event-detail-value">5:00 PM onwards</div>
-      </div>
-    </div>
-    <div class="event-venue">📍 Circle Club, Kolkata</div>
-    <div class="event-poem"><span class="event-poem-em">When henna darkens on her palms, his name is hidden within — find it, and love begins.</span></div>
-  </div>
-  </div><!-- end mehendi-panel -->
-</div>
-
-<!-- ══════════════════════════════════════════
-     SCREEN SANGEET
-══════════════════════════════════════════ -->
-<div id="screen-sangeet" class="screen event-screen" onclick="safeGoTo('screen-haldi')">
-  <video id="sangeet-video" muted playsinline preload="auto"
-    style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
-    <source src="sangeet.mp4" type="video/mp4">
-  </video>
-  <div class="event-img-wrap" id="sangeet-bg-img" style="z-index:0;">
-    <img src="2-sangeet_4k.jpg" alt="Sangeet" loading="lazy">
-  </div>
-  <div class="event-particles" id="ep-sangeet" style="z-index:2;"></div>
-
-  <div id="sangeet-panel" style="position:absolute;bottom:0;left:0;right:0;height:38%;z-index:3;background:linear-gradient(to bottom,transparent 0%,rgba(12,3,22,0.98) 18%,#0a0218 38%);padding-top:8px;transform:translateY(100%);transition:transform 1.4s cubic-bezier(0.22,1,0.36,1);pointer-events:none;overflow:hidden;">
-  <div class="event-wrap" id="sangeet-invite" style="position:relative;opacity:0;transform:translateY(20px);transition:opacity 0.8s ease 0.5s,transform 0.8s ease 0.5s;pointer-events:none;">
-    <div class="event-icon-big">🎶</div>
-    <div class="event-tag" style="background:rgba(190,60,255,0.35);border-color:rgba(220,120,255,0.9);color:#ffffff;font-weight:700;">Sangeet</div>
-    <div class="event-title">Sur aur Sargam</div>
-    <div class="event-subtitle">An evening of music, dance &amp; celebration</div>
-    <div class="event-divider-line"></div>
-    <div class="event-detail-row">
-      <div class="event-detail">
-        <div class="event-detail-label">Date</div>
-        <div class="event-detail-value">10th December 2026</div>
-      </div>
-      <div class="event-detail-sep"></div>
-      <div class="event-detail">
-        <div class="event-detail-label">Time</div>
-        <div class="event-detail-value">5:00 PM onwards</div>
-      </div>
-    </div>
-    <div class="event-venue">📍 Circle Club, Kolkata</div>
-    <div class="event-poem"><span class="event-poem-em">The music that plays on 11th December will echo in our hearts forever — come, dance with us.</span></div>
-  </div>
-  </div><!-- end sangeet-panel -->
-</div>
-
-<!-- ══════════════════════════════════════════
-     SCREEN HALDI
-══════════════════════════════════════════ -->
-<div id="screen-haldi" class="screen event-screen" onclick="safeGoTo('screen-wedding')">
-  <video id="haldi-video" muted playsinline preload="auto"
-    style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
-    <source src="haldi.mp4" type="video/mp4">
-  </video>
-  <div class="event-img-wrap" id="haldi-bg-img" style="z-index:0;">
-    <img src="3-haldi_4k.jpg" alt="Haldi" loading="lazy">
-  </div>
-  <div class="event-particles" id="ep-haldi" style="z-index:2;"></div>
-
-  <div id="haldi-panel" style="position:absolute;bottom:0;left:0;right:0;height:38%;z-index:3;background:linear-gradient(to bottom,transparent 0%,rgba(20,12,0,0.98) 18%,#120a00 38%);padding-top:8px;transform:translateY(100%);transition:transform 1.4s cubic-bezier(0.22,1,0.36,1);pointer-events:none;overflow:hidden;">
-  <div class="event-wrap" id="haldi-invite" style="position:relative;opacity:0;transform:translateY(20px);transition:opacity 0.8s ease 0.5s,transform 0.8s ease 0.5s;pointer-events:none;">
-    <div class="event-icon-big">💛</div>
-    <div class="event-tag" style="background:rgba(255,210,0,0.35);border-color:rgba(255,220,0,0.9);color:#ffffff;font-weight:700;">Haldi</div>
-    <div class="event-title">Peeli Dhoop</div>
-    <div class="event-subtitle">Turmeric, blessings &amp; golden joy</div>
-    <div class="event-divider-line"></div>
-    <div class="event-detail-row">
-      <div class="event-detail">
-        <div class="event-detail-label">Date</div>
-        <div class="event-detail-value">11th December 2026</div>
-      </div>
-      <div class="event-detail-sep"></div>
-      <div class="event-detail">
-        <div class="event-detail-label">Time</div>
-        <div class="event-detail-value">11:00 AM onwards</div>
-      </div>
-    </div>
-    <div class="event-venue">📍 Circle Club, Kolkata</div>
-    <div class="event-poem"><span class="event-poem-em">Turmeric on their skin, sunlight in their smiles — this golden moment needs you.</span></div>
-  </div>
-  </div><!-- end haldi-panel -->
-</div>
-
 <!-- ══════════════════════════════════════════
      SCREEN WEDDING
 ══════════════════════════════════════════ -->
@@ -2954,7 +2809,7 @@ function goTo(id) {
   var pb = document.getElementById('pause-btn');
   var hideOn = ['screen-envelope','screen-ganesh'];
   var noHintOn = ['screen-rsvp','screen-countdown'];
-  var videoScreens = ['screen-mehendi','screen-sangeet','screen-haldi','screen-wedding','screen-reception'];
+  var videoScreens = ['screen-wedding','screen-reception'];
   var pauseScreens = videoScreens.concat(['screen-invite','screen-invite2','screen-invite3']);
   if (ctrlBar) ctrlBar.style.display = hideOn.indexOf(id) === -1 ? 'flex' : 'none';
   if (pb) pb.style.display = pauseScreens.indexOf(id) !== -1 ? 'flex' : 'none';
@@ -3196,7 +3051,7 @@ function goTo(id) {
     }, 2800);
     // Auto-advance after everything is visible; 5s if navigating back
     var _inv3Delay = _navigatingBack ? 5000 : 12000;
-    window._advanceCallback = function(){ if(current==='screen-invite3') goTo('screen-mehendi'); };
+    window._advanceCallback = function(){ if(current==='screen-invite3') goTo('screen-wedding'); };
     window._advanceTimer = setTimeout(window._advanceCallback, _inv3Delay);
     window._advanceStart = Date.now(); window._advanceDelay = _inv3Delay; window._advanceRemaining = _inv3Delay;
   }
@@ -3219,7 +3074,7 @@ function returnToSeal() {
   // Stop music and videos, then go back to RA seal screen
   var music = document.getElementById('bgmusic');
   if (music) { music.pause(); music.currentTime = 0; }
-  ['mehendi','sangeet','haldi','wedding','reception'].forEach(function(n) {
+  ['wedding','reception'].forEach(function(n) {
     var v = document.getElementById(n + '-video');
     if (v) { try { v.pause(); v.currentTime = 0; } catch(e) {} }
   });
@@ -3244,7 +3099,7 @@ function closeInvitation() {
     var music = document.getElementById('bgmusic');
     if (music) { music.pause(); music.currentTime = 0; }
     // Stop any playing event videos
-    ['mehendi','sangeet','haldi','wedding','reception'].forEach(function(n) {
+    ['wedding','reception'].forEach(function(n) {
       var v = document.getElementById(n + '-video');
       if (v) { try { v.pause(); v.currentTime = 0; } catch(e) {} }
     });
@@ -3302,7 +3157,7 @@ function openEnvelope() {
   music.play().then(function(){ music.pause(); music.currentTime = 0; window._musicUnlocked = true; }).catch(function(){ window._musicUnlocked = false; });
 
   // Unlock ALL event videos during this user gesture so they can autoplay later
-  ['mehendi-video','sangeet-video','haldi-video','wedding-video','reception-video'].forEach(function(vid) {
+  ['wedding-video','reception-video'].forEach(function(vid) {
     var v = document.getElementById(vid);
     if (v) { v.muted = true; v.play().then(function(){ v.pause(); v.currentTime = 0; }).catch(function(){}); }
   });
@@ -3342,7 +3197,7 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
 
 /* ── LOADER: fetch all videos before showing invitation ── */
 (function() {
-  var videos = ['mehendi.mp4','sangeet.mp4','haldi.mp4','wedding.mp4','reception.mp4'];
+  var videos = ['wedding.mp4','reception.mp4'];
   var bar = document.getElementById('loader-bar');
   var btn = document.getElementById('loader-open-btn');
   var loader = document.getElementById('screen-loader');
@@ -3597,208 +3452,6 @@ document.addEventListener('DOMContentLoaded', function() {
     };
   }
 
-  /* Mehendi: video plays once → dark panel slides up, invite fades in */
-  var mv = document.getElementById('mehendi-video');
-  var mi = document.getElementById('mehendi-invite');
-  var mp = document.getElementById('mehendi-panel');
-  var mehendiShown = false;
-  var mehendiTimer = null;
-  var mehendiVisited = false;
-
-  function showMehendiInvite() {
-    if (mehendiShown) return;
-    mehendiShown = true;
-    if (mp) { mp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; mp.style.transform = 'translateY(0)'; mp.style.pointerEvents = 'auto'; }
-    if (mi) { mi.style.opacity = '1'; mi.style.transform = 'translateY(0)'; mi.style.pointerEvents = 'auto'; }
-    var delay = mehendiVisited ? 11500 : 6500;
-    mehendiVisited = true;
-    window._advanceCallback = function() { if (current === 'screen-mehendi') goTo('screen-sangeet'); };
-    window._advanceTimer = setTimeout(window._advanceCallback, delay);
-    window._advanceDelay = delay;
-    window._advanceStart = Date.now();
-    window._advanceRemaining = delay;
-  }
-
-  function resetMehendi() {
-    mehendiShown = false;
-    if (mehendiTimer) { clearTimeout(mehendiTimer); mehendiTimer = null; }
-    if (mp) { mp.style.transition = 'none'; mp.style.transform = 'translateY(100%)'; mp.style.pointerEvents = 'none'; }
-    if (mi) { mi.style.opacity = '0'; mi.style.transform = 'translateY(20px)'; mi.style.pointerEvents = 'none'; }
-    if (mv) { safeVideoPause(mv); mv.ontimeupdate = null; mv.onended = null; mv.currentTime = 0; mv._forcePaused = false; }
-  }
-
-  if (mv) {
-    mv.loop = false;
-    mv.addEventListener('error', showMehendiInvite);
-  }
-
-  /* Hook into goTo to reset/restore mehendi state */
-  var _origGoTo = goTo;
-  goTo = function(id) {
-    var from = current;
-    _origGoTo(id);
-    /* Leaving mehendi — reset immediately for next visit */
-    if (from === 'screen-mehendi' && id !== 'screen-mehendi') {
-      resetMehendi();
-    }
-    /* Arriving at mehendi — always play fresh from start */
-    if (id === 'screen-mehendi') {
-      requestWakeLock();
-      /* Always reset state and play fresh */
-      mehendiShown = false;
-      if (mehendiTimer) { clearTimeout(mehendiTimer); mehendiTimer = null; }
-      if (mp) { mp.style.transition = 'none'; mp.style.transform = 'translateY(100%)'; mp.style.pointerEvents = 'none'; }
-      if (mi) { mi.style.opacity = '0'; mi.style.transform = 'translateY(20px)'; mi.style.pointerEvents = 'none'; }
-      if (mv) {
-        mv.onended = function() { safeVideoPause(mv); showMehendiInvite(); };
-        // timeupdate fallback: catch end even if onended doesn't fire
-        mv.ontimeupdate = function() {
-          if (mv.duration && mv.currentTime >= mv.duration - 0.3) {
-            mv.ontimeupdate = null;
-            safeVideoPause(mv);
-            showMehendiInvite();
-          }
-        };
-        safeVideoPlay(mv, showMehendiInvite);
-        mehendiTimer = setTimeout(showMehendiInvite, 60000);
-      }
-    }
-  };
-});
-
-/* ── Sangeet video logic ── */
-(function(){
-  var sv = document.getElementById('sangeet-video');
-  var si = document.getElementById('sangeet-invite');
-  var sp = document.getElementById('sangeet-panel');
-  var sangeetShown = false;
-  var sangeetTimer = null;
-  var sangeetVisited = false;
-
-  function showSangeetInvite() {
-    if (sangeetShown) return;
-    sangeetShown = true;
-    if (sangeetTimer) { clearTimeout(sangeetTimer); sangeetTimer = null; }
-    if (sv) safeVideoPause(sv);
-    if (sp) { sp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; sp.style.transform = 'translateY(0)'; sp.style.pointerEvents = 'auto'; }
-    if (si) { si.style.opacity = '1'; si.style.transform = 'translateY(0)'; si.style.pointerEvents = 'auto'; }
-    var delay = sangeetVisited ? 11500 : 7000;
-    sangeetVisited = true;
-    window._advanceCallback = function() { if (current === 'screen-sangeet') goTo('screen-haldi'); };
-    window._advanceTimer = setTimeout(window._advanceCallback, delay);
-    window._advanceDelay = delay;
-    window._advanceStart = Date.now();
-    window._advanceRemaining = delay;
-  }
-
-  function resetSangeet() {
-    sangeetShown = false;
-    if (sangeetTimer) { clearTimeout(sangeetTimer); sangeetTimer = null; }
-    if (sp) { sp.style.transition = 'none'; sp.style.transform = 'translateY(100%)'; sp.style.pointerEvents = 'none'; }
-    if (si) { si.style.opacity = '0'; si.style.transform = 'translateY(20px)'; si.style.pointerEvents = 'none'; }
-    if (sv) { safeVideoPause(sv); sv.ontimeupdate = null; sv.onended = null; sv.currentTime = 0; sv._forcePaused = false; }
-  }
-
-  if (sv) {
-    sv.loop = false;
-    sv.addEventListener('error', showSangeetInvite);
-  }
-
-  var _origGoTo2 = goTo;
-  goTo = function(id) {
-    var from = current;
-    _origGoTo2(id);
-    /* Leaving sangeet — reset immediately for next visit */
-    if (from === 'screen-sangeet' && id !== 'screen-sangeet') {
-      resetSangeet();
-    }
-    /* Arriving at sangeet — always play fresh from start */
-    if (id === 'screen-sangeet') {
-      sangeetShown = false;
-      if (sangeetTimer) { clearTimeout(sangeetTimer); sangeetTimer = null; }
-      if (sp) { sp.style.transition = 'none'; sp.style.transform = 'translateY(100%)'; sp.style.pointerEvents = 'none'; }
-      if (si) { si.style.opacity = '0'; si.style.transform = 'translateY(20px)'; si.style.pointerEvents = 'none'; }
-      if (sv) {
-        sv.onended = function() { safeVideoPause(sv); showSangeetInvite(); };
-        sv.ontimeupdate = function() {
-          if (sv.duration && sv.currentTime >= sv.duration - 0.3) {
-            sv.ontimeupdate = null; safeVideoPause(sv); showSangeetInvite();
-          }
-        };
-        safeVideoPlay(sv, showSangeetInvite);
-        sangeetTimer = setTimeout(showSangeetInvite, 60000);
-      } else {
-        sangeetTimer = setTimeout(showSangeetInvite, 1000);
-      }
-    }
-  };
-})();
-
-/* ── Haldi video logic ── */
-(function(){
-  var hv = document.getElementById('haldi-video');
-  var hi = document.getElementById('haldi-invite');
-  var hp = document.getElementById('haldi-panel');
-  var haldiShown = false;
-  var haldiTimer = null;
-  var haldiVisited = false;
-
-  function showHaldiInvite() {
-    if (haldiShown) return;
-    haldiShown = true;
-    if (haldiTimer) { clearTimeout(haldiTimer); haldiTimer = null; }
-    if (hp) { hp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; hp.style.transform = 'translateY(0)'; hp.style.pointerEvents = 'auto'; }
-    if (hi) { hi.style.opacity = '1'; hi.style.transform = 'translateY(0)'; hi.style.pointerEvents = 'auto'; }
-    var delay = haldiVisited ? 11500 : 7000;
-    haldiVisited = true;
-    window._advanceCallback = function() { if (current === 'screen-haldi') goTo('screen-wedding'); };
-    window._advanceTimer = setTimeout(window._advanceCallback, delay);
-    window._advanceDelay = delay;
-    window._advanceStart = Date.now();
-    window._advanceRemaining = delay;
-  }
-
-  function resetHaldi() {
-    haldiShown = false;
-    if (haldiTimer) { clearTimeout(haldiTimer); haldiTimer = null; }
-    if (hp) { hp.style.transition = 'none'; hp.style.transform = 'translateY(100%)'; hp.style.pointerEvents = 'none'; }
-    if (hi) { hi.style.opacity = '0'; hi.style.transform = 'translateY(20px)'; hi.style.pointerEvents = 'none'; }
-    if (hv) { safeVideoPause(hv); hv.ontimeupdate = null; hv.onended = null; hv.currentTime = 0; hv._forcePaused = false; }
-  }
-
-  if (hv) {
-    hv.loop = false;
-    hv.addEventListener('error', showHaldiInvite);
-  }
-
-  var _origGoTo3 = goTo;
-  goTo = function(id) {
-    var from = current;
-    _origGoTo3(id);
-    if (from === 'screen-haldi' && id !== 'screen-haldi') {
-      resetHaldi();
-    }
-    if (id === 'screen-haldi') {
-      haldiShown = false;
-      if (haldiTimer) { clearTimeout(haldiTimer); haldiTimer = null; }
-      if (hp) { hp.style.transition = 'none'; hp.style.transform = 'translateY(100%)'; hp.style.pointerEvents = 'none'; }
-      if (hi) { hi.style.opacity = '0'; hi.style.transform = 'translateY(20px)'; hi.style.pointerEvents = 'none'; }
-      if (hv) {
-        hv.onended = function() { safeVideoPause(hv); showHaldiInvite(); };
-        hv.ontimeupdate = function() {
-          if (hv.duration && hv.currentTime >= hv.duration - 0.3) {
-            hv.ontimeupdate = null; safeVideoPause(hv); showHaldiInvite();
-          }
-        };
-        safeVideoPlay(hv, showHaldiInvite);
-        haldiTimer = setTimeout(showHaldiInvite, 60000);
-      } else {
-        haldiTimer = setTimeout(showHaldiInvite, 1000);
-      }
-    }
-  };
-})();
-
 /* ── Wedding video logic ── */
 (function(){
   var wv = document.getElementById('wedding-video');
@@ -3962,9 +3615,6 @@ function safeGoTo(id) {
   goTo(id);
 }
 var _screenToVideo = {
-  'screen-mehendi': 'mehendi-video',
-  'screen-sangeet': 'sangeet-video',
-  'screen-haldi':   'haldi-video',
   'screen-wedding': 'wedding-video',
   'screen-reception': 'reception-video'
 };
@@ -3983,7 +3633,7 @@ function _setupForcePauseListener(vid) {
 }
 // Set up listeners on all event videos once DOM ready
 document.addEventListener('DOMContentLoaded', function() {
-  ['mehendi-video','sangeet-video','haldi-video','wedding-video','reception-video'].forEach(function(id) {
+  ['wedding-video','reception-video'].forEach(function(id) {
     var v = document.getElementById(id);
     if (v) _setupForcePauseListener(v);
   });
@@ -4421,9 +4071,6 @@ function launchConfetti() {
 // Event screen particles
 (function(){
   const configs = {
-    'ep-mehendi':  { symbols: ['✿','❀','🌿','·','✾'], colors: ['#7ec850','#a8e080','#5db840','#c8f0a0'], count: 18 },
-    'ep-sangeet':  { symbols: ['✦','♪','♫','·','✵','⋆'], colors: ['#d090f8','#b060e0','#f0c0ff','#ffffff'], count: 22 },
-    'ep-haldi':    { symbols: ['·','•','✦','❋','✿'], colors: ['#f0c840','#ffd860','#ffe090','#d4a020'], count: 20 },
     'ep-wedding':  { symbols: ['✿','❀','·','✾','°'], colors: ['rgba(255,255,255,0.9)','rgba(255,220,180,0.8)','rgba(255,200,120,0.7)'], count: 25 },
     'ep-reception':{ symbols: ['✦','·','°','⋆','○'], colors: ['#f8b4c8','#ffd0e0','#ffffff','#ffe0f0'], count: 20 }
   };
