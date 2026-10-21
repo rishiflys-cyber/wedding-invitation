@@ -3195,15 +3195,13 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
 })();
 
 
-/* ── LOADER: fetch all videos before showing invitation ── */
+/* ── LOADER: preload videos before showing invitation ── */
 (function() {
   var videos = ['wedding.mp4','reception.mp4'];
   var bar = document.getElementById('loader-bar');
   var btn = document.getElementById('loader-open-btn');
   var loader = document.getElementById('screen-loader');
   var loaded = 0;
-  var totalBytes = 0;
-  var loadedBytes = 0;
   var blobs = {};
 
   function updateBar(pct) {
@@ -3212,32 +3210,12 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
 
   function onAllDone() {
     updateBar(100);
-    // Assign blob URLs and fully prime every video decoder
-    // iOS: seek to 0 after loadeddata forces first-frame decode
-    // Android: play()+pause() primes the decoder pipeline
+    // Videos already have src set and are preloaded — just prime decoders
     videos.forEach(function(src) {
       var id = src.replace('.mp4', '') + '-video';
       var el = document.getElementById(id);
-      if (el && blobs[src]) {
-        el.src = blobs[src];
-        el.muted = true;
-        el.load();
-        el.addEventListener('loadeddata', function() {
-          el.currentTime = 0;
-          // Prime Android decoder: silent play then immediate pause
-          // Use a flag so this primer never interferes with real playback later
-          el._priming = true;
-          var p = el.play();
-          if (p !== undefined) {
-            p.then(function() {
-              el.pause();
-              el.currentTime = 0;
-              el._priming = false;
-            }).catch(function() { el._priming = false; });
-          } else {
-            el._priming = false;
-          }
-        }, { once: true });
+      if (el) {
+        el.currentTime = 0;
       }
     });
     // Show open button only after all videos have first-frame decoded
@@ -3344,51 +3322,46 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
     }, 800);
   };
 
-  // Hard timeout — if loading takes > 20s, just proceed anyway
+  // Hard timeout — if loading takes > 8s, just proceed anyway
   var _hardTimeout = setTimeout(function() {
-    if (remaining > 0) {
-      remaining = 0;
-      videos.forEach(function(s) { if (!blobs[s]) blobs[s] = s; });
-      onAllDone();
-    }
-  }, 20000);
+    videos.forEach(function(s) { if (!blobs[s]) blobs[s] = s; });
+    onAllDone();
+  }, 8000);
+  var _allDoneCalled = false;
   var _origOnAllDone = onAllDone;
-  onAllDone = function() { clearTimeout(_hardTimeout); _origOnAllDone(); };
+  onAllDone = function() {
+    if (_allDoneCalled) return;
+    _allDoneCalled = true;
+    clearTimeout(_hardTimeout);
+    _origOnAllDone();
+  };
 
-  // Fetch each video, track bytes for progress bar
+  // Use canplaythrough events — no fetch needed for small files
   var remaining = videos.length;
-  videos.forEach(function(src) {
-    fetch(src)
-      .then(function(res) {
-        var total = parseInt(res.headers.get('content-length') || '800000');
-        totalBytes += total;
-        var reader = res.body.getReader();
-        var chunks = [];
-        function read() {
-          return reader.read().then(function(r) {
-            if (r.done) {
-              var blob = new Blob(chunks, { type: 'video/mp4' });
-              blobs[src] = URL.createObjectURL(blob);
-              loaded++;
-              remaining--;
-              if (remaining === 0) onAllDone();
-              return;
-            }
-            chunks.push(r.value);
-            loadedBytes += r.value.length;
-            updateBar(totalBytes > 0 ? (loadedBytes / totalBytes) * 100 : (loaded / videos.length) * 100);
-            return read();
-          });
-        }
-        return read();
-      })
-      .catch(function() {
-        // If fetch fails for one, still count it done
-        loaded++;
-        remaining--;
-        blobs[src] = src; // fall back to original src
-        if (remaining === 0) onAllDone();
-      });
+  videos.forEach(function(src, i) {
+    var id = src.replace('.mp4', '') + '-video';
+    var el = document.getElementById(id);
+    if (!el) {
+      blobs[src] = src;
+      loaded++;
+      remaining--;
+      updateBar((loaded / videos.length) * 100);
+      if (remaining === 0) onAllDone();
+      return;
+    }
+    el.src = src;
+    el.muted = true;
+    el.preload = 'auto';
+    function onReady() {
+      blobs[src] = src;
+      loaded++;
+      remaining--;
+      updateBar((loaded / videos.length) * 100);
+      if (remaining === 0) onAllDone();
+    }
+    el.addEventListener('canplaythrough', onReady, { once: true });
+    el.addEventListener('error', onReady, { once: true });
+    el.load();
   });
 })();
 
