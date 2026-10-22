@@ -3354,6 +3354,21 @@ function openEnvelope() {
 
   var sealEl = document.getElementById('seal');
 
+  // Start music immediately on tap (once only)
+  if (!window._musicStarted) {
+    var bgm = document.getElementById('bgm');
+    if (bgm) {
+      bgm.volume = 0;
+      bgm.play().then(function() {
+        window._musicStarted = true;
+        var fadeIn = setInterval(function() {
+          if (bgm.volume < 0.85) { bgm.volume = Math.min(0.85, bgm.volume + 0.05); }
+          else { clearInterval(fadeIn); }
+        }, 120);
+      }).catch(function(){});
+    }
+  }
+
   // Step 1 (0ms): Press flash — seal flares white-gold
   var outerEl = sealEl ? sealEl.querySelector('.seal-outer') : null;
   if (outerEl) {
