@@ -3357,9 +3357,9 @@ function openEnvelope() {
 
   // Hide hint immediately
   var hint = document.querySelector('.tap-hint');
-  if (hint) { hint.style.transition='opacity 0.2s'; hint.style.opacity='0'; }
+  if (hint) { hint.style.display='none'; }
   var invLabel = document.querySelector('.invite-label');
-  if (invLabel) { invLabel.style.transition='opacity 0.2s'; invLabel.style.opacity='0'; }
+  if (invLabel) { invLabel.style.display='none'; }
 
   // Step 1: Press feel
   if (outerEl) {
