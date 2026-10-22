@@ -57,13 +57,12 @@ html, body {
 #screen-loader {
   position: fixed;
   inset: 0;
-  z-index: 9999;
-  background: radial-gradient(ellipse at 50% 50%, #1a0008 0%, #0d0004 100%);
-  display: flex;
+  z-index: -1;
+  display: none;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.8s ease;
+  transition: opacity 1s ease;
 }
 #screen-loader.hide {
   opacity: 0;
@@ -197,6 +196,16 @@ html, body {
   40%  { transform: scale(1.05); opacity: 1; }
   100% { transform: scale(1); opacity: 1; }
 }
+@keyframes seal-locked-dim {
+  0%,100% { opacity:0.45; box-shadow:0 0 0 2px rgba(255,230,80,0.3),0 0 15px rgba(255,210,0,0.2),0 8px 20px rgba(0,0,0,0.7),inset 0 3px 6px rgba(255,255,255,0.2),inset 0 -3px 8px rgba(0,0,0,0.3); }
+  50%      { opacity:0.55; box-shadow:0 0 0 3px rgba(255,230,80,0.4),0 0 25px rgba(255,210,0,0.3),0 8px 20px rgba(0,0,0,0.7),inset 0 3px 6px rgba(255,255,255,0.2),inset 0 -3px 8px rgba(0,0,0,0.3); }
+}
+@keyframes seal-ready-glow {
+  0%,100% { opacity:1; box-shadow:0 0 0 3px rgba(255,230,80,0.9),0 0 40px rgba(255,210,0,0.9),0 0 90px rgba(255,180,0,0.6),0 8px 30px rgba(0,0,0,0.7),inset 0 3px 6px rgba(255,255,255,0.5),inset 0 -3px 8px rgba(0,0,0,0.3); }
+  50%      { opacity:1; box-shadow:0 0 0 5px rgba(255,240,90,0.95),0 0 70px rgba(255,215,0,1),0 0 140px rgba(255,190,0,0.7),0 8px 30px rgba(0,0,0,0.7),inset 0 3px 6px rgba(255,255,255,0.5),inset 0 -3px 8px rgba(0,0,0,0.3); }
+}
+.wax-seal.ready .seal-outer { animation: seal-ready-glow 2.5s ease-in-out infinite !important; }
+.wax-seal.ready:active { transform: scale(0.91) !important; transition: transform 0.08s ease !important; }
 @keyframes bounce-arrow {
   0%, 100% { transform: translateY(0); }
   50%       { transform: translateY(6px); }
@@ -384,9 +393,14 @@ html, body {
 
 .wax-seal {
   width: 175px; height: 175px;
-  cursor: pointer;
+  cursor: default;
   position: relative;
   transition: transform 0.3s ease;
+  pointer-events: none;
+}
+.wax-seal.ready {
+  cursor: pointer;
+  pointer-events: auto;
 }
 .wax-seal:active { transform: scale(0.91); transition: transform 0.08s ease; }
 /* Bloom petals */
@@ -430,7 +444,7 @@ html, body {
     inset 0 -3px 8px rgba(0,0,0,0.3);
   border: 2px solid rgba(255,240,120,0.95);
   position: relative;
-  animation: seal-pulse 2.5s ease-in-out infinite;
+  animation: seal-locked-dim 1.8s ease-in-out infinite;
 }
 @keyframes bounce-arrow {
   0%,100% { transform: translateY(0); opacity:0.85; }
@@ -2046,7 +2060,7 @@ html, body {
   </div>
 </div>
 
-<div id="screen-envelope" class="screen">
+<div id="screen-envelope" class="screen active">
 
   <!-- Ganesh world glows behind as flaps open — just a radiant OM -->
   <div id="ganesh-world">
@@ -3533,18 +3547,10 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
   };
 
   window.openInvitation = function() {
-    // Stop toast cycle
-    if (_toastTimer) { clearTimeout(_toastTimer); _toastTimer = null; }
-    var toast = document.getElementById('loader-toast');
-    if (toast) toast.style.display = 'none';
-    // Just fade out loader and show envelope — music starts on R&A seal tap
-    if (loader) loader.classList.add('hide');
-    setTimeout(function() {
-      if (loader) loader.style.display = 'none';
-      var env = document.getElementById('screen-envelope');
-      if (env) env.classList.add('active');
-      startSealToast();
-    }, 800);
+    // Videos ready — unlock the seal
+    var sealEl = document.getElementById('seal');
+    if (sealEl) sealEl.classList.add('ready');
+    startSealToast();
   };
 
   // Fetch each video, track bytes for progress bar
