@@ -36,39 +36,62 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { touch-action: pan-y; overscroll-behavior: none; }
 
+/* ─── ROYAL MUGHAL PALETTE ──────────────────────────────────────────────────
+   One-of-a-kind luxury: deep midnight navy · Mughal emerald · imperial burgundy
+   Warm hammered gold · aged ivory parchment · intricate arch border motifs
+──────────────────────────────────────────────────────────────────────────── */
 :root {
-  --gold: #b8892a;
-  --gold-light: #d4a84b;
-  --gold-dark: #8a6010;
-  --gold-dim: rgba(184,137,42,0.35);
-  --night: #fdf8ee;
-  --night-2: #f9f1e4;
-  --night-3: #f3e8d4;
-  --cream: #fdf8ee;
-  --bg: #fdf8ee;
-  --bg2: #f7efe0;
-  --bg3: #f0e4cc;
-  --text-dark: #2a1a08;
-  --text-mid: #5a3e20;
-  --blush: #f5e0d0;
-  --rose: #e8c4a8;
+  /* Core palette */
+  --ivory:      #1a1228;       /* deep midnight base */
+  --ivory-2:    #1e1530;       /* slightly lighter layer */
+  --ivory-3:    #251a3a;       /* card surface */
+  --sindoor:    #d4af6a;       /* hammered gold — primary accent */
+  --sindoor-2:  #b8922e;       /* deeper gold */
+  --sindoor-lt: rgba(212,175,106,0.15); /* gold tint fills */
+  --gold:       #d4af6a;
+  --gold-2:     #b8922e;
+  --gold-3:     #8a6a1a;
+  --gold-dim:   rgba(212,175,106,0.25);
+  --emerald:    #1a4a3a;       /* Mughal emerald dark */
+  --emerald-2:  #0f6b4d;       /* jewel emerald */
+  --burgundy:   #6b1a2a;       /* imperial burgundy */
+  --text-dark:  #f5e8c8;       /* warm parchment text on dark */
+  --text-mid:   #d4c4a0;
+  --text-soft:  #a89878;
+  /* Aliases kept for old CSS refs */
+  --gold-light: #e8c87a;
+  --gold-dark:  #8a6a1a;
+  --night:      #1a1228;
+  --night-2:    #1e1530;
+  --night-3:    #251a3a;
+  --cream:      #1a1228;
+  --bg:         #1a1228;
+  --bg2:        #1e1530;
+  --bg3:        #251a3a;
+  --blush:      #2a1a38;
+  --rose:       #3a2248;
 }
 
 html, body {
   width: 100%; height: 100%;
   overflow: hidden;
-  background: #fdf8ee;
+  background: var(--ivory);
   font-family: 'Cormorant Garamond', Georgia, serif;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
+  color: var(--text-dark);
 }
 
-/* ── LOADING SCREEN ── */
+/* ── LOADING SCREEN — Mughal arch on deep midnight ── */
 #screen-loader {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: radial-gradient(ellipse at 50% 20%, #fff9f0 0%, #fdf3e0 60%, #f7e8cc 100%);
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(212,175,106,0.18) 0%, transparent 55%),
+    radial-gradient(ellipse at 0% 100%, rgba(26,74,58,0.35) 0%, transparent 55%),
+    radial-gradient(ellipse at 100% 100%, rgba(107,26,42,0.3) 0%, transparent 55%),
+    #1a1228;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -80,88 +103,118 @@ html, body {
   opacity: 0;
   pointer-events: none;
 }
+
+/* Mughal lotus mandala — Bengali alpona geometry on Mughal palette */
 .loader-florals {
   position: relative;
-  width: 260px;
-  height: 260px;
-  margin-bottom: 32px;
-  margin-top: -40px;
+  width: 240px;
+  height: 240px;
+  margin-bottom: 28px;
+  margin-top: -30px;
 }
+/* Outer Mughal arch ring — gold */
+.loader-florals::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 200px; height: 200px;
+  margin: -100px 0 0 -100px;
+  border-radius: 50%;
+  border: 1px solid rgba(212,175,106,0.45);
+  box-shadow:
+    0 0 0 8px rgba(212,175,106,0.06),
+    0 0 30px 10px rgba(212,175,106,0.12);
+  animation: ring-spin 20s linear infinite;
+}
+/* Inner Bengali alpona dotted ring */
+.loader-florals::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 130px; height: 130px;
+  margin: -65px 0 0 -65px;
+  border-radius: 50%;
+  border: 1px dashed rgba(212,175,106,0.35);
+  animation: ring-spin 8s linear infinite reverse;
+}
+@keyframes ring-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 8 lotus petals — Bengali sindoor red tip on gold */
 .loader-petal {
   position: absolute;
   top: 50%; left: 50%;
-  width: 54px; height: 86px;
-  margin-left: -27px; margin-top: -43px;
+  width: 20px; height: 36px;
+  margin-left: -10px; margin-top: -18px;
   transform-origin: 50% 100%;
-  animation: petal-bloom 3s ease-in-out infinite;
+  animation: petal-bloom 2.4s ease-in-out infinite;
 }
 .loader-petal svg { width: 100%; height: 100%; }
-.loader-petal:nth-child(1)  { transform: rotate(0deg);    animation-delay: 0s; }
-.loader-petal:nth-child(2)  { transform: rotate(45deg);   animation-delay: 0.15s; }
-.loader-petal:nth-child(3)  { transform: rotate(90deg);   animation-delay: 0.3s; }
-.loader-petal:nth-child(4)  { transform: rotate(135deg);  animation-delay: 0.45s; }
-.loader-petal:nth-child(5)  { transform: rotate(180deg);  animation-delay: 0.6s; }
-.loader-petal:nth-child(6)  { transform: rotate(225deg);  animation-delay: 0.75s; }
-.loader-petal:nth-child(7)  { transform: rotate(270deg);  animation-delay: 0.9s; }
-.loader-petal:nth-child(8)  { transform: rotate(315deg);  animation-delay: 1.05s; }
+.loader-petal:nth-child(1) { transform: rotate(0deg)   translateY(-75px); animation-delay: 0s;    }
+.loader-petal:nth-child(2) { transform: rotate(45deg)  translateY(-75px); animation-delay: 0.3s;  }
+.loader-petal:nth-child(3) { transform: rotate(90deg)  translateY(-75px); animation-delay: 0.6s;  }
+.loader-petal:nth-child(4) { transform: rotate(135deg) translateY(-75px); animation-delay: 0.9s;  }
+.loader-petal:nth-child(5) { transform: rotate(180deg) translateY(-75px); animation-delay: 1.2s;  }
+.loader-petal:nth-child(6) { transform: rotate(225deg) translateY(-75px); animation-delay: 1.5s;  }
+.loader-petal:nth-child(7) { transform: rotate(270deg) translateY(-75px); animation-delay: 1.8s;  }
+.loader-petal:nth-child(8) { transform: rotate(315deg) translateY(-75px); animation-delay: 2.1s;  }
 @keyframes petal-bloom {
-  0%,100% { opacity: 0.3; transform: rotate(var(--r)) scaleY(0.7); }
-  50%      { opacity: 1;   transform: rotate(var(--r)) scaleY(1.1); }
+  0%,100% { opacity: 0.3; }
+  50%      { opacity: 1;   }
 }
-.loader-petal:nth-child(1)  { --r: 0deg; }
-.loader-petal:nth-child(2)  { --r: 45deg; }
-.loader-petal:nth-child(3)  { --r: 90deg; }
-.loader-petal:nth-child(4)  { --r: 135deg; }
-.loader-petal:nth-child(5)  { --r: 180deg; }
-.loader-petal:nth-child(6)  { --r: 225deg; }
-.loader-petal:nth-child(7)  { --r: 270deg; }
-.loader-petal:nth-child(8)  { --r: 315deg; }
+
+/* Center gold bindi — Bengali sindoor dot in Mughal gold */
 .loader-center-dot {
   position: absolute;
   top: 50%; left: 50%;
-  width: 26px; height: 26px;
-  margin: -13px 0 0 -13px;
+  width: 36px; height: 36px;
+  margin: -18px 0 0 -18px;
   border-radius: 50%;
-  background: radial-gradient(circle, #ffe080, #f5c842);
-  box-shadow: 0 0 18px 6px rgba(245,200,66,0.5);
-  animation: dot-pulse 2s ease-in-out infinite;
+  background: radial-gradient(circle at 38% 35%, #f0d080, var(--sindoor) 55%, var(--sindoor-2));
+  box-shadow:
+    0 0 0 4px rgba(212,175,106,0.2),
+    0 0 24px 10px rgba(212,175,106,0.5),
+    0 0 50px 20px rgba(212,175,106,0.2);
+  animation: bindi-pulse 2s ease-in-out infinite;
 }
-@keyframes dot-pulse {
-  0%,100% { transform: scale(1); box-shadow: 0 0 18px 6px rgba(245,200,66,0.5); }
-  50%      { transform: scale(1.3); box-shadow: 0 0 28px 10px rgba(245,200,66,0.7); }
+@keyframes bindi-pulse {
+  0%,100% { transform: scale(1);   box-shadow: 0 0 0 4px rgba(212,175,106,0.2), 0 0 24px 10px rgba(212,175,106,0.5); }
+  50%      { transform: scale(1.15); box-shadow: 0 0 0 6px rgba(212,175,106,0.3), 0 0 40px 16px rgba(212,175,106,0.7); }
 }
 .loader-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 22px;
-  font-weight: 300;
-  letter-spacing: 0.18em;
-  color: #6b3d10;
-  margin-bottom: 8px;
-  opacity: 0.9;
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  color: var(--text-dark);
+  margin-bottom: 6px;
+  opacity: 0.92;
 }
 .loader-subtitle {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 13px;
-  letter-spacing: 0.25em;
-  color: rgba(107,61,16,0.55);
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  color: var(--sindoor);
   margin-bottom: 36px;
   text-transform: uppercase;
+  opacity: 0.85;
 }
 .loader-bar-wrap {
-  width: 200px;
-  height: 2px;
-  background: rgba(184,137,42,0.2);
-  border-radius: 2px;
+  width: 180px;
+  height: 1px;
+  background: rgba(212,175,106,0.18);
+  border-radius: 1px;
   overflow: hidden;
   margin-bottom: 40px;
 }
 .loader-bar {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #a07020, #c9960a, #e8b84b);
-  border-radius: 2px;
+  background: linear-gradient(90deg, var(--sindoor-2), var(--sindoor), #e84040);
+  border-radius: 1px;
   transition: width 0.3s ease;
-  box-shadow: 0 0 8px rgba(245,200,66,0.6);
+  box-shadow: 0 0 8px rgba(181,37,26,0.5);
 }
 .loader-open-btn { display: none; }
 .loader-countdown {
@@ -172,16 +225,16 @@ html, body {
 }
 .loader-countdown-label {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 15px;
+  font-size: 14px;
   letter-spacing: 4px;
   text-transform: uppercase;
-  color: rgba(107,61,16,0.7);
+  color: rgba(74,42,24,0.7);
 }
 .loader-countdown-number {
   font-family: 'Playfair Display', serif;
   font-size: 72px;
   font-weight: 700;
-  color: #a07020;
+  color: var(--sindoor);
   line-height: 1;
   animation: countdown-pulse 1s ease-in-out;
 }
@@ -216,30 +269,33 @@ html, body {
 }
 
 /* ══════════════════════════════════════════
-   SCREEN 1 — ENVELOPE
+   SCREEN 1 — ENVELOPE  (Royal Mughal Bengal)
+   Deep midnight with Mughal gold glow
 ══════════════════════════════════════════ */
 #screen-envelope {
   background:
-    radial-gradient(ellipse at 50% 50%, #fff4e8 0%, #fde8cc 45%, #f5d8b0 100%);
+    radial-gradient(ellipse at 50% 30%, rgba(212,175,106,0.12) 0%, transparent 55%),
+    radial-gradient(ellipse at 20% 80%, rgba(26,74,58,0.3) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(107,26,42,0.25) 0%, transparent 50%),
+    #1a1228;
   overflow: hidden;
   z-index: 10;
 }
 
-/* Warm luxury glow at center — gold candle light */
+/* Mughal arch top glow */
 #screen-envelope::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 50% 48%,
-    rgba(255,220,100,0.25) 0%,
-    rgba(240,180,80,0.12) 30%,
-    transparent 60%);
+  background: radial-gradient(ellipse at 50% 0%,
+    rgba(212,175,106,0.18) 0%,
+    transparent 55%);
   z-index: 0;
-  animation: env-breathe 3s ease-in-out infinite;
+  animation: env-breathe 4s ease-in-out infinite;
 }
 @keyframes env-breathe {
-  0%,100% { opacity: 0.6; transform: scale(1); }
-  50%      { opacity: 1;   transform: scale(1.08); }
+  0%,100% { opacity: 0.6; }
+  50%      { opacity: 1; }
 }
 
 /* The 4 envelope flaps */
@@ -251,90 +307,66 @@ html, body {
   will-change: transform;
 }
 
-/* Shimmer overlay on all flaps */
+/* Gold alpona shimmer on flaps */
 .env-flap::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg,
-    rgba(255,220,100,0.18) 0%,
-    transparent 40%,
-    rgba(255,200,60,0.08) 70%,
-    transparent 100%
-  );
-  z-index: 1;
-  pointer-events: none;
-}
-
-/* Gold seam line on all flaps */
-.env-flap::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  box-shadow: inset 0 0 0 1.5px rgba(201,168,76,0.3);
-  z-index: 2;
-  pointer-events: none;
-}
-
-/* All flaps share warm champagne/ivory — gold foil shimmer on top */
-.env-flap-top {
-  top: 0; left: 0; right: 0; height: 50%;
-  clip-path: polygon(0 0, 100% 0, 60% 100%, 50% 92%, 40% 100%);
-  background:
-    linear-gradient(120deg, rgba(255,240,180,0.45) 0%, transparent 30%, rgba(255,220,120,0.25) 60%, transparent 100%),
-    linear-gradient(175deg, #f5e8c8 0%, #e8d0a0 30%, #d8b878 65%, #c8a060 100%);
-  transform-origin: top center;
-  box-shadow: 0 20px 60px rgba(180,130,40,0.35);
-}
-.env-flap-bottom {
-  bottom: 0; left: 0; right: 0; height: 50%;
-  clip-path: polygon(40% 0, 50% 8%, 60% 0, 100% 100%, 0 100%);
-  background:
-    linear-gradient(60deg, rgba(255,240,180,0.45) 0%, transparent 30%, rgba(255,220,120,0.25) 60%, transparent 100%),
-    linear-gradient(5deg, #f5e8c8 0%, #e8d0a0 30%, #d8b878 65%, #c8a060 100%);
-  transform-origin: bottom center;
-  box-shadow: 0 -20px 60px rgba(180,130,40,0.35);
-}
-.env-flap-left {
-  top: 0; left: 0; bottom: 0; width: 50%;
-  clip-path: polygon(0 0, 100% 40%, 92% 50%, 100% 60%, 0 100%);
-  background:
-    linear-gradient(170deg, rgba(255,240,180,0.45) 0%, transparent 30%, rgba(255,220,120,0.25) 60%, transparent 100%),
-    linear-gradient(105deg, #f5e8c8 0%, #e8d0a0 30%, #d8b878 65%, #c8a060 100%);
-  transform-origin: left center;
-  box-shadow: 20px 0 60px rgba(180,130,40,0.35);
-}
-.env-flap-right {
-  top: 0; right: 0; bottom: 0; width: 50%;
-  clip-path: polygon(0 40%, 100% 0, 100% 100%, 0 60%, 8% 50%);
-  background:
-    linear-gradient(10deg, rgba(255,240,180,0.45) 0%, transparent 30%, rgba(255,220,120,0.25) 60%, transparent 100%),
-    linear-gradient(255deg, #f5e8c8 0%, #e8d0a0 30%, #d8b878 65%, #c8a060 100%);
-  transform-origin: right center;
-  box-shadow: -20px 0 60px rgba(180,130,40,0.35);
-}
-
-/* No visible border — seamless blend */
-.env-flap::after {
-  box-shadow:
-    inset 0 0 80px rgba(160,110,30,0.12);
-}
-
-/* Fine brocade shimmer — diagonal highlight sweep */
-.env-flap::before {
   background: linear-gradient(
     108deg,
     transparent 20%,
-    rgba(255,230,120,0.22) 35%,
-    rgba(255,255,200,0.35) 50%,
-    rgba(255,230,120,0.22) 65%,
+    rgba(201,168,76,0.14) 35%,
+    rgba(220,190,100,0.22) 50%,
+    rgba(201,168,76,0.14) 65%,
     transparent 80%
   );
+  z-index: 1;
+  pointer-events: none;
   animation: brocade 4s ease-in-out infinite;
 }
 @keyframes brocade {
   0%,100% { opacity: 0.4; transform: translateX(-8px); }
   50%      { opacity: 1;   transform: translateX(8px); }
+}
+
+/* Fine gold seam on flaps */
+.env-flap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 0 1px rgba(201,168,76,0.25);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* All flaps — deep midnight with Mughal gold shimmer */
+.env-flap-top {
+  top: 0; left: 0; right: 0; height: 50%;
+  clip-path: polygon(0 0, 100% 0, 60% 100%, 50% 92%, 40% 100%);
+  background: linear-gradient(175deg, #251a3a 0%, #1e1530 50%, #1a1228 100%);
+  transform-origin: top center;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+.env-flap-bottom {
+  bottom: 0; left: 0; right: 0; height: 50%;
+  clip-path: polygon(40% 0, 50% 8%, 60% 0, 100% 100%, 0 100%);
+  background: linear-gradient(5deg, #1a1228 0%, #1e1530 50%, #251a3a 100%);
+  transform-origin: bottom center;
+  box-shadow: 0 -20px 50px rgba(0,0,0,0.5);
+}
+.env-flap-left {
+  top: 0; left: 0; bottom: 0; width: 50%;
+  clip-path: polygon(0 0, 100% 40%, 92% 50%, 100% 60%, 0 100%);
+  background: linear-gradient(105deg, #251a3a 0%, #1e1530 50%, #1a1228 100%);
+  transform-origin: left center;
+  box-shadow: 20px 0 50px rgba(0,0,0,0.5);
+}
+.env-flap-right {
+  top: 0; right: 0; bottom: 0; width: 50%;
+  clip-path: polygon(0 40%, 100% 0, 100% 100%, 0 60%, 8% 50%);
+  background: linear-gradient(255deg, #251a3a 0%, #1e1530 50%, #1a1228 100%);
+  transform-origin: right center;
+  box-shadow: -20px 0 50px rgba(0,0,0,0.5);
 }
 
 /* ── Open state — flaps fly outward ── */
@@ -367,12 +399,13 @@ html, body {
 }
 
 .invite-label {
-  font-size: 15px;
-  letter-spacing: 5px;
-  color: #7a4e18;
+  font-size: 13px;
+  letter-spacing: 6px;
+  color: var(--sindoor);
   text-transform: uppercase;
   opacity: 0.85;
-  font-weight: 600;
+  font-weight: 400;
+  font-family: 'Cormorant Garamond', serif;
 }
 
 .wax-seal {
@@ -383,22 +416,29 @@ html, body {
 }
 .wax-seal:active { transform: scale(0.94); }
 
+/* ── MUGHAL EMERALD WAX SEAL — Bengali alpona engraved ── */
 .seal-outer {
   width: 175px; height: 175px;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 32%, #fff3a0, #f5c842 30%, #d4960a 60%, #a87010 100%);
+  background: radial-gradient(circle at 38% 35%,
+    #2a6a50 0%,
+    #1a4a38 35%,
+    #0f3028 70%,
+    #081a14 100%
+  );
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   box-shadow:
-    0 0 0 3px rgba(255,230,80,0.9),
-    0 0 40px rgba(255,210,0,0.9),
-    0 0 90px rgba(255,180,0,0.6),
+    0 0 0 2px rgba(212,175,106,0.9),
+    0 0 0 5px rgba(26,74,58,0.5),
+    0 0 40px rgba(212,175,106,0.5),
+    0 0 80px rgba(26,74,58,0.6),
     0 8px 30px rgba(0,0,0,0.7),
-    inset 0 3px 6px rgba(255,255,255,0.5),
-    inset 0 -3px 8px rgba(0,0,0,0.3);
-  border: 2px solid rgba(255,240,120,0.95);
+    inset 0 3px 8px rgba(212,175,106,0.15),
+    inset 0 -4px 10px rgba(0,0,0,0.5);
+  border: 1.5px solid rgba(212,175,106,0.85);
   position: relative;
   animation: seal-pulse 2.5s ease-in-out infinite;
 }
@@ -407,16 +447,17 @@ html, body {
   50%      { transform: translateY(7px); opacity:1; }
 }
 @keyframes seal-pulse {
-  0%,100% { box-shadow: 0 0 0 3px rgba(255,230,80,0.9), 0 0 40px rgba(255,210,0,0.9), 0 0 90px rgba(255,180,0,0.6), 0 8px 30px rgba(0,0,0,0.7), inset 0 3px 6px rgba(255,255,255,0.5), inset 0 -3px 8px rgba(0,0,0,0.3); }
-  50%      { box-shadow: 0 0 0 4px rgba(255,240,120,1),  0 0 65px rgba(255,220,0,1),   0 0 130px rgba(255,190,0,0.8), 0 8px 30px rgba(0,0,0,0.7), inset 0 3px 6px rgba(255,255,255,0.5), inset 0 -3px 8px rgba(0,0,0,0.3); }
+  0%,100% { box-shadow: 0 0 0 2px rgba(212,175,106,0.9), 0 0 0 5px rgba(26,74,58,0.5), 0 0 40px rgba(212,175,106,0.5), 0 0 80px rgba(26,74,58,0.6), 0 8px 30px rgba(0,0,0,0.7), inset 0 3px 8px rgba(212,175,106,0.15), inset 0 -4px 10px rgba(0,0,0,0.5); }
+  50%      { box-shadow: 0 0 0 2px rgba(240,200,120,1),   0 0 0 8px rgba(26,74,58,0.7), 0 0 60px rgba(212,175,106,0.8), 0 0 120px rgba(26,74,58,0.8), 0 8px 30px rgba(0,0,0,0.7), inset 0 3px 8px rgba(212,175,106,0.25), inset 0 -4px 10px rgba(0,0,0,0.5); }
 }
 
+/* Gold spinning ring around the seal — Bengali alpona circle */
 .seal-ring {
   position: absolute;
-  inset: -8px;
+  inset: -10px;
   border-radius: 50%;
-  border: 1.5px dashed rgba(255,235,100,0.95);
-  box-shadow: 0 0 16px rgba(255,215,0,0.7);
+  border: 1px dashed rgba(212,175,106,0.85);
+  box-shadow: 0 0 14px rgba(212,175,106,0.5), inset 0 0 8px rgba(212,175,106,0.2);
   animation: spin-slow 20s linear infinite;
 }
 
@@ -425,62 +466,65 @@ html, body {
 }
 
 .seal-monogram {
-  font-size: 58px;
-  color: #1a0800;
+  font-size: 56px;
+  color: #f0d888;
   font-weight: bold;
-  letter-spacing: 4px;
-  font-family: 'Georgia', serif;
-  text-shadow: 0 1px 0 rgba(255,255,255,0.2);
+  letter-spacing: 3px;
+  font-family: 'Playfair Display', serif;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.2), 0 0 20px rgba(212,175,106,0.6), 0 0 40px rgba(212,175,106,0.3);
   line-height: 1;
 }
 
 .seal-subtext {
-  font-size: 10px;
-  letter-spacing: 2px;
-  color: rgba(26,8,0,0.85);
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: rgba(212,175,106,0.9);
   text-transform: uppercase;
-  margin-top: 6px;
-  font-weight: 700;
+  margin-top: 5px;
+  font-weight: 600;
 }
 
 .tap-hint {
-  font-size: 20px;
-  letter-spacing: 3px;
-  color: #8a5a18;
+  font-size: 14px;
+  letter-spacing: 5px;
+  color: var(--gold-2);
   text-transform: uppercase;
-  opacity: 0.95;
+  opacity: 0.9;
   animation: breathe 2.5s ease-in-out infinite;
-  margin-top: 18px;
-  font-family: 'Playfair Display', serif;
-  font-weight: 700;
+  margin-top: 16px;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
 }
 
 @keyframes breathe {
-  0%, 100% { opacity: 0.25; }
-  50% { opacity: 0.65; }
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.7; }
 }
 
-/* Gold corner ornaments on envelope */
+/* Gold alpona corner ornaments */
 .env-corner {
   position: absolute;
-  color: #a07020;
-  opacity: 0.75;
-  font-size: 22px;
+  color: var(--gold);
+  opacity: 0.6;
+  font-size: 20px;
   z-index: 8;
   pointer-events: none;
-  text-shadow: 0 0 12px rgba(255,200,0,0.8);
+  text-shadow: 0 0 10px rgba(201,168,76,0.6);
 }
-.env-corner.tl { top: 16px; left: 16px; }
-.env-corner.tr { top: 16px; right: 16px; }
-.env-corner.bl { bottom: 16px; left: 16px; }
-.env-corner.br { bottom: 16px; right: 16px; }
+.env-corner.tl { top: 18px; left: 18px; }
+.env-corner.tr { top: 18px; right: 18px; }
+.env-corner.bl { bottom: 18px; left: 18px; }
+.env-corner.br { bottom: 18px; right: 18px; }
 
-/* ── GANESH WORLD glowing behind the envelope ── */
+/* ── GANESH WORLD — Mughal deep with gold glow ── */
 #ganesh-world {
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: radial-gradient(ellipse at 50% 45%, #fff4d0 0%, #fde8b0 55%, #f5d890 100%);
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(212,175,106,0.2) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 60%, rgba(26,74,58,0.3) 0%, transparent 60%),
+    #1a1228;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -500,19 +544,19 @@ html, body {
 .gworld-om {
   font-size: 56px;
   color: var(--gold);
-  text-shadow: 0 0 60px rgba(201,168,76,0.8), 0 0 120px rgba(201,168,76,0.4);
+  text-shadow: 0 0 40px rgba(201,168,76,0.7), 0 0 80px rgba(201,168,76,0.3);
   animation: om-pulse 2s ease-in-out infinite;
 }
 
 @keyframes om-pulse {
-  0%, 100% { text-shadow: 0 0 40px rgba(201,168,76,0.6); }
-  50% { text-shadow: 0 0 80px rgba(201,168,76,1), 0 0 160px rgba(201,168,76,0.5); }
+  0%, 100% { text-shadow: 0 0 30px rgba(201,168,76,0.5); }
+  50% { text-shadow: 0 0 60px rgba(201,168,76,0.9), 0 0 120px rgba(201,168,76,0.4); }
 }
 
 .gworld-text {
   font-size: 12px;
   letter-spacing: 5px;
-  color: var(--gold-light);
+  color: var(--gold);
   text-transform: uppercase;
   opacity: 0.7;
 }
@@ -544,13 +588,16 @@ html, body {
 }
 
 /* ══════════════════════════════════════════
-   SCREEN 2 — GANESH (full screen after reveal)
+   SCREEN 2 — GANESH (Royal Mughal Bengal)
 ══════════════════════════════════════════ */
 #screen-ganesh {
   background:
-    radial-gradient(ellipse at 20% 0%, rgba(255,230,150,0.5) 0%, transparent 40%),
-    radial-gradient(ellipse at 80% 0%, rgba(255,230,150,0.5) 0%, transparent 40%),
-    radial-gradient(ellipse at 50% 45%, #fff8e0 0%, #feecc0 40%, #f8dfa0 70%, #f0d080 100%);
+    radial-gradient(ellipse at 20% 0%, rgba(212,175,106,0.15) 0%, transparent 40%),
+    radial-gradient(ellipse at 80% 0%, rgba(212,175,106,0.15) 0%, transparent 40%),
+    radial-gradient(ellipse at 50% 45%, rgba(212,175,106,0.1) 0%, transparent 60%),
+    radial-gradient(ellipse at 0% 100%, rgba(26,74,58,0.35) 0%, transparent 50%),
+    radial-gradient(ellipse at 100% 100%, rgba(107,26,42,0.25) 0%, transparent 50%),
+    #1a1228;
   overflow: hidden;
 }
 
@@ -575,21 +622,21 @@ html, body {
 
 .om-symbol {
   font-size: 62px;
-  color: #a07020;
-  text-shadow: 0 0 20px rgba(160,112,32,0.4), 0 0 40px rgba(160,112,32,0.2);
+  color: var(--gold);
+  text-shadow: 0 0 20px rgba(201,168,76,0.5), 0 0 40px rgba(201,168,76,0.2);
   animation: om-glow 3s ease-in-out infinite;
   line-height: 1;
 }
 
 @keyframes om-glow {
-  0%,100% { text-shadow: 0 0 20px rgba(160,112,32,0.4), 0 0 40px rgba(160,112,32,0.15); }
-  50%      { text-shadow: 0 0 35px rgba(160,112,32,0.7), 0 0 70px rgba(160,112,32,0.3); }
+  0%,100% { text-shadow: 0 0 20px rgba(201,168,76,0.4), 0 0 40px rgba(201,168,76,0.15); }
+  50%      { text-shadow: 0 0 40px rgba(201,168,76,0.8), 0 0 80px rgba(201,168,76,0.35); }
 }
 
 .ganesh-title {
-  font-size: 13px;
+  font-size: 12px;
   letter-spacing: 6px;
-  color: #7a4e18;
+  color: var(--sindoor);
   text-transform: uppercase;
   opacity: 0.7;
   position: relative;
@@ -605,10 +652,10 @@ html, body {
   white-space: nowrap;
 }
 
-.ganesh-title .title-en { opacity: 1; font-size: 13px; letter-spacing: 6px; }
+.ganesh-title .title-en { opacity: 1; font-size: 12px; letter-spacing: 6px; }
 .ganesh-title .title-hi { opacity: 0; font-size: 16px; letter-spacing: 3px; text-transform: none; font-weight: bold; }
 
-/* Ganesh image with divine halo rings */
+/* Ganesh image — saffron gold halo */
 .ganesh-img-wrap {
   position: relative;
   width: min(240px, 62vw);
@@ -621,30 +668,27 @@ html, body {
   inset: -40px;
   border-radius: 50%;
   background: radial-gradient(circle,
-    rgba(255,245,150,0.95) 0%,
-    rgba(255,210,50,0.75) 20%,
-    rgba(255,160,0,0.45) 50%,
-    rgba(255,80,0,0.15) 72%,
-    transparent 88%
+    rgba(255,245,180,0.9) 0%,
+    rgba(255,215,70,0.65) 25%,
+    rgba(255,165,20,0.35) 55%,
+    transparent 80%
   );
   animation: pulse-glow 2s ease-in-out infinite;
   z-index: 1;
 }
 @keyframes pulse-glow {
-  0%,100% { opacity: 0.85; transform: scale(1); }
-  50%      { opacity: 1;    transform: scale(1.15); }
+  0%,100% { opacity: 0.8; transform: scale(1); }
+  50%      { opacity: 1;   transform: scale(1.12); }
 }
 
-/* Outer divine sunburst */
 .halo-outer-glow {
   position: absolute;
   inset: -90px;
   border-radius: 50%;
   background: radial-gradient(circle,
-    rgba(255,220,80,0.45) 0%,
-    rgba(255,170,20,0.25) 35%,
-    rgba(255,100,0,0.12) 60%,
-    transparent 78%
+    rgba(255,225,100,0.35) 0%,
+    rgba(255,175,30,0.18) 40%,
+    transparent 70%
   );
   animation: pulse-glow 2s ease-in-out infinite reverse;
   z-index: 0;
@@ -654,8 +698,8 @@ html, body {
   position: absolute;
   inset: -12px;
   border-radius: 50%;
-  border: 2px dashed rgba(255,220,80,0.7);
-  box-shadow: 0 0 12px rgba(255,200,0,0.5), inset 0 0 12px rgba(255,200,0,0.2);
+  border: 1.5px dashed rgba(201,168,76,0.7);
+  box-shadow: 0 0 12px rgba(201,168,76,0.4), inset 0 0 12px rgba(201,168,76,0.15);
   animation: spin-slow 18s linear infinite;
 }
 
@@ -663,8 +707,8 @@ html, body {
   position: absolute;
   inset: -26px;
   border-radius: 50%;
-  border: 1.5px solid rgba(255,180,40,0.45);
-  box-shadow: 0 0 18px rgba(255,160,0,0.35);
+  border: 1px solid rgba(201,168,76,0.35);
+  box-shadow: 0 0 16px rgba(201,168,76,0.25);
   animation: spin-slow 30s linear infinite reverse;
 }
 
@@ -673,7 +717,7 @@ html, body {
   object-fit: contain;
   position: relative;
   z-index: 3;
-  filter: drop-shadow(0 0 18px rgba(255,200,80,0.6)) drop-shadow(0 0 50px rgba(255,140,0,0.3));
+  filter: drop-shadow(0 0 16px rgba(255,200,80,0.5)) drop-shadow(0 0 40px rgba(255,140,0,0.25));
   animation: float 4s ease-in-out infinite;
   -webkit-mask-image: radial-gradient(ellipse 88% 92% at 50% 44%, black 70%, transparent 100%);
   mask-image: radial-gradient(ellipse 88% 92% at 50% 44%, black 70%, transparent 100%);
@@ -686,17 +730,17 @@ html, body {
 
 .gold-line {
   display: flex; align-items: center; gap: 10px;
-  color: #a07020; opacity: 0.5; font-size: 13px;
+  color: var(--gold-2); opacity: 0.55; font-size: 13px;
 }
 .gold-line::before, .gold-line::after {
   content: '';
   width: 55px; height: 1px;
-  background: linear-gradient(90deg, transparent, #a07020, transparent);
+  background: linear-gradient(90deg, transparent, var(--gold-2), transparent);
 }
 
 .ganesh-blessing {
   text-align: center;
-  color: #5a3e20;
+  color: var(--text-mid);
   font-size: 16px;
   line-height: 1.9;
   opacity: 0.85;
@@ -706,19 +750,19 @@ html, body {
 .ganesh-blessing .hindi {
   display: block;
   font-size: 22px;
-  color: #a07020;
+  color: var(--gold);
   margin-bottom: 8px;
   font-style: normal;
-  text-shadow: 0 0 12px rgba(160,112,32,0.2);
+  text-shadow: 0 0 12px rgba(201,168,76,0.25);
 }
 
 .screen-tap-hint {
-  font-size: 13px;
-  letter-spacing: 3px;
-  color: #7a4e18;
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: var(--sindoor);
   text-transform: uppercase;
-  font-weight: 700;
-  opacity: 0.85;
+  font-weight: 500;
+  opacity: 0.75;
   animation: breathe 2.5s ease-in-out infinite;
   margin-top: 4px;
 }
@@ -887,18 +931,17 @@ html, body {
 }
 .diya-right .diya-glow { animation-delay: -1.2s; }
 
-/* All placeholder screens keep same dark base */
 /* ══════════════════════════════════════════
-   EVENT SCREENS (Mehendi / Sangeet / Haldi / Wedding / Reception)
+   EVENT SCREENS — Mughal dark scrim
+   Photos full-bleed; text on deep midnight bottom
 ══════════════════════════════════════════ */
 .event-screen {
-  background: #f7efe0;
+  background: var(--ivory);
   cursor: pointer;
   justify-content: flex-end;
   align-items: center;
   padding: 0;
 }
-/* Full-bleed image fills top 65% of screen */
 .event-img-wrap {
   position: absolute;
   inset: 0;
@@ -910,18 +953,18 @@ html, body {
   object-fit: cover;
   object-position: center top;
 }
-/* gradient scrim: image fades to warm cream at bottom for text readability */
+/* Mughal dark scrim: image fades to deep midnight bottom */
 .event-img-wrap::after {
   content: '';
   position: absolute;
   inset: 0;
   background: linear-gradient(
     to bottom,
-    rgba(253,248,238,0.0) 0%,
-    rgba(253,248,238,0.0) 45%,
-    rgba(247,239,224,0.55) 65%,
-    rgba(247,239,224,0.82) 80%,
-    rgba(247,239,224,0.95) 100%
+    rgba(26,18,40,0.0) 0%,
+    rgba(26,18,40,0.0) 38%,
+    rgba(26,18,40,0.55) 58%,
+    rgba(26,18,40,0.85) 76%,
+    rgba(26,18,40,0.97) 100%
   );
 }
 .event-wrap {
@@ -937,39 +980,41 @@ html, body {
   gap: 0;
   justify-content: flex-end;
 }
-.event-icon-big {
-  display: none;
-}
+.event-icon-big { display: none; }
 .event-tag {
-  font-size: 13px;
-  letter-spacing: 4px;
+  font-size: 11px;
+  letter-spacing: 5px;
   text-transform: uppercase;
-  border: 1.5px solid;
+  border: 1px solid var(--sindoor);
+  color: var(--sindoor);
   border-radius: 20px;
-  padding: 5px 18px;
+  padding: 4px 16px;
   margin-bottom: 6px;
+  opacity: 0.85;
 }
 .event-title {
-  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  font-family: 'Playfair Display', 'Georgia', serif;
   font-size: 30px;
   font-weight: 700;
-  color: #2a1a08;
-  letter-spacing: 1px;
+  color: var(--text-dark);
+  letter-spacing: 0.5px;
   margin-bottom: 1px;
   line-height: 1.1;
-  text-shadow: 0 1px 8px rgba(253,248,238,0.8);
+  text-shadow: 0 1px 8px rgba(253,246,238,0.9);
 }
 .event-subtitle {
-  font-size: 14px;
-  color: rgba(90,62,32,0.65);
-  letter-spacing: 1.5px;
+  font-size: 13px;
+  color: var(--text-soft);
+  letter-spacing: 2px;
   margin-bottom: 5px;
+  text-transform: uppercase;
 }
 .event-divider-line {
   width: 50px;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(160,112,32,0.45), transparent);
+  background: linear-gradient(90deg, transparent, var(--sindoor), transparent);
   margin-bottom: 5px;
+  opacity: 0.5;
 }
 .event-detail-row {
   display: flex;
@@ -984,43 +1029,45 @@ html, body {
   gap: 1px;
 }
 .event-detail-label {
-  font-size: 12px;
+  font-size: 11px;
   letter-spacing: 3px;
   text-transform: uppercase;
-  color: rgba(90,62,32,0.65);
+  color: var(--text-soft);
+  opacity: 0.75;
 }
 .event-detail-value {
   font-size: 17px;
-  color: #8a6010;
+  color: var(--sindoor);
   font-weight: 700;
   letter-spacing: 0.5px;
-  text-shadow: none;
 }
 .event-venue {
-  font-size: 14px;
-  color: rgba(90,62,32,0.8);
-  letter-spacing: 1.5px;
+  font-size: 13px;
+  color: var(--text-mid);
+  letter-spacing: 2px;
   text-transform: uppercase;
   margin-top: 1px;
   margin-bottom: 4px;
+  opacity: 0.8;
 }
 .event-detail-sep {
   width: 1px;
   height: 24px;
-  background: rgba(160,112,32,0.25);
+  background: rgba(212,175,106,0.3);
 }
 .event-poem {
-  font-size: 15px;
-  color: rgba(60,40,15,0.7);
-  line-height: 1.5;
+  font-size: 14px;
+  color: var(--text-mid);
+  line-height: 1.6;
   font-style: italic;
   margin-bottom: 0;
-  padding: 0 8px;
-  border-left: 2px solid rgba(160,112,32,0.4);
+  padding: 0 10px;
+  border-left: 2px solid var(--gold);
   text-align: left;
+  opacity: 0.85;
 }
 .event-poem-em {
-  color: #8a6010;
+  color: var(--gold);
   font-style: normal;
 }
 /* ══════════════════════════════════════════
@@ -1099,14 +1146,14 @@ html, body {
   gap: 2px;
   margin-bottom: 6px;
   padding: 6px 16px;
-  border: 1px solid rgba(201,168,76,0.2);
+  border: 1px solid var(--gold-dim);
   border-radius: 10px;
-  background: rgba(255,200,60,0.04);
+  background: rgba(201,168,76,0.04);
   width: 100%;
 }
 .event-bengali-char {
   font-size: 22px;
-  color: #8a6010;
+  color: var(--gold-2);
   letter-spacing: 2px;
   position: relative;
   height: 1.4em;
@@ -1116,22 +1163,30 @@ html, body {
 }
 .event-bengali-sub {
   font-size: 11px;
-  color: rgba(90,62,32,0.55);
+  color: var(--text-soft);
+  opacity: 0.65;
   letter-spacing: 1px;
   line-height: 1.7;
   text-align: center;
 }
 
 #screen-hero {
-  background: radial-gradient(ellipse at 50% 50%, #fff8ec 0%, #f7ece0 100%);
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(212,175,106,0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 0% 100%, rgba(26,74,58,0.3) 0%, transparent 55%),
+    radial-gradient(ellipse at 100% 50%, rgba(107,26,42,0.2) 0%, transparent 45%),
+    #1a1228;
 }
 
 /* ══════════════════════════════════════════
-   SCREEN COUNTDOWN
+   SCREEN COUNTDOWN — deep Mughal + gold digits
 ══════════════════════════════════════════ */
 #screen-countdown {
   background:
-    radial-gradient(ellipse at 50% 50%, #fff4e0 0%, #fae8c8 55%, #f0d8a8 100%);
+    radial-gradient(ellipse at 50% 0%, rgba(212,175,106,0.15) 0%, transparent 55%),
+    radial-gradient(ellipse at 0% 100%, rgba(26,74,58,0.3) 0%, transparent 50%),
+    radial-gradient(ellipse at 100% 100%, rgba(107,26,42,0.2) 0%, transparent 50%),
+    #1a1228;
   cursor: pointer;
 }
 .countdown-wrap {
@@ -1147,22 +1202,22 @@ html, body {
 }
 .cd-top-label {
   font-size: 10px;
-  letter-spacing: 4px;
+  letter-spacing: 5px;
   text-transform: uppercase;
-  color: #7a4e18;
+  color: var(--sindoor);
   opacity: 0.6;
 }
 .cd-date-display { display: flex; flex-direction: column; gap: 4px; }
 .cd-date-en {
   font-size: 22px;
-  color: #6b3d10;
+  color: var(--text-dark);
   letter-spacing: 1px;
-  text-shadow: none;
+  font-family: 'Playfair Display', serif;
 }
 .cd-date-bn {
   font-size: 13px;
-  color: #7a4e18;
-  opacity: 0.6;
+  color: var(--text-soft);
+  opacity: 0.65;
   letter-spacing: 1px;
 }
 .cd-units {
@@ -1176,29 +1231,30 @@ html, body {
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  background: rgba(160,112,32,0.1);
-  border: 1px solid rgba(160,112,32,0.35);
-  border-radius: 10px;
+  background: rgba(212,175,106,0.06);
+  border: 1px solid rgba(212,175,106,0.3);
+  border-radius: 8px;
   padding: 8px 6px 6px;
   min-width: 44px;
+  box-shadow: 0 0 12px rgba(212,175,106,0.1);
 }
 .cd-num {
-  font-size: 24px;
-  font-weight: bold;
-  color: #6b3d10;
-  font-family: 'Georgia', serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--gold);
+  font-family: 'Playfair Display', serif;
   line-height: 1;
-  text-shadow: none;
   letter-spacing: -1px;
   min-width: 2ch;
   text-align: center;
+  text-shadow: 0 0 12px rgba(212,175,106,0.5);
 }
 .cd-label {
   font-size: 8px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: #7a4e18;
-  opacity: 0.6;
+  color: var(--text-soft);
+  opacity: 0.65;
   height: 14px;
   overflow: hidden;
   position: relative;
@@ -1227,24 +1283,25 @@ html, body {
   100% { opacity: 0; transform: translateY(6px); }
 }
 .cd-sep {
-  font-size: 24px;
-  color: #a07020;
-  opacity: 0.4;
+  font-size: 22px;
+  color: var(--sindoor);
+  opacity: 0.3;
   margin-bottom: 14px;
   font-weight: bold;
 }
 .cd-message {
   font-size: 13px;
-  color: #5a3e20;
+  color: var(--text-mid);
   opacity: 0.65;
   letter-spacing: 2px;
   font-style: italic;
 }
 .cd-names {
   font-size: 20px;
-  color: #3a2010;
+  color: var(--text-dark);
   letter-spacing: 3px;
   opacity: 0.8;
+  font-family: 'Playfair Display', serif;
 }
 
 /* ══════════════════════════════════════════
@@ -1252,8 +1309,9 @@ html, body {
 ══════════════════════════════════════════ */
 #screen-kolkata {
   background:
-    radial-gradient(ellipse at 50% 0%, rgba(255,220,120,0.35) 0%, transparent 50%),
-    linear-gradient(175deg, #fdf4e4 0%, #f5e8cc 100%);
+    radial-gradient(ellipse at 50% 0%, rgba(212,175,106,0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 0% 100%, rgba(26,74,58,0.25) 0%, transparent 50%),
+    #1a1228;
   overflow-y: auto;
   justify-content: flex-start;
 }
@@ -1269,16 +1327,16 @@ html, body {
 }
 .kolkata-title {
   font-size: 26px;
-  color: #4a2c08;
+  color: var(--text-dark);
   letter-spacing: 2px;
-  text-shadow: none;
   margin-bottom: 6px;
+  font-family: 'Playfair Display', serif;
 }
 .kolkata-sub {
   font-size: 11px;
-  letter-spacing: 3px;
-  color: #7a4e18;
-  opacity: 0.6;
+  letter-spacing: 4px;
+  color: var(--sindoor);
+  opacity: 0.65;
   text-transform: uppercase;
 }
 .kolkata-list {
@@ -1290,40 +1348,41 @@ html, body {
   display: flex;
   align-items: center;
   gap: 14px;
-  background: rgba(255,255,255,0.65);
-  border: 1px solid rgba(160,112,32,0.25);
+  background: rgba(37,26,58,0.6);
+  border: 1px solid rgba(212,175,106,0.25);
   border-radius: 10px;
   padding: 14px 16px;
   text-decoration: none;
   transition: background 0.2s, border-color 0.2s;
+  backdrop-filter: blur(8px);
 }
 .kolkata-card:active {
-  background: rgba(255,255,255,0.5);
-  border-color: rgba(160,112,32,0.4);
+  background: rgba(26,74,58,0.3);
+  border-color: rgba(212,175,106,0.5);
 }
 .kolkata-card-icon { font-size: 26px; flex-shrink: 0; }
 .kolkata-card-info { flex: 1; }
 .kolkata-card-name {
   font-size: 15px;
-  color: #4a2c08;
+  color: var(--text-dark);
   margin-bottom: 3px;
   letter-spacing: 0.5px;
 }
 .kolkata-card-desc {
   font-size: 11px;
-  color: #7a4e18;
-  opacity: 0.7;
+  color: var(--text-soft);
+  opacity: 0.75;
   line-height: 1.5;
 }
 .kolkata-card-arrow {
-  color: #a07020;
-  opacity: 0.5;
+  color: var(--sindoor);
+  opacity: 0.4;
   font-size: 16px;
   flex-shrink: 0;
 }
 
 .placeholder-text {
-  color: #7a4e18;
+  color: var(--text-soft);
   font-size: 14px;
   letter-spacing: 3px;
   opacity: 0.6;
@@ -1331,12 +1390,13 @@ html, body {
 }
 
 /* ══════════════════════════════════════════
-   SCREEN RSVP
+   SCREEN RSVP — deep Mughal, gold CTA
 ══════════════════════════════════════════ */
 #screen-rsvp {
   background:
-    radial-gradient(ellipse at 50% 0%, rgba(255,230,150,0.4) 0%, transparent 50%),
-    linear-gradient(175deg, #fdf4e4 0%, #f5e8cc 100%);
+    radial-gradient(ellipse at 50% 0%, rgba(212,175,106,0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 0% 100%, rgba(26,74,58,0.25) 0%, transparent 50%),
+    #1a1228;
 }
 .rsvp-wrap {
   display: flex;
@@ -1350,28 +1410,28 @@ html, body {
   text-align: center;
 }
 .rsvp-ornament {
-  font-size: 22px;
-  color: #a07020;
-  opacity: 0.4;
+  font-size: 20px;
+  color: var(--sindoor);
+  opacity: 0.3;
   letter-spacing: 12px;
 }
 .rsvp-title {
   font-size: 28px;
-  color: #4a2c08;
+  color: var(--text-dark);
   letter-spacing: 1px;
-  text-shadow: none;
+  font-family: 'Playfair Display', serif;
 }
 .rsvp-sub {
   font-size: 13px;
-  color: #5a3e20;
-  opacity: 0.7;
-  letter-spacing: 1px;
-  line-height: 1.6;
+  color: var(--text-mid);
+  opacity: 0.75;
+  letter-spacing: 0.5px;
+  line-height: 1.7;
   max-width: 260px;
 }
 .rsvp-name-display {
   font-size: 15px;
-  color: #5a3e20;
+  color: var(--text-mid);
   opacity: 0.8;
   letter-spacing: 1px;
   min-height: 20px;
@@ -1391,24 +1451,25 @@ html, body {
   width: 100%;
   padding: 16px;
   border: none;
-  border-radius: 10px;
-  font-family: 'Georgia', serif;
+  border-radius: 8px;
+  font-family: 'Cormorant Garamond', serif;
   font-size: 16px;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
   cursor: pointer;
   transition: transform 0.2s, opacity 0.2s;
+  text-transform: uppercase;
 }
 .rsvp-btn:active { transform: scale(0.96); }
 .rsvp-yes {
-  background: linear-gradient(135deg, #a07020, #c8921c, #a07020);
-  color: #fff8ee;
-  font-weight: bold;
-  box-shadow: 0 4px 20px rgba(160,112,32,0.3);
+  background: linear-gradient(135deg, #b8922e 0%, var(--gold) 50%, #b8922e 100%);
+  color: #1a1228;
+  font-weight: 700;
+  box-shadow: 0 4px 20px rgba(212,175,106,0.4);
 }
 .rsvp-no {
-  background: rgba(255,255,255,0.6);
-  color: #5a3e20;
-  border: 1px solid rgba(160,112,32,0.3);
+  background: rgba(212,175,106,0.06);
+  color: var(--text-mid);
+  border: 1px solid rgba(212,175,106,0.25);
   opacity: 0.85;
 }
 .rsvp-btn-icon { font-size: 18px; }
@@ -1421,12 +1482,12 @@ html, body {
 }
 .rsvp-done-icon { font-size: 52px; }
 .rsvp-done-text {
-  font-size: 20px;
-  color: #3a2010;
-  line-height: 1.6;
+  font-size: 18px;
+  color: var(--text-dark);
+  line-height: 1.7;
   max-width: 300px;
-  opacity: 0.95;
-  font-weight: 500;
+  opacity: 0.9;
+  font-weight: 400;
 }
 .rsvp-name-input-wrap {
   width: 100%;
@@ -1434,73 +1495,76 @@ html, body {
 }
 .rsvp-name-input {
   width: 100%;
-  background: rgba(255,255,255,0.75);
-  border: 1px solid rgba(160,112,32,0.35);
-  border-radius: 8px;
-  color: #3a2010;
-  font-family: 'Georgia', serif;
+  background: rgba(212,175,106,0.06);
+  border: 1px solid rgba(212,175,106,0.2);
+  border-bottom: 2px solid var(--gold);
+  border-radius: 4px 4px 0 0;
+  color: var(--text-dark);
+  font-family: 'Cormorant Garamond', serif;
   font-size: 16px;
   padding: 12px 16px;
   text-align: center;
   outline: none;
+  transition: border-color 0.2s;
 }
-.rsvp-name-input::placeholder { opacity: 0.4; color: #7a4e18; }
-.rsvp-name-input:focus { border-color: rgba(160,112,32,0.65); }
+.rsvp-name-input::placeholder { opacity: 0.35; color: var(--text-soft); }
+.rsvp-name-input:focus { border-bottom-color: var(--gold-light); }
 .rsvp-done-tap {
   font-size: 9px;
-  letter-spacing: 3px;
-  color: #7a4e18;
+  letter-spacing: 4px;
+  color: var(--sindoor);
   text-transform: uppercase;
-  opacity: 0.45;
+  opacity: 0.4;
   animation: breathe 2.5s ease-in-out infinite;
   cursor: pointer;
   margin-top: 8px;
 }
 .meal-pick {
   flex: 1;
-  background: rgba(255,255,255,0.6);
-  border: 1px solid rgba(160,112,32,0.25);
+  background: rgba(212,175,106,0.05);
+  border: 1px solid rgba(212,175,106,0.2);
   border-radius: 20px;
-  color: #5a3e20;
-  font-family: Georgia, serif;
+  color: var(--text-mid);
+  font-family: 'Cormorant Garamond', serif;
   font-size: 12px;
   padding: 8px 4px;
   cursor: pointer;
   transition: background 0.2s, border-color 0.2s;
+  letter-spacing: 1px;
 }
 .meal-pick.selected {
-  background: rgba(160,112,32,0.15);
-  border-color: #a07020;
-  color: #6b3d10;
+  background: rgba(212,175,106,0.15);
+  border-color: var(--gold);
+  color: var(--gold);
 }
 
 /* ══════════════════════════════════════════
    SCREEN 3 — PERSONALISED INVITE
+   Royal Mughal Bengal — deep jewel base with gold arch glow
 ══════════════════════════════════════════ */
 #screen-invite {
   background:
-    radial-gradient(ellipse at 50% 0%, rgba(255,245,200,0.7) 0%, transparent 40%),
-    radial-gradient(ellipse at 0% 50%, rgba(255,220,160,0.5) 0%, transparent 45%),
-    radial-gradient(ellipse at 100% 50%, rgba(255,220,160,0.5) 0%, transparent 45%),
-    radial-gradient(ellipse at 50% 110%, rgba(240,210,140,0.6) 0%, transparent 50%),
-    linear-gradient(180deg, #fff8ec 0%, #fdf0d8 30%, #f8e4c0 65%, #f0d8a8 100%);
+    radial-gradient(ellipse at 0% 0%, rgba(26,74,58,0.4) 0%, transparent 40%),
+    radial-gradient(ellipse at 100% 100%, rgba(107,26,42,0.35) 0%, transparent 40%),
+    radial-gradient(ellipse at 50% 50%, rgba(212,175,106,0.08) 0%, transparent 60%),
+    #1a1228;
   overflow: hidden;
 }
 #screen-invite::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 50% 42%, rgba(255,220,120,0.15) 0%, transparent 60%);
+  background: radial-gradient(ellipse at 50% 0%, rgba(212,175,106,0.14) 0%, transparent 55%);
   pointer-events: none;
   animation: act1-breathe 5s ease-in-out infinite;
 }
 @keyframes act1-breathe {
-  0%,100% { opacity: 0.7; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.06); }
+  0%,100% { opacity: 0.7; }
+  50% { opacity: 1; }
 }
 @keyframes act1-shimmer {
-  0%,100% { opacity: 0.12; }
-  50% { opacity: 0.22; }
+  0%,100% { opacity: 0.08; }
+  50% { opacity: 0.16; }
 }
 @keyframes act1-kenburns {
   0% { transform: scale(1) translate(0,0); }
@@ -1554,7 +1618,7 @@ html, body {
 #screen-invite3-bg-zoom.zooming { animation: act3-kenburns 5s ease-out forwards; }
 .shimmer-name {
   display:inline-block;
-  background: linear-gradient(100deg, #8a5010 20%, #c9820a 45%, #8a5010 55%, #6b3a08 80%);
+  background: linear-gradient(100deg, var(--gold-3) 15%, var(--gold) 40%, #f5e080 55%, var(--gold) 70%, var(--gold-3) 85%);
   background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1569,11 +1633,11 @@ html, body {
   opacity: 0.75;
 }
 .act1-corner svg { width: 100%; height: 100%; }
-/* Royal border frame — inset gold rule on all three invite screens */
+/* Mughal Bengal border frame — double inset: outer gold, inner emerald */
 .royal-frame {
   position: absolute;
   inset: 14px;
-  border: 1px solid rgba(201,168,76,0.28);
+  border: 1px solid rgba(212,175,106,0.35);
   pointer-events: none;
   z-index: 1;
 }
@@ -1581,44 +1645,45 @@ html, body {
   content: '';
   position: absolute;
   inset: 5px;
-  border: 1px solid rgba(201,168,76,0.14);
+  border: 1px solid rgba(26,74,58,0.4);
 }
 
 /* ══════════════════════════════════════════
    SCREEN 3b — ACT 2 (You are one)
+   Mughal emerald jewel tone
 ══════════════════════════════════════════ */
 #screen-invite2 {
   background:
-    radial-gradient(ellipse at 50% 50%, rgba(255,245,200,0.6) 0%, transparent 50%),
-    radial-gradient(ellipse at 0% 55%, rgba(255,225,170,0.5) 0%, transparent 45%),
-    radial-gradient(ellipse at 100% 55%, rgba(255,225,170,0.5) 0%, transparent 45%),
-    radial-gradient(ellipse at 50% 0%, rgba(255,215,150,0.5) 0%, transparent 40%),
-    linear-gradient(180deg, #fff8ec 0%, #fdf0d8 30%, #f8e4c0 65%, #f0d8a8 100%);
+    radial-gradient(ellipse at 100% 0%, rgba(212,175,106,0.15) 0%, transparent 40%),
+    radial-gradient(ellipse at 0% 100%, rgba(107,26,42,0.3) 0%, transparent 40%),
+    radial-gradient(ellipse at 50% 50%, rgba(26,74,58,0.25) 0%, transparent 60%),
+    #1a1228;
   overflow: hidden;
 }
 #screen-invite2::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 50% 50%, rgba(255,210,80,0.13) 0%, transparent 55%);
+  background: radial-gradient(ellipse at 50% 0%, rgba(212,175,106,0.12) 0%, transparent 50%);
   pointer-events: none;
   animation: act2-pulse 4s ease-in-out infinite;
 }
 @keyframes act2-pulse {
-  0%,100% { opacity: 0.5; transform: scale(0.96); }
-  50% { opacity: 1; transform: scale(1.06); }
+  0%,100% { opacity: 0.5; }
+  50% { opacity: 1; }
 }
 
 /* ══════════════════════════════════════════
    SCREEN 3c — ACT 3 (Names + families)
+   Mughal burgundy jewel tone
 ══════════════════════════════════════════ */
 #screen-invite3 {
   background:
-    radial-gradient(ellipse at 50% 12%, rgba(255,245,200,0.7) 0%, transparent 40%),
-    radial-gradient(ellipse at 5% 70%, rgba(255,220,160,0.5) 0%, transparent 42%),
-    radial-gradient(ellipse at 95% 70%, rgba(255,220,160,0.5) 0%, transparent 42%),
-    radial-gradient(ellipse at 50% 105%, rgba(240,210,140,0.6) 0%, transparent 48%),
-    linear-gradient(180deg, #fff8ec 0%, #fdf0d8 28%, #f8e4c0 58%, #f0d8a8 100%);
+    radial-gradient(ellipse at 0% 0%, rgba(212,175,106,0.15) 0%, transparent 40%),
+    radial-gradient(ellipse at 100% 0%, rgba(212,175,106,0.1) 0%, transparent 35%),
+    radial-gradient(ellipse at 50% 100%, rgba(107,26,42,0.35) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 0%, rgba(26,74,58,0.2) 0%, transparent 40%),
+    #1a1228;
   overflow: hidden;
 }
 
@@ -1655,32 +1720,32 @@ html, body {
 
 /* "With joy in our hearts" */
 .invite-preamble {
-  font-size: 13px;
-  letter-spacing: 4px;
+  font-size: 11px;
+  letter-spacing: 5px;
   text-transform: uppercase;
-  color: #7a4e18;
-  opacity: 0.65;
+  color: var(--gold);
+  opacity: 0.7;
 }
 
 /* Dear [Name] */
 .invite-dear {
-  font-size: 17px;
+  font-size: 16px;
   letter-spacing: 2px;
-  color: #5a3e20;
+  color: var(--text-mid);
   opacity: 0.8;
 }
 .invite-name {
   font-size: 36px;
-  font-family: 'Georgia', serif;
-  color: #7a4010;
-  letter-spacing: 1px;
-  text-shadow: none;
+  font-family: 'Playfair Display', serif;
+  color: var(--gold);
+  letter-spacing: 0.5px;
   animation: name-glow 3s ease-in-out infinite;
   line-height: 1.15;
   margin: 2px 0 6px;
+  text-shadow: 0 0 20px rgba(212,175,106,0.4);
 }
 @keyframes name-glow {
-  0%,100% { opacity: 0.85; }
+  0%,100% { opacity: 0.9; }
   50%      { opacity: 1; }
 }
 
@@ -1700,73 +1765,77 @@ html, body {
   content: '';
   flex: 1;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(160,112,32,0.5), rgba(160,112,32,0.75));
+  background: linear-gradient(90deg, transparent, rgba(212,175,106,0.5), rgba(212,175,106,0.7));
 }
 .invite-divider::after {
-  background: linear-gradient(90deg, rgba(160,112,32,0.75), rgba(160,112,32,0.5), transparent);
+  background: linear-gradient(90deg, rgba(212,175,106,0.7), rgba(212,175,106,0.5), transparent);
 }
 .invite-divider-diamond {
-  width: 8px; height: 8px;
-  background: #a07020;
+  width: 7px; height: 7px;
+  background: var(--gold);
   transform: rotate(45deg);
   margin: 0 8px;
   flex-shrink: 0;
-  box-shadow: 0 0 5px rgba(160,112,32,0.3);
+  box-shadow: 0 0 8px rgba(212,175,106,0.5);
+  opacity: 0.85;
 }
 
-/* "You are one of those people" star shine */
+/* "You are one of those people" */
 @keyframes starshine {
-  0%   { opacity: 0.7; font-size: 16px; }
-  50%  { opacity: 1;   font-size: 19px; }
-  100% { opacity: 0.7; font-size: 16px; }
+  0%   { opacity: 0.75; font-size: 16px; }
+  50%  { opacity: 1;    font-size: 18px; }
+  100% { opacity: 0.75; font-size: 16px; }
 }
 .you-are-one {
   display: inline-block;
-  color: #7a4010;
+  color: var(--gold);
   font-style: italic;
   font-weight: 600;
   animation: starshine 2.4s ease-in-out infinite;
   letter-spacing: 0.5px;
+  text-shadow: 0 0 12px rgba(212,175,106,0.4);
 }
 
 /* Main body text */
 .invite-body {
   font-size: 15px;
-  line-height: 1.75;
-  color: #3a2810;
-  opacity: 0.85;
+  line-height: 1.8;
+  color: var(--text-dark);
+  opacity: 0.82;
   max-width: 310px;
 }
 .invite-body .highlight {
-  color: #7a4010;
+  color: var(--gold);
   font-style: italic;
+  text-shadow: 0 0 8px rgba(212,175,106,0.3);
 }
 
-/* Parents' names */
+/* Parents' names — dark jewel card with Mughal gold top border */
 .invite-parents {
-  background: rgba(255,255,255,0.55);
-  border: 1px solid rgba(160,112,32,0.35);
+  background: rgba(26,18,40,0.7);
+  border: 1px solid rgba(212,175,106,0.25);
+  border-top: 2px solid var(--gold);
   border-radius: 4px;
   padding: 14px 20px 16px;
   width: 100%;
   max-width: 310px;
   position: relative;
-  box-shadow: 0 2px 12px rgba(160,112,32,0.08);
+  box-shadow: 0 2px 20px rgba(212,175,106,0.12), 0 0 0 1px rgba(26,74,58,0.3);
 }
 .invite-parents::before {
   content: '';
   position: absolute;
-  inset: 4px;
-  border: 1px solid rgba(160,112,32,0.12);
+  inset: 5px;
+  border: 1px solid rgba(26,74,58,0.35);
   border-radius: 2px;
   pointer-events: none;
 }
 .invite-parents-label {
-  font-size: 13px;
-  letter-spacing: 3px;
+  font-size: 11px;
+  letter-spacing: 4px;
   text-transform: uppercase;
-  color: #8a6010;
-  opacity: 0.85;
+  color: var(--gold);
+  opacity: 0.8;
   margin-bottom: 12px;
   display: flex;
   align-items: center;
@@ -1778,11 +1847,11 @@ html, body {
   content: '';
   flex: 1;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(160,112,32,0.4));
+  background: linear-gradient(90deg, transparent, rgba(212,175,106,0.5));
   max-width: 30px;
 }
 .invite-parents-label::after {
-  background: linear-gradient(90deg, rgba(160,112,32,0.4), transparent);
+  background: linear-gradient(90deg, rgba(212,175,106,0.5), transparent);
 }
 .invite-family {
   display: flex;
@@ -1795,7 +1864,7 @@ html, body {
 }
 .invite-family-names {
   font-size: 15px;
-  color: #3a2810;
+  color: var(--text-dark);
   line-height: 1.7;
   opacity: 0.9;
 }
@@ -1803,21 +1872,22 @@ html, body {
   font-size: 13px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: #8a6010;
+  color: var(--gold-2);
   opacity: 0.8;
   margin-top: 4px;
 }
 .invite-family-divider {
   width: 1px;
-  background: linear-gradient(180deg, transparent, rgba(160,112,32,0.3), transparent);
+  background: linear-gradient(180deg, transparent, rgba(212,175,106,0.4), transparent);
   align-self: stretch;
 }
 
 .invite-bottom-ornament {
   font-size: 16px;
-  color: #a07020;
-  opacity: 0.45;
+  color: var(--gold);
+  opacity: 0.5;
   letter-spacing: 8px;
+  text-shadow: 0 0 8px rgba(212,175,106,0.3);
 }
 </style>
 </head>
@@ -1833,12 +1903,12 @@ html, body {
 <!-- ── TOP CONTROL BAR: X · II · ♪ in one royal pill ── -->
 <style>
 @keyframes shimmer-ring {
-  0%,100% { box-shadow: 0 0 0 0 rgba(160,112,32,0.0), 0 0 5px 2px rgba(160,112,32,0.15), inset 0 0 4px rgba(160,112,32,0.05); }
-  50%      { box-shadow: 0 0 0 3px rgba(160,112,32,0.1), 0 0 12px 4px rgba(160,112,32,0.28), inset 0 0 6px rgba(160,112,32,0.08); }
+  0%,100% { box-shadow: 0 0 0 0 rgba(212,175,106,0.0), 0 0 5px 2px rgba(212,175,106,0.2), inset 0 0 4px rgba(212,175,106,0.08); }
+  50%      { box-shadow: 0 0 0 3px rgba(212,175,106,0.15), 0 0 12px 4px rgba(212,175,106,0.35), inset 0 0 6px rgba(212,175,106,0.12); }
 }
 @keyframes ctrl-bar-glow {
-  0%,100% { box-shadow: 0 2px 16px rgba(160,112,32,0.2), 0 0 8px rgba(160,112,32,0.1); }
-  50%      { box-shadow: 0 2px 24px rgba(160,112,32,0.3), 0 0 16px rgba(160,112,32,0.2); }
+  0%,100% { box-shadow: 0 2px 16px rgba(212,175,106,0.25), 0 0 8px rgba(212,175,106,0.15); }
+  50%      { box-shadow: 0 2px 24px rgba(212,175,106,0.4), 0 0 16px rgba(212,175,106,0.25); }
 }
 .ctrl-btn {
   position: relative;
@@ -1846,8 +1916,8 @@ html, body {
   display: flex; align-items: center; justify-content: center;
   cursor: pointer;
   border-radius: 50%;
-  background: linear-gradient(145deg, rgba(255,248,235,0.92), rgba(253,240,215,0.95));
-  border: 1.5px solid rgba(160,112,32,0.45);
+  background: linear-gradient(145deg, rgba(26,18,40,0.95), rgba(37,26,58,0.98));
+  border: 1.5px solid rgba(212,175,106,0.5);
   transition: border-color 0.3s, background 0.2s;
   animation: shimmer-ring 3s ease-in-out infinite;
   flex-shrink: 0;
@@ -1855,22 +1925,22 @@ html, body {
 .ctrl-btn:nth-child(2) { animation-delay: 0.75s; }
 .ctrl-btn:nth-child(3) { animation-delay: 1.5s; }
 .ctrl-btn:nth-child(4) { animation-delay: 2.25s; }
-.ctrl-btn:active { background: linear-gradient(145deg, rgba(240,220,180,0.95), rgba(225,200,150,0.95)); border-color: rgba(160,112,32,0.75); }
+.ctrl-btn:active { background: linear-gradient(145deg, rgba(37,26,58,1), rgba(26,74,58,0.8)); border-color: rgba(212,175,106,0.85); }
 #ctrl-bar {
-  background: linear-gradient(135deg, rgba(253,245,225,0.88), rgba(247,235,205,0.92));
-  border: 1px solid rgba(160,112,32,0.3);
+  background: linear-gradient(135deg, rgba(26,18,40,0.92), rgba(37,26,58,0.95));
+  border: 1px solid rgba(212,175,106,0.35);
   border-radius: 30px;
   padding: 5px 12px;
   gap: 8px !important;
   animation: ctrl-bar-glow 4s ease-in-out infinite;
 }
-/* subtle inner top highlight */
+/* subtle Mughal inner top highlight */
 #ctrl-bar::before {
   content:'';
   position:absolute;
   inset:0;
   border-radius:30px;
-  background:linear-gradient(180deg,rgba(255,245,200,0.3) 0%,transparent 55%);
+  background:linear-gradient(180deg,rgba(212,175,106,0.12) 0%,transparent 55%);
   pointer-events:none;
 }
 @keyframes hint-fade {
@@ -1890,9 +1960,9 @@ html, body {
   font-family:'Cormorant Garamond',Georgia,serif;
   font-size:11px;
   letter-spacing:1.2px;
-  color:rgba(90,55,15,0.8);
-  background:rgba(253,245,225,0.88);
-  border:1px solid rgba(160,112,32,0.25);
+  color:rgba(212,175,106,0.9);
+  background:rgba(26,18,40,0.92);
+  border:1px solid rgba(212,175,106,0.3);
   border-radius:16px;
   padding:3px 11px;
   backdrop-filter:blur(8px);
@@ -1904,20 +1974,20 @@ html, body {
 <div id="ctrl-bar" style="position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:9999;display:none;align-items:center;gap:8px;backdrop-filter:blur(10px) saturate(1.4);">
   <!-- back -->
   <div id="pill-back-btn" class="ctrl-btn" onclick="goBack()">
-    <svg viewBox="0 0 24 24" width="16" height="16" stroke="#8a5818" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    <svg viewBox="0 0 24 24" width="16" height="16" stroke="#d4af6a" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
   </div>
   <!-- X close -->
   <div id="close-btn" class="ctrl-btn" onclick="returnToSeal()">
-    <svg viewBox="0 0 24 24" width="15" height="15" stroke="#8a5818" stroke-width="2.2" fill="none" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    <svg viewBox="0 0 24 24" width="15" height="15" stroke="#d4af6a" stroke-width="2.2" fill="none" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
   </div>
   <!-- pause/play — hidden unless on a pauseable screen -->
   <div id="pause-btn" class="ctrl-btn" onclick="toggleVideoPause()" style="display:none;">
-    <svg id="pause-btn-icon" viewBox="0 0 24 24" width="15" height="15" fill="#8a5818"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+    <svg id="pause-btn-icon" viewBox="0 0 24 24" width="15" height="15" fill="#d4af6a"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
   </div>
   <!-- music on/off -->
   <div id="music-btn" class="ctrl-btn" onclick="toggleMusic()">
-    <span id="music-icon" style="font-size:16px;line-height:1;color:#8a5818;font-family:system-ui,sans-serif;transition:opacity 0.3s;">♪</span>
-    <span id="music-icon-muted" style="font-size:16px;line-height:1;color:rgba(138,88,24,0.4);font-family:system-ui,sans-serif;display:none;text-decoration:line-through;">♪</span>
+    <span id="music-icon" style="font-size:16px;line-height:1;color:#d4af6a;font-family:system-ui,sans-serif;transition:opacity 0.3s;">♪</span>
+    <span id="music-icon-muted" style="font-size:16px;line-height:1;color:rgba(212,175,106,0.4);font-family:system-ui,sans-serif;display:none;text-decoration:line-through;">♪</span>
   </div>
 </div>
 
@@ -1926,10 +1996,10 @@ html, body {
 ══════════════════════════════════════════ -->
 <!-- ══ LOADING SCREEN ══ -->
 <!-- Open in browser banner — shown only inside WhatsApp/Instagram in-app browser -->
-<div id="open-browser-banner" style="display:none;position:fixed;top:0;left:0;right:0;z-index:99999;background:linear-gradient(135deg,#fdf0d8,#f5e0b8);border-bottom:1px solid rgba(160,112,32,0.4);padding:14px 20px;text-align:center;">
-  <div style="font-family:'Playfair Display',serif;font-size:14px;color:#5a3010;margin-bottom:8px;">⚠️ For the best experience, open in your browser</div>
-  <div style="font-size:11px;color:rgba(90,48,16,0.65);letter-spacing:1px;margin-bottom:10px;">Tap the ⋯ menu → "Open in Browser" / "Open in Chrome" / "Open in Safari"</div>
-  <button onclick="document.getElementById('open-browser-banner').style.display='none'" style="background:rgba(160,112,32,0.12);border:1px solid rgba(160,112,32,0.4);border-radius:20px;color:rgba(90,55,16,0.8);font-size:11px;padding:6px 18px;cursor:pointer;">Dismiss</button>
+<div id="open-browser-banner" style="display:none;position:fixed;top:0;left:0;right:0;z-index:99999;background:linear-gradient(135deg,rgba(26,18,40,0.97),rgba(37,26,58,0.98));border-bottom:1px solid rgba(212,175,106,0.35);padding:14px 20px;text-align:center;backdrop-filter:blur(12px);">
+  <div style="font-family:'Playfair Display',serif;font-size:14px;color:rgba(212,175,106,0.95);margin-bottom:8px;">⚠️ For the best experience, open in your browser</div>
+  <div style="font-size:11px;color:rgba(212,175,106,0.55);letter-spacing:1px;margin-bottom:10px;">Tap the ⋯ menu → "Open in Browser" / "Open in Chrome" / "Open in Safari"</div>
+  <button onclick="document.getElementById('open-browser-banner').style.display='none'" style="background:rgba(212,175,106,0.1);border:1px solid rgba(212,175,106,0.35);border-radius:20px;color:rgba(212,175,106,0.8);font-size:11px;padding:6px 18px;cursor:pointer;">Dismiss</button>
 </div>
 
 <div id="screen-loader">
@@ -1952,7 +2022,7 @@ html, body {
     <div class="loader-countdown-number" id="loader-countdown-number">3</div>
   </div>
   <div style="position:absolute;bottom:28px;left:0;right:0;text-align:center;padding:0 24px;">
-    <div style="font-family:'Cormorant Garamond',serif;font-size:13px;color:rgba(90,55,16,0.65);letter-spacing:0.5px;line-height:1.7;">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:13px;color:rgba(212,175,106,0.55);letter-spacing:0.5px;line-height:1.7;">
       <div>The following invitation was made by Rishabh 😃</div>
       <div>Supported/Guided by Ananya ❤️</div>
       <div>And approved by our Families ! 😁😁</div>
@@ -1960,11 +2030,11 @@ html, body {
   </div>
   <!-- Floating cloud toast -->
   <div id="loader-toast" style="display:none;position:absolute;bottom:80px;left:50%;transform:translateX(-50%);pointer-events:none;text-align:center;transition:opacity 0.8s ease;opacity:0;">
-    <div style="background:rgba(253,245,225,0.92);backdrop-filter:blur(10px);border:1px solid rgba(160,112,32,0.35);border-radius:40px;padding:12px 26px;display:inline-flex;align-items:center;gap:10px;box-shadow:0 4px 24px rgba(160,112,32,0.2);">
+    <div style="background:rgba(26,18,40,0.92);backdrop-filter:blur(10px);border:1px solid rgba(212,175,106,0.4);border-radius:40px;padding:12px 26px;display:inline-flex;align-items:center;gap:10px;box-shadow:0 4px 24px rgba(212,175,106,0.2);">
       <span style="font-size:22px;">👆</span>
-      <span style="font-family:'Cormorant Garamond',serif;font-size:15px;letter-spacing:2px;color:rgba(90,55,16,0.95);font-weight:600;">Tap to Open</span>
+      <span style="font-family:'Cormorant Garamond',serif;font-size:15px;letter-spacing:2px;color:rgba(212,175,106,0.95);font-weight:600;">Tap to Open</span>
     </div>
-    <div style="font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(90,55,16,0.45);margin-top:8px;">✦ Interactive Invitation ✦</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(212,175,106,0.5);margin-top:8px;">✦ Interactive Invitation ✦</div>
   </div>
 </div>
 
@@ -2107,7 +2177,7 @@ html, body {
      SCREEN 3a — INVITE ACT 1 (poem)
 ══════════════════════════════════════════ -->
 <div id="screen-invite" class="screen">
-  <div id="screen-invite-bg-zoom" style="background: radial-gradient(ellipse at 50% 0%, rgba(255,235,160,0.55) 0%, transparent 45%), radial-gradient(ellipse at 0% 50%, rgba(255,220,140,0.35) 0%, transparent 50%), radial-gradient(ellipse at 100% 50%, rgba(255,220,140,0.35) 0%, transparent 50%), radial-gradient(ellipse at 50% 110%, rgba(220,170,80,0.4) 0%, transparent 55%), linear-gradient(180deg, #fff8ec 0%, #fdf0d8 30%, #f8e4c0 65%, #f0d8a8 100%);"></div>
+  <div id="screen-invite-bg-zoom" style="background: radial-gradient(ellipse at 50% 0%, rgba(212,175,106,0.2) 0%, transparent 45%), radial-gradient(ellipse at 0% 50%, rgba(26,74,58,0.35) 0%, transparent 50%), radial-gradient(ellipse at 100% 50%, rgba(107,26,42,0.25) 0%, transparent 50%), radial-gradient(ellipse at 50% 110%, rgba(26,74,58,0.3) 0%, transparent 55%), #1a1228;"></div>
   <div class="royal-frame"></div>
   <!-- Royal corner filigree -->
   <div class="act1-corner" style="top:0;left:0;">
@@ -2210,7 +2280,7 @@ html, body {
      SCREEN 3b — INVITE ACT 2 (you are one)
 ══════════════════════════════════════════ -->
 <div id="screen-invite2" class="screen">
-  <div id="screen-invite2-bg-zoom" style="background: radial-gradient(ellipse at 50% 50%, rgba(255,235,160,0.5) 0%, transparent 55%), radial-gradient(ellipse at 0% 55%, rgba(255,215,130,0.35) 0%, transparent 50%), radial-gradient(ellipse at 100% 55%, rgba(255,215,130,0.35) 0%, transparent 50%), radial-gradient(ellipse at 50% 0%, rgba(240,200,100,0.4) 0%, transparent 45%), linear-gradient(180deg, #fff8ec 0%, #fdf0d8 30%, #f8e4c0 65%, #f0d8a8 100%);"></div>
+  <div id="screen-invite2-bg-zoom" style="background: radial-gradient(ellipse at 50% 50%, rgba(212,175,106,0.15) 0%, transparent 55%), radial-gradient(ellipse at 0% 55%, rgba(26,74,58,0.3) 0%, transparent 50%), radial-gradient(ellipse at 100% 55%, rgba(107,26,42,0.25) 0%, transparent 50%), radial-gradient(ellipse at 50% 0%, rgba(212,175,106,0.12) 0%, transparent 45%), #1a1228;"></div>
   <div class="royal-frame"></div>
   <div class="act1-corner" style="top:0;left:0;"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M8 8 L72 8" stroke="#c9a84c" stroke-width="1.2" fill="none" opacity="0.7"/><path d="M8 8 L8 72" stroke="#c9a84c" stroke-width="1.2" fill="none" opacity="0.7"/><path d="M16 8 L16 16 L8 16" stroke="#f0c840" stroke-width="0.8" fill="none" opacity="0.5"/><circle cx="8" cy="8" r="4" fill="#c9a84c" opacity="0.6"/><circle cx="8" cy="8" r="2" fill="#f9e060" opacity="0.8"/><path d="M22 8 C28 14 34 8 40 14 C46 20 52 14 58 20" stroke="#c9a84c" stroke-width="0.7" fill="none" opacity="0.4"/><path d="M8 22 C14 28 8 34 14 40 C20 46 14 52 20 58" stroke="#c9a84c" stroke-width="0.7" fill="none" opacity="0.4"/><circle cx="26" cy="8" r="1.5" fill="#c9a84c" opacity="0.5"/><circle cx="8" cy="26" r="1.5" fill="#c9a84c" opacity="0.5"/></svg></div>
   <div class="act1-corner" style="top:0;right:0;transform:scaleX(-1);"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M8 8 L72 8" stroke="#c9a84c" stroke-width="1.2" fill="none" opacity="0.7"/><path d="M8 8 L8 72" stroke="#c9a84c" stroke-width="1.2" fill="none" opacity="0.7"/><path d="M16 8 L16 16 L8 16" stroke="#f0c840" stroke-width="0.8" fill="none" opacity="0.5"/><circle cx="8" cy="8" r="4" fill="#c9a84c" opacity="0.6"/><circle cx="8" cy="8" r="2" fill="#f9e060" opacity="0.8"/><circle cx="26" cy="8" r="1.5" fill="#c9a84c" opacity="0.5"/><circle cx="8" cy="26" r="1.5" fill="#c9a84c" opacity="0.5"/></svg></div>
@@ -2256,7 +2326,7 @@ html, body {
      SCREEN 3c — INVITE ACT 3 (names + families)
 ══════════════════════════════════════════ -->
 <div id="screen-invite3" class="screen" onclick="safeGoTo('screen-wedding')" style="cursor:pointer;">
-  <div id="screen-invite3-bg-zoom" style="background: radial-gradient(ellipse at 50% 20%, rgba(255,235,160,0.55) 0%, transparent 55%), radial-gradient(ellipse at 20% 80%, rgba(240,210,130,0.45) 0%, transparent 50%), linear-gradient(180deg, #fff8ec 0%, #fdf0d8 35%, #f8e4c0 65%, #f0d8a8 100%);"></div>
+  <div id="screen-invite3-bg-zoom" style="background: radial-gradient(ellipse at 50% 20%, rgba(212,175,106,0.15) 0%, transparent 55%), radial-gradient(ellipse at 20% 80%, rgba(26,74,58,0.3) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(107,26,42,0.2) 0%, transparent 45%), #1a1228;"></div>
   <!-- Stars -->
   <div style="position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;">
     <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;">
@@ -2278,65 +2348,65 @@ html, body {
   <div style="display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;height:100%;padding:calc(env(safe-area-inset-top,0px) + 72px) 28px calc(env(safe-area-inset-bottom,0px) + 16px);text-align:center;position:relative;z-index:1;">
 
     <!-- "WEDDING INVITATION" — large and bright at top -->
-    <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(14px,4vw,20px);font-weight:700;letter-spacing:7px;text-transform:uppercase;color:#8a6010;text-shadow:0 1px 8px rgba(253,248,238,0.9);">✦ Wedding Invitation ✦</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(14px,4vw,20px);font-weight:700;letter-spacing:7px;text-transform:uppercase;color:#d4af6a;text-shadow:0 0 20px rgba(212,175,106,0.4);">✦ Wedding Invitation ✦</div>
 
     <!-- Full names — large and italic -->
     <div style="font-family:'Playfair Display',serif;font-size:clamp(36px,10vw,56px);font-weight:700;font-style:italic;line-height:1.1;letter-spacing:-0.01em;">
-      <span style="color:#7a4010;display:block;text-shadow:0 1px 12px rgba(253,240,200,0.9);">Rishabh Chattopadhyay</span>
-      <span style="font-size:clamp(16px,4.5vw,22px);font-weight:400;color:rgba(140,90,20,0.55);font-style:normal;display:block;margin:6px 0;letter-spacing:8px;">— &amp; —</span>
-      <span style="color:#3a2010;display:block;text-shadow:0 1px 8px rgba(253,240,200,0.8);">Ananya Dash <em style="font-size:0.58em;opacity:0.65;">(Acharya)</em></span>
+      <span style="color:#f5e8c8;display:block;text-shadow:0 0 30px rgba(212,175,106,0.5);">Rishabh Chattopadhyay</span>
+      <span style="font-size:clamp(16px,4.5vw,22px);font-weight:400;color:rgba(212,175,106,0.6);font-style:normal;display:block;margin:6px 0;letter-spacing:8px;">— &amp; —</span>
+      <span style="color:#e8d5a3;display:block;text-shadow:0 0 20px rgba(212,175,106,0.4);">Ananya Dash <em style="font-size:0.58em;opacity:0.65;">(Acharya)</em></span>
     </div>
 
     <!-- Parents section -->
     <div style="display:flex;align-items:flex-start;justify-content:center;gap:20px;width:100%;max-width:360px;">
       <div style="flex:1;text-align:center;">
-        <div style="font-family:'Cormorant Garamond',serif;font-size:9.5px;letter-spacing:3px;text-transform:uppercase;color:rgba(140,90,20,0.65);margin-bottom:8px;">Groom's Parents</div>
-        <div style="font-family:'Playfair Display',serif;font-size:12.5px;color:rgba(42,26,8,0.85);line-height:1.8;font-weight:500;">Partha Sarathi<br>Chattopadhyay<br><span style="color:rgba(140,90,20,0.5);font-size:11px;">&amp;</span><br>Soma Chattopadhyay</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:9.5px;letter-spacing:3px;text-transform:uppercase;color:rgba(212,175,106,0.65);margin-bottom:8px;">Groom's Parents</div>
+        <div style="font-family:'Playfair Display',serif;font-size:12.5px;color:rgba(245,232,200,0.85);line-height:1.8;font-weight:500;">Partha Sarathi<br>Chattopadhyay<br><span style="color:rgba(212,175,106,0.55);font-size:11px;">&amp;</span><br>Soma Chattopadhyay</div>
       </div>
-      <div style="width:1px;background:linear-gradient(180deg,transparent,rgba(160,112,32,0.4) 30%,rgba(160,112,32,0.4) 70%,transparent);align-self:stretch;margin:4px 0;"></div>
+      <div style="width:1px;background:linear-gradient(180deg,transparent,rgba(212,175,106,0.4) 30%,rgba(212,175,106,0.4) 70%,transparent);align-self:stretch;margin:4px 0;"></div>
       <div style="flex:1;text-align:center;">
-        <div style="font-family:'Cormorant Garamond',serif;font-size:9.5px;letter-spacing:3px;text-transform:uppercase;color:rgba(140,90,20,0.65);margin-bottom:8px;">Bride's Parents</div>
-        <div style="font-family:'Playfair Display',serif;font-size:12.5px;color:rgba(42,26,8,0.85);line-height:1.8;font-weight:500;">Atanu Kumar Dash<br><span style="font-size:11px;opacity:0.65;">(Acharya)</span><br><span style="color:rgba(140,90,20,0.5);font-size:11px;">&amp;</span><br>Aparna Dash <span style="font-size:11px;opacity:0.65;">(Acharya)</span></div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:9.5px;letter-spacing:3px;text-transform:uppercase;color:rgba(212,175,106,0.65);margin-bottom:8px;">Bride's Parents</div>
+        <div style="font-family:'Playfair Display',serif;font-size:12.5px;color:rgba(245,232,200,0.85);line-height:1.8;font-weight:500;">Atanu Kumar Dash<br><span style="font-size:11px;opacity:0.65;">(Acharya)</span><br><span style="color:rgba(212,175,106,0.55);font-size:11px;">&amp;</span><br>Aparna Dash <span style="font-size:11px;opacity:0.65;">(Acharya)</span></div>
       </div>
     </div>
 
     <!-- Date + Venue box -->
-    <div style="display:flex;align-items:stretch;border:1px solid rgba(160,112,32,0.4);border-radius:8px;overflow:hidden;background:rgba(255,255,255,0.55);backdrop-filter:blur(6px);max-width:310px;width:100%;">
-      <div style="background:rgba(184,137,42,0.12);padding:12px 16px;display:flex;align-items:center;justify-content:center;min-width:50px;">
-        <span style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:#8a6010;line-height:1;">11</span>
+    <div style="display:flex;align-items:stretch;border:1px solid rgba(212,175,106,0.35);border-radius:8px;overflow:hidden;background:rgba(26,18,40,0.7);backdrop-filter:blur(6px);max-width:310px;width:100%;">
+      <div style="background:rgba(212,175,106,0.1);padding:12px 16px;display:flex;align-items:center;justify-content:center;min-width:50px;">
+        <span style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:#d4af6a;line-height:1;">11</span>
       </div>
-      <div style="width:1px;background:rgba(160,112,32,0.25);"></div>
+      <div style="width:1px;background:rgba(212,175,106,0.2);"></div>
       <div style="padding:12px 14px;text-align:left;flex:1;">
-        <div style="font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:600;letter-spacing:2px;color:#8a6010;text-transform:uppercase;">December 2026</div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:11.5px;letter-spacing:1px;color:rgba(90,62,32,0.65);margin-top:2px;">Kolkata</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:600;letter-spacing:2px;color:#d4af6a;text-transform:uppercase;">December 2026</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:11.5px;letter-spacing:1px;color:rgba(212,175,106,0.55);margin-top:2px;">Kolkata</div>
       </div>
-      <div style="width:1px;background:rgba(160,112,32,0.25);"></div>
+      <div style="width:1px;background:rgba(212,175,106,0.2);"></div>
       <div style="padding:12px 14px;text-align:left;">
-        <div style="font-family:'Cormorant Garamond',serif;font-size:13px;color:rgba(42,26,8,0.85);line-height:1.4;">Circle Club</div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:11px;color:rgba(90,62,32,0.6);margin-top:2px;">7:30 PM onwards</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:13px;color:rgba(245,232,200,0.85);line-height:1.4;">Circle Club</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:11px;color:rgba(212,175,106,0.55);margin-top:2px;">7:30 PM onwards</div>
       </div>
     </div>
 
     <!-- Countdown row -->
     <div style="display:flex;align-items:center;gap:10px;">
       <div style="text-align:center;">
-        <div id="si-days" style="font-family:'Playfair Display',serif;font-size:clamp(28px,8vw,38px);font-weight:700;color:#4a2c08;line-height:1;text-shadow:0 1px 8px rgba(253,248,238,0.8);">50</div>
-        <div style="font-size:9px;letter-spacing:3px;color:rgba(140,90,20,0.75);text-transform:uppercase;margin-top:4px;">Days</div>
+        <div id="si-days" style="font-family:'Playfair Display',serif;font-size:clamp(28px,8vw,38px);font-weight:700;color:#d4af6a;line-height:1;text-shadow:0 0 16px rgba(212,175,106,0.5);">50</div>
+        <div style="font-size:9px;letter-spacing:3px;color:rgba(212,175,106,0.65);text-transform:uppercase;margin-top:4px;">Days</div>
       </div>
-      <div style="font-size:26px;color:rgba(140,90,20,0.5);font-weight:300;padding-bottom:16px;">:</div>
+      <div style="font-size:26px;color:rgba(212,175,106,0.45);font-weight:300;padding-bottom:16px;">:</div>
       <div style="text-align:center;">
-        <div id="si-hours" style="font-family:'Playfair Display',serif;font-size:clamp(28px,8vw,38px);font-weight:700;color:#4a2c08;line-height:1;text-shadow:0 1px 8px rgba(253,248,238,0.8);">07</div>
-        <div style="font-size:9px;letter-spacing:3px;color:rgba(140,90,20,0.75);text-transform:uppercase;margin-top:4px;">Hours</div>
+        <div id="si-hours" style="font-family:'Playfair Display',serif;font-size:clamp(28px,8vw,38px);font-weight:700;color:#d4af6a;line-height:1;text-shadow:0 0 16px rgba(212,175,106,0.5);">07</div>
+        <div style="font-size:9px;letter-spacing:3px;color:rgba(212,175,106,0.65);text-transform:uppercase;margin-top:4px;">Hours</div>
       </div>
-      <div style="font-size:26px;color:rgba(140,90,20,0.5);font-weight:300;padding-bottom:16px;">:</div>
+      <div style="font-size:26px;color:rgba(212,175,106,0.45);font-weight:300;padding-bottom:16px;">:</div>
       <div style="text-align:center;">
-        <div id="si-mins" style="font-family:'Playfair Display',serif;font-size:clamp(28px,8vw,38px);font-weight:700;color:#4a2c08;line-height:1;text-shadow:0 1px 8px rgba(253,248,238,0.8);">12</div>
-        <div style="font-size:9px;letter-spacing:3px;color:rgba(140,90,20,0.75);text-transform:uppercase;margin-top:4px;">Mins</div>
+        <div id="si-mins" style="font-family:'Playfair Display',serif;font-size:clamp(28px,8vw,38px);font-weight:700;color:#d4af6a;line-height:1;text-shadow:0 0 16px rgba(212,175,106,0.5);">12</div>
+        <div style="font-size:9px;letter-spacing:3px;color:rgba(212,175,106,0.65);text-transform:uppercase;margin-top:4px;">Mins</div>
       </div>
-      <div style="font-size:26px;color:rgba(140,90,20,0.5);font-weight:300;padding-bottom:16px;">:</div>
+      <div style="font-size:26px;color:rgba(212,175,106,0.45);font-weight:300;padding-bottom:16px;">:</div>
       <div style="text-align:center;">
-        <div id="si-secs" style="font-family:'Playfair Display',serif;font-size:clamp(28px,8vw,38px);font-weight:700;color:#4a2c08;line-height:1;text-shadow:0 1px 8px rgba(253,248,238,0.8);">54</div>
-        <div style="font-size:9px;letter-spacing:3px;color:rgba(140,90,20,0.75);text-transform:uppercase;margin-top:4px;">Secs</div>
+        <div id="si-secs" style="font-family:'Playfair Display',serif;font-size:clamp(28px,8vw,38px);font-weight:700;color:#d4af6a;line-height:1;text-shadow:0 0 16px rgba(212,175,106,0.5);">54</div>
+        <div style="font-size:9px;letter-spacing:3px;color:rgba(212,175,106,0.65);text-transform:uppercase;margin-top:4px;">Secs</div>
       </div>
     </div>
 
