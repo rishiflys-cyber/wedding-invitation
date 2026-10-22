@@ -3333,7 +3333,6 @@ function updateBackBtn() {
 function openEnvelope() {
   // Haptic — Android only (iOS doesn't support vibrate)
   try { window.navigator.vibrate([30, 50, 40]); } catch(e) {}
-  stopSealToast();
   if (opened) return;
   opened = true;
   requestWakeLock();
