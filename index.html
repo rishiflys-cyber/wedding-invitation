@@ -63,6 +63,7 @@ html, body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding-bottom: 80px;
   transition: opacity 0.8s ease;
 }
 #screen-loader.hide {
@@ -714,6 +715,7 @@ html, body {
 
 /* ── BACK BUTTON ── */
 #back-btn {
+  display: none !important; /* back is now inside the pill */
   position: fixed;
   top: 18px;
   left: 18px;
@@ -1046,15 +1048,6 @@ html, body {
   100% { opacity: 0;   transform: translateY(105vh) rotate(360deg) scale(0.4); }
 }
 
-/* Mehendi — green henna leaves drift down */
-#screen-mehendi .ep { color: #5fe84a; font-size: 10px; }
-
-/* Sangeet — purple sparkles & music notes */
-#screen-sangeet .ep { color: #e080ff; font-size: 18px; }
-
-/* Haldi — golden turmeric dust */
-#screen-haldi .ep { color: #ffda30; font-size: 9px; }
-
 /* Wedding — white flower petals */
 #screen-wedding .ep { color: rgba(255,255,255,0.95); font-size: 11px; }
 
@@ -1062,34 +1055,6 @@ html, body {
 #screen-reception .ep { color: #ff90c0; font-size: 12px; }
 
 /* Glow pulse on event image overlay for each theme */
-#screen-mehendi .event-img-wrap::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: radial-gradient(ellipse at 50% 80%, rgba(80,230,60,0.18) 0%, transparent 60%);
-  animation: theme-pulse 4s ease-in-out infinite;
-}
-#screen-sangeet .event-img-wrap img {
-  object-position: center center;
-  transform-origin: center center;
-}
-#screen-sangeet .event-img-wrap::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: radial-gradient(ellipse at 50% 50%, rgba(200,60,255,0.2) 0%, transparent 60%);
-  animation: theme-pulse 2s ease-in-out infinite;
-}
-#screen-haldi .event-img-wrap::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: radial-gradient(ellipse at 50% 40%, rgba(255,220,0,0.22) 0%, transparent 55%);
-  animation: theme-pulse 3.5s ease-in-out infinite;
-}
 #screen-wedding .event-img-wrap::before {
   content: '';
   position: absolute;
@@ -1651,8 +1616,8 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
-  padding: 90px 28px 40px;
+  gap: 10px;
+  padding: 72px 28px 28px;
   width: 100%;
   max-width: 380px;
   animation: fade-rise 0.9s ease-out;
@@ -1789,11 +1754,11 @@ html, body {
   pointer-events: none;
 }
 .invite-parents-label {
-  font-size: 9px;
-  letter-spacing: 4px;
+  font-size: 13px;
+  letter-spacing: 3px;
   text-transform: uppercase;
   color: var(--gold);
-  opacity: 0.7;
+  opacity: 0.85;
   margin-bottom: 12px;
   display: flex;
   align-items: center;
@@ -1821,18 +1786,18 @@ html, body {
   text-align: center;
 }
 .invite-family-names {
-  font-size: 18px;
+  font-size: 15px;
   color: var(--gold-light);
-  line-height: 1.8;
+  line-height: 1.7;
   opacity: 0.9;
 }
 .invite-family-relation {
-  font-size: 14px;
+  font-size: 13px;
   letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--gold);
-  opacity: 0.65;
-  margin-top: 5px;
+  opacity: 0.8;
+  margin-top: 4px;
 }
 .invite-family-divider {
   width: 1px;
@@ -1869,7 +1834,7 @@ html, body {
 }
 .ctrl-btn {
   position: relative;
-  width: 44px; height: 44px;
+  width: 34px; height: 34px;
   display: flex; align-items: center; justify-content: center;
   cursor: pointer;
   border-radius: 50%;
@@ -1879,14 +1844,16 @@ html, body {
   animation: shimmer-ring 3s ease-in-out infinite;
   flex-shrink: 0;
 }
-.ctrl-btn:nth-child(2) { animation-delay: 1s; }
-.ctrl-btn:nth-child(3) { animation-delay: 2s; }
+.ctrl-btn:nth-child(2) { animation-delay: 0.75s; }
+.ctrl-btn:nth-child(3) { animation-delay: 1.5s; }
+.ctrl-btn:nth-child(4) { animation-delay: 2.25s; }
 .ctrl-btn:active { background: linear-gradient(145deg, rgba(50,25,10,0.85), rgba(25,10,5,0.9)); border-color: rgba(245,200,66,0.85); }
 #ctrl-bar {
   background: linear-gradient(135deg, rgba(18,5,10,0.78), rgba(10,3,6,0.85));
   border: 1px solid rgba(201,168,76,0.35);
   border-radius: 30px;
-  padding: 8px 16px;
+  padding: 5px 12px;
+  gap: 8px !important;
   animation: ctrl-bar-glow 4s ease-in-out infinite;
 }
 /* subtle inner top highlight */
@@ -1898,20 +1865,51 @@ html, body {
   background:linear-gradient(180deg,rgba(255,220,100,0.07) 0%,transparent 55%);
   pointer-events:none;
 }
+@keyframes hint-fade {
+  0%   { opacity:0; transform:translateX(-50%) translateY(-4px); }
+  15%  { opacity:1; transform:translateX(-50%) translateY(0); }
+  70%  { opacity:1; transform:translateX(-50%) translateY(0); }
+  100% { opacity:0; transform:translateX(-50%) translateY(4px); }
+}
+#ctrl-hint {
+  position:fixed;
+  top:60px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:9998;
+  display:none;
+  white-space:nowrap;
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:11px;
+  letter-spacing:1.2px;
+  color:rgba(245,215,120,0.8);
+  background:rgba(12,4,8,0.68);
+  border:1px solid rgba(201,168,76,0.18);
+  border-radius:16px;
+  padding:3px 11px;
+  backdrop-filter:blur(8px);
+  pointer-events:none;
+  animation:hint-fade 4s ease forwards;
+}
 </style>
-<div id="ctrl-bar" style="position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:9999;display:none;align-items:center;gap:12px;backdrop-filter:blur(10px) saturate(1.4);">
+<div id="ctrl-hint">❚❚ pause to read &nbsp;·&nbsp; ✕ close</div>
+<div id="ctrl-bar" style="position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:9999;display:none;align-items:center;gap:8px;backdrop-filter:blur(10px) saturate(1.4);">
+  <!-- back -->
+  <div id="pill-back-btn" class="ctrl-btn" onclick="goBack()">
+    <svg viewBox="0 0 24 24" width="16" height="16" stroke="#c9a84c" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  </div>
   <!-- X close -->
   <div id="close-btn" class="ctrl-btn" onclick="returnToSeal()">
-    <svg viewBox="0 0 24 24" width="18" height="18" stroke="#c9a84c" stroke-width="2.2" fill="none" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    <svg viewBox="0 0 24 24" width="15" height="15" stroke="#c9a84c" stroke-width="2.2" fill="none" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
   </div>
-  <!-- pause/play — hidden unless on a video screen -->
+  <!-- pause/play — hidden unless on a pauseable screen -->
   <div id="pause-btn" class="ctrl-btn" onclick="toggleVideoPause()" style="display:none;">
-    <svg id="pause-btn-icon" viewBox="0 0 24 24" width="18" height="18" fill="#c9a84c"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+    <svg id="pause-btn-icon" viewBox="0 0 24 24" width="15" height="15" fill="#c9a84c"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
   </div>
   <!-- music on/off -->
   <div id="music-btn" class="ctrl-btn" onclick="toggleMusic()">
-    <span id="music-icon" style="font-size:19px;line-height:1;color:#c9a84c;font-family:system-ui,sans-serif;transition:opacity 0.3s;">♪</span>
-    <span id="music-icon-muted" style="font-size:19px;line-height:1;color:rgba(201,168,76,0.4);font-family:system-ui,sans-serif;display:none;text-decoration:line-through;">♪</span>
+    <span id="music-icon" style="font-size:16px;line-height:1;color:#c9a84c;font-family:system-ui,sans-serif;transition:opacity 0.3s;">♪</span>
+    <span id="music-icon-muted" style="font-size:16px;line-height:1;color:rgba(201,168,76,0.4);font-family:system-ui,sans-serif;display:none;text-decoration:line-through;">♪</span>
   </div>
 </div>
 
@@ -1945,9 +1943,12 @@ html, body {
     <div class="loader-countdown-label">Opening in</div>
     <div class="loader-countdown-number" id="loader-countdown-number">3</div>
   </div>
-  <div style="position:absolute;bottom:36px;left:0;right:0;text-align:center;">
-    <div style="font-family:'Cormorant Garamond',serif;font-size:12px;letter-spacing:4px;text-transform:uppercase;color:rgba(245,200,66,0.4);">from</div>
-    <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;font-style:italic;color:rgba(249,224,96,0.75);letter-spacing:1px;">Rishabh &amp; Ananya</div>
+  <div style="position:absolute;bottom:28px;left:0;right:0;text-align:center;padding:0 24px;">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:13px;color:rgba(245,200,66,0.65);letter-spacing:0.5px;line-height:1.7;">
+      <div>The following invitation was made by Rishabh 😃</div>
+      <div>Supported/Guided by Ananya ❤️</div>
+      <div>And approved by our Families ! 😁😁</div>
+    </div>
   </div>
   <!-- Floating cloud toast -->
   <div id="loader-toast" style="display:none;position:absolute;bottom:80px;left:50%;transform:translateX(-50%);pointer-events:none;text-align:center;transition:opacity 0.8s ease;opacity:0;">
@@ -2002,7 +2003,7 @@ html, body {
 <!-- ══════════════════════════════════════════
      SCREEN 2 — GANESH
 ══════════════════════════════════════════ -->
-<div id="screen-ganesh" class="screen" onclick="goTo('screen-invite')">
+<div id="screen-ganesh" class="screen" onclick="safeGoTo('screen-invite')">
 
   <!-- Hanging diya — left corner -->
   <div class="diya-left">
@@ -2256,7 +2257,7 @@ html, body {
 <!-- ══════════════════════════════════════════
      SCREEN 3c — INVITE ACT 3 (names + families)
 ══════════════════════════════════════════ -->
-<div id="screen-invite3" class="screen" onclick="goTo('screen-mehendi')">
+<div id="screen-invite3" class="screen" onclick="safeGoTo('screen-wedding')">
   <div id="screen-invite3-bg-zoom" style="background: radial-gradient(ellipse at 50% 12%, rgba(255,215,100,0.24) 0%, transparent 45%), radial-gradient(ellipse at 5% 70%, rgba(140,10,40,0.55) 0%, transparent 45%), radial-gradient(ellipse at 95% 70%, rgba(140,10,40,0.55) 0%, transparent 45%), radial-gradient(ellipse at 50% 105%, rgba(160,40,0,0.45) 0%, transparent 50%), linear-gradient(180deg, #0a0206 0%, #1c0610 28%, #130408 58%, #080103 100%);"></div>
   <div class="royal-frame"></div>
   <div class="act1-corner" style="top:0;left:0;"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M8 8 L72 8" stroke="#c9a84c" stroke-width="1.2" fill="none" opacity="0.7"/><path d="M8 8 L8 72" stroke="#c9a84c" stroke-width="1.2" fill="none" opacity="0.7"/><path d="M16 8 L16 16 L8 16" stroke="#f0c840" stroke-width="0.8" fill="none" opacity="0.5"/><circle cx="8" cy="8" r="4" fill="#c9a84c" opacity="0.6"/><circle cx="8" cy="8" r="2" fill="#f9e060" opacity="0.8"/><path d="M22 8 C28 14 34 8 40 14 C46 20 52 14 58 20" stroke="#c9a84c" stroke-width="0.7" fill="none" opacity="0.4"/><path d="M8 22 C14 28 8 34 14 40 C20 46 14 52 20 58" stroke="#c9a84c" stroke-width="0.7" fill="none" opacity="0.4"/><circle cx="26" cy="8" r="1.5" fill="#c9a84c" opacity="0.5"/><circle cx="8" cy="26" r="1.5" fill="#c9a84c" opacity="0.5"/></svg></div>
@@ -2264,14 +2265,14 @@ html, body {
   <div class="act1-corner" style="bottom:0;left:0;transform:scaleY(-1);"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M8 8 L72 8" stroke="#c9a84c" stroke-width="1.2" fill="none" opacity="0.7"/><path d="M8 8 L8 72" stroke="#c9a84c" stroke-width="1.2" fill="none" opacity="0.7"/><circle cx="8" cy="8" r="4" fill="#c9a84c" opacity="0.6"/><circle cx="8" cy="8" r="2" fill="#f9e060" opacity="0.8"/><circle cx="26" cy="8" r="1.5" fill="#c9a84c" opacity="0.5"/><circle cx="8" cy="26" r="1.5" fill="#c9a84c" opacity="0.5"/></svg></div>
   <div class="act1-corner" style="bottom:0;right:0;transform:scale(-1,-1);"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M8 8 L72 8" stroke="#c9a84c" stroke-width="1.2" fill="none" opacity="0.7"/><path d="M8 8 L8 72" stroke="#c9a84c" stroke-width="1.2" fill="none" opacity="0.7"/><circle cx="8" cy="8" r="4" fill="#c9a84c" opacity="0.6"/><circle cx="8" cy="8" r="2" fill="#f9e060" opacity="0.8"/><circle cx="26" cy="8" r="1.5" fill="#c9a84c" opacity="0.5"/><circle cx="8" cy="26" r="1.5" fill="#c9a84c" opacity="0.5"/></svg></div>
 
-  <div class="invite-screen-wrap" style="gap:14px;padding:80px 28px 36px;position:relative;z-index:1;">
+  <div class="invite-screen-wrap" style="gap:10px;padding:72px 28px 24px;position:relative;z-index:1;">
 
-    <div id="invite-act3-text" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:15px;font-weight:300;font-style:italic;color:#d4b882;opacity:0;transform:translateY(18px);transition:opacity 1.4s ease,transform 1.4s cubic-bezier(0.16,1,0.3,1);line-height:2;text-align:center;letter-spacing:0.18em;text-transform:uppercase;">
+    <div id="invite-act3-text" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:15px;font-weight:600;font-style:italic;color:#ffe87a;opacity:0;transform:translateY(18px);transition:opacity 1.4s ease,transform 1.4s cubic-bezier(0.16,1,0.3,1);line-height:1.8;text-align:center;letter-spacing:0.15em;text-transform:uppercase;text-shadow:0 0 18px rgba(255,220,80,0.35);">
       With joyful hearts &amp; the blessings of our families,<br>we invite you to celebrate the wedding of
     </div>
 
     <!-- ornamental SVG separator between preamble and names -->
-    <div id="act3-lotus-orn" style="display:flex;align-items:center;justify-content:center;width:100%;max-width:260px;gap:0;margin:2px 0;opacity:0;transition:opacity 0.9s ease;">
+    <div id="act3-lotus-orn" style="display:flex;align-items:center;justify-content:center;width:100%;max-width:260px;gap:0;margin:0;opacity:0;transition:opacity 0.9s ease;">
       <div style="flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.4));"></div>
       <svg width="38" height="22" viewBox="0 0 38 22" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;margin:0 4px;">
         <!-- central lotus/medallion -->
@@ -2302,12 +2303,12 @@ html, body {
       <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(201,168,76,0.4),transparent);"></div>
     </div>
 
-    <div style="display:flex;flex-direction:column;align-items:center;gap:4px;margin-top:4px;position:relative;">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:2px;position:relative;">
       <!-- gold glow halo behind names -->
       <div style="position:absolute;inset:-30px -20px;background:radial-gradient(ellipse at 50% 50%,rgba(249,224,96,0.12) 0%,transparent 65%);pointer-events:none;border-radius:50%;"></div>
-      <span id="name-rishabh" class="shimmer-name" style="font-family:'Playfair Display','Cormorant Garamond',Georgia,serif;font-size:31px;font-weight:900;font-style:italic;letter-spacing:0px;position:relative;opacity:0;display:inline-block;white-space:nowrap;">Rishabh Chattopadhyay</span>
+      <span id="name-rishabh" class="shimmer-name" style="font-family:'Playfair Display','Cormorant Garamond',Georgia,serif;font-size:26px;font-weight:900;font-style:italic;letter-spacing:0px;position:relative;opacity:0;display:inline-block;white-space:nowrap;">Rishabh Chattopadhyay</span>
       <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:21px;font-weight:300;opacity:0;color:#f5dfa0;letter-spacing:8px;margin:2px 0;display:inline-block;white-space:nowrap;" id="names-amp">&amp;</span>
-      <span id="name-ananya" class="shimmer-name" style="font-family:'Playfair Display','Cormorant Garamond',Georgia,serif;font-size:31px;font-weight:900;font-style:italic;letter-spacing:0px;position:relative;opacity:0;display:inline-block;white-space:nowrap;">Ananya Dash</span>
+      <span id="name-ananya" class="shimmer-name" style="font-family:'Playfair Display','Cormorant Garamond',Georgia,serif;font-size:26px;font-weight:900;font-style:italic;letter-spacing:0px;position:relative;opacity:0;display:inline-block;white-space:nowrap;">Ananya Dash</span>
       <span id="name-acharya" style="display:block;font-family:'Playfair Display','Cormorant Garamond',Georgia,serif;font-size:18px;font-weight:400;font-style:italic;color:#f5dfa0;letter-spacing:2px;opacity:0;margin-top:-2px;text-align:center;transition:opacity 1s ease;">(Acharya)</span>
     </div>
 
@@ -2317,19 +2318,19 @@ html, body {
       <div class="invite-parents-label" style="font-family:'Cormorant Garamond',Georgia,serif;letter-spacing:3px;">Blessed by our families</div>
       <div class="invite-family">
         <div class="invite-family-side">
-          <div class="invite-family-names" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:18px;line-height:1.8;">
+          <div class="invite-family-names" style="font-family:'Playfair Display','Cormorant Garamond',Georgia,serif;font-size:14px;line-height:1.8;font-weight:500;">
             Partha Sarathi Chattopadhyay
-            <span style="display:block;opacity:0.45;font-size:14px;letter-spacing:1px;">&amp;</span>
+            <span style="display:block;opacity:0.55;font-size:12px;letter-spacing:1px;">&amp;</span>
             Soma Chattopadhyay
           </div>
           <div class="invite-family-relation" style="font-family:'Cormorant Garamond',Georgia,serif;letter-spacing:2px;">Groom's Parents</div>
         </div>
         <div class="invite-family-divider"></div>
         <div class="invite-family-side">
-          <div class="invite-family-names" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:18px;line-height:1.8;">
-            Atanu Kumar Dash <span style="font-size:14px;opacity:0.6;">(Acharya)</span>
-            <span style="display:block;opacity:0.45;font-size:14px;letter-spacing:1px;">&amp;</span>
-            Aparna Dash <span style="font-size:14px;opacity:0.6;">(Acharya)</span>
+          <div class="invite-family-names" style="font-family:'Playfair Display','Cormorant Garamond',Georgia,serif;font-size:14px;line-height:1.8;font-weight:500;">
+            Atanu Kumar Dash <span style="font-size:12px;opacity:0.85;color:#f5dfa0;">(Acharya)</span>
+            <span style="display:block;opacity:0.55;font-size:12px;letter-spacing:1px;">&amp;</span>
+            Aparna Dash <span style="font-size:12px;opacity:0.85;color:#f5dfa0;">(Acharya)</span>
           </div>
           <div class="invite-family-relation" style="font-family:'Cormorant Garamond',Georgia,serif;letter-spacing:2px;">Bride's Parents</div>
         </div>
@@ -2350,8 +2351,8 @@ html, body {
     <div class="rsvp-title">Will you join us?</div>
     <div class="rsvp-sub">Kindly RSVP so we can celebrate together</div>
     </div>
-    <a href="https://maps.app.goo.gl/aZj5csMpd15mJYi39" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;margin-top:2px;margin-bottom:2px;padding:8px 18px;border:1px solid rgba(201,168,76,0.35);border-radius:30px;background:rgba(201,168,76,0.07);color:#e8d5a3;font-size:12px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:background 0.2s;" ontouchstart="" onmousedown="this.style.background='rgba(201,168,76,0.18)'" onmouseup="this.style.background='rgba(201,168,76,0.07)'" onmouseleave="this.style.background='rgba(201,168,76,0.07)'">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="#c9a84c"/></svg>
+    <a href="https://maps.app.goo.gl/aZj5csMpd15mJYi39" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;margin-top:2px;margin-bottom:2px;padding:9px 20px;border:1.5px solid #c9a84c;border-radius:30px;background:linear-gradient(135deg,#c9a84c,#f0c840);color:#1a0a00;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:filter 0.2s,transform 0.15s;box-shadow:0 2px 18px rgba(201,168,76,0.45);" ontouchstart="" onmousedown="this.style.filter='brightness(1.12)';this.style.transform='scale(0.97)'" onmouseup="this.style.filter='';this.style.transform=''" onmouseleave="this.style.filter='';this.style.transform=''">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="#1a0a00"/></svg>
       Circle Club Banquet, Kolkata
     </a>
     <div class="rsvp-name-input-wrap" id="rsvp-name-input-wrap">
@@ -2443,118 +2444,10 @@ html, body {
 <!-- ══════════════════════════════════════════
      SCREEN MEHENDI
 ══════════════════════════════════════════ -->
-<div id="screen-mehendi" class="screen event-screen" onclick="goTo('screen-sangeet')">
-  <video id="mehendi-video" muted playsinline preload="auto"
-    style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
-    <source src="mehendi.mp4" type="video/mp4">
-  </video>
-  <div class="event-img-wrap" id="mehendi-bg-img" style="z-index:0;">
-    <img src="1-mehendi_4k.jpg" alt="Mehendi" loading="lazy">
-  </div>
-  <div class="event-particles" id="ep-mehendi" style="z-index:3;"></div>
-  <!-- Dark panel slides up from bottom after video ends -->
-  <div id="mehendi-panel" style="position:absolute;bottom:0;left:0;right:0;height:38%;z-index:4;background:linear-gradient(to bottom,transparent 0%,rgba(5,30,5,0.98) 18%,#041508 38%);box-shadow:0 -60px 100px rgba(60,200,60,0.22);padding-top:8px;transform:translateY(100%);transition:transform 1.4s cubic-bezier(0.22,1,0.36,1);pointer-events:none;overflow:hidden;">
-  <div class="event-wrap" id="mehendi-invite" style="position:relative;opacity:0;transform:translateY(20px);transition:opacity 0.8s ease 0.5s,transform 0.8s ease 0.5s;pointer-events:none;">
-    <div class="event-icon-big">🌿</div>
-    <div class="event-tag" style="background:rgba(60,200,70,0.35);border-color:rgba(80,240,80,0.9);color:#ffffff;font-weight:700;">Mehendi</div>
-    <div class="event-title">Henna & Happiness</div>
-    <div class="event-subtitle">An evening of henna, laughter &amp; love</div>
-    <div class="event-divider-line"></div>
-    <div class="event-detail-row">
-      <div class="event-detail">
-        <div class="event-detail-label">Date</div>
-        <div class="event-detail-value">10th December 2026</div>
-      </div>
-      <div class="event-detail-sep"></div>
-      <div class="event-detail">
-        <div class="event-detail-label">Time</div>
-        <div class="event-detail-value">5:00 PM onwards</div>
-      </div>
-    </div>
-    <div class="event-venue">📍 Circle Club, Kolkata</div>
-    <div class="event-poem"><span class="event-poem-em">When henna darkens on her palms, his name is hidden within — find it, and love begins.</span></div>
-  </div>
-  </div><!-- end mehendi-panel -->
-</div>
-
-<!-- ══════════════════════════════════════════
-     SCREEN SANGEET
-══════════════════════════════════════════ -->
-<div id="screen-sangeet" class="screen event-screen" onclick="goTo('screen-haldi')">
-  <video id="sangeet-video" muted playsinline preload="auto"
-    style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
-    <source src="sangeet.mp4" type="video/mp4">
-  </video>
-  <div class="event-img-wrap" id="sangeet-bg-img" style="z-index:0;">
-    <img src="2-sangeet_4k.jpg" alt="Sangeet" loading="lazy">
-  </div>
-  <div class="event-particles" id="ep-sangeet" style="z-index:2;"></div>
-
-  <div id="sangeet-panel" style="position:absolute;bottom:0;left:0;right:0;height:38%;z-index:3;background:linear-gradient(to bottom,transparent 0%,rgba(12,3,22,0.98) 18%,#0a0218 38%);padding-top:8px;transform:translateY(100%);transition:transform 1.4s cubic-bezier(0.22,1,0.36,1);pointer-events:none;overflow:hidden;">
-  <div class="event-wrap" id="sangeet-invite" style="position:relative;opacity:0;transform:translateY(20px);transition:opacity 0.8s ease 0.5s,transform 0.8s ease 0.5s;pointer-events:none;">
-    <div class="event-icon-big">🎶</div>
-    <div class="event-tag" style="background:rgba(190,60,255,0.35);border-color:rgba(220,120,255,0.9);color:#ffffff;font-weight:700;">Sangeet</div>
-    <div class="event-title">Sur aur Sargam</div>
-    <div class="event-subtitle">An evening of music, dance &amp; celebration</div>
-    <div class="event-divider-line"></div>
-    <div class="event-detail-row">
-      <div class="event-detail">
-        <div class="event-detail-label">Date</div>
-        <div class="event-detail-value">10th December 2026</div>
-      </div>
-      <div class="event-detail-sep"></div>
-      <div class="event-detail">
-        <div class="event-detail-label">Time</div>
-        <div class="event-detail-value">5:00 PM onwards</div>
-      </div>
-    </div>
-    <div class="event-venue">📍 Circle Club, Kolkata</div>
-    <div class="event-poem"><span class="event-poem-em">The music that plays on 11th December will echo in our hearts forever — come, dance with us.</span></div>
-  </div>
-  </div><!-- end sangeet-panel -->
-</div>
-
-<!-- ══════════════════════════════════════════
-     SCREEN HALDI
-══════════════════════════════════════════ -->
-<div id="screen-haldi" class="screen event-screen" onclick="goTo('screen-wedding')">
-  <video id="haldi-video" muted playsinline preload="auto"
-    style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
-    <source src="haldi.mp4" type="video/mp4">
-  </video>
-  <div class="event-img-wrap" id="haldi-bg-img" style="z-index:0;">
-    <img src="3-haldi_4k.jpg" alt="Haldi" loading="lazy">
-  </div>
-  <div class="event-particles" id="ep-haldi" style="z-index:2;"></div>
-
-  <div id="haldi-panel" style="position:absolute;bottom:0;left:0;right:0;height:38%;z-index:3;background:linear-gradient(to bottom,transparent 0%,rgba(20,12,0,0.98) 18%,#120a00 38%);padding-top:8px;transform:translateY(100%);transition:transform 1.4s cubic-bezier(0.22,1,0.36,1);pointer-events:none;overflow:hidden;">
-  <div class="event-wrap" id="haldi-invite" style="position:relative;opacity:0;transform:translateY(20px);transition:opacity 0.8s ease 0.5s,transform 0.8s ease 0.5s;pointer-events:none;">
-    <div class="event-icon-big">💛</div>
-    <div class="event-tag" style="background:rgba(255,210,0,0.35);border-color:rgba(255,220,0,0.9);color:#ffffff;font-weight:700;">Haldi</div>
-    <div class="event-title">Peeli Dhoop</div>
-    <div class="event-subtitle">Turmeric, blessings &amp; golden joy</div>
-    <div class="event-divider-line"></div>
-    <div class="event-detail-row">
-      <div class="event-detail">
-        <div class="event-detail-label">Date</div>
-        <div class="event-detail-value">11th December 2026</div>
-      </div>
-      <div class="event-detail-sep"></div>
-      <div class="event-detail">
-        <div class="event-detail-label">Time</div>
-        <div class="event-detail-value">11:00 AM onwards</div>
-      </div>
-    </div>
-    <div class="event-venue">📍 Circle Club, Kolkata</div>
-    <div class="event-poem"><span class="event-poem-em">Turmeric on their skin, sunlight in their smiles — this golden moment needs you.</span></div>
-  </div>
-  </div><!-- end haldi-panel -->
-</div>
-
 <!-- ══════════════════════════════════════════
      SCREEN WEDDING
 ══════════════════════════════════════════ -->
-<div id="screen-wedding" class="screen event-screen" onclick="showWeddingInviteNow()">
+<div id="screen-wedding" class="screen event-screen" onclick="_videoPaused ? null : showWeddingInviteNow()">
   <video id="wedding-video" muted playsinline preload="auto"
     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
     <source src="wedding.mp4" type="video/mp4">
@@ -2564,13 +2457,8 @@ html, body {
   </div>
   <div class="event-particles" id="ep-wedding" style="z-index:2;"></div>
 
-  <!-- Press here floater — appears 3s after panel slides up -->
-  <div id="wedding-press-hint" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:4;display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:none;transition:opacity 0.6s ease;opacity:0;">
-    <div style="font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,200,66,0.9);text-shadow:0 0 12px rgba(245,180,30,0.6);">Press Here</div>
-    <div style="font-size:22px;color:rgba(245,200,66,0.9);text-shadow:0 0 12px rgba(245,180,30,0.6);animation:bounce-arrow 1.2s ease-in-out infinite;">↓</div>
-  </div>
 
-  <div id="wedding-panel" style="position:absolute;bottom:0;left:0;right:0;height:48%;z-index:3;background:linear-gradient(to bottom,transparent 0%,rgba(18,8,0,0.98) 16%,#100500 32%);padding-top:20px;transform:translateY(100%);transition:transform 1.4s cubic-bezier(0.22,1,0.36,1);pointer-events:none;overflow:hidden;">
+  <div id="wedding-panel" style="position:absolute;bottom:0;left:0;right:0;min-height:48%;z-index:3;background:linear-gradient(to bottom,transparent 0%,rgba(18,8,0,0.98) 16%,#100500 32%);padding-top:20px;padding-bottom:16px;transform:translateY(100%);transition:transform 1.4s cubic-bezier(0.22,1,0.36,1);pointer-events:none;">
   <div class="event-wrap" id="wedding-invite" style="position:relative;opacity:0;transform:translateY(20px);transition:opacity 0.8s ease 0.5s,transform 0.8s ease 0.5s;pointer-events:none;">
     <div class="event-icon-big">💍</div>
     <div class="event-tag" style="background:rgba(255,200,60,0.35);border-color:rgba(255,210,80,0.9);color:#ffffff;font-weight:700;">The Wedding</div>
@@ -2592,6 +2480,9 @@ html, body {
     </div>
     <div class="event-venue">📍 Circle Club, Kolkata</div>
     <div class="event-poem"><span class="event-poem-em">Under the same stars that have witnessed a thousand love stories — and their story begins on 11th December.</span></div>
+    <div id="wedding-press-hint" style="pointer-events:none;transition:opacity 0.6s ease;opacity:0;text-align:center;">
+      <div style="font-family:'Playfair Display',serif;font-size:18px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-light);font-weight:700;animation:breathe 2.5s ease-in-out infinite;">✦ press here ✦</div>
+    </div>
     <div class="screen-tap-hint" style="font-weight:600;opacity:0.85;font-size:17px;">tap to continue ✦</div>
   </div>
   </div><!-- end wedding-panel -->
@@ -2600,7 +2491,7 @@ html, body {
 <!-- ══════════════════════════════════════════
      SCREEN RECEPTION (VIP only)
 ══════════════════════════════════════════ -->
-<div id="screen-reception" class="screen event-screen" onclick="goTo('screen-rsvp')">
+<div id="screen-reception" class="screen event-screen" onclick="safeGoTo('screen-rsvp')">
   <video id="reception-video" muted playsinline preload="auto"
     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
     <source src="reception.mp4" type="video/mp4">
@@ -2779,8 +2670,25 @@ let current = 'screen-envelope';
 let opened = false;
 
 var _history = [];
+var _navigatingBack = false;
 
-// (AudioContext pre-unlock removed — direct play() in openEnvelope is sufficient)
+// Global tap listener — resumes music if it should be playing but got suspended
+// (browser audio contexts can silently pause after tab switches, lock screen, etc.)
+(function() {
+  function _resumeMusicIfNeeded() {
+    var music = document.getElementById('bgmusic');
+    if (!music) return;
+    // Only auto-resume if we expect music to be playing (not muted by user, not on early screens)
+    var earlyScreens = ['screen-envelope','screen-ganesh'];
+    if (earlyScreens.indexOf(current) !== -1) return;
+    // If music should be on (_musicMuted flag false) and it's paused unexpectedly, resume
+    if (!window._musicMuted && !window._musicMutedByUser && music.paused && !_musicPausedByHide && music.currentTime > 0) {
+      music.play().catch(function(){});
+    }
+  }
+  document.addEventListener('touchstart', _resumeMusicIfNeeded, {passive: true, capture: true});
+  document.addEventListener('click', _resumeMusicIfNeeded, {capture: true});
+})();
 
 /* ── Wake Lock: keep screen on during auto-advance ── */
 var _wakeLock = null;
@@ -2900,9 +2808,27 @@ function goTo(id) {
   var ctrlBar = document.getElementById('ctrl-bar');
   var pb = document.getElementById('pause-btn');
   var hideOn = ['screen-envelope','screen-ganesh'];
-  var videoScreens = ['screen-mehendi','screen-sangeet','screen-haldi','screen-wedding','screen-reception'];
+  var noHintOn = ['screen-rsvp','screen-countdown'];
+  var videoScreens = ['screen-wedding','screen-reception'];
+  var pauseScreens = videoScreens.concat(['screen-invite','screen-invite2','screen-invite3']);
   if (ctrlBar) ctrlBar.style.display = hideOn.indexOf(id) === -1 ? 'flex' : 'none';
-  if (pb) pb.style.display = videoScreens.indexOf(id) !== -1 ? 'flex' : 'none';
+  if (pb) pb.style.display = pauseScreens.indexOf(id) !== -1 ? 'flex' : 'none';
+  // Show floating hint only on screens that benefit from it (not RSVP/countdown)
+  var hint = document.getElementById('ctrl-hint');
+  var showHint = hideOn.indexOf(id) === -1 && noHintOn.indexOf(id) === -1;
+  if (hint && showHint) {
+    hint.style.display = 'block';
+    hint.style.animation = 'none';
+    void hint.offsetWidth; // force reflow to restart animation
+    hint.style.animation = 'hint-fade 4s ease forwards';
+    hint.addEventListener('animationend', function(){ hint.style.display='none'; }, {once:true});
+  } else if (hint) {
+    hint.style.display = 'none';
+  }
+  // Cancel any pending auto-advance timer from previous screen
+  if (window._advanceTimer) { clearTimeout(window._advanceTimer); window._advanceTimer = null; }
+  if (window._ganeshFadeInt) { clearInterval(window._ganeshFadeInt); window._ganeshFadeInt = null; }
+  if (window._inviteFadeInt) { clearInterval(window._inviteFadeInt); window._inviteFadeInt = null; }
   // Reset pause state on every screen change
   _videoPaused = false;
   window._advanceCallback = null;
@@ -2911,23 +2837,85 @@ function goTo(id) {
   if (pauseIcon) pauseIcon.innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
   // Release wake lock when reaching final screens (no more auto-advance)
   if (id === 'screen-rsvp' || id === 'screen-countdown') { releaseWakeLock(); }
-  // Auto-advance Ganesh screen after 2s
+  // Fade music down to 30% on reception/rsvp/countdown, back to 50% on earlier screens
+  (function(){
+    var _vm = document.getElementById('bgmusic');
+    if (!_vm || window._musicMutedByUser) return;
+    var _lateScreens = ['screen-reception','screen-rsvp','screen-countdown'];
+    var _isLate = _lateScreens.indexOf(id) !== -1;
+    var _targetVol = _isLate ? 0.3 : 0.5;
+    // If music is paused/stopped on a late screen, resume it at target volume
+    if (_vm.paused && _isLate && window._musicStarted) {
+      _vm.volume = _targetVol;
+      _vm.play().catch(function(){});
+      return;
+    }
+    if (Math.abs(_vm.volume - _targetVol) < 0.01) return;
+    var _vStep = _vm.volume < _targetVol ? 0.02 : -0.02;
+    var _vInt = setInterval(function(){
+      if ((_vStep > 0 && _vm.volume >= _targetVol) || (_vStep < 0 && _vm.volume <= _targetVol)) {
+        _vm.volume = _targetVol; clearInterval(_vInt);
+      } else { _vm.volume = Math.max(0, Math.min(1, _vm.volume + _vStep)); }
+    }, 50);
+  })();
+  // Ganesh slide — play Ranjha, fade out over 2.5s, then restart on invite-1
   if (id === 'screen-ganesh') {
-    // Start music near end of Ganesh slide (1.5s before auto-advance)
-    setTimeout(function(){
+    // Play Ranjha from beginning with fade-in over 0.8s
+    var _ganeshBg = document.getElementById('bgmusic');
+    if (_ganeshBg && !window._musicMutedByUser) {
+      window._musicStarted = true;
+      _ganeshBg.currentTime = 0;
+      _ganeshBg.volume = 0;
+      _ganeshBg.play().then(function(){
+        var _gfi = setInterval(function(){
+          if (_ganeshBg.volume >= 0.5) { _ganeshBg.volume = 0.5; clearInterval(_gfi); return; }
+          _ganeshBg.volume = Math.min(0.5, _ganeshBg.volume + 0.05);
+        }, 80);
+      }).catch(function(){});
+    }
+    var _ganeshDelay = _navigatingBack ? 5000 : 5500;
+    // Fade out Ranjha over 2.5s starting at 2.8s — reaches 0 at 5.3s, 0.2s before slide advances
+    if (!_navigatingBack) {
+      setTimeout(function(){
+        if (current !== 'screen-ganesh') return;
+        var _gFade = document.getElementById('bgmusic');
+        if (!_gFade) return;
+        var _startVol = _gFade.volume, _fadeSteps = 25;
+        window._ganeshFadeInt = setInterval(function(){
+          if (_fadeSteps <= 0) { clearInterval(window._ganeshFadeInt); window._ganeshFadeInt = null; if (_gFade) { _gFade.volume = 0; _gFade.pause(); _gFade.currentTime = 0; } return; }
+          _gFade.volume = Math.max(0, _gFade.volume - (_startVol / 25));
+          _fadeSteps--;
+        }, 100);
+      }, 2800);
+    }
+    window._advanceCallback = function(){
       if (current !== 'screen-ganesh') return;
-      var mus = document.getElementById('bgmusic');
-      if (mus && mus.paused) { mus.play().catch(function(){}); }
-      var ic = document.getElementById('music-icon');
-      var im = document.getElementById('music-icon-muted');
-      if (ic) ic.style.display = 'inline';
-      if (im) im.style.display = 'none';
-    }, 4000);
-    setTimeout(function(){ if (current === 'screen-ganesh') goTo('screen-invite'); }, 5500);
+      goTo('screen-invite');
+    };
+    window._advanceTimer = setTimeout(window._advanceCallback, _ganeshDelay);
+    window._advanceStart = Date.now(); window._advanceDelay = _ganeshDelay; window._advanceRemaining = _ganeshDelay;
   }
 
   // Invite acts — cinematic trailer timing
   if (id === 'screen-invite') {
+    // Fade in Ranjha from beginning on invite-1
+    var _invMus = document.getElementById('bgmusic');
+    if (_invMus && !window._musicMutedByUser) {
+      window._musicStarted = true;
+      _invMus.currentTime = 0;
+      _invMus.volume = 0;
+      _invMus.play().then(function(){
+        var _iic = document.getElementById('music-icon');
+        var _iim = document.getElementById('music-icon-muted');
+        if (_iic) _iic.style.display = 'inline';
+        if (_iim) _iim.style.display = 'none';
+        // Fade in over 1.5s
+        window._inviteFadeInt = setInterval(function(){
+          if (_invMus.volume >= 0.5) { _invMus.volume = 0.5; clearInterval(window._inviteFadeInt); window._inviteFadeInt = null; return; }
+          _invMus.volume = Math.min(0.5, _invMus.volume + 0.05);
+        }, 150);
+      }).catch(function(){});
+    }
     // Start Ken Burns zoom (defer 1 frame so screen transition paints first)
     var bg1 = document.getElementById('screen-invite-bg-zoom');
     if(bg1){ requestAnimationFrame(function(){ bg1.classList.add('zooming'); }); }
@@ -2975,7 +2963,10 @@ function goTo(id) {
       var div=document.getElementById('invite-act1-divider');
       if(div){ div.style.opacity='1'; }
     }, 680);
-    setTimeout(function(){ if(current==='screen-invite') goTo('screen-invite2'); }, 7500);
+    var _inv1Delay = _navigatingBack ? 5000 : 7500;
+    window._advanceCallback = function(){ if(current==='screen-invite') goTo('screen-invite2'); };
+    window._advanceTimer = setTimeout(window._advanceCallback, _inv1Delay);
+    window._advanceStart = Date.now(); window._advanceDelay = _inv1Delay; window._advanceRemaining = _inv1Delay;
   }
   if (id === 'screen-invite2') {
     // Ken Burns zoom
@@ -3015,7 +3006,10 @@ function goTo(id) {
         })(i);
       }
     }, 200);
-    setTimeout(function(){ if(current==='screen-invite2') goTo('screen-invite3'); }, 4500);
+    var _inv2Delay = _navigatingBack ? 5000 : 3500;
+    window._advanceCallback = function(){ if(current==='screen-invite2') goTo('screen-invite3'); };
+    window._advanceTimer = setTimeout(window._advanceCallback, _inv2Delay);
+    window._advanceStart = Date.now(); window._advanceDelay = _inv2Delay; window._advanceRemaining = _inv2Delay;
   }
   if (id === 'screen-invite3') {
     // Ken Burns zoom
@@ -3055,8 +3049,11 @@ function goTo(id) {
       var par=document.getElementById('act3-parents');
       if(par){ par.style.opacity='1'; }
     }, 2800);
-    // Auto-advance after everything is visible
-    setTimeout(function(){ if(current==='screen-invite3') goTo('screen-mehendi'); }, 12000);
+    // Auto-advance after everything is visible; 5s if navigating back
+    var _inv3Delay = _navigatingBack ? 5000 : 12000;
+    window._advanceCallback = function(){ if(current==='screen-invite3') goTo('screen-wedding'); };
+    window._advanceTimer = setTimeout(window._advanceCallback, _inv3Delay);
+    window._advanceStart = Date.now(); window._advanceDelay = _inv3Delay; window._advanceRemaining = _inv3Delay;
   }
 }
 
@@ -3077,7 +3074,7 @@ function returnToSeal() {
   // Stop music and videos, then go back to RA seal screen
   var music = document.getElementById('bgmusic');
   if (music) { music.pause(); music.currentTime = 0; }
-  ['mehendi','sangeet','haldi','wedding','reception'].forEach(function(n) {
+  ['wedding','reception'].forEach(function(n) {
     var v = document.getElementById(n + '-video');
     if (v) { try { v.pause(); v.currentTime = 0; } catch(e) {} }
   });
@@ -3085,6 +3082,8 @@ function returnToSeal() {
   if (ctrlBar2) ctrlBar2.style.display = 'none';
   var pb2 = document.getElementById('pause-btn');
   if (pb2) pb2.style.display = 'none';
+  var hint2 = document.getElementById('ctrl-hint');
+  if (hint2) { hint2.style.display='none'; hint2.style.animation='none'; }
   _videoPaused = false;
   var env = document.getElementById('screen-envelope');
   if (env) env.classList.remove('opening');
@@ -3100,7 +3099,7 @@ function closeInvitation() {
     var music = document.getElementById('bgmusic');
     if (music) { music.pause(); music.currentTime = 0; }
     // Stop any playing event videos
-    ['mehendi','sangeet','haldi','wedding','reception'].forEach(function(n) {
+    ['wedding','reception'].forEach(function(n) {
       var v = document.getElementById(n + '-video');
       if (v) { try { v.pause(); v.currentTime = 0; } catch(e) {} }
     });
@@ -3121,13 +3120,13 @@ function closeInvitation() {
 function goBack() {
   if (_history.length === 0) return;
   const prevId = _history[_history.length - 1]; // peek without popping
-  // Use goTo so all video hooks fire; goTo will push current onto history
-  // then we remove the duplicate
+  _navigatingBack = true;
   goTo(prevId);
   // goTo pushed the old current AND prevId is now current
   // history now has [..., prevId, oldCurrent] — remove the last two and keep [...]
   _history.pop(); // remove oldCurrent (just pushed by goTo)
   _history.pop(); // remove prevId (the peek we left)
+  _navigatingBack = false;
 }
 
 function updateBackBtn() {
@@ -3149,21 +3148,16 @@ function openEnvelope() {
   opened = true;
   requestWakeLock();
 
-  // Start music from beginning (1s delay)
+  // Unlock audio during this gesture so it can autoplay later — no music on seal/envelope slide
   const music = document.getElementById('bgmusic');
-  music.currentTime = 0;
-  music.volume = 0.5;
-  setTimeout(function() { music.play().catch(function(){}); }, 1000);
-  // Show ctrl-bar (music + close + pause) and set music icon to "on"
-  var ctrlBar4 = document.getElementById('ctrl-bar');
-  if (ctrlBar4) ctrlBar4.style.display = 'flex';
-  var ic = document.getElementById('music-icon');
-  var im = document.getElementById('music-icon-muted');
-  if (ic) ic.style.display = 'inline';
-  if (im) im.style.display = 'none';
+  window._musicUnlocked = false;
+  window._musicStarted = false;
+  window._musicMutedByUser = false;
+  music.volume = 0;
+  music.play().then(function(){ music.pause(); music.currentTime = 0; window._musicUnlocked = true; }).catch(function(){ window._musicUnlocked = false; });
 
   // Unlock ALL event videos during this user gesture so they can autoplay later
-  ['mehendi-video','sangeet-video','haldi-video','wedding-video','reception-video'].forEach(function(vid) {
+  ['wedding-video','reception-video'].forEach(function(vid) {
     var v = document.getElementById(vid);
     if (v) { v.muted = true; v.play().then(function(){ v.pause(); v.currentTime = 0; }).catch(function(){}); }
   });
@@ -3203,7 +3197,7 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
 
 /* ── LOADER: fetch all videos before showing invitation ── */
 (function() {
-  var videos = ['mehendi.mp4','sangeet.mp4','haldi.mp4','wedding.mp4','reception.mp4'];
+  var videos = ['wedding.mp4','reception.mp4'];
   var bar = document.getElementById('loader-bar');
   var btn = document.getElementById('loader-open-btn');
   var loader = document.getElementById('screen-loader');
@@ -3458,225 +3452,28 @@ document.addEventListener('DOMContentLoaded', function() {
     };
   }
 
-  /* Mehendi: video plays once → dark panel slides up, invite fades in */
-  var mv = document.getElementById('mehendi-video');
-  var mi = document.getElementById('mehendi-invite');
-  var mp = document.getElementById('mehendi-panel');
-  var mehendiShown = false;
-  var mehendiTimer = null;
-  var mehendiVisited = false;
-
-  function showMehendiInvite() {
-    if (mehendiShown) return;
-    mehendiShown = true;
-    if (mp) { mp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; mp.style.transform = 'translateY(0)'; mp.style.pointerEvents = 'auto'; }
-    if (mi) { mi.style.opacity = '1'; mi.style.transform = 'translateY(0)'; mi.style.pointerEvents = 'auto'; }
-    var delay = mehendiVisited ? 11500 : 6500;
-    mehendiVisited = true;
-    window._advanceCallback = function() { if (current === 'screen-mehendi') goTo('screen-sangeet'); };
-    window._advanceTimer = setTimeout(window._advanceCallback, delay);
-    window._advanceDelay = delay;
-    window._advanceStart = Date.now();
-    window._advanceRemaining = delay;
-  }
-
-  function resetMehendi() {
-    mehendiShown = false;
-    if (mehendiTimer) { clearTimeout(mehendiTimer); mehendiTimer = null; }
-    if (mp) { mp.style.transition = 'none'; mp.style.transform = 'translateY(100%)'; mp.style.pointerEvents = 'none'; }
-    if (mi) { mi.style.opacity = '0'; mi.style.transform = 'translateY(20px)'; mi.style.pointerEvents = 'none'; }
-    if (mv) { safeVideoPause(mv); mv.ontimeupdate = null; mv.onended = null; mv.currentTime = 0; mv._forcePaused = false; }
-  }
-
-  if (mv) {
-    mv.loop = false;
-    mv.addEventListener('error', showMehendiInvite);
-  }
-
-  /* Hook into goTo to reset/restore mehendi state */
-  var _origGoTo = goTo;
-  goTo = function(id) {
-    var from = current;
-    _origGoTo(id);
-    /* Leaving mehendi — reset immediately for next visit */
-    if (from === 'screen-mehendi' && id !== 'screen-mehendi') {
-      resetMehendi();
-    }
-    /* Arriving at mehendi — always play fresh from start */
-    if (id === 'screen-mehendi') {
-      requestWakeLock();
-      /* Always reset state and play fresh */
-      mehendiShown = false;
-      if (mehendiTimer) { clearTimeout(mehendiTimer); mehendiTimer = null; }
-      if (mp) { mp.style.transition = 'none'; mp.style.transform = 'translateY(100%)'; mp.style.pointerEvents = 'none'; }
-      if (mi) { mi.style.opacity = '0'; mi.style.transform = 'translateY(20px)'; mi.style.pointerEvents = 'none'; }
-      if (mv) {
-        mv.onended = function() { safeVideoPause(mv); showMehendiInvite(); };
-        // timeupdate fallback: catch end even if onended doesn't fire
-        mv.ontimeupdate = function() {
-          if (mv.duration && mv.currentTime >= mv.duration - 0.3) {
-            mv.ontimeupdate = null;
-            safeVideoPause(mv);
-            showMehendiInvite();
-          }
-        };
-        safeVideoPlay(mv, showMehendiInvite);
-        mehendiTimer = setTimeout(showMehendiInvite, 60000);
-      }
-    }
-  };
-});
-
-/* ── Sangeet video logic ── */
-(function(){
-  var sv = document.getElementById('sangeet-video');
-  var si = document.getElementById('sangeet-invite');
-  var sp = document.getElementById('sangeet-panel');
-  var sangeetShown = false;
-  var sangeetTimer = null;
-  var sangeetVisited = false;
-
-  function showSangeetInvite() {
-    if (sangeetShown) return;
-    sangeetShown = true;
-    if (sangeetTimer) { clearTimeout(sangeetTimer); sangeetTimer = null; }
-    if (sv) safeVideoPause(sv);
-    if (sp) { sp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; sp.style.transform = 'translateY(0)'; sp.style.pointerEvents = 'auto'; }
-    if (si) { si.style.opacity = '1'; si.style.transform = 'translateY(0)'; si.style.pointerEvents = 'auto'; }
-    var delay = sangeetVisited ? 11500 : 7000;
-    sangeetVisited = true;
-    window._advanceCallback = function() { if (current === 'screen-sangeet') goTo('screen-haldi'); };
-    window._advanceTimer = setTimeout(window._advanceCallback, delay);
-    window._advanceDelay = delay;
-    window._advanceStart = Date.now();
-    window._advanceRemaining = delay;
-  }
-
-  function resetSangeet() {
-    sangeetShown = false;
-    if (sangeetTimer) { clearTimeout(sangeetTimer); sangeetTimer = null; }
-    if (sp) { sp.style.transition = 'none'; sp.style.transform = 'translateY(100%)'; sp.style.pointerEvents = 'none'; }
-    if (si) { si.style.opacity = '0'; si.style.transform = 'translateY(20px)'; si.style.pointerEvents = 'none'; }
-    if (sv) { safeVideoPause(sv); sv.ontimeupdate = null; sv.onended = null; sv.currentTime = 0; sv._forcePaused = false; }
-  }
-
-  if (sv) {
-    sv.loop = false;
-    sv.addEventListener('error', showSangeetInvite);
-  }
-
-  var _origGoTo2 = goTo;
-  goTo = function(id) {
-    var from = current;
-    _origGoTo2(id);
-    /* Leaving sangeet — reset immediately for next visit */
-    if (from === 'screen-sangeet' && id !== 'screen-sangeet') {
-      resetSangeet();
-    }
-    /* Arriving at sangeet — always play fresh from start */
-    if (id === 'screen-sangeet') {
-      sangeetShown = false;
-      if (sangeetTimer) { clearTimeout(sangeetTimer); sangeetTimer = null; }
-      if (sp) { sp.style.transition = 'none'; sp.style.transform = 'translateY(100%)'; sp.style.pointerEvents = 'none'; }
-      if (si) { si.style.opacity = '0'; si.style.transform = 'translateY(20px)'; si.style.pointerEvents = 'none'; }
-      if (sv) {
-        sv.onended = function() { safeVideoPause(sv); showSangeetInvite(); };
-        sv.ontimeupdate = function() {
-          if (sv.duration && sv.currentTime >= sv.duration - 0.3) {
-            sv.ontimeupdate = null; safeVideoPause(sv); showSangeetInvite();
-          }
-        };
-        safeVideoPlay(sv, showSangeetInvite);
-        sangeetTimer = setTimeout(showSangeetInvite, 60000);
-      } else {
-        sangeetTimer = setTimeout(showSangeetInvite, 1000);
-      }
-    }
-  };
-})();
-
-/* ── Haldi video logic ── */
-(function(){
-  var hv = document.getElementById('haldi-video');
-  var hi = document.getElementById('haldi-invite');
-  var hp = document.getElementById('haldi-panel');
-  var haldiShown = false;
-  var haldiTimer = null;
-  var haldiVisited = false;
-
-  function showHaldiInvite() {
-    if (haldiShown) return;
-    haldiShown = true;
-    if (haldiTimer) { clearTimeout(haldiTimer); haldiTimer = null; }
-    if (hp) { hp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; hp.style.transform = 'translateY(0)'; hp.style.pointerEvents = 'auto'; }
-    if (hi) { hi.style.opacity = '1'; hi.style.transform = 'translateY(0)'; hi.style.pointerEvents = 'auto'; }
-    var delay = haldiVisited ? 11500 : 7000;
-    haldiVisited = true;
-    window._advanceCallback = function() { if (current === 'screen-haldi') goTo('screen-wedding'); };
-    window._advanceTimer = setTimeout(window._advanceCallback, delay);
-    window._advanceDelay = delay;
-    window._advanceStart = Date.now();
-    window._advanceRemaining = delay;
-  }
-
-  function resetHaldi() {
-    haldiShown = false;
-    if (haldiTimer) { clearTimeout(haldiTimer); haldiTimer = null; }
-    if (hp) { hp.style.transition = 'none'; hp.style.transform = 'translateY(100%)'; hp.style.pointerEvents = 'none'; }
-    if (hi) { hi.style.opacity = '0'; hi.style.transform = 'translateY(20px)'; hi.style.pointerEvents = 'none'; }
-    if (hv) { safeVideoPause(hv); hv.ontimeupdate = null; hv.onended = null; hv.currentTime = 0; hv._forcePaused = false; }
-  }
-
-  if (hv) {
-    hv.loop = false;
-    hv.addEventListener('error', showHaldiInvite);
-  }
-
-  var _origGoTo3 = goTo;
-  goTo = function(id) {
-    var from = current;
-    _origGoTo3(id);
-    if (from === 'screen-haldi' && id !== 'screen-haldi') {
-      resetHaldi();
-    }
-    if (id === 'screen-haldi') {
-      haldiShown = false;
-      if (haldiTimer) { clearTimeout(haldiTimer); haldiTimer = null; }
-      if (hp) { hp.style.transition = 'none'; hp.style.transform = 'translateY(100%)'; hp.style.pointerEvents = 'none'; }
-      if (hi) { hi.style.opacity = '0'; hi.style.transform = 'translateY(20px)'; hi.style.pointerEvents = 'none'; }
-      if (hv) {
-        hv.onended = function() { safeVideoPause(hv); showHaldiInvite(); };
-        hv.ontimeupdate = function() {
-          if (hv.duration && hv.currentTime >= hv.duration - 0.3) {
-            hv.ontimeupdate = null; safeVideoPause(hv); showHaldiInvite();
-          }
-        };
-        safeVideoPlay(hv, showHaldiInvite);
-        haldiTimer = setTimeout(showHaldiInvite, 60000);
-      } else {
-        haldiTimer = setTimeout(showHaldiInvite, 1000);
-      }
-    }
-  };
-})();
-
 /* ── Wedding video logic ── */
 (function(){
   var wv = document.getElementById('wedding-video');
   var wi = document.getElementById('wedding-invite');
   var wp = document.getElementById('wedding-panel');
   var weddingShown = false;
+  var weddingTapped = false;
   var weddingTimer = null;
 
   function showWeddingInvite() {
     if (weddingShown) return;
     weddingShown = true;
+    weddingTapped = true;
+    var _wph = document.getElementById('wedding-press-hint');
+    if (_wph) _wph.style.opacity = '0';
     if (weddingTimer) { clearTimeout(weddingTimer); weddingTimer = null; }
     if (wp) { wp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; wp.style.transform = 'translateY(0)'; wp.style.pointerEvents = 'auto'; }
     setTimeout(function() {
+      if (current !== 'screen-wedding' || weddingTapped) return;
       var hint = document.getElementById('wedding-press-hint');
-      if (hint && current === 'screen-wedding') hint.style.opacity = '1';
-    }, 3000);
+      if (hint) hint.style.opacity = '1';
+    }, 7000);
     if (wi) { wi.style.opacity = '1'; wi.style.transform = 'translateY(0)'; wi.style.pointerEvents = 'auto'; }
   }
 
@@ -3685,6 +3482,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function resetWedding() {
     weddingShown = false;
+    weddingTapped = false;
     if (weddingTimer) { clearTimeout(weddingTimer); weddingTimer = null; }
     if (wp) { wp.style.transition = 'none'; wp.style.transform = 'translateY(100%)'; wp.style.pointerEvents = 'none'; }
     if (wi) { wi.style.opacity = '0'; wi.style.transform = 'translateY(20px)'; wi.style.pointerEvents = 'none'; }
@@ -3809,10 +3607,14 @@ document.addEventListener('DOMContentLoaded', function() {
 })();
 
 var _videoPaused = false;
+
+// Tap-to-advance guard — screens call this instead of goTo directly.
+// While paused, tapping the screen does nothing (user must press Resume).
+function safeGoTo(id) {
+  if (_videoPaused) return;
+  goTo(id);
+}
 var _screenToVideo = {
-  'screen-mehendi': 'mehendi-video',
-  'screen-sangeet': 'sangeet-video',
-  'screen-haldi':   'haldi-video',
   'screen-wedding': 'wedding-video',
   'screen-reception': 'reception-video'
 };
@@ -3831,7 +3633,7 @@ function _setupForcePauseListener(vid) {
 }
 // Set up listeners on all event videos once DOM ready
 document.addEventListener('DOMContentLoaded', function() {
-  ['mehendi-video','sangeet-video','haldi-video','wedding-video','reception-video'].forEach(function(id) {
+  ['wedding-video','reception-video'].forEach(function(id) {
     var v = document.getElementById(id);
     if (v) _setupForcePauseListener(v);
   });
@@ -3864,6 +3666,23 @@ function toggleVideoPause() {
         window._advanceDelay = window._advanceRemaining;
       }
     }
+  } else {
+    // Non-video screens (invite slides) — just pause/resume the timer
+    if (_videoPaused) {
+      if (window._advanceTimer) {
+        var elapsedNV = Date.now() - (window._advanceStart || Date.now());
+        window._advanceRemaining = Math.max(0, (window._advanceDelay || 0) - elapsedNV);
+        clearTimeout(window._advanceTimer);
+        window._advanceTimer = null;
+      }
+    } else {
+      if (window._advanceRemaining > 0 && window._advanceCallback) {
+        var cbNV = window._advanceCallback;
+        window._advanceTimer = setTimeout(cbNV, window._advanceRemaining);
+        window._advanceStart = Date.now();
+        window._advanceDelay = window._advanceRemaining;
+      }
+    }
   }
   if (music) {
     if (_videoPaused) { music.pause(); }
@@ -3884,11 +3703,13 @@ function toggleMusic() {
   var iconMuted = document.getElementById('music-icon-muted');
   if (!music) return;
   if (music.paused) {
+    window._musicMutedByUser = false;
     music.volume = 0.5;
     music.play().catch(function(){});
     if (icon) icon.style.display = 'inline';
     if (iconMuted) iconMuted.style.display = 'none';
   } else {
+    window._musicMutedByUser = true;
     music.pause();
     if (icon) icon.style.display = 'none';
     if (iconMuted) iconMuted.style.display = 'inline';
@@ -4250,9 +4071,6 @@ function launchConfetti() {
 // Event screen particles
 (function(){
   const configs = {
-    'ep-mehendi':  { symbols: ['✿','❀','🌿','·','✾'], colors: ['#7ec850','#a8e080','#5db840','#c8f0a0'], count: 18 },
-    'ep-sangeet':  { symbols: ['✦','♪','♫','·','✵','⋆'], colors: ['#d090f8','#b060e0','#f0c0ff','#ffffff'], count: 22 },
-    'ep-haldi':    { symbols: ['·','•','✦','❋','✿'], colors: ['#f0c840','#ffd860','#ffe090','#d4a020'], count: 20 },
     'ep-wedding':  { symbols: ['✿','❀','·','✾','°'], colors: ['rgba(255,255,255,0.9)','rgba(255,220,180,0.8)','rgba(255,200,120,0.7)'], count: 25 },
     'ep-reception':{ symbols: ['✦','·','°','⋆','○'], colors: ['#f8b4c8','#ffd0e0','#ffffff','#ffe0f0'], count: 20 }
   };
