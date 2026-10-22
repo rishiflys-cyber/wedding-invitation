@@ -3331,7 +3331,6 @@ function updateBackBtn() {
 }
 
 function openEnvelope() {
-  // Haptic — Android only (iOS doesn't support vibrate)
   try { window.navigator.vibrate([30, 50, 40]); } catch(e) {}
   if (opened) return;
   opened = true;
@@ -3340,91 +3339,62 @@ function openEnvelope() {
   var sealEl = document.getElementById('seal');
   var outerEl = sealEl ? sealEl.querySelector('.seal-outer') : null;
 
-  // Start music immediately on tap
+  // Music starts on tap
   if (!window._musicStarted) {
     var bgm = document.getElementById('bgm');
     if (bgm) {
       bgm.volume = 0;
       bgm.play().then(function() {
         window._musicStarted = true;
-        var fadeIn = setInterval(function() {
-          if (bgm.volume < 0.85) { bgm.volume = Math.min(0.85, bgm.volume + 0.05); }
-          else { clearInterval(fadeIn); }
+        var fi = setInterval(function() {
+          if (bgm.volume < 0.85) bgm.volume = Math.min(0.85, bgm.volume + 0.05);
+          else clearInterval(fi);
         }, 120);
       }).catch(function(){});
     }
   }
 
-  // Hide tap hint + invite label immediately
+  // Hide hint and label
   var hint = document.querySelector('.tap-hint');
-  if (hint) { hint.style.transition = 'opacity 0.2s'; hint.style.opacity = '0'; }
+  if (hint) { hint.style.transition='opacity 0.2s'; hint.style.opacity='0'; }
   var invLabel = document.querySelector('.invite-label');
-  if (invLabel) { invLabel.style.transition = 'opacity 0.2s'; invLabel.style.opacity = '0'; }
+  if (invLabel) { invLabel.style.transition='opacity 0.2s'; invLabel.style.opacity='0'; }
 
-  // Step 1 (0ms): Press feel — seal shrinks like a button click
+  // Step 1: Button press feel
   if (outerEl) {
-    outerEl.style.transition = 'transform 0.12s ease, box-shadow 0.12s ease';
+    outerEl.style.transition = 'transform 0.12s ease';
     outerEl.style.transform = 'scale(0.85)';
-    outerEl.style.boxShadow = '0 0 0 6px rgba(255,240,180,0.9), 0 0 60px rgba(255,220,80,1)';
   }
 
-  // Step 2 (160ms): Golden glow pulses out — seal glows warm gold
+  // Step 2 (150ms): Seal glows gold, RA text fades — flower petals grow FROM the seal
   setTimeout(function() {
     if (outerEl) {
-      outerEl.style.transition = 'transform 0.45s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.45s ease';
-      outerEl.style.transform = 'scale(1.15)';
-      outerEl.style.boxShadow = '0 0 0 10px rgba(255,210,80,0.7), 0 0 80px rgba(255,180,40,0.95), 0 0 180px rgba(255,140,20,0.6)';
+      outerEl.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
+      outerEl.style.transform = 'scale(1.05)';
+      outerEl.style.boxShadow = '0 0 0 6px rgba(255,220,80,0.8), 0 0 60px rgba(255,180,40,1), 0 0 120px rgba(255,140,20,0.6)';
     }
-    // Fade out RA text
     if (sealEl) {
-      ['seal-monogram','seal-subtext','seal-ring'].forEach(function(cls) {
+      ['seal-monogram','seal-subtext','seal-ring'].forEach(function(cls){
         var el = sealEl.querySelector('.'+cls);
-        if (el) { el.style.transition = 'opacity 0.3s'; el.style.opacity = '0'; }
+        if (el) { el.style.transition='opacity 0.3s'; el.style.opacity='0'; }
       });
     }
-    // Inject a golden flower SVG into the seal center
-    if (outerEl) {
-      var flowerDiv = document.createElement('div');
-      flowerDiv.id = 'seal-flower';
-      flowerDiv.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.4s ease 0.2s;pointer-events:none;';
-      flowerDiv.innerHTML = '<svg viewBox="-50 -50 100 100" width="90%" height="90%" xmlns="http://www.w3.org/2000/svg">' +
-        '<defs><radialGradient id="pg" cx="50%" cy="30%"><stop offset="0%" stop-color="#fff7c0"/><stop offset="60%" stop-color="#ffcc00"/><stop offset="100%" stop-color="#e07000"/></radialGradient></defs>' +
-        [0,45,90,135,180,225,270,315].map(function(a){
-          return '<ellipse cx="0" cy="-22" rx="9" ry="16" fill="url(#pg)" opacity="0.95" transform="rotate('+a+')"/>';
-        }).join('') +
-        '<circle cx="0" cy="0" r="12" fill="#fff0a0" stroke="#ffaa00" stroke-width="2"/>' +
-        '<text x="0" y="5" text-anchor="middle" font-size="12" fill="#c07000">✿</text>' +
-        '</svg>';
-      outerEl.appendChild(flowerDiv);
-      setTimeout(function(){ flowerDiv.style.opacity = '1'; }, 50);
-    }
-  }, 160);
+    // Spawn flower petals around the seal using absolute positioned divs
+    spawnFlowerPetals(sealEl);
+  }, 150);
 
-  // Step 3 (450ms): Petals unfurl from the flower outward — staggered like real petals opening
-  setTimeout(function() {
-    if (sealEl) {
-      sealEl.querySelectorAll('.seal-bloom-petal').forEach(function(p, i) {
-        setTimeout(function() { p.classList.add('blooming'); }, i * 70);
-      });
-    }
-    var env = document.getElementById('screen-envelope');
-    if (env) {
-      env.style.transition = 'background 0.7s ease';
-      env.style.background = 'radial-gradient(ellipse at 50% 50%, rgba(255,220,80,0.35) 0%, transparent 65%)';
-    }
-  }, 450);
-
-  // Step 4 (950ms): Flower bursts in golden flash — dissolves outward — flaps open
+  // Step 3 (800ms): Seal fades out, flaps open
   setTimeout(function() {
     if (outerEl) {
-      outerEl.style.transition = 'transform 0.5s cubic-bezier(0.55,0,1,0.45), opacity 0.45s ease';
-      outerEl.style.transform = 'scale(2.6)';
+      outerEl.style.transition = 'transform 0.5s ease, opacity 0.5s ease, box-shadow 0.5s ease';
+      outerEl.style.transform = 'scale(2)';
       outerEl.style.opacity = '0';
+      outerEl.style.boxShadow = '0 0 0 0px transparent';
     }
     document.getElementById('screen-envelope').classList.add('opening');
-  }, 950);
+  }, 800);
 
-  // Step 5 (1900ms): Lord Ganesh is revealed as flaps complete
+  // Step 4 (1900ms): Ganesh
   setTimeout(function() {
     goTo('screen-ganesh');
     document.getElementById('screen-envelope').classList.remove('opening');
@@ -3433,20 +3403,55 @@ function openEnvelope() {
     if (hint) hint.style.opacity = '';
     if (invLabel) invLabel.style.opacity = '';
     if (sealEl) {
-      if (outerEl) {
-        outerEl.style.transform=''; outerEl.style.opacity='';
-        outerEl.style.boxShadow=''; outerEl.style.background=''; outerEl.style.borderRadius='';
-      }
-      ['seal-monogram','seal-subtext','seal-ring'].forEach(function(cls) {
+      if (outerEl) { outerEl.style.transform=''; outerEl.style.opacity=''; outerEl.style.boxShadow=''; }
+      ['seal-monogram','seal-subtext','seal-ring'].forEach(function(cls){
         var el = sealEl.querySelector('.'+cls);
-        if (el) el.style.opacity = '';
+        if (el) el.style.opacity='';
       });
       sealEl.querySelectorAll('.seal-bloom-petal').forEach(function(p){ p.classList.remove('blooming'); });
-      var sf = document.getElementById('seal-flower');
-      if (sf) sf.parentNode.removeChild(sf);
     }
+    // Remove flower petals
+    document.querySelectorAll('.flower-petal-burst').forEach(function(p){ p.parentNode && p.parentNode.removeChild(p); });
     opened = false;
   }, 1900);
+}
+
+
+function spawnFlowerPetals(sealEl) {
+  if (!sealEl) return;
+  var rect = sealEl.getBoundingClientRect();
+  var cx = rect.left + rect.width/2;
+  var cy = rect.top + rect.height/2;
+  var colors = ['#ffdd00','#ffaa00','#ff8800','#ffe566','#ffcc33','#ff9900','#fff0a0','#ffbb44'];
+  for (var i = 0; i < 8; i++) {
+    var petal = document.createElement('div');
+    var angle = i * 45;
+    var color = colors[i];
+    petal.className = 'flower-petal-burst';
+    petal.style.cssText = [
+      'position:fixed',
+      'left:' + cx + 'px',
+      'top:' + cy + 'px',
+      'width:28px',
+      'height:52px',
+      'margin-left:-14px',
+      'margin-top:-26px',
+      'background:' + color,
+      'border-radius:50% 50% 50% 50% / 60% 60% 40% 40%',
+      'transform-origin:50% 100%',
+      'transform:rotate(' + angle + 'deg) scaleY(0)',
+      'opacity:0',
+      'z-index:9999',
+      'pointer-events:none',
+      'box-shadow:0 0 12px rgba(255,200,50,0.8)',
+      'transition:transform 0.6s cubic-bezier(0.34,1.56,0.64,1) ' + (i*40) + 'ms, opacity 0.3s ease ' + (i*40) + 'ms'
+    ].join(';');
+    document.body.appendChild(petal);
+    // Trigger grow
+    setTimeout(function(p){ p.style.transform = p.style.transform.replace('scaleY(0)', 'scaleY(1)'); p.style.opacity = '1'; }, 20 + i*40, petal);
+    // Then retract
+    setTimeout(function(p){ p.style.transition = 'transform 0.5s ease, opacity 0.4s ease'; p.style.transform = p.style.transform.replace('scaleY(1)', 'scaleY(0)'); p.style.opacity='0'; }, 700 + i*40, petal);
+  }
 }
 
 function safeVideoPlay(video, onSkip) {
