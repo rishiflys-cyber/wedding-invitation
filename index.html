@@ -261,8 +261,8 @@ html, body {
 /* The 4 envelope flaps */
 .env-flap {
   position: absolute;
-  transition: transform 1.8s cubic-bezier(0.22, 1, 0.36, 1),
-              opacity 1.4s ease 0.3s;
+  transition: transform 3.5s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 2.8s ease 0.6s;
   z-index: 5;
   will-change: transform;
 }
@@ -3391,7 +3391,7 @@ function openEnvelope() {
     document.getElementById('screen-envelope').classList.add('opening');
   }, 600);
 
-  // Step 4 (1800ms): Ganesh
+  // Step 4 (4500ms): Ganesh — flaps open slowly, video loads by now
   setTimeout(function() {
     goTo('screen-ganesh');
     document.getElementById('screen-envelope').classList.remove('opening');
@@ -3401,7 +3401,7 @@ function openEnvelope() {
     if (invLabel) invLabel.style.opacity = '';
     if (outerEl) { outerEl.style.transform=''; outerEl.style.opacity=''; outerEl.style.boxShadow=''; }
     opened = false;
-  }, 1800);
+  }, 4500);
 }
 
 
