@@ -413,14 +413,14 @@ html, body {
   filter: drop-shadow(0 0 4px rgba(255,220,60,0.7));
 }
 .seal-bloom-petal.blooming {
-  animation: seal-petal-bloom 1.3s cubic-bezier(0.16,1,0.3,1) forwards;
+  animation: seal-petal-unfurl 1.6s cubic-bezier(0.16,1,0.3,1) forwards;
 }
-@keyframes seal-petal-bloom {
-  0%   { transform: rotate(var(--ang)) scaleY(0) translateY(0);   opacity: 0; }
-  10%  { opacity: 1; }
-  45%  { transform: rotate(var(--ang)) scaleY(1.3) translateY(-20px); opacity: 1; }
-  75%  { transform: rotate(var(--ang)) scaleY(0.9) translateY(-60px); opacity: 0.6; }
-  100% { transform: rotate(var(--ang)) scaleY(0.2) translateY(-110px); opacity: 0; }
+@keyframes seal-petal-unfurl {
+  0%   { transform: rotate(var(--ang)) translateY(0px) scaleY(0.1) scaleX(0.4); opacity: 0; }
+  15%  { opacity: 1; transform: rotate(var(--ang)) translateY(-6px) scaleY(0.7) scaleX(1); }
+  50%  { transform: rotate(var(--ang)) translateY(-30px) scaleY(1.5) scaleX(1.1); opacity: 1; }
+  80%  { transform: rotate(var(--ang)) translateY(-55px) scaleY(1.1) scaleX(1); opacity: 0.7; }
+  100% { transform: rotate(var(--ang)) translateY(-80px) scaleY(0.6) scaleX(0.8); opacity: 0; }
 }
 
 .seal-outer {
@@ -3338,23 +3338,10 @@ function openEnvelope() {
   opened = true;
   requestWakeLock();
 
-  // Unlock audio during this gesture so it can autoplay later — no music on seal/envelope slide
-  const music = document.getElementById('bgmusic');
-  window._musicUnlocked = false;
-  window._musicStarted = false;
-  window._musicMutedByUser = false;
-  music.volume = 0;
-  music.play().then(function(){ music.pause(); music.currentTime = 0; window._musicUnlocked = true; }).catch(function(){ window._musicUnlocked = false; });
-
-  // Unlock ALL event videos during this user gesture so they can autoplay later
-  ['mehendi-video','sangeet-video','haldi-video','wedding-video','reception-video'].forEach(function(vid) {
-    var v = document.getElementById(vid);
-    if (v) { v.muted = true; v.play().then(function(){ v.pause(); v.currentTime = 0; }).catch(function(){}); }
-  });
-
   var sealEl = document.getElementById('seal');
+  var outerEl = sealEl ? sealEl.querySelector('.seal-outer') : null;
 
-  // Start music immediately on tap (once only)
+  // Start music immediately on tap
   if (!window._musicStarted) {
     var bgm = document.getElementById('bgm');
     if (bgm) {
@@ -3369,273 +3356,83 @@ function openEnvelope() {
     }
   }
 
-  // Step 1 (0ms): Press flash — seal flares white-gold
-  var outerEl = sealEl ? sealEl.querySelector('.seal-outer') : null;
+  // Hide tap hint + invite label immediately
+  var hint = document.querySelector('.tap-hint');
+  if (hint) { hint.style.transition = 'opacity 0.2s'; hint.style.opacity = '0'; }
+  var invLabel = document.querySelector('.invite-label');
+  if (invLabel) { invLabel.style.transition = 'opacity 0.2s'; invLabel.style.opacity = '0'; }
+
+  // Step 1 (0ms): Press feel — seal shrinks like a button click
   if (outerEl) {
-    outerEl.style.transition = 'box-shadow 0.15s ease, transform 0.12s ease';
-    outerEl.style.transform = 'scale(0.88)';
-    outerEl.style.boxShadow = '0 0 0 8px rgba(255,255,200,0.95),0 0 120px rgba(255,240,100,1),0 0 200px rgba(255,220,60,0.8)';
+    outerEl.style.transition = 'transform 0.12s ease, box-shadow 0.12s ease';
+    outerEl.style.transform = 'scale(0.85)';
+    outerEl.style.boxShadow = '0 0 0 6px rgba(255,240,180,0.9), 0 0 60px rgba(255,220,80,1)';
   }
 
-  // Step 2 (180ms): Bounce back + petals begin blooming outward
+  // Step 2 (160ms): Seal BLOOMS into a golden flower — bud opens
   setTimeout(function() {
     if (outerEl) {
-      outerEl.style.transition = 'transform 0.35s cubic-bezier(0.34,1.56,0.64,1)';
-      outerEl.style.transform = 'scale(1.08)';
+      outerEl.style.transition = 'transform 0.55s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.55s ease, background 0.55s ease, border-radius 0.5s ease';
+      outerEl.style.transform = 'scale(1.6)';
+      outerEl.style.background = 'radial-gradient(circle, #fff7a0 0%, #ffcc00 40%, #e07000 80%, #a03000 100%)';
+      outerEl.style.boxShadow = '0 0 0 10px rgba(255,210,80,0.6), 0 0 80px rgba(255,180,40,0.9), 0 0 180px rgba(255,140,20,0.5)';
+      outerEl.style.borderRadius = '50%';
     }
+    // Fade out RA text to reveal flower center
     if (sealEl) {
-      sealEl.querySelectorAll('.seal-bloom-petal').forEach(function(p, i) {
-        setTimeout(function() { p.classList.add('blooming'); }, i * 55);
+      ['seal-monogram','seal-subtext','seal-ring'].forEach(function(cls) {
+        var el = sealEl.querySelector('.'+cls);
+        if (el) { el.style.transition = 'opacity 0.25s'; el.style.opacity = '0'; }
       });
     }
-  }, 180);
+  }, 160);
 
-  // Step 3 (700ms): Seal cracks open — scale up then implode to nothing
+  // Step 3 (450ms): Petals unfurl from the flower outward — staggered like real petals opening
   setTimeout(function() {
-    if (outerEl) {
-      outerEl.style.transition = 'transform 0.55s cubic-bezier(0.55,0,1,0.45), opacity 0.55s ease';
-      outerEl.style.transform = 'scale(1.35)';
-      outerEl.style.opacity = '0';
+    if (sealEl) {
+      sealEl.querySelectorAll('.seal-bloom-petal').forEach(function(p, i) {
+        setTimeout(function() { p.classList.add('blooming'); }, i * 70);
+      });
     }
-    // Massive light burst
     var env = document.getElementById('screen-envelope');
     if (env) {
-      env.style.transition = 'background 0.4s ease';
-      env.style.background = 'radial-gradient(ellipse at 50% 48%,rgba(255,240,160,0.55) 0%,transparent 65%)';
+      env.style.transition = 'background 0.7s ease';
+      env.style.background = 'radial-gradient(ellipse at 50% 50%, rgba(255,220,80,0.35) 0%, transparent 65%)';
     }
-  }, 700);
+  }, 450);
 
-  // Step 4 (1100ms): Hide tap hint, flaps begin opening + petals shower
+  // Step 4 (950ms): Flower bursts in golden flash — dissolves outward — flaps open
   setTimeout(function() {
-    var hint = document.querySelector('.tap-hint');
-    if (hint) { hint.style.transition = 'opacity 0.3s ease'; hint.style.opacity = '0'; }
-    var invLabel = document.querySelector('.invite-label');
-    if (invLabel) { invLabel.style.transition = 'opacity 0.3s ease'; invLabel.style.opacity = '0'; }
+    if (outerEl) {
+      outerEl.style.transition = 'transform 0.5s cubic-bezier(0.55,0,1,0.45), opacity 0.45s ease';
+      outerEl.style.transform = 'scale(2.6)';
+      outerEl.style.opacity = '0';
+    }
     document.getElementById('screen-envelope').classList.add('opening');
-    spawnPetals(90);
-  }, 1100);
+  }, 950);
 
-  // Step 5 (2000ms): Switch to Ganesh WHILE flaps are still sliding — guest sees Ganesh revealed
+  // Step 5 (1900ms): Lord Ganesh is revealed as flaps complete
   setTimeout(function() {
     goTo('screen-ganesh');
     document.getElementById('screen-envelope').classList.remove('opening');
     var env2 = document.getElementById('screen-envelope');
     if (env2) env2.style.background = '';
-    var hint2 = document.querySelector('.tap-hint');
-    if (hint2) { hint2.style.opacity = ''; }
-    var invLabel2 = document.querySelector('.invite-label');
-    if (invLabel2) { invLabel2.style.opacity = ''; }
+    if (hint) hint.style.opacity = '';
+    if (invLabel) invLabel.style.opacity = '';
     if (sealEl) {
-      if (outerEl) { outerEl.style.transform=''; outerEl.style.opacity=''; outerEl.style.boxShadow=''; }
+      if (outerEl) {
+        outerEl.style.transform=''; outerEl.style.opacity='';
+        outerEl.style.boxShadow=''; outerEl.style.background=''; outerEl.style.borderRadius='';
+      }
+      ['seal-monogram','seal-subtext','seal-ring'].forEach(function(cls) {
+        var el = sealEl.querySelector('.'+cls);
+        if (el) el.style.opacity = '';
+      });
       sealEl.querySelectorAll('.seal-bloom-petal').forEach(function(p){ p.classList.remove('blooming'); });
     }
     opened = false;
-  }, 2000);
+  }, 1900);
 }
-
-// Read guest name + salutation from URL params
-const _params = new URLSearchParams(window.location.search);
-const _guestRaw = _params.get('to') ? decodeURIComponent(_params.get('to')) : '';
-const _sal = _params.get('sal') || '';
-const _guestFull = (_sal ? _sal + '. ' : '') + (_guestRaw || 'Friend');
-// Populate "Dear [Name]" on loader
-(function(){ var el = document.getElementById('loader-dear'); if(el) el.textContent = 'Dear ' + _guestFull + ','; })();
-// VIP unlock: ?vip=1, ?vip=true, or short alias ?r=1
-const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _params.get('r') === '1';
-
-// Personalise loader greeting
-(function() {
-  var el = document.getElementById('loader-greeting');
-  if (!el) return;
-  el.textContent = 'Honoured Guest,';
-})();
-
-
-/* ── LOADER: fetch all videos before showing invitation ── */
-(function() {
-  var videos = ['mehendi.mp4','sangeet.mp4','haldi.mp4','wedding.mp4','reception.mp4'];
-  var bar = document.getElementById('loader-bar');
-  var btn = document.getElementById('loader-open-btn');
-  var loader = document.getElementById('screen-loader');
-  var loaded = 0;
-  var totalBytes = 0;
-  var loadedBytes = 0;
-  var blobs = {};
-
-  function updateBar(pct) {
-    if (bar) bar.style.width = Math.min(100, pct) + '%';
-  }
-
-  function onAllDone() {
-    updateBar(100);
-    // Assign blob URLs and fully prime every video decoder
-    // iOS: seek to 0 after loadeddata forces first-frame decode
-    // Android: play()+pause() primes the decoder pipeline
-    videos.forEach(function(src) {
-      var id = src.replace('.mp4', '') + '-video';
-      var el = document.getElementById(id);
-      if (el && blobs[src]) {
-        el.src = blobs[src];
-        el.muted = true;
-        el.load();
-        el.addEventListener('loadeddata', function() {
-          el.currentTime = 0;
-          // Prime Android decoder: silent play then immediate pause
-          // Use a flag so this primer never interferes with real playback later
-          el._priming = true;
-          var p = el.play();
-          if (p !== undefined) {
-            p.then(function() {
-              el.pause();
-              el.currentTime = 0;
-              el._priming = false;
-            }).catch(function() { el._priming = false; });
-          } else {
-            el._priming = false;
-          }
-        }, { once: true });
-      }
-    });
-    // Show open button only after all videos have first-frame decoded
-    var ready = 0;
-    var total = videos.length;
-    function onVideoReady() {
-      ready++;
-      if (ready >= total) {
-        // All videos decoded — wait 1 extra second then start countdown
-        setTimeout(startCountdown, 1000);
-      }
-    }
-    videos.forEach(function(src) {
-      var id = src.replace('.mp4', '') + '-video';
-      var el = document.getElementById(id);
-      if (el) {
-        if (el.readyState >= 2) { onVideoReady(); }
-        else { el.addEventListener('loadeddata', onVideoReady, { once: true }); }
-      } else { onVideoReady(); }
-    });
-    // Fallback: start countdown after 5s regardless
-    var _fallbackTimer = setTimeout(startCountdown, 5000);
-
-    var _countdownStarted = false;
-    function startCountdown() {
-      if (_countdownStarted) return;
-      _countdownStarted = true;
-      clearTimeout(_fallbackTimer);
-      updateBar(100);
-      var sub = loader.querySelector('.loader-subtitle');
-      if (sub) sub.textContent = 'Your invitation is ready';
-      var countdown = document.getElementById('loader-countdown');
-      var numEl = document.getElementById('loader-countdown-number');
-      if (countdown) countdown.style.display = 'flex';
-      var count = 3;
-      function tick() {
-        if (numEl) {
-          numEl.textContent = count;
-          // Re-trigger animation
-          numEl.style.animation = 'none';
-          void numEl.offsetWidth;
-          numEl.style.animation = 'countdown-pulse 1s ease-in-out';
-        }
-        if (count <= 0) {
-          openInvitation();
-          return;
-        }
-        count--;
-        setTimeout(tick, 1000);
-      }
-      tick();
-    }
-  }
-
-  var _toastTimer = null;
-  function startLoaderToast() {
-    var toast = document.getElementById('loader-toast');
-    if (!toast) return;
-    toast.style.display = 'block';
-    function show() {
-      toast.style.opacity = '1';
-      _toastTimer = setTimeout(function() {
-        toast.style.opacity = '0';
-        _toastTimer = setTimeout(show, 5000);
-      }, 3000);
-    }
-    show();
-  }
-
-  var _sealToastTimer = null;
-  window.startSealToast = function startSealToast() {
-    if (_sealToastTimer) { clearTimeout(_sealToastTimer); _sealToastTimer = null; }
-    var toast = document.getElementById('seal-toast');
-    if (!toast) return;
-    function show() {
-      toast.style.display = 'flex';
-      setTimeout(function(){ toast.style.opacity = '1'; }, 20);
-      _sealToastTimer = setTimeout(function() {
-        toast.style.opacity = '0';
-        setTimeout(function(){ toast.style.display = 'none'; }, 600);
-        _sealToastTimer = setTimeout(show, 5000);
-      }, 3000);
-    }
-    _sealToastTimer = setTimeout(show, 2000);
-  };
-  window.stopSealToast = function stopSealToast() {
-    if (_sealToastTimer) { clearTimeout(_sealToastTimer); _sealToastTimer = null; }
-    var toast = document.getElementById('seal-toast');
-    if (toast) { toast.style.opacity = '0'; toast.style.display = 'none'; }
-  };
-
-  window.openInvitation = function() {
-    // Videos loaded silently in background — nothing to show, seal was already ready
-  };
-
-  // Fetch each video, track bytes for progress bar
-  var remaining = videos.length;
-  videos.forEach(function(src) {
-    fetch(src)
-      .then(function(res) {
-        var total = parseInt(res.headers.get('content-length') || '800000');
-        totalBytes += total;
-        var reader = res.body.getReader();
-        var chunks = [];
-        function read() {
-          return reader.read().then(function(r) {
-            if (r.done) {
-              var blob = new Blob(chunks, { type: 'video/mp4' });
-              blobs[src] = URL.createObjectURL(blob);
-              loaded++;
-              remaining--;
-              if (remaining === 0) onAllDone();
-              return;
-            }
-            chunks.push(r.value);
-            loadedBytes += r.value.length;
-            updateBar(totalBytes > 0 ? (loadedBytes / totalBytes) * 100 : (loaded / videos.length) * 100);
-            return read();
-          });
-        }
-        return read();
-      })
-      .catch(function() {
-        // If fetch fails for one, still count it done
-        loaded++;
-        remaining--;
-        blobs[src] = src; // fall back to original src
-        if (remaining === 0) onAllDone();
-      });
-  });
-})();
-
-// Wire wedding screen → reception (VIP) or rsvp (everyone else)
-/* ── Safe video play/pause for iOS Safari ── */
-// Detect slow connection — skip videos on 2G/slow-2G/cellular
-var _slowConnection = (function() {
-  var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-  if (!conn) return false;
-  if (conn.saveData) return true;
-  if (conn.effectiveType === '2g' || conn.effectiveType === 'slow-2g') return true;
-  return false;
-})();
 
 function safeVideoPlay(video, onSkip) {
   if (!video) { if (onSkip) onSkip(); return; }
