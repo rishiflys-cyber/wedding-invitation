@@ -2292,52 +2292,106 @@ html, body {
 ══════════════════════════════════════════ -->
 <div id="screen-invite3" class="screen" onclick="safeGoTo(_isVIP ? 'screen-reception' : 'screen-wedding')" style="cursor:pointer;">
   <div id="screen-invite3-bg-zoom" style="background: radial-gradient(ellipse at 50% 20%, rgba(80,20,60,0.9) 0%, transparent 55%), radial-gradient(ellipse at 20% 80%, rgba(60,10,40,0.7) 0%, transparent 50%), linear-gradient(180deg, #0d0618 0%, #1a0830 35%, #120520 65%, #080210 100%);"></div>
+  <!-- Stars -->
   <div style="position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;">
     <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;">
-      <circle cx="12%" cy="8%" r="1.2" fill="rgba(245,200,66,0.55)"/><circle cx="88%" cy="12%" r="0.9" fill="rgba(245,200,66,0.4)"/>
-      <circle cx="25%" cy="20%" r="0.7" fill="rgba(255,255,255,0.3)"/><circle cx="72%" cy="6%" r="1.4" fill="rgba(245,200,66,0.5)"/>
-      <circle cx="55%" cy="15%" r="0.8" fill="rgba(255,255,255,0.35)"/><circle cx="38%" cy="4%" r="1.0" fill="rgba(245,200,66,0.45)"/>
+      <circle cx="12%" cy="8%" r="1.2" fill="rgba(245,200,66,0.55)"/>
+      <circle cx="88%" cy="12%" r="0.9" fill="rgba(245,200,66,0.4)"/>
+      <circle cx="25%" cy="20%" r="0.7" fill="rgba(255,255,255,0.3)"/>
+      <circle cx="72%" cy="6%" r="1.4" fill="rgba(245,200,66,0.5)"/>
+      <circle cx="55%" cy="15%" r="0.8" fill="rgba(255,255,255,0.35)"/>
+      <circle cx="38%" cy="4%" r="1.0" fill="rgba(245,200,66,0.45)"/>
+      <circle cx="92%" cy="28%" r="0.7" fill="rgba(255,255,255,0.3)"/>
+      <circle cx="8%" cy="35%" r="1.1" fill="rgba(245,200,66,0.4)"/>
+      <circle cx="65%" cy="22%" r="0.6" fill="rgba(255,255,255,0.25)"/>
+      <circle cx="45%" cy="88%" r="0.9" fill="rgba(245,200,66,0.35)"/>
+      <circle cx="80%" cy="78%" r="1.2" fill="rgba(245,200,66,0.4)"/>
+      <circle cx="18%" cy="72%" r="0.8" fill="rgba(255,255,255,0.3)"/>
     </svg>
   </div>
-  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:60px 28px 28px;text-align:center;position:relative;z-index:1;gap:0;">
-    <div style="font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:5px;text-transform:uppercase;color:rgba(245,200,66,0.55);margin-bottom:16px;">Wedding Invitation</div>
-    <div style="font-family:'Playfair Display',serif;font-size:clamp(46px,12vw,70px);font-weight:700;font-style:italic;line-height:0.95;">
-      <span style="color:#f9e060;display:block;text-shadow:0 0 60px rgba(249,224,96,0.5);">Rishabh</span>
-      <span style="font-size:clamp(17px,4.5vw,24px);font-weight:400;color:rgba(255,255,255,0.55);font-style:normal;display:block;margin:5px 0;">&amp;</span>
-      <span style="color:#fff;display:block;">Ananya</span>
+
+  <div style="display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;height:100%;padding:calc(env(safe-area-inset-top,0px) + 72px) 28px calc(env(safe-area-inset-bottom,0px) + 16px);text-align:center;position:relative;z-index:1;">
+
+    <!-- "WEDDING INVITATION" — large and bright at top -->
+    <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(14px,4vw,20px);font-weight:700;letter-spacing:7px;text-transform:uppercase;color:#f9e060;text-shadow:0 0 30px rgba(249,224,96,0.6),0 0 60px rgba(249,224,96,0.2);">✦ Wedding Invitation ✦</div>
+
+    <!-- Full names — large and italic -->
+    <div style="font-family:'Playfair Display',serif;font-size:clamp(36px,10vw,56px);font-weight:700;font-style:italic;line-height:1.1;letter-spacing:-0.01em;">
+      <span style="color:#f9e060;display:block;text-shadow:0 0 60px rgba(249,224,96,0.5),0 0 20px rgba(249,224,96,0.3);">Rishabh Chattopadhyay</span>
+      <span style="font-size:clamp(16px,4.5vw,22px);font-weight:400;color:rgba(255,255,255,0.45);font-style:normal;display:block;margin:6px 0;letter-spacing:8px;">— &amp; —</span>
+      <span style="color:#fff;display:block;text-shadow:0 0 40px rgba(255,255,255,0.2);">Ananya Dash <em style="font-size:0.58em;opacity:0.65;">(Acharya)</em></span>
     </div>
-    <div style="font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;color:rgba(255,255,255,0.6);line-height:1.6;max-width:270px;margin:13px auto 16px;">"Two families, one forever — come witness<br>the night everything changes."</div>
-    <div style="display:flex;align-items:stretch;border:1px solid rgba(245,200,66,0.4);border-radius:6px;overflow:hidden;background:rgba(0,0,0,0.3);max-width:310px;width:100%;margin-bottom:16px;">
-      <div style="background:rgba(245,200,66,0.12);padding:13px 15px;display:flex;align-items:center;justify-content:center;min-width:50px;">
-        <span style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#f9e060;line-height:1;">11</span>
+
+    <!-- Parents section -->
+    <div style="display:flex;align-items:flex-start;justify-content:center;gap:20px;width:100%;max-width:360px;">
+      <div style="flex:1;text-align:center;">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:9.5px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,200,66,0.6);margin-bottom:8px;">Groom's Parents</div>
+        <div style="font-family:'Playfair Display',serif;font-size:12.5px;color:rgba(255,255,255,0.88);line-height:1.8;font-weight:500;">Partha Sarathi<br>Chattopadhyay<br><span style="color:rgba(245,200,66,0.4);font-size:11px;">&amp;</span><br>Soma Chattopadhyay</div>
       </div>
-      <div style="width:1px;background:rgba(245,200,66,0.25);"></div>
-      <div style="padding:11px 13px;text-align:left;flex:1;">
-        <div style="font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:600;letter-spacing:3px;color:#f9e060;text-transform:uppercase;">December</div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:2px;color:rgba(255,255,255,0.55);">2026 · Kolkata</div>
-      </div>
-      <div style="width:1px;background:rgba(245,200,66,0.25);"></div>
-      <div style="padding:11px 13px;text-align:left;">
-        <div style="font-family:'Cormorant Garamond',serif;font-size:12px;color:rgba(255,255,255,0.8);line-height:1.4;">Circle Club</div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:10px;color:rgba(255,255,255,0.5);">7:30 PM onwards</div>
+      <div style="width:1px;background:linear-gradient(180deg,transparent,rgba(245,200,66,0.4) 30%,rgba(245,200,66,0.4) 70%,transparent);align-self:stretch;margin:4px 0;"></div>
+      <div style="flex:1;text-align:center;">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:9.5px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,200,66,0.6);margin-bottom:8px;">Bride's Parents</div>
+        <div style="font-family:'Playfair Display',serif;font-size:12.5px;color:rgba(255,255,255,0.88);line-height:1.8;font-weight:500;">Atanu Kumar Dash<br><span style="font-size:11px;opacity:0.65;">(Acharya)</span><br><span style="color:rgba(245,200,66,0.4);font-size:11px;">&amp;</span><br>Aparna Dash <span style="font-size:11px;opacity:0.65;">(Acharya)</span></div>
       </div>
     </div>
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:20px;">
-      <div style="text-align:center;"><div id="si-days" style="font-family:'Playfair Display',serif;font-size:clamp(24px,7vw,34px);font-weight:700;color:#fff;line-height:1;">--</div><div style="font-size:9px;letter-spacing:3px;color:rgba(245,200,66,0.6);text-transform:uppercase;margin-top:2px;">Days</div></div>
-      <div style="font-size:26px;color:rgba(245,200,66,0.5);font-weight:300;margin-bottom:12px;">:</div>
-      <div style="text-align:center;"><div id="si-hours" style="font-family:'Playfair Display',serif;font-size:clamp(24px,7vw,34px);font-weight:700;color:#fff;line-height:1;">--</div><div style="font-size:9px;letter-spacing:3px;color:rgba(245,200,66,0.6);text-transform:uppercase;margin-top:2px;">Hours</div></div>
-      <div style="font-size:26px;color:rgba(245,200,66,0.5);font-weight:300;margin-bottom:12px;">:</div>
-      <div style="text-align:center;"><div id="si-mins" style="font-family:'Playfair Display',serif;font-size:clamp(24px,7vw,34px);font-weight:700;color:#fff;line-height:1;">--</div><div style="font-size:9px;letter-spacing:3px;color:rgba(245,200,66,0.6);text-transform:uppercase;margin-top:2px;">Mins</div></div>
-      <div style="font-size:26px;color:rgba(245,200,66,0.5);font-weight:300;margin-bottom:12px;">:</div>
-      <div style="text-align:center;"><div id="si-secs" style="font-family:'Playfair Display',serif;font-size:clamp(24px,7vw,34px);font-weight:700;color:#fff;line-height:1;">--</div><div style="font-size:9px;letter-spacing:3px;color:rgba(245,200,66,0.6);text-transform:uppercase;margin-top:2px;">Secs</div></div>
+
+    <!-- Date + Venue box -->
+    <div style="display:flex;align-items:stretch;border:1px solid rgba(245,200,66,0.45);border-radius:8px;overflow:hidden;background:rgba(0,0,0,0.35);backdrop-filter:blur(6px);max-width:310px;width:100%;">
+      <div style="background:rgba(245,200,66,0.14);padding:12px 16px;display:flex;align-items:center;justify-content:center;min-width:50px;">
+        <span style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:#f9e060;line-height:1;">11</span>
+      </div>
+      <div style="width:1px;background:rgba(245,200,66,0.3);"></div>
+      <div style="padding:12px 14px;text-align:left;flex:1;">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:600;letter-spacing:2px;color:#f9e060;text-transform:uppercase;">December 2026</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:11.5px;letter-spacing:1px;color:rgba(255,255,255,0.5);margin-top:2px;">Kolkata</div>
+      </div>
+      <div style="width:1px;background:rgba(245,200,66,0.3);"></div>
+      <div style="padding:12px 14px;text-align:left;">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:13px;color:rgba(255,255,255,0.85);line-height:1.4;">Circle Club</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:11px;color:rgba(255,255,255,0.45);margin-top:2px;">7:30 PM onwards</div>
+      </div>
     </div>
-    <div class="screen-tap-hint" style="font-size:15px;opacity:0.7;letter-spacing:3px;text-transform:uppercase;">TAP TO CONTINUE ✦</div>
+
+    <!-- Countdown row -->
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div style="text-align:center;">
+        <div id="si-days" style="font-family:'Playfair Display',serif;font-size:clamp(28px,8vw,38px);font-weight:700;color:#fff;line-height:1;text-shadow:0 0 20px rgba(255,255,255,0.2);">50</div>
+        <div style="font-size:9px;letter-spacing:3px;color:rgba(245,200,66,0.65);text-transform:uppercase;margin-top:4px;">Days</div>
+      </div>
+      <div style="font-size:26px;color:rgba(245,200,66,0.45);font-weight:300;padding-bottom:16px;">:</div>
+      <div style="text-align:center;">
+        <div id="si-hours" style="font-family:'Playfair Display',serif;font-size:clamp(28px,8vw,38px);font-weight:700;color:#fff;line-height:1;text-shadow:0 0 20px rgba(255,255,255,0.2);">07</div>
+        <div style="font-size:9px;letter-spacing:3px;color:rgba(245,200,66,0.65);text-transform:uppercase;margin-top:4px;">Hours</div>
+      </div>
+      <div style="font-size:26px;color:rgba(245,200,66,0.45);font-weight:300;padding-bottom:16px;">:</div>
+      <div style="text-align:center;">
+        <div id="si-mins" style="font-family:'Playfair Display',serif;font-size:clamp(28px,8vw,38px);font-weight:700;color:#fff;line-height:1;text-shadow:0 0 20px rgba(255,255,255,0.2);">12</div>
+        <div style="font-size:9px;letter-spacing:3px;color:rgba(245,200,66,0.65);text-transform:uppercase;margin-top:4px;">Mins</div>
+      </div>
+      <div style="font-size:26px;color:rgba(245,200,66,0.45);font-weight:300;padding-bottom:16px;">:</div>
+      <div style="text-align:center;">
+        <div id="si-secs" style="font-family:'Playfair Display',serif;font-size:clamp(28px,8vw,38px);font-weight:700;color:#fff;line-height:1;text-shadow:0 0 20px rgba(255,255,255,0.2);">54</div>
+        <div style="font-size:9px;letter-spacing:3px;color:rgba(245,200,66,0.65);text-transform:uppercase;margin-top:4px;">Secs</div>
+      </div>
+    </div>
+
+    <!-- Tap hint -->
+    <div class="screen-tap-hint" style="font-size:14px;opacity:0.6;letter-spacing:2px;">tap to continue ✦</div>
+
   </div>
-  <div id="invite-act3-text" style="display:none;"></div><div id="act3-lotus-orn" style="display:none;"></div>
-  <div id="name-rishabh" style="display:none;"></div><div id="names-amp" style="display:none;"></div>
-  <div id="name-ananya" style="display:none;"></div><div id="name-acharya" style="display:none;"></div>
-  <div id="act3-divider" style="display:none;"></div><div id="act3-parents" style="display:none;"></div>
+  <!-- hidden stubs so existing JS refs don't break -->
+  <div id="invite-act3-text" style="display:none;"></div>
+  <div id="act3-lotus-orn" style="display:none;"></div>
+  <div id="name-rishabh" style="display:none;"></div>
+  <div id="names-amp" style="display:none;"></div>
+  <div id="name-ananya" style="display:none;"></div>
+  <div id="name-acharya" style="display:none;"></div>
+  <div id="act3-divider" style="display:none;"></div>
+  <div id="act3-parents" style="display:none;"></div>
 </div>
+<!-- ══════════════════════════════════════════
+     SCREEN RSVP
+══════════════════════════════════════════ -->
 <div id="screen-rsvp" class="screen">
   <div class="rsvp-wrap">
     <div id="rsvp-pre-submit">
@@ -2577,11 +2631,11 @@ html, body {
         <div class="event-detail-value">7:30 PM onwards</div>
       </div>
     </div>
-    <div class="event-bengali-note">
+    <div class="event-bengali-note" style="opacity:0.45;">
       <span class="event-bengali-sub">As per Bengali calendar · 11th Agrahayan<br>Shubho Lagna · 12th December, 2:30 AM</span>
     </div>
     <div class="event-venue">📍 Circle Club, Kolkata</div>
-    <div class="event-poem"><span class="event-poem-em">Under the same stars that have witnessed a thousand love stories — and their story begins on 11th December.</span></div>
+    <div class="event-poem"><span class="event-poem-em" style="opacity:0.45;">Under the same stars that have witnessed a thousand love stories — and their story begins on 11th December.</span></div>
     <div id="wedding-press-hint" style="pointer-events:none;transition:opacity 0.6s ease;opacity:0;text-align:center;">
       <div style="font-family:'Playfair Display',serif;font-size:18px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-light);font-weight:700;animation:breathe 2.5s ease-in-out infinite;">✦ press here ✦</div>
     </div>
