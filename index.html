@@ -3341,18 +3341,21 @@ function openEnvelope() {
   var sealEl = document.getElementById('seal');
   var outerEl = sealEl ? sealEl.querySelector('.seal-outer') : null;
 
-  // Music on tap
-  if (!window._musicStarted) {
-    var bgm = document.getElementById('bgm');
-    if (bgm) {
-      bgm.volume = 0;
-      bgm.play().then(function() {
-        window._musicStarted = true;
-        var fi = setInterval(function() {
-          if (bgm.volume < 0.85) bgm.volume = Math.min(0.85, bgm.volume + 0.05);
-          else clearInterval(fi);
-        }, 120);
-      }).catch(function(){});
+  // Music — starts IMMEDIATELY in this gesture (required for iOS)
+  var bgm = document.getElementById('bgm');
+  if (bgm && !window._musicStarted) {
+    window._musicStarted = true;
+    bgm.volume = 0.85;
+    bgm.currentTime = 0;
+    var playPromise = bgm.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(function() {
+        // Retry once with volume 0 trick for strict browsers
+        bgm.volume = 0;
+        bgm.play().then(function() {
+          bgm.volume = 0.85;
+        }).catch(function(){});
+      });
     }
   }
 
