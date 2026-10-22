@@ -261,8 +261,8 @@ html, body {
 /* The 4 envelope flaps */
 .env-flap {
   position: absolute;
-  transition: transform 2.5s cubic-bezier(0.4, 0, 0.2, 1),
-              opacity 2.0s ease 0.3s;
+  transition: transform 4.5s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 3.5s ease 0.8s;
   z-index: 5;
   will-change: transform;
 }
@@ -3390,24 +3390,34 @@ function openEnvelope() {
     }
   }, 700);
 
-  // Step 4 (1100ms): Flaps fly open + flower petals shower
+  // Step 4 (1100ms): Hide tap hint, flaps begin slow dramatic open + petals shower
   setTimeout(function() {
+    // Hide "tap the seal" hint immediately
+    var hint = document.querySelector('.tap-hint');
+    if (hint) { hint.style.transition = 'opacity 0.3s ease'; hint.style.opacity = '0'; }
+    var invLabel = document.querySelector('.invite-label');
+    if (invLabel) { invLabel.style.transition = 'opacity 0.3s ease'; invLabel.style.opacity = '0'; }
+    // Start slow flap open
     document.getElementById('screen-envelope').classList.add('opening');
     spawnPetals(90);
   }, 1100);
 
-  // Step 5 (3500ms): Go to Ganesh — videos are loaded by now
+  // Step 5 (5800ms): Go to Ganesh — flaps have been opening for 4.5s, videos loaded
   setTimeout(function() {
     goTo('screen-ganesh');
     document.getElementById('screen-envelope').classList.remove('opening');
     var env2 = document.getElementById('screen-envelope');
     if (env2) env2.style.background = '';
+    var hint2 = document.querySelector('.tap-hint');
+    if (hint2) { hint2.style.opacity = ''; }
+    var invLabel2 = document.querySelector('.invite-label');
+    if (invLabel2) { invLabel2.style.opacity = ''; }
     if (sealEl) {
       if (outerEl) { outerEl.style.transform=''; outerEl.style.opacity=''; outerEl.style.boxShadow=''; }
       sealEl.querySelectorAll('.seal-bloom-petal').forEach(function(p){ p.classList.remove('blooming'); });
     }
     opened = false;
-  }, 3500);
+  }, 5800);
 }
 
 // Read guest name + salutation from URL params
