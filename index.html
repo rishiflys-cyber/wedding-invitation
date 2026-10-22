@@ -3419,52 +3419,51 @@ function openEnvelope() {
 
 function spawnFlowerPetals(sealEl) {
   if (!sealEl) return;
-  var rect = sealEl.getBoundingClientRect();
-  var cx = rect.left + rect.width / 2;
-  var cy = rect.top + rect.height / 2;
-  var colors = ['#ffee00','#ffcc00','#ffaa00','#ff8800','#ffe566','#ffdd33','#fff0a0','#ffbb44'];
+  var size = sealEl.offsetWidth || 120;
+  var half = size / 2;
 
   for (var i = 0; i < 8; i++) {
     (function(idx) {
-      var angleDeg = idx * 45;
-      var angleRad = angleDeg * Math.PI / 180;
+      var deg = idx * 45;
       var petal = document.createElement('div');
       petal.className = 'flower-petal-burst';
 
-      // Petal positioned at seal center, rotated outward, grows away from center
+      // Position relative to seal center using absolute inside the seal
+      // Each petal: centered at seal middle, rotated, grows upward
+      var petalH = half * 1.4;
+      var petalW = half * 0.38;
+
       petal.style.cssText = [
-        'position:fixed',
-        'left:' + cx + 'px',
-        'top:' + cy + 'px',
-        'width:22px',
-        'height:55px',
-        'margin-left:-11px',
-        'margin-top:-55px',            /* anchor bottom at center */
-        'background:' + colors[idx],
-        'border-radius:50% 50% 30% 30% / 60% 60% 40% 40%',
-        'transform-origin:50% 100%',   /* pivot from bottom = seal center */
-        'transform:rotate(' + angleDeg + 'deg) scaleY(0)',
+        'position:absolute',
+        'left:50%',
+        'top:50%',
+        'width:' + petalW + 'px',
+        'height:' + petalH + 'px',
+        'margin-left:' + (-petalW/2) + 'px',
+        'margin-top:' + (-petalH) + 'px',
+        'background:linear-gradient(to top, #e07000 0%, #ffcc00 50%, #fff7a0 100%)',
+        'border-radius:50% 50% 30% 30%',
+        'transform-origin:50% 100%',
+        'transform:rotate(' + deg + 'deg) scaleY(0)',
         'opacity:0',
-        'z-index:9999',
         'pointer-events:none',
-        'box-shadow:0 -4px 16px rgba(255,200,50,0.7)'
+        'z-index:20',
+        'box-shadow:0 0 8px rgba(255,200,50,0.6)'
       ].join(';');
 
-      document.body.appendChild(petal);
+      sealEl.appendChild(petal);
 
-      // Grow outward after stagger
       setTimeout(function() {
-        petal.style.transition = 'transform 0.55s cubic-bezier(0.34,1.56,0.64,1), opacity 0.25s ease';
-        petal.style.transform = 'rotate(' + angleDeg + 'deg) scaleY(1)';
-        petal.style.opacity = '1';
-      }, 30 + idx * 50);
+        petal.style.transition = 'transform 0.6s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease';
+        petal.style.transform = 'rotate(' + deg + 'deg) scaleY(1)';
+        petal.style.opacity = '0.92';
+      }, 20 + idx * 55);
 
-      // Hold then retract
       setTimeout(function() {
-        petal.style.transition = 'transform 0.4s ease-in, opacity 0.35s ease';
-        petal.style.transform = 'rotate(' + angleDeg + 'deg) scaleY(0)';
+        petal.style.transition = 'transform 0.45s ease-in, opacity 0.4s ease';
+        petal.style.transform = 'rotate(' + deg + 'deg) scaleY(0)';
         petal.style.opacity = '0';
-      }, 600 + idx * 50);
+      }, 650 + idx * 55);
 
     })(i);
   }
