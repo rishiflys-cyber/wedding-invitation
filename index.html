@@ -261,8 +261,8 @@ html, body {
 /* The 4 envelope flaps */
 .env-flap {
   position: absolute;
-  transition: transform 4.5s cubic-bezier(0.22, 1, 0.36, 1),
-              opacity 3.5s ease 0.8s;
+  transition: transform 1.8s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 1.4s ease 0.3s;
   z-index: 5;
   will-change: transform;
 }
@@ -3405,19 +3405,17 @@ function openEnvelope() {
     }
   }, 700);
 
-  // Step 4 (1100ms): Hide tap hint, flaps begin slow dramatic open + petals shower
+  // Step 4 (1100ms): Hide tap hint, flaps begin opening + petals shower
   setTimeout(function() {
-    // Hide "tap the seal" hint immediately
     var hint = document.querySelector('.tap-hint');
     if (hint) { hint.style.transition = 'opacity 0.3s ease'; hint.style.opacity = '0'; }
     var invLabel = document.querySelector('.invite-label');
     if (invLabel) { invLabel.style.transition = 'opacity 0.3s ease'; invLabel.style.opacity = '0'; }
-    // Start slow flap open
     document.getElementById('screen-envelope').classList.add('opening');
     spawnPetals(90);
   }, 1100);
 
-  // Step 5 (5800ms): Go to Ganesh — flaps have been opening for 4.5s, videos loaded
+  // Step 5 (2000ms): Switch to Ganesh WHILE flaps are still sliding — guest sees Ganesh revealed
   setTimeout(function() {
     goTo('screen-ganesh');
     document.getElementById('screen-envelope').classList.remove('opening');
@@ -3432,7 +3430,7 @@ function openEnvelope() {
       sealEl.querySelectorAll('.seal-bloom-petal').forEach(function(p){ p.classList.remove('blooming'); });
     }
     opened = false;
-  }, 5800);
+  }, 2000);
 }
 
 // Read guest name + salutation from URL params
