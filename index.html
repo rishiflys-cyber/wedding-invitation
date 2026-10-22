@@ -483,6 +483,7 @@ html, body {
   font-weight: 700;
 }
 
+#screen-ganesh ~ * .tap-hint, .tap-hint.hidden { display: none !important; }
 .tap-hint {
   font-size: 20px;
   letter-spacing: 3px;
@@ -3405,6 +3406,8 @@ function openEnvelope() {
 
   // Step 4 (4500ms): Finalise — remove envelope screen
   setTimeout(function() {
+    var hint3 = document.querySelector('.tap-hint');
+    if (hint3) hint3.style.display = 'none';
     goTo('screen-ganesh');
     document.getElementById('screen-envelope').classList.remove('opening');
     var env2 = document.getElementById('screen-envelope');
