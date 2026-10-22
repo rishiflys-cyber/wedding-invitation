@@ -3234,7 +3234,7 @@ const _isVIP = _params.get('vip') === '1' || _params.get('vip') === 'true' || _p
         void numEl.offsetWidth;
         numEl.style.animation = 'countdown-pulse 1s ease-in-out';
       }
-      if (count <= 0) { openInvitation(); return; }
+      if (count <= 0) { if (window.openInvitation) window.openInvitation(); return; }
       count--;
       setTimeout(tick, 1000);
     }
@@ -3365,6 +3365,7 @@ document.addEventListener('DOMContentLoaded', function() {
       goTo(_isVIP ? 'screen-reception' : 'screen-rsvp');
     };
   }
+});
 
 /* ── Wedding video logic ── */
 (function(){
