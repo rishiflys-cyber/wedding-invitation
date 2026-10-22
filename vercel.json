@@ -1,6 +1,15 @@
 {
   "headers": [
     {
+      "source": "/index.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
+    },
+    {
       "source": "/(.*)\\.(webp|png|jpg|jpeg|mp3|svg|mp4|webm)",
       "headers": [
         {
