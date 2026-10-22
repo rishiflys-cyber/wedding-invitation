@@ -3390,24 +3390,38 @@ function openEnvelope() {
     }
     document.getElementById('screen-envelope').classList.add('opening');
 
-    // Switch to Ganesh screen immediately but transparent — fades in as flaps open
+    // Prepare Ganesh screen to fade in underneath — positioned behind envelope
     var ganeshScreen = document.getElementById('screen-ganesh');
     if (ganeshScreen) {
       ganeshScreen.style.opacity = '0';
+      ganeshScreen.style.transition = 'none';
+      ganeshScreen.style.position = 'fixed';
+      ganeshScreen.style.inset = '0';
+      ganeshScreen.style.zIndex = '1';
       ganeshScreen.style.display = 'flex';
-      ganeshScreen.classList.add('active');
-      // Fade Ganesh in slowly over 3s — fully visible as flaps finish
+      // Fade in over 3s as flaps open
       setTimeout(function() {
         ganeshScreen.style.transition = 'opacity 3s ease';
         ganeshScreen.style.opacity = '1';
-      }, 50);
+      }, 100);
     }
+    // Keep envelope on top while flaps open
+    var envScreen = document.getElementById('screen-envelope');
+    if (envScreen) envScreen.style.zIndex = '10';
   }, 600);
 
-  // Step 4 (4500ms): Finalise — remove envelope screen
+  // Step 4 (4500ms): Finalise — switch properly to Ganesh
   setTimeout(function() {
-    var hint3 = document.querySelector('.tap-hint');
-    if (hint3) hint3.style.display = 'none';
+    var ganeshScreen2 = document.getElementById('screen-ganesh');
+    if (ganeshScreen2) {
+      ganeshScreen2.style.transition = '';
+      ganeshScreen2.style.opacity = '';
+      ganeshScreen2.style.position = '';
+      ganeshScreen2.style.inset = '';
+      ganeshScreen2.style.zIndex = '';
+    }
+    var envScreen2 = document.getElementById('screen-envelope');
+    if (envScreen2) envScreen2.style.zIndex = '';
     goTo('screen-ganesh');
     document.getElementById('screen-envelope').classList.remove('opening');
     var env2 = document.getElementById('screen-envelope');
