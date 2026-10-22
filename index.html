@@ -3337,6 +3337,9 @@ function openEnvelope() {
   opened = true;
   requestWakeLock();
 
+  var sealEl = document.getElementById('seal');
+  var outerEl = sealEl ? sealEl.querySelector('.seal-outer') : null;
+
   // Music on tap
   if (!window._musicStarted) {
     var bgm = document.getElementById('bgm');
@@ -3352,14 +3355,11 @@ function openEnvelope() {
     }
   }
 
-  var sealEl = document.getElementById('seal');
-  var outerEl = sealEl ? sealEl.querySelector('.seal-outer') : null;
-
   // Hide hint immediately
   var hint = document.querySelector('.tap-hint');
-  if (hint) { hint.style.display='none'; }
+  if (hint) hint.style.display = 'none';
   var invLabel = document.querySelector('.invite-label');
-  if (invLabel) { invLabel.style.display='none'; }
+  if (invLabel) invLabel.style.display = 'none';
 
   // Step 1: Press feel
   if (outerEl) {
@@ -3368,66 +3368,32 @@ function openEnvelope() {
     outerEl.style.boxShadow = '0 0 0 8px rgba(255,255,200,0.95), 0 0 120px rgba(255,240,100,1), 0 0 200px rgba(255,220,60,0.8)';
   }
 
-  // Step 2 (180ms): Bounce back + golden glow pulses
+  // Step 2 (180ms): Bounce back
   setTimeout(function() {
     if (outerEl) {
-      outerEl.style.transition = 'transform 0.4s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.4s ease';
+      outerEl.style.transition = 'transform 0.4s cubic-bezier(0.34,1.56,0.64,1)';
       outerEl.style.transform = 'scale(1.12)';
     }
   }, 180);
 
-  // Step 3 (600ms): Seal explodes, flaps begin opening, Ganesh screen fades in underneath
+  // Step 3 (600ms): Seal bursts outward, flaps begin slow open
   setTimeout(function() {
     if (outerEl) {
-      outerEl.style.transition = 'transform 0.6s cubic-bezier(0.55,0,1,0.45), opacity 0.5s ease';
+      outerEl.style.transition = 'transform 0.6s ease, opacity 0.5s ease';
       outerEl.style.transform = 'scale(2.5)';
       outerEl.style.opacity = '0';
     }
-    var env = document.getElementById('screen-envelope');
-    if (env) {
-      env.style.transition = 'background 0.4s ease';
-      env.style.background = 'radial-gradient(ellipse at 50% 48%, rgba(255,240,160,0.6) 0%, transparent 65%)';
-    }
     document.getElementById('screen-envelope').classList.add('opening');
-
-    // Prepare Ganesh screen to fade in underneath — positioned behind envelope
-    var ganeshScreen = document.getElementById('screen-ganesh');
-    if (ganeshScreen) {
-      ganeshScreen.style.opacity = '0';
-      ganeshScreen.style.transition = 'none';
-      ganeshScreen.style.position = 'fixed';
-      ganeshScreen.style.inset = '0';
-      ganeshScreen.style.zIndex = '1';
-      ganeshScreen.style.display = 'flex';
-      // Fade in over 3s as flaps open
-      setTimeout(function() {
-        ganeshScreen.style.transition = 'opacity 3s ease';
-        ganeshScreen.style.opacity = '1';
-      }, 100);
-    }
-    // Keep envelope on top while flaps open
-    var envScreen = document.getElementById('screen-envelope');
-    if (envScreen) envScreen.style.zIndex = '10';
   }, 600);
 
-  // Step 4 (4500ms): Finalise — switch properly to Ganesh
+  // Step 4 (4500ms): Ganesh — flaps fully open by now
   setTimeout(function() {
-    var ganeshScreen2 = document.getElementById('screen-ganesh');
-    if (ganeshScreen2) {
-      ganeshScreen2.style.transition = '';
-      ganeshScreen2.style.opacity = '';
-      ganeshScreen2.style.position = '';
-      ganeshScreen2.style.inset = '';
-      ganeshScreen2.style.zIndex = '';
-    }
-    var envScreen2 = document.getElementById('screen-envelope');
-    if (envScreen2) envScreen2.style.zIndex = '';
     goTo('screen-ganesh');
     document.getElementById('screen-envelope').classList.remove('opening');
     var env2 = document.getElementById('screen-envelope');
-    if (env2) env2.style.background = '';
-    if (hint) hint.style.opacity = '';
-    if (invLabel) invLabel.style.opacity = '';
+    if (env2) { env2.style.background = ''; env2.style.zIndex = ''; }
+    if (hint) { hint.style.display = ''; }
+    if (invLabel) { invLabel.style.display = ''; }
     if (outerEl) { outerEl.style.transform=''; outerEl.style.opacity=''; outerEl.style.boxShadow=''; }
     opened = false;
   }, 4500);
