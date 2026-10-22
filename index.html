@@ -399,7 +399,7 @@ html, body {
   position: relative;
   transition: transform 0.3s ease;
 }
-.wax-seal:active { transform: scale(0.91); transition: transform 0.08s ease; }
+.wax-seal:active { transform: translate(-50%, -50%) scale(0.91); transition: transform 0.08s ease; }
 /* Bloom petals */
 .seal-bloom-petal {
   position: absolute;
@@ -487,15 +487,17 @@ html, body {
 
 #screen-ganesh ~ * .tap-hint, .tap-hint.hidden { display: none !important; }
 .tap-hint {
-  font-size: 20px;
+  position: absolute;
+  bottom: 72px;
+  left: 0; right: 0;
+  font-size: 14px;
   letter-spacing: 3px;
   color: var(--gold-light);
   text-transform: uppercase;
-  opacity: 0.95;
+  opacity: 0.85;
   animation: breathe 2.5s ease-in-out infinite;
-  margin-top: 18px;
-  font-family: 'Playfair Display', serif;
-  font-weight: 700;
+  font-weight: 600;
+  text-align: center;
 }
 
 @keyframes breathe {
