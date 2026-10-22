@@ -2290,7 +2290,7 @@ html, body {
 <!-- ══════════════════════════════════════════
      SCREEN 3c — INVITE ACT 3 (names + families)
 ══════════════════════════════════════════ -->
-<div id="screen-invite3" class="screen" onclick="safeGoTo('screen-mehendi')">
+<div id="screen-invite3" class="screen" onclick="safeGoTo(_isVIP ? 'screen-reception' : 'screen-wedding')">
   <div id="screen-invite3-bg-zoom" style="background: radial-gradient(ellipse at 50% 12%, rgba(255,215,100,0.24) 0%, transparent 45%), radial-gradient(ellipse at 5% 70%, rgba(140,10,40,0.55) 0%, transparent 45%), radial-gradient(ellipse at 95% 70%, rgba(140,10,40,0.55) 0%, transparent 45%), radial-gradient(ellipse at 50% 105%, rgba(160,40,0,0.45) 0%, transparent 50%), linear-gradient(180deg, #0a0206 0%, #1c0610 28%, #130408 58%, #080103 100%);"></div>
   <div class="royal-frame"></div>
   <div class="act1-corner" style="top:0;left:0;"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M8 8 L72 8" stroke="#c9a84c" stroke-width="1.2" fill="none" opacity="0.7"/><path d="M8 8 L8 72" stroke="#c9a84c" stroke-width="1.2" fill="none" opacity="0.7"/><path d="M16 8 L16 16 L8 16" stroke="#f0c840" stroke-width="0.8" fill="none" opacity="0.5"/><circle cx="8" cy="8" r="4" fill="#c9a84c" opacity="0.6"/><circle cx="8" cy="8" r="2" fill="#f9e060" opacity="0.8"/><path d="M22 8 C28 14 34 8 40 14 C46 20 52 14 58 20" stroke="#c9a84c" stroke-width="0.7" fill="none" opacity="0.4"/><path d="M8 22 C14 28 8 34 14 40 C20 46 14 52 20 58" stroke="#c9a84c" stroke-width="0.7" fill="none" opacity="0.4"/><circle cx="26" cy="8" r="1.5" fill="#c9a84c" opacity="0.5"/><circle cx="8" cy="26" r="1.5" fill="#c9a84c" opacity="0.5"/></svg></div>
@@ -2978,11 +2978,11 @@ function goTo(id) {
   if (pauseIcon) pauseIcon.innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
   // Release wake lock when reaching final screens (no more auto-advance)
   if (id === 'screen-rsvp' || id === 'screen-countdown') { releaseWakeLock(); }
-  // Ganesh slide — play Ranjha, fade out over 2.5s, then restart on invite-1
+  // Ganesh slide — start Ranjha once, play continuously through all slides
   if (id === 'screen-ganesh') {
-    // Play Ranjha from beginning with fade-in over 0.8s
+    // Play Ranjha from beginning with fade-in — plays once, never stopped/restarted
     var _ganeshBg = document.getElementById('bgmusic');
-    if (_ganeshBg && !window._musicMutedByUser) {
+    if (_ganeshBg && !window._musicMutedByUser && !window._musicStarted) {
       window._musicStarted = true;
       _ganeshBg.currentTime = 0;
       _ganeshBg.volume = 0;
@@ -2994,20 +2994,6 @@ function goTo(id) {
       }).catch(function(){});
     }
     var _ganeshDelay = _navigatingBack ? 5000 : 5500;
-    // Fade out Ranjha over 2.5s starting at 2.8s — reaches 0 at 5.3s, 0.2s before slide advances
-    if (!_navigatingBack) {
-      setTimeout(function(){
-        if (current !== 'screen-ganesh') return;
-        var _gFade = document.getElementById('bgmusic');
-        if (!_gFade) return;
-        var _startVol = _gFade.volume, _fadeSteps = 25;
-        window._ganeshFadeInt = setInterval(function(){
-          if (_fadeSteps <= 0) { clearInterval(window._ganeshFadeInt); window._ganeshFadeInt = null; if (_gFade) { _gFade.volume = 0; _gFade.pause(); _gFade.currentTime = 0; } return; }
-          _gFade.volume = Math.max(0, _gFade.volume - (_startVol / 25));
-          _fadeSteps--;
-        }, 100);
-      }, 2800);
-    }
     window._advanceCallback = function(){
       if (current !== 'screen-ganesh') return;
       goTo('screen-invite');
@@ -3018,24 +3004,15 @@ function goTo(id) {
 
   // Invite acts — cinematic trailer timing
   if (id === 'screen-invite') {
-    // Fade in Ranjha from beginning on invite-1
-    var _invMus = document.getElementById('bgmusic');
-    if (_invMus && !window._musicMutedByUser) {
-      window._musicStarted = true;
-      _invMus.currentTime = 0;
-      _invMus.volume = 0;
-      _invMus.play().then(function(){
-        var _iic = document.getElementById('music-icon');
-        var _iim = document.getElementById('music-icon-muted');
+    // Music already playing from Ganesh slide — just ensure icon is shown
+    (function(){
+      var _iic = document.getElementById('music-icon');
+      var _iim = document.getElementById('music-icon-muted');
+      if (!window._musicMutedByUser) {
         if (_iic) _iic.style.display = 'inline';
         if (_iim) _iim.style.display = 'none';
-        // Fade in over 1.5s
-        window._inviteFadeInt = setInterval(function(){
-          if (_invMus.volume >= 0.5) { _invMus.volume = 0.5; clearInterval(window._inviteFadeInt); window._inviteFadeInt = null; return; }
-          _invMus.volume = Math.min(0.5, _invMus.volume + 0.05);
-        }, 150);
-      }).catch(function(){});
-    }
+      }
+    })();
     // Start Ken Burns zoom (defer 1 frame so screen transition paints first)
     var bg1 = document.getElementById('screen-invite-bg-zoom');
     if(bg1){ requestAnimationFrame(function(){ bg1.classList.add('zooming'); }); }
@@ -3171,7 +3148,7 @@ function goTo(id) {
     }, 2800);
     // Auto-advance after everything is visible; 5s if navigating back
     var _inv3Delay = _navigatingBack ? 5000 : 12000;
-    window._advanceCallback = function(){ if(current==='screen-invite3') goTo('screen-mehendi'); };
+    window._advanceCallback = function(){ if(current==='screen-invite3') goTo(_isVIP ? 'screen-reception' : 'screen-wedding'); };
     window._advanceTimer = setTimeout(window._advanceCallback, _inv3Delay);
     window._advanceStart = Date.now(); window._advanceDelay = _inv3Delay; window._advanceRemaining = _inv3Delay;
   }
