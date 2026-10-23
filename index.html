@@ -3331,8 +3331,18 @@ function goTo(id) {
       _navigating = false;
       _lastNavTime = 0;
       if (dbg) dbg.textContent+='\ncalling goTo...';
-      goTo(_isVIP ? 'screen-reception' : 'screen-wedding');
-      if (dbg) dbg.textContent+='\ngoTo done, current='+current;
+      try {
+        goTo(_isVIP ? 'screen-reception' : 'screen-wedding');
+        if (dbg) dbg.textContent+='\ngoTo done, current='+current;
+      } catch(e) {
+        if (dbg) dbg.textContent+='\nERROR: '+e.message;
+        // goTo threw — do it manually
+        var _d = document.getElementById(_isVIP ? 'screen-reception' : 'screen-wedding');
+        var _s = document.getElementById('screen-invite3');
+        if (_s) _s.classList.remove('active');
+        if (_d) { _d.classList.add('active'); current = _isVIP ? 'screen-reception' : 'screen-wedding'; }
+        if (dbg) dbg.textContent+='\nmanual nav done, current='+current;
+      }
     };
     window._advanceTimer = setTimeout(window._advanceCallback, _inv3Delay);
     window._advanceStart = Date.now(); window._advanceDelay = _inv3Delay; window._advanceRemaining = _inv3Delay;
