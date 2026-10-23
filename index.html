@@ -3402,16 +3402,16 @@ function openEnvelope() {
   }
 
   // Music — starts IMMEDIATELY in this gesture (required for iOS)
-  var bgm = document.getElementById('bgm');
+  var bgm = document.getElementById('bgmusic');
   if (bgm && !window._musicStarted) {
     window._musicStarted = true;
-    bgm.volume = 0.85;
     bgm.currentTime = 0;
+    bgm.volume = 0.5;
     var playPromise = bgm.play();
     if (playPromise !== undefined) {
       playPromise.catch(function() {
         bgm.volume = 0;
-        bgm.play().then(function() { bgm.volume = 0.85; }).catch(function(){});
+        bgm.play().then(function() { bgm.volume = 0.5; }).catch(function(){});
       });
     }
   }
