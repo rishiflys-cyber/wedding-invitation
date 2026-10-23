@@ -2944,6 +2944,9 @@ html, body {
 <script>
 let current = 'screen-envelope';
 let opened = false;
+var _isVIP = false; // true = guest sees reception screen after wedding
+var _guestRaw = '';
+var _guestFull = '';
 
 var _history = [];
 var _navigatingBack = false;
@@ -3335,12 +3338,11 @@ function goTo(id) {
         goTo(_isVIP ? 'screen-reception' : 'screen-wedding');
         if (dbg) dbg.textContent+='\ngoTo done, current='+current;
       } catch(e) {
-        if (dbg) dbg.textContent+='\nERROR: '+e.message;
-        // goTo threw — do it manually
-        var _d = document.getElementById(_isVIP ? 'screen-reception' : 'screen-wedding');
+        if (dbg) dbg.textContent+='\nERROR: '+e.message+'\nfalling back to manual nav';
+        var _d = document.getElementById('screen-wedding');
         var _s = document.getElementById('screen-invite3');
         if (_s) _s.classList.remove('active');
-        if (_d) { _d.classList.add('active'); current = _isVIP ? 'screen-reception' : 'screen-wedding'; }
+        if (_d) { _d.classList.add('active'); current = 'screen-wedding'; }
         if (dbg) dbg.textContent+='\nmanual nav done, current='+current;
       }
     };
