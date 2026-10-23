@@ -1682,56 +1682,11 @@ html, body {
   inset: 0;
   pointer-events: none;
   z-index: 1;
-  overflow: visible;
 }
 .royal-frame svg {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-/* Outer rect */
-.royal-frame .rf-outer {
-  fill: none;
-  stroke: rgba(201,168,76,0.55);
-  stroke-width: 1;
-  vector-effect: non-scaling-stroke;
-}
-/* Inner rect */
-.royal-frame .rf-inner {
-  fill: none;
-  stroke: rgba(201,168,76,0.28);
-  stroke-width: 1;
-  vector-effect: non-scaling-stroke;
-}
-/* Corner diamond dots */
-.royal-frame .rf-dot {
-  fill: rgba(201,168,76,0.7);
-}
-/* Draw-in animation */
-@keyframes border-draw {
-  from { stroke-dashoffset: var(--perimeter); opacity: 0.3; }
-  5%   { opacity: 1; }
-  to   { stroke-dashoffset: 0; opacity: 1; }
-}
-@keyframes border-draw-inner {
-  0%   { stroke-dashoffset: var(--perimeter-inner); opacity: 0; }
-  20%  { opacity: 0.8; }
-  100% { stroke-dashoffset: 0; opacity: 0.8; }
-}
-@keyframes dot-appear {
-  from { opacity: 0; transform: scale(0); }
-  to   { opacity: 1; transform: scale(1); }
-}
-.screen.active .royal-frame .rf-outer {
-  animation: border-draw 1.4s cubic-bezier(0.4,0,0.2,1) 0.05s both;
-}
-.screen.active .royal-frame .rf-inner {
-  animation: border-draw-inner 1.6s cubic-bezier(0.4,0,0.2,1) 0.2s both;
-}
-.screen.active .royal-frame .rf-dot {
-  animation: dot-appear 0.3s ease 1.2s both;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
 }
 
 /* ══════════════════════════════════════════
@@ -2449,6 +2404,7 @@ html, body {
 ══════════════════════════════════════════ -->
 <div id="screen-invite3" class="screen" onclick="goTo(_isVIP ? 'screen-reception' : 'screen-wedding')" style="cursor:pointer;">
   <div id="screen-invite3-bg-zoom" style="background: radial-gradient(ellipse at 50% 20%, rgba(80,20,60,0.9) 0%, transparent 55%), radial-gradient(ellipse at 20% 80%, rgba(60,10,40,0.7) 0%, transparent 50%), linear-gradient(180deg, #0d0618 0%, #1a0830 35%, #120520 65%, #080210 100%);"></div>
+  <div class="royal-frame" id="rf-invite3"></div>
   <!-- Stars -->
   <div style="position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;">
     <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;">
@@ -3079,24 +3035,10 @@ function goTo(id) {
     document.body.style.pointerEvents = '';
   }, 750);
   try { window.navigator.vibrate([40]); } catch(e) {}
-  // Re-trigger royal frame border animation on screen enter
+  // Animate royal frame border on screen enter
   if (next) {
     var rf = next.querySelector('.royal-frame');
-    if (rf) {
-      // Reset dashoffset so animation fires again
-      rf.querySelectorAll('.rf-outer,.rf-inner').forEach(function(el) {
-        var perim = el.getAttribute('stroke-dasharray');
-        el.style.animation = 'none';
-        el.setAttribute('stroke-dashoffset', perim || '9999');
-        el.getBoundingClientRect(); // force reflow
-        el.style.animation = '';
-      });
-      rf.querySelectorAll('.rf-dot').forEach(function(el) {
-        el.style.animation = 'none';
-        el.getBoundingClientRect();
-        el.style.animation = '';
-      });
-    }
+    if (rf) animateRoyalFrame(rf);
   }
 
   // Reset invite screen animation states when re-entering
@@ -4454,54 +4396,103 @@ function launchConfetti() {
 })();
 
 /* ── Animated royal border initializer ── */
-function initRoyalFrames() {
-  document.querySelectorAll('.royal-frame').forEach(function(div) {
-    if (div.querySelector('svg')) return; // already initialized
-    var w = div.offsetWidth, h = div.offsetHeight;
-    if (!w || !h) { w = window.innerWidth; h = window.innerHeight; }
+function _buildRoyalFrameSVG(div) {
+  // Always use viewport dimensions — screens are full-viewport
+  var w = window.innerWidth, h = window.innerHeight;
 
-    var pad1 = 14, pad2 = 19; // outer inset, inner inset from edge
-    var ow = w - pad1*2, oh = h - pad1*2;
-    var iw = w - pad2*2, ih = h - pad2*2;
-    var outerPerim = 2*(ow+oh);
-    var innerPerim = 2*(iw+ih);
+  var ns = 'http://www.w3.org/2000/svg';
+  var svg = document.createElementNS(ns, 'svg');
+  svg.setAttribute('viewBox', '0 0 '+w+' '+h);
+  svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
 
-    // Corner accent dots (4 corners of outer rect)
-    var dots = [
-      [pad1, pad1], [w-pad1, pad1], [w-pad1, h-pad1], [pad1, h-pad1]
-    ].map(function(p) {
-      return '<circle class="rf-dot" cx="'+p[0]+'" cy="'+p[1]+'" r="2.5" style="transform-origin:'+p[0]+'px '+p[1]+'px"/>';
-    }).join('');
+  var pad1 = 14, pad2 = 20;
 
-    var svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
-    svg.setAttribute('width','100%'); svg.setAttribute('height','100%');
-    svg.setAttribute('viewBox','0 0 '+w+' '+h);
-    svg.setAttribute('preserveAspectRatio','none');
-    svg.innerHTML =
-      '<rect class="rf-outer" x="'+pad1+'" y="'+pad1+'" width="'+ow+'" height="'+oh+'" ' +
-        'stroke-dasharray="'+outerPerim+'" stroke-dashoffset="'+outerPerim+'" ' +
-        'style="--perimeter:'+outerPerim+'"/>' +
-      '<rect class="rf-inner" x="'+pad2+'" y="'+pad2+'" width="'+iw+'" height="'+ih+'" ' +
-        'stroke-dasharray="'+innerPerim+'" stroke-dashoffset="'+innerPerim+'" ' +
-        'style="--perimeter-inner:'+innerPerim+'"/>' +
-      dots;
-    div.appendChild(svg);
+  // Outer rect
+  var outer = document.createElementNS(ns, 'rect');
+  outer.setAttribute('x', pad1); outer.setAttribute('y', pad1);
+  outer.setAttribute('width', w - pad1*2); outer.setAttribute('height', h - pad1*2);
+  outer.setAttribute('fill', 'none');
+  outer.setAttribute('stroke', 'rgba(201,168,76,0.6)');
+  outer.setAttribute('stroke-width', '1');
+  var op = 2*(w-pad1*2 + h-pad1*2);
+  outer.setAttribute('stroke-dasharray', op);
+  outer.setAttribute('stroke-dashoffset', op);
+  outer.classList.add('rf-outer');
+  svg.appendChild(outer);
+
+  // Inner rect
+  var inner = document.createElementNS(ns, 'rect');
+  inner.setAttribute('x', pad2); inner.setAttribute('y', pad2);
+  inner.setAttribute('width', w - pad2*2); inner.setAttribute('height', h - pad2*2);
+  inner.setAttribute('fill', 'none');
+  inner.setAttribute('stroke', 'rgba(201,168,76,0.3)');
+  inner.setAttribute('stroke-width', '0.8');
+  var ip = 2*(w-pad2*2 + h-pad2*2);
+  inner.setAttribute('stroke-dasharray', ip);
+  inner.setAttribute('stroke-dashoffset', ip);
+  inner.classList.add('rf-inner');
+  svg.appendChild(inner);
+
+  // Corner dots
+  [[pad1,pad1],[w-pad1,pad1],[w-pad1,h-pad1],[pad1,h-pad1]].forEach(function(pt) {
+    var c = document.createElementNS(ns, 'circle');
+    c.setAttribute('cx', pt[0]); c.setAttribute('cy', pt[1]); c.setAttribute('r', '3');
+    c.setAttribute('fill', 'rgba(201,168,76,0.8)');
+    c.setAttribute('opacity', '0');
+    c.classList.add('rf-dot');
+    svg.appendChild(c);
+  });
+
+  div.innerHTML = '';
+  div.appendChild(svg);
+}
+
+function animateRoyalFrame(div) {
+  if (!div) return;
+  // Build SVG if needed
+  if (!div.querySelector('svg')) _buildRoyalFrameSVG(div);
+  var svg = div.querySelector('svg');
+  if (!svg) return;
+
+  // Reset all elements
+  var outer = svg.querySelector('.rf-outer');
+  var inner = svg.querySelector('.rf-inner');
+  var dots  = svg.querySelectorAll('.rf-dot');
+
+  if (outer) {
+    var op = parseFloat(outer.getAttribute('stroke-dasharray'));
+    outer.setAttribute('stroke-dashoffset', op);
+    outer.style.opacity = '1';
+    outer.style.transition = 'none';
+    // Force reflow
+    outer.getBoundingClientRect();
+    outer.style.transition = 'stroke-dashoffset 1.4s cubic-bezier(0.4,0,0.2,1) 0.05s';
+    setTimeout(function(){ outer.setAttribute('stroke-dashoffset', '0'); }, 20);
+  }
+  if (inner) {
+    var ip = parseFloat(inner.getAttribute('stroke-dasharray'));
+    inner.setAttribute('stroke-dashoffset', ip);
+    inner.style.opacity = '0';
+    inner.style.transition = 'none';
+    inner.getBoundingClientRect();
+    inner.style.transition = 'stroke-dashoffset 1.6s cubic-bezier(0.4,0,0.2,1) 0.25s, opacity 0.4s ease 0.25s';
+    setTimeout(function(){ inner.setAttribute('stroke-dashoffset','0'); inner.style.opacity='0.8'; }, 20);
+  }
+  dots.forEach(function(dot, i) {
+    dot.style.opacity = '0';
+    dot.style.transition = 'none';
+    dot.getBoundingClientRect();
+    setTimeout(function(){
+      dot.style.transition = 'opacity 0.4s ease';
+      dot.style.opacity = '1';
+    }, 1000 + i * 80);
   });
 }
 
-// Re-init on screen activate (CSS .active triggers the animation)
-var _origGoTo = null;
-(function patchGoToForFrames() {
-  var _checkInit = function() {
-    initRoyalFrames();
-  };
-  document.addEventListener('DOMContentLoaded', _checkInit);
-  window.addEventListener('resize', function() {
-    // Re-build SVGs on resize so dimensions stay accurate
-    document.querySelectorAll('.royal-frame svg').forEach(function(s){ s.remove(); });
-    initRoyalFrames();
-  });
-})();
+document.addEventListener('DOMContentLoaded', function() {
+  // Pre-build SVGs for all royal frames
+  document.querySelectorAll('.royal-frame').forEach(_buildRoyalFrameSVG);
+});
 
 function spawnPetals(n) {
   const c = document.getElementById('particles');
