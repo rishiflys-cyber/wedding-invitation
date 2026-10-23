@@ -3145,6 +3145,7 @@ function goTo(id) {
     var _ganeshDelay = _navigatingBack ? 5000 : 5500;
     window._advanceCallback = function(){
       if (current !== 'screen-ganesh') return;
+      _navigating=false; _lastNavTime=0;
       goTo('screen-invite');
     };
     window._advanceTimer = setTimeout(window._advanceCallback, _ganeshDelay);
@@ -3210,7 +3211,7 @@ function goTo(id) {
       if(div){ div.style.opacity='1'; }
     }, 680);
     var _inv1Delay = _navigatingBack ? 5000 : 7500;
-    window._advanceCallback = function(){ if(current==='screen-invite') goTo('screen-invite2'); };
+    window._advanceCallback = function(){ if(current==='screen-invite'){ _navigating=false; _lastNavTime=0; goTo('screen-invite2'); } };
     window._advanceTimer = setTimeout(window._advanceCallback, _inv1Delay);
     window._advanceStart = Date.now(); window._advanceDelay = _inv1Delay; window._advanceRemaining = _inv1Delay;
   }
@@ -3253,16 +3254,18 @@ function goTo(id) {
       }
     }, 200);
     var _inv2Delay = _navigatingBack ? 5000 : 3500;
-    window._advanceCallback = function(){ if(current==='screen-invite2') goTo('screen-invite3'); };
+    window._advanceCallback = function(){ if(current==='screen-invite2'){ _navigating=false; _lastNavTime=0; goTo('screen-invite3'); } };
     window._advanceTimer = setTimeout(window._advanceCallback, _inv2Delay);
     window._advanceStart = Date.now(); window._advanceDelay = _inv2Delay; window._advanceRemaining = _inv2Delay;
   }
   if (id === 'screen-invite3') {
-    // Show control bar
+    // Show control bar but hide pause btn — not a video screen
     var _cb3 = document.getElementById('ctrl-bar');
     if (_cb3) _cb3.style.display = 'flex';
     var _pb3 = document.getElementById('pause-btn');
-    if (_pb3) _pb3.style.display = 'flex';
+    if (_pb3) _pb3.style.display = 'none';
+    // Always ensure timer runs — reset pause state
+    _videoPaused = false;
     
     // Ken Burns zoom
     var bg3 = document.getElementById('screen-invite3-bg-zoom');
