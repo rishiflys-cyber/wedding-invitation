@@ -2725,7 +2725,7 @@ html, body {
 ══════════════════════════════════════════ -->
 <div id="screen-wedding" class="screen event-screen" onclick="_videoPaused ? null : showWeddingInviteNow()">
   <video id="wedding-video" muted playsinline preload="none"
-    style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
+    style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;opacity:0.55;">
     <source src="wedding.mp4" type="video/mp4">
   </video>
   <div class="event-img-wrap" id="wedding-bg-img" style="z-index:0;">
@@ -2736,26 +2736,19 @@ html, body {
 
   <div id="wedding-panel" style="position:absolute;bottom:0;left:0;right:0;height:48%;z-index:3;background:linear-gradient(to bottom,transparent 0%,rgba(18,8,0,0.98) 16%,#100500 32%);padding-top:20px;transform:translateY(100%);transition:transform 1.4s cubic-bezier(0.22,1,0.36,1);pointer-events:none;overflow:hidden;">
   <div class="event-wrap" id="wedding-invite" style="position:relative;opacity:0;transform:translateY(20px);transition:opacity 0.8s ease 0.5s,transform 0.8s ease 0.5s;pointer-events:none;">
-    <div class="event-icon-big">💍</div>
-    <div class="event-tag" style="background:rgba(255,200,60,0.35);border-color:rgba(255,210,80,0.9);color:#ffffff;font-weight:700;">The Wedding</div>
-    <div class="event-title">Shubho Bibaho</div>
-    <div class="event-divider-line" style="margin-bottom:6px;"></div>
-    <div class="event-detail-row">
-      <div class="event-detail">
-        <div class="event-detail-label">Date</div>
-        <div class="event-detail-value">11th December 2026</div>
-      </div>
-      <div class="event-detail-sep"></div>
-      <div class="event-detail">
-        <div class="event-detail-label">Time</div>
-        <div class="event-detail-value">7:30 PM onwards</div>
-      </div>
+    <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(201,168,76,0.7);font-family:'Cormorant Garamond',serif;margin-bottom:6px;">— With the blessings of —</div>
+    <div style="font-family:'Playfair Display',serif;font-size:15px;color:rgba(255,245,220,0.9);line-height:1.7;margin-bottom:2px;">
+      Partha Sarathi &amp; Soma Chattopadhyay
     </div>
-    <div class="event-bengali-note" style="opacity:0.45;">
-      <span class="event-bengali-sub">As per Bengali calendar · 11th Agrahayan<br>Shubho Lagna · 12th December, 2:30 AM</span>
+    <div style="font-size:11px;color:rgba(201,168,76,0.55);letter-spacing:1px;margin-bottom:8px;">Groom's Parents</div>
+    <div style="width:32px;height:1px;background:rgba(201,168,76,0.35);margin:0 auto 8px;"></div>
+    <div style="font-family:'Playfair Display',serif;font-size:15px;color:rgba(255,245,220,0.9);line-height:1.7;margin-bottom:2px;">
+      Atanu Kumar Dash &amp; Aparna Dash
     </div>
-    <div class="event-venue">📍 Circle Club, Kolkata</div>
-    <div class="event-poem"><span class="event-poem-em" style="opacity:0.45;">Under the same stars that have witnessed a thousand love stories — and their story begins on 11th December.</span></div>
+    <div style="font-size:11px;color:rgba(201,168,76,0.55);letter-spacing:1px;margin-bottom:10px;">Bride's Parents</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;color:rgba(255,245,200,0.45);line-height:1.6;max-width:280px;margin:0 auto 10px;">
+      "Two souls, one heartbeat — united under the sacred fire,<br>bound by love and the stars."
+    </div>
     <div id="wedding-press-hint" style="pointer-events:none;transition:opacity 0.6s ease;opacity:0;text-align:center;">
       <div style="font-family:'Playfair Display',serif;font-size:18px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-light);font-weight:700;animation:breathe 2.5s ease-in-out infinite;">✦ press here ✦</div>
     </div>
