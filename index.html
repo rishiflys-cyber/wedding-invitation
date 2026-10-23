@@ -1676,19 +1676,62 @@ html, body {
   opacity: 0.75;
 }
 .act1-corner svg { width: 100%; height: 100%; }
-/* Royal border frame — inset gold rule on all three invite screens */
+/* Royal border frame — animated SVG drawing border */
 .royal-frame {
   position: absolute;
-  inset: 14px;
-  border: 1px solid rgba(201,168,76,0.28);
+  inset: 0;
   pointer-events: none;
   z-index: 1;
+  overflow: visible;
 }
-.royal-frame::before {
-  content: '';
+.royal-frame svg {
   position: absolute;
-  inset: 5px;
-  border: 1px solid rgba(201,168,76,0.14);
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+/* Outer rect */
+.royal-frame .rf-outer {
+  fill: none;
+  stroke: rgba(201,168,76,0.55);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+/* Inner rect */
+.royal-frame .rf-inner {
+  fill: none;
+  stroke: rgba(201,168,76,0.28);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+/* Corner diamond dots */
+.royal-frame .rf-dot {
+  fill: rgba(201,168,76,0.7);
+}
+/* Draw-in animation */
+@keyframes border-draw {
+  from { stroke-dashoffset: var(--perimeter); opacity: 0.3; }
+  5%   { opacity: 1; }
+  to   { stroke-dashoffset: 0; opacity: 1; }
+}
+@keyframes border-draw-inner {
+  0%   { stroke-dashoffset: var(--perimeter-inner); opacity: 0; }
+  20%  { opacity: 0.8; }
+  100% { stroke-dashoffset: 0; opacity: 0.8; }
+}
+@keyframes dot-appear {
+  from { opacity: 0; transform: scale(0); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.screen.active .royal-frame .rf-outer {
+  animation: border-draw 1.4s cubic-bezier(0.4,0,0.2,1) 0.05s both;
+}
+.screen.active .royal-frame .rf-inner {
+  animation: border-draw-inner 1.6s cubic-bezier(0.4,0,0.2,1) 0.2s both;
+}
+.screen.active .royal-frame .rf-dot {
+  animation: dot-appear 0.3s ease 1.2s both;
 }
 
 /* ══════════════════════════════════════════
@@ -2247,7 +2290,7 @@ html, body {
 ══════════════════════════════════════════ -->
 <div id="screen-invite" class="screen">
   <div id="screen-invite-bg-zoom" style="background: radial-gradient(ellipse at 50% 0%, rgba(255,215,100,0.22) 0%, transparent 45%), radial-gradient(ellipse at 0% 50%, rgba(140,10,40,0.55) 0%, transparent 50%), radial-gradient(ellipse at 100% 50%, rgba(140,10,40,0.55) 0%, transparent 50%), radial-gradient(ellipse at 50% 110%, rgba(180,50,0,0.5) 0%, transparent 55%), linear-gradient(180deg, #0e0408 0%, #1e0610 30%, #160308 65%, #0a0205 100%);"></div>
-  <div class="royal-frame"></div>
+  <div class="royal-frame" id="rf-invite1"></div>
   <!-- Royal corner filigree -->
   <div class="act1-corner" style="top:0;left:0;">
     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -2360,7 +2403,7 @@ html, body {
 ══════════════════════════════════════════ -->
 <div id="screen-invite2" class="screen">
   <div id="screen-invite2-bg-zoom" style="background: radial-gradient(ellipse at 50% 50%, rgba(255,215,100,0.2) 0%, transparent 55%), radial-gradient(ellipse at 0% 55%, rgba(140,10,40,0.55) 0%, transparent 50%), radial-gradient(ellipse at 100% 55%, rgba(140,10,40,0.55) 0%, transparent 50%), radial-gradient(ellipse at 50% 0%, rgba(100,20,0,0.4) 0%, transparent 45%), linear-gradient(180deg, #090205 0%, #1a0510 30%, #12020a 65%, #080104 100%);"></div>
-  <div class="royal-frame"></div>
+  <div class="royal-frame" id="rf-invite2"></div>
   <div class="act1-corner" style="top:0;left:0;"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M8 8 L72 8" stroke="#c9a84c" stroke-width="1.2" fill="none" opacity="0.7"/><path d="M8 8 L8 72" stroke="#c9a84c" stroke-width="1.2" fill="none" opacity="0.7"/><path d="M16 8 L16 16 L8 16" stroke="#f0c840" stroke-width="0.8" fill="none" opacity="0.5"/><circle cx="8" cy="8" r="4" fill="#c9a84c" opacity="0.6"/><circle cx="8" cy="8" r="2" fill="#f9e060" opacity="0.8"/><path d="M22 8 C28 14 34 8 40 14 C46 20 52 14 58 20" stroke="#c9a84c" stroke-width="0.7" fill="none" opacity="0.4"/><path d="M8 22 C14 28 8 34 14 40 C20 46 14 52 20 58" stroke="#c9a84c" stroke-width="0.7" fill="none" opacity="0.4"/><circle cx="26" cy="8" r="1.5" fill="#c9a84c" opacity="0.5"/><circle cx="8" cy="26" r="1.5" fill="#c9a84c" opacity="0.5"/></svg></div>
   <div class="act1-corner" style="top:0;right:0;transform:scaleX(-1);"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M8 8 L72 8" stroke="#c9a84c" stroke-width="1.2" fill="none" opacity="0.7"/><path d="M8 8 L8 72" stroke="#c9a84c" stroke-width="1.2" fill="none" opacity="0.7"/><path d="M16 8 L16 16 L8 16" stroke="#f0c840" stroke-width="0.8" fill="none" opacity="0.5"/><circle cx="8" cy="8" r="4" fill="#c9a84c" opacity="0.6"/><circle cx="8" cy="8" r="2" fill="#f9e060" opacity="0.8"/><circle cx="26" cy="8" r="1.5" fill="#c9a84c" opacity="0.5"/><circle cx="8" cy="26" r="1.5" fill="#c9a84c" opacity="0.5"/></svg></div>
   <div class="act1-corner" style="bottom:0;left:0;transform:scaleY(-1);"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M8 8 L72 8" stroke="#c9a84c" stroke-width="1.2" fill="none" opacity="0.7"/><path d="M8 8 L8 72" stroke="#c9a84c" stroke-width="1.2" fill="none" opacity="0.7"/><circle cx="8" cy="8" r="4" fill="#c9a84c" opacity="0.6"/><circle cx="8" cy="8" r="2" fill="#f9e060" opacity="0.8"/><circle cx="26" cy="8" r="1.5" fill="#c9a84c" opacity="0.5"/><circle cx="8" cy="26" r="1.5" fill="#c9a84c" opacity="0.5"/></svg></div>
@@ -3036,6 +3079,26 @@ function goTo(id) {
     document.body.style.pointerEvents = '';
   }, 750);
   try { window.navigator.vibrate([40]); } catch(e) {}
+  // Re-trigger royal frame border animation on screen enter
+  if (next) {
+    var rf = next.querySelector('.royal-frame');
+    if (rf) {
+      // Reset dashoffset so animation fires again
+      rf.querySelectorAll('.rf-outer,.rf-inner').forEach(function(el) {
+        var perim = el.getAttribute('stroke-dasharray');
+        el.style.animation = 'none';
+        el.setAttribute('stroke-dashoffset', perim || '9999');
+        el.getBoundingClientRect(); // force reflow
+        el.style.animation = '';
+      });
+      rf.querySelectorAll('.rf-dot').forEach(function(el) {
+        el.style.animation = 'none';
+        el.getBoundingClientRect();
+        el.style.animation = '';
+      });
+    }
+  }
+
   // Reset invite screen animation states when re-entering
   (function resetInviteAnim(sid){
     if(sid==='screen-invite'){
@@ -4387,6 +4450,56 @@ function launchConfetti() {
       el.style.animationDelay = (Math.random() * 8) + 's';
       container.appendChild(el);
     }
+  });
+})();
+
+/* ── Animated royal border initializer ── */
+function initRoyalFrames() {
+  document.querySelectorAll('.royal-frame').forEach(function(div) {
+    if (div.querySelector('svg')) return; // already initialized
+    var w = div.offsetWidth, h = div.offsetHeight;
+    if (!w || !h) { w = window.innerWidth; h = window.innerHeight; }
+
+    var pad1 = 14, pad2 = 19; // outer inset, inner inset from edge
+    var ow = w - pad1*2, oh = h - pad1*2;
+    var iw = w - pad2*2, ih = h - pad2*2;
+    var outerPerim = 2*(ow+oh);
+    var innerPerim = 2*(iw+ih);
+
+    // Corner accent dots (4 corners of outer rect)
+    var dots = [
+      [pad1, pad1], [w-pad1, pad1], [w-pad1, h-pad1], [pad1, h-pad1]
+    ].map(function(p) {
+      return '<circle class="rf-dot" cx="'+p[0]+'" cy="'+p[1]+'" r="2.5" style="transform-origin:'+p[0]+'px '+p[1]+'px"/>';
+    }).join('');
+
+    var svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+    svg.setAttribute('width','100%'); svg.setAttribute('height','100%');
+    svg.setAttribute('viewBox','0 0 '+w+' '+h);
+    svg.setAttribute('preserveAspectRatio','none');
+    svg.innerHTML =
+      '<rect class="rf-outer" x="'+pad1+'" y="'+pad1+'" width="'+ow+'" height="'+oh+'" ' +
+        'stroke-dasharray="'+outerPerim+'" stroke-dashoffset="'+outerPerim+'" ' +
+        'style="--perimeter:'+outerPerim+'"/>' +
+      '<rect class="rf-inner" x="'+pad2+'" y="'+pad2+'" width="'+iw+'" height="'+ih+'" ' +
+        'stroke-dasharray="'+innerPerim+'" stroke-dashoffset="'+innerPerim+'" ' +
+        'style="--perimeter-inner:'+innerPerim+'"/>' +
+      dots;
+    div.appendChild(svg);
+  });
+}
+
+// Re-init on screen activate (CSS .active triggers the animation)
+var _origGoTo = null;
+(function patchGoToForFrames() {
+  var _checkInit = function() {
+    initRoyalFrames();
+  };
+  document.addEventListener('DOMContentLoaded', _checkInit);
+  window.addEventListener('resize', function() {
+    // Re-build SVGs on resize so dimensions stay accurate
+    document.querySelectorAll('.royal-frame svg').forEach(function(s){ s.remove(); });
+    initRoyalFrames();
   });
 })();
 
