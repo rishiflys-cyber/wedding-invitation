@@ -2490,9 +2490,11 @@ html, body {
     </div>
 
     <!-- Tap hint -->
-    <div class="screen-tap-hint" style="font-size:14px;opacity:0.6;letter-spacing:2px;">tap to continue ✦</div>
+    <div class="screen-tap-hint" onclick="safeGoTo(_isVIP ? 'screen-reception' : 'screen-wedding')" style="font-size:14px;opacity:0.6;letter-spacing:2px;cursor:pointer;padding:20px 40px;">tap to continue ✦</div>
 
   </div>
+  <!-- Full-screen invisible tap overlay -->
+  <div onclick="safeGoTo(_isVIP ? 'screen-reception' : 'screen-wedding')" style="position:absolute;inset:0;z-index:50;cursor:pointer;"></div>
   <!-- hidden stubs so existing JS refs don't break -->
   <div id="invite-act3-text" style="display:none;"></div>
   <div id="act3-lotus-orn" style="display:none;"></div>
