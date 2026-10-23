@@ -2496,8 +2496,7 @@ html, body {
       </div>
     </div>
 
-    <!-- Tap hint -->
-    <div class="screen-tap-hint" style="font-size:14px;opacity:0.6;letter-spacing:2px;">tap to continue ✦</div>
+    <!-- Auto-advances, no tap hint needed -->
 
   </div>
   <!-- hidden stubs so existing JS refs don't break -->
@@ -3302,8 +3301,8 @@ function goTo(id) {
       var par=document.getElementById('act3-parents');
       if(par){ par.style.opacity='1'; }
     }, 2800);
-    // Auto-advance after everything is visible; 5s if navigating back
-    var _inv3Delay = _navigatingBack ? 5000 : 12000;
+    // Auto-advance after everything is visible
+    var _inv3Delay = _navigatingBack ? 4000 : 5000;
     window._advanceCallback = function(){ if(current==='screen-invite3') goTo(_isVIP ? 'screen-reception' : 'screen-wedding'); };
     window._advanceTimer = setTimeout(window._advanceCallback, _inv3Delay);
     window._advanceStart = Date.now(); window._advanceDelay = _inv3Delay; window._advanceRemaining = _inv3Delay;
