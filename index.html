@@ -2406,7 +2406,7 @@ html, body {
 <!-- ══════════════════════════════════════════
      SCREEN 3c — INVITE ACT 3 (names + families)
 ══════════════════════════════════════════ -->
-<div id="screen-invite3" class="screen" onclick="goTo(_isVIP ? 'screen-reception' : 'screen-wedding')" style="cursor:pointer;">
+<div id="screen-invite3" class="screen" style="cursor:pointer;">
   <div id="screen-invite3-bg-zoom" style="background: radial-gradient(ellipse at 50% 20%, rgba(80,20,60,0.9) 0%, transparent 55%), radial-gradient(ellipse at 20% 80%, rgba(60,10,40,0.7) 0%, transparent 50%), linear-gradient(180deg, #0d0618 0%, #1a0830 35%, #120520 65%, #080210 100%);"></div>
   <div class="royal-frame" id="rf-invite3"></div>
   <div class="act1-corner" style="top:0;left:0;pointer-events:none;"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M8 8 L72 8" stroke="#c9a84c" stroke-width="1.2" fill="none" opacity="0.7"/><path d="M8 8 L8 72" stroke="#c9a84c" stroke-width="1.2" fill="none" opacity="0.7"/><path d="M16 8 L16 16 L8 16" stroke="#f0c840" stroke-width="0.8" fill="none" opacity="0.5"/><circle cx="8" cy="8" r="4" fill="#c9a84c" opacity="0.6"/><circle cx="8" cy="8" r="2" fill="#f9e060" opacity="0.8"/><path d="M22 8 C28 14 34 8 40 14 C46 20 52 14 58 20" stroke="#c9a84c" stroke-width="0.7" fill="none" opacity="0.4"/><path d="M8 22 C14 28 8 34 14 40 C20 46 14 52 20 58" stroke="#c9a84c" stroke-width="0.7" fill="none" opacity="0.4"/><circle cx="26" cy="8" r="1.5" fill="#c9a84c" opacity="0.5"/><circle cx="8" cy="26" r="1.5" fill="#c9a84c" opacity="0.5"/></svg></div>
@@ -2431,7 +2431,7 @@ html, body {
     </svg>
   </div>
 
-  <div onclick="goTo(_isVIP ? 'screen-reception' : 'screen-wedding')" style="display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;height:100%;padding:calc(env(safe-area-inset-top,0px) + 72px) 28px calc(env(safe-area-inset-bottom,0px) + 16px);text-align:center;position:relative;z-index:1;cursor:pointer;">
+  <div id="invite3-tap-zone" style="display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;height:100%;padding:calc(env(safe-area-inset-top,0px) + 72px) 28px calc(env(safe-area-inset-bottom,0px) + 16px);text-align:center;position:relative;z-index:1;cursor:pointer;">
 
     <!-- "WEDDING INVITATION" — large and bright at top -->
     <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(14px,4vw,20px);font-weight:700;letter-spacing:7px;text-transform:uppercase;color:#f9e060;text-shadow:0 0 30px rgba(249,224,96,0.6),0 0 60px rgba(249,224,96,0.2);">✦ Wedding Invitation ✦</div>
@@ -4501,6 +4501,25 @@ function animateRoyalFrame(div) {
 document.addEventListener('DOMContentLoaded', function() {
   // Pre-build SVGs for all royal frames
   document.querySelectorAll('.royal-frame').forEach(_buildRoyalFrameSVG);
+
+  // Invite3 tap — dedicated touch + click handler, bypasses debounce
+  var i3 = document.getElementById('invite3-tap-zone');
+  if (i3) {
+    var _i3tapped = false;
+    function _doInvite3Nav(e) {
+      if (current !== 'screen-invite3') return;
+      if (_i3tapped) return;
+      _i3tapped = true;
+      e.stopPropagation();
+      if (window._advanceTimer) { clearTimeout(window._advanceTimer); window._advanceTimer = null; }
+      // Force reset navigating flag so debounce can't block
+      _navigating = false;
+      goTo(_isVIP ? 'screen-reception' : 'screen-wedding');
+      setTimeout(function(){ _i3tapped = false; }, 1200);
+    }
+    i3.addEventListener('touchend', function(e){ e.preventDefault(); _doInvite3Nav(e); }, {passive:false});
+    i3.addEventListener('click', _doInvite3Nav);
+  }
 });
 
 function spawnPetals(n) {
