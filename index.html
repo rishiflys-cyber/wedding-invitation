@@ -2735,8 +2735,8 @@ html, body {
   </div>
   <div class="event-particles" id="ep-wedding" style="z-index:2;"></div>
 
-  <!-- Invitation text shown over the video (always visible while on this screen) -->
-  <div id="wedding-panel" style="position:absolute;bottom:0;left:0;right:0;z-index:4;padding:0 24px 20px;text-align:center;opacity:0;pointer-events:none;transition:opacity 1.4s ease;">
+  <!-- Invitation panel slides up after video ends -->
+  <div id="wedding-panel" style="position:absolute;bottom:0;left:0;right:0;height:100%;z-index:4;background:linear-gradient(to bottom,transparent 0%,rgba(4,1,0,0.6) 18%,rgba(4,1,0,0.97) 38%,#040100 55%);padding:0 24px 20px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;transform:translateY(100%);pointer-events:none;transition:transform 1.4s cubic-bezier(0.22,1,0.36,1);">
     <div style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#e8c96a;font-family:'Cormorant Garamond',serif;margin-bottom:6px;">— You are requested to join —</div>
     <div style="font-family:'Playfair Display',serif;font-size:32px;color:#ffffff;letter-spacing:1px;margin-bottom:6px;text-shadow:0 2px 24px rgba(0,0,0,0.8);">Rishabh &amp; Ananya</div>
     <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:#f0e0b0;line-height:1.6;margin-bottom:14px;">
@@ -3775,7 +3775,7 @@ document.addEventListener('DOMContentLoaded', function() {
     weddingShown = true;
     weddingTapped = true;
     if (weddingTimer) { clearTimeout(weddingTimer); weddingTimer = null; }
-    if (wp) { wp.style.opacity = '1'; wp.style.pointerEvents = 'auto'; }
+    if (wp) { wp.style.transform = 'translateY(0)'; wp.style.pointerEvents = 'auto'; }
   }
 
   // Exposed globally so onclick on screen div can skip the video
@@ -3785,10 +3785,8 @@ document.addEventListener('DOMContentLoaded', function() {
     weddingShown = false;
     weddingTapped = false;
     if (weddingTimer) { clearTimeout(weddingTimer); weddingTimer = null; }
-    var wtb = document.getElementById('wedding-text-bg');
-    if (wtb) { wtb.style.transition = 'none'; wtb.style.background = 'rgba(5,2,1,0.0)'; }
-    if (wp) { wp.style.transition = 'none'; wp.style.opacity = '0'; wp.style.pointerEvents = 'none'; }
-    setTimeout(function() { if (wp) wp.style.transition = 'opacity 1.6s ease'; if (wtb) wtb.style.transition = 'background 1.8s ease'; }, 50);
+    if (wp) { wp.style.transition = 'none'; wp.style.transform = 'translateY(100%)'; wp.style.pointerEvents = 'none'; }
+    setTimeout(function() { if (wp) wp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; }, 50);
     if (wv) { safeVideoPause(wv); wv.ontimeupdate = null; wv.onended = null; wv.currentTime = 0; wv._forcePaused = false; }
     var hint = document.getElementById('wedding-press-hint');
     if (hint) hint.style.opacity = '0';
@@ -3809,16 +3807,22 @@ document.addEventListener('DOMContentLoaded', function() {
     if (id === 'screen-wedding') {
       weddingShown = false;
       if (weddingTimer) { clearTimeout(weddingTimer); weddingTimer = null; }
-      if (wp) { wp.style.transition = 'none'; wp.style.opacity = '0'; wp.style.pointerEvents = 'none'; }
+      if (wp) { wp.style.transition = 'none'; wp.style.transform = 'translateY(100%)'; wp.style.opacity = '1'; wp.style.pointerEvents = 'none'; }
       if (wv) {
         wv.currentTime = 0;
-        // Show text after 3s while video still plays
+        // Show panel after video ends
+        wv.onended = function() { safeVideoPause(wv); showWeddingInvite(); };
+        wv.ontimeupdate = function() {
+          if (wv.duration && wv.currentTime >= wv.duration - 0.3) {
+            wv.ontimeupdate = null; safeVideoPause(wv); showWeddingInvite();
+          }
+        };
         safeVideoPlay(wv, showWeddingInvite);
-        weddingTimer = setTimeout(showWeddingInvite, 3000);
+        weddingTimer = setTimeout(showWeddingInvite, 60000);
       } else {
         weddingTimer = setTimeout(showWeddingInvite, 500);
       }
-      setTimeout(function() { if (wp) wp.style.transition = 'opacity 1.4s ease'; }, 50);
+      setTimeout(function() { if (wp) wp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; }, 50);
     }
   };
 })();
