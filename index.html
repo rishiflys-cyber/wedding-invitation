@@ -3125,11 +3125,7 @@ function goTo(id) {
     hint.style.display = 'none';
   }
   // Cancel any pending auto-advance timer from previous screen
-  if (window._advanceTimer) {
-    var dbg2 = document.getElementById('_inv3dbg');
-    if (dbg2) dbg2.textContent += '\n!! goTo('+id+') CLEARED TIMER from '+current;
-    clearTimeout(window._advanceTimer); window._advanceTimer = null;
-  }
+  if (window._advanceTimer) { clearTimeout(window._advanceTimer); window._advanceTimer = null; }
   if (window._ganeshFadeInt) { clearInterval(window._ganeshFadeInt); window._ganeshFadeInt = null; }
   if (window._inviteFadeInt) { clearInterval(window._inviteFadeInt); window._inviteFadeInt = null; }
   // Reset pause state on every screen change
@@ -3317,34 +3313,13 @@ function goTo(id) {
       var par=document.getElementById('act3-parents');
       if(par){ par.style.opacity='1'; }
     }, 2800);
-    // Auto-advance after everything is visible — bypass all debounce flags
+    // Auto-advance after everything is visible
     var _inv3Delay = _navigatingBack ? 4000 : 5000;
-    // On-screen debug overlay
-    (function(){
-      var dbg = document.getElementById('_inv3dbg');
-      if (!dbg) { dbg = document.createElement('div'); dbg.id='_inv3dbg'; dbg.style.cssText='position:fixed;top:10px;left:10px;right:10px;background:rgba(0,0,0,0.85);color:#0f0;font-size:11px;font-family:monospace;padding:8px;z-index:99999;border-radius:6px;pointer-events:none;white-space:pre-wrap;'; document.body.appendChild(dbg); }
-      dbg.textContent = 'inv3 entered\ntimer='+_inv3Delay+'ms\ncurrent='+current;
-    })();
     window._advanceCallback = function(){
-      var dbg = document.getElementById('_inv3dbg');
-      var msg = 'TIMER FIRED\ncurrent='+current+'\n_navigating='+_navigating+'\n_videoPaused='+_videoPaused+'\n_lastNavTime='+(Date.now()-_lastNavTime)+'ms ago';
-      if (dbg) dbg.textContent = msg;
-      console.log('[inv3] '+msg);
-      if (current !== 'screen-invite3') { if(dbg) dbg.textContent+='\nBLOCKED: wrong screen'; return; }
+      if (current !== 'screen-invite3') return;
       _navigating = false;
       _lastNavTime = 0;
-      if (dbg) dbg.textContent+='\ncalling goTo...';
-      try {
-        goTo(_isVIP ? 'screen-reception' : 'screen-wedding');
-        if (dbg) dbg.textContent+='\ngoTo done, current='+current;
-      } catch(e) {
-        if (dbg) dbg.textContent+='\nERROR: '+e.message+'\nfalling back to manual nav';
-        var _d = document.getElementById('screen-wedding');
-        var _s = document.getElementById('screen-invite3');
-        if (_s) _s.classList.remove('active');
-        if (_d) { _d.classList.add('active'); current = 'screen-wedding'; }
-        if (dbg) dbg.textContent+='\nmanual nav done, current='+current;
-      }
+      goTo(_isVIP ? 'screen-reception' : 'screen-wedding');
     };
     window._advanceTimer = setTimeout(window._advanceCallback, _inv3Delay);
     window._advanceStart = Date.now(); window._advanceDelay = _inv3Delay; window._advanceRemaining = _inv3Delay;
@@ -3991,8 +3966,6 @@ function toggleVideoPause() {
       vid.pause();
       // Cancel the auto-advance timer and save remaining time
       if (window._advanceTimer) {
-        var dbgP = document.getElementById('_inv3dbg');
-        if (dbgP) dbgP.textContent += '\n!! PAUSE cleared timer';
         var elapsed = Date.now() - (window._advanceStart || Date.now());
         window._advanceRemaining = Math.max(0, (window._advanceDelay || 0) - elapsed);
         clearTimeout(window._advanceTimer);
@@ -4013,8 +3986,6 @@ function toggleVideoPause() {
     // Non-video screens (invite slides) — just pause/resume the timer
     if (_videoPaused) {
       if (window._advanceTimer) {
-        var dbgNV = document.getElementById('_inv3dbg');
-        if (dbgNV) dbgNV.textContent += '\n!! NON-VID PAUSE cleared timer';
         var elapsedNV = Date.now() - (window._advanceStart || Date.now());
         window._advanceRemaining = Math.max(0, (window._advanceDelay || 0) - elapsedNV);
         clearTimeout(window._advanceTimer);
