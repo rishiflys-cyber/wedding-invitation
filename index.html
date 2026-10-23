@@ -2404,7 +2404,7 @@ html, body {
 <!-- ══════════════════════════════════════════
      SCREEN 3c — INVITE ACT 3 (names + families)
 ══════════════════════════════════════════ -->
-<div id="screen-invite3" class="screen" onclick="safeGoTo(_isVIP ? 'screen-reception' : 'screen-wedding')" style="cursor:pointer;">
+<div id="screen-invite3" class="screen" onclick="goTo(_isVIP ? 'screen-reception' : 'screen-wedding')" style="cursor:pointer;">
   <div id="screen-invite3-bg-zoom" style="background: radial-gradient(ellipse at 50% 20%, rgba(80,20,60,0.9) 0%, transparent 55%), radial-gradient(ellipse at 20% 80%, rgba(60,10,40,0.7) 0%, transparent 50%), linear-gradient(180deg, #0d0618 0%, #1a0830 35%, #120520 65%, #080210 100%);"></div>
   <!-- Stars -->
   <div style="position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;">
@@ -2424,7 +2424,7 @@ html, body {
     </svg>
   </div>
 
-  <div style="display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;height:100%;padding:calc(env(safe-area-inset-top,0px) + 72px) 28px calc(env(safe-area-inset-bottom,0px) + 16px);text-align:center;position:relative;z-index:1;">
+  <div onclick="goTo(_isVIP ? 'screen-reception' : 'screen-wedding')" style="display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;height:100%;padding:calc(env(safe-area-inset-top,0px) + 72px) 28px calc(env(safe-area-inset-bottom,0px) + 16px);text-align:center;position:relative;z-index:1;cursor:pointer;">
 
     <!-- "WEDDING INVITATION" — large and bright at top -->
     <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(14px,4vw,20px);font-weight:700;letter-spacing:7px;text-transform:uppercase;color:#f9e060;text-shadow:0 0 30px rgba(249,224,96,0.6),0 0 60px rgba(249,224,96,0.2);">✦ Wedding Invitation ✦</div>
@@ -2490,11 +2490,9 @@ html, body {
     </div>
 
     <!-- Tap hint -->
-    <div class="screen-tap-hint" onclick="safeGoTo(_isVIP ? 'screen-reception' : 'screen-wedding')" style="font-size:14px;opacity:0.6;letter-spacing:2px;cursor:pointer;padding:20px 40px;">tap to continue ✦</div>
+    <div class="screen-tap-hint" style="font-size:14px;opacity:0.6;letter-spacing:2px;">tap to continue ✦</div>
 
   </div>
-  <!-- Full-screen invisible tap overlay -->
-  <div onclick="safeGoTo(_isVIP ? 'screen-reception' : 'screen-wedding')" style="position:absolute;inset:0;z-index:50;cursor:pointer;"></div>
   <!-- hidden stubs so existing JS refs don't break -->
   <div id="invite-act3-text" style="display:none;"></div>
   <div id="act3-lotus-orn" style="display:none;"></div>
