@@ -3312,15 +3312,23 @@ function goTo(id) {
     }, 2800);
     // Auto-advance after everything is visible — bypass all debounce flags
     var _inv3Delay = _navigatingBack ? 4000 : 5000;
+    // On-screen debug overlay
+    (function(){
+      var dbg = document.getElementById('_inv3dbg');
+      if (!dbg) { dbg = document.createElement('div'); dbg.id='_inv3dbg'; dbg.style.cssText='position:fixed;top:10px;left:10px;right:10px;background:rgba(0,0,0,0.85);color:#0f0;font-size:11px;font-family:monospace;padding:8px;z-index:99999;border-radius:6px;pointer-events:none;white-space:pre-wrap;'; document.body.appendChild(dbg); }
+      dbg.textContent = 'inv3 entered\ntimer='+_inv3Delay+'ms\ncurrent='+current;
+    })();
     window._advanceCallback = function(){
-      console.log('[inv3] timer fired, current='+current+' _navigating='+_navigating+' _videoPaused='+_videoPaused+' _lastNavTime='+_lastNavTime);
-      if (current !== 'screen-invite3') { console.log('[inv3] blocked: wrong screen'); return; }
-      // Hard reset all navigation flags so goTo's debounce can't block
+      var dbg = document.getElementById('_inv3dbg');
+      var msg = 'TIMER FIRED\ncurrent='+current+'\n_navigating='+_navigating+'\n_videoPaused='+_videoPaused+'\n_lastNavTime='+(Date.now()-_lastNavTime)+'ms ago';
+      if (dbg) dbg.textContent = msg;
+      console.log('[inv3] '+msg);
+      if (current !== 'screen-invite3') { if(dbg) dbg.textContent+='\nBLOCKED: wrong screen'; return; }
       _navigating = false;
       _lastNavTime = 0;
-      console.log('[inv3] calling goTo');
+      if (dbg) dbg.textContent+='\ncalling goTo...';
       goTo(_isVIP ? 'screen-reception' : 'screen-wedding');
-      console.log('[inv3] goTo returned, current='+current);
+      if (dbg) dbg.textContent+='\ngoTo done, current='+current;
     };
     window._advanceTimer = setTimeout(window._advanceCallback, _inv3Delay);
     window._advanceStart = Date.now(); window._advanceDelay = _inv3Delay; window._advanceRemaining = _inv3Delay;
