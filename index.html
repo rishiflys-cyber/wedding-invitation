@@ -261,8 +261,8 @@ html, body {
 /* The 4 envelope flaps */
 .env-flap {
   position: absolute;
-  transition: transform 3.5s cubic-bezier(0.22, 1, 0.36, 1),
-              opacity 2.8s ease 0.6s;
+  transition: transform 1.6s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 1.2s ease 0.3s;
   z-index: 5;
   will-change: transform;
 }
@@ -411,46 +411,43 @@ html, body {
 }
 .lotus-petal {
   position: absolute;
-  width: 38px; height: 70px;
-  top: -70px; left: -19px;
   border-radius: 50% 50% 30% 30% / 60% 60% 40% 40%;
   transform-origin: 50% 100%;
-  transform: rotate(var(--ang)) scaleY(0) scaleX(0.3);
+  transform: rotate(var(--ang)) scaleY(0) scaleX(0.2);
   opacity: 0;
   pointer-events: none;
 }
-/* Outer ring: pink/rose petals */
+/* Outer ring: big rose petals */
 .lotus-petal.outer {
   background: radial-gradient(ellipse at 50% 30%,
-    rgba(255,220,240,1) 0%,
-    rgba(255,150,180,0.95) 40%,
-    rgba(210,80,120,0.7) 75%,
-    rgba(160,40,80,0.3) 100%);
-  filter: drop-shadow(0 0 6px rgba(255,120,160,0.8));
-  width: 44px; height: 82px;
-  top: -82px; left: -22px;
+    rgba(255,210,235,1) 0%,
+    rgba(255,140,175,0.95) 45%,
+    rgba(200,60,110,0.6) 80%,
+    rgba(140,20,60,0.2) 100%);
+  filter: drop-shadow(0 0 10px rgba(255,100,150,0.9));
+  width: 90px; height: 170px;
+  top: -170px; left: -45px;
 }
-/* Inner ring: golden/cream petals */
+/* Inner ring: golden petals */
 .lotus-petal.inner {
   background: radial-gradient(ellipse at 50% 25%,
-    rgba(255,255,200,1) 0%,
-    rgba(255,220,100,0.95) 40%,
-    rgba(220,160,30,0.7) 75%,
-    rgba(160,100,0,0.3) 100%);
-  filter: drop-shadow(0 0 5px rgba(255,200,60,0.9));
-  width: 30px; height: 54px;
-  top: -54px; left: -15px;
+    rgba(255,255,210,1) 0%,
+    rgba(255,220,80,0.95) 40%,
+    rgba(220,150,20,0.6) 80%,
+    rgba(150,80,0,0.2) 100%);
+  filter: drop-shadow(0 0 8px rgba(255,200,50,1));
+  width: 64px; height: 118px;
+  top: -118px; left: -32px;
 }
 
 .lotus-petal.blooming {
-  animation: lotus-unfurl var(--dur, 1.4s) cubic-bezier(0.16,1,0.3,1) var(--delay, 0s) forwards;
+  animation: lotus-unfurl var(--dur, 0.7s) cubic-bezier(0.2,1,0.4,1) var(--delay, 0s) forwards;
 }
 @keyframes lotus-unfurl {
-  0%   { transform: rotate(var(--ang)) scaleY(0) scaleX(0.2); opacity: 0; }
-  12%  { opacity: 1; }
-  35%  { transform: rotate(var(--ang)) scaleY(1.2) scaleX(1.05); opacity: 1; }
-  65%  { transform: rotate(var(--ang)) scaleY(1.0) scaleX(1.0); opacity: 0.95; }
-  100% { transform: rotate(var(--ang)) scaleY(0.95) scaleX(0.9); opacity: 0.9; }
+  0%   { transform: rotate(var(--ang)) scaleY(0) scaleX(0.15); opacity: 0; }
+  10%  { opacity: 1; }
+  50%  { transform: rotate(var(--ang)) scaleY(1.15) scaleX(1.1); opacity: 1; }
+  100% { transform: rotate(var(--ang)) scaleY(1.0) scaleX(1.0); opacity: 0.92; }
 }
 
 .seal-outer {
@@ -2114,24 +2111,24 @@ html, body {
     </div>
     <!-- Lotus petals — centred over the seal via JS, fixed position -->
     <div class="lotus-layer" id="lotus-layer">
-      <!-- Outer ring: 8 rose petals -->
-      <div class="lotus-petal outer" style="--ang:0deg;--delay:0s;--dur:1.5s"></div>
-      <div class="lotus-petal outer" style="--ang:45deg;--delay:0.06s;--dur:1.5s"></div>
-      <div class="lotus-petal outer" style="--ang:90deg;--delay:0.12s;--dur:1.5s"></div>
-      <div class="lotus-petal outer" style="--ang:135deg;--delay:0.18s;--dur:1.5s"></div>
-      <div class="lotus-petal outer" style="--ang:180deg;--delay:0.06s;--dur:1.5s"></div>
-      <div class="lotus-petal outer" style="--ang:225deg;--delay:0.12s;--dur:1.5s"></div>
-      <div class="lotus-petal outer" style="--ang:270deg;--delay:0.18s;--dur:1.5s"></div>
-      <div class="lotus-petal outer" style="--ang:315deg;--delay:0.24s;--dur:1.5s"></div>
+      <!-- Outer ring: 8 rose petals — fast burst -->
+      <div class="lotus-petal outer" style="--ang:0deg;--delay:0s;--dur:0.65s"></div>
+      <div class="lotus-petal outer" style="--ang:45deg;--delay:0.03s;--dur:0.65s"></div>
+      <div class="lotus-petal outer" style="--ang:90deg;--delay:0.06s;--dur:0.65s"></div>
+      <div class="lotus-petal outer" style="--ang:135deg;--delay:0.09s;--dur:0.65s"></div>
+      <div class="lotus-petal outer" style="--ang:180deg;--delay:0.03s;--dur:0.65s"></div>
+      <div class="lotus-petal outer" style="--ang:225deg;--delay:0.06s;--dur:0.65s"></div>
+      <div class="lotus-petal outer" style="--ang:270deg;--delay:0.09s;--dur:0.65s"></div>
+      <div class="lotus-petal outer" style="--ang:315deg;--delay:0.12s;--dur:0.65s"></div>
       <!-- Inner ring: 8 golden petals, offset 22.5deg -->
-      <div class="lotus-petal inner" style="--ang:22.5deg;--delay:0.1s;--dur:1.2s"></div>
-      <div class="lotus-petal inner" style="--ang:67.5deg;--delay:0.16s;--dur:1.2s"></div>
-      <div class="lotus-petal inner" style="--ang:112.5deg;--delay:0.22s;--dur:1.2s"></div>
-      <div class="lotus-petal inner" style="--ang:157.5deg;--delay:0.1s;--dur:1.2s"></div>
-      <div class="lotus-petal inner" style="--ang:202.5deg;--delay:0.16s;--dur:1.2s"></div>
-      <div class="lotus-petal inner" style="--ang:247.5deg;--delay:0.22s;--dur:1.2s"></div>
-      <div class="lotus-petal inner" style="--ang:292.5deg;--delay:0.28s;--dur:1.2s"></div>
-      <div class="lotus-petal inner" style="--ang:337.5deg;--delay:0.34s;--dur:1.2s"></div>
+      <div class="lotus-petal inner" style="--ang:22.5deg;--delay:0.05s;--dur:0.55s"></div>
+      <div class="lotus-petal inner" style="--ang:67.5deg;--delay:0.08s;--dur:0.55s"></div>
+      <div class="lotus-petal inner" style="--ang:112.5deg;--delay:0.11s;--dur:0.55s"></div>
+      <div class="lotus-petal inner" style="--ang:157.5deg;--delay:0.05s;--dur:0.55s"></div>
+      <div class="lotus-petal inner" style="--ang:202.5deg;--delay:0.08s;--dur:0.55s"></div>
+      <div class="lotus-petal inner" style="--ang:247.5deg;--delay:0.11s;--dur:0.55s"></div>
+      <div class="lotus-petal inner" style="--ang:292.5deg;--delay:0.14s;--dur:0.55s"></div>
+      <div class="lotus-petal inner" style="--ang:337.5deg;--delay:0.17s;--dur:0.55s"></div>
     </div>
     <div class="tap-hint">✦ tap the seal ✦</div>
   </div>
@@ -3437,17 +3434,17 @@ function openEnvelope() {
     }
   }, 180);
 
-  // Step 3 (700ms): Seal fades out, flaps begin slow open
+  // Step 3 (500ms): Seal fades, lotus blooms BIG, flaps begin opening
   setTimeout(function() {
     if (outerEl) {
-      outerEl.style.transition = 'transform 0.5s ease, opacity 0.4s ease';
-      outerEl.style.transform = 'scale(2.2)';
+      outerEl.style.transition = 'transform 0.4s ease, opacity 0.3s ease';
+      outerEl.style.transform = 'scale(2.5)';
       outerEl.style.opacity = '0';
     }
     document.getElementById('screen-envelope').classList.add('opening');
-  }, 700);
+  }, 500);
 
-  // Step 4 (4500ms): Ganesh — flaps fully open by now
+  // Step 4 (2200ms): Ganesh — lotus fully bloomed, flaps well open
   setTimeout(function() {
     goTo('screen-ganesh');
     document.getElementById('screen-envelope').classList.remove('opening');
@@ -3465,7 +3462,7 @@ function openEnvelope() {
       lotusLayer.style.top = '';
     }
     opened = false;
-  }, 4500);
+  }, 2200);
 }
 
 
