@@ -2607,7 +2607,7 @@ html, body {
      SCREEN MEHENDI
 ══════════════════════════════════════════ -->
 <div id="screen-mehendi" class="screen event-screen" onclick="safeGoTo('screen-sangeet')">
-  <video id="mehendi-video" muted playsinline preload="auto"
+  <video id="mehendi-video" muted playsinline preload="none"
     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
     <source src="mehendi.mp4" type="video/mp4">
   </video>
@@ -2644,7 +2644,7 @@ html, body {
      SCREEN SANGEET
 ══════════════════════════════════════════ -->
 <div id="screen-sangeet" class="screen event-screen" onclick="safeGoTo('screen-haldi')">
-  <video id="sangeet-video" muted playsinline preload="auto"
+  <video id="sangeet-video" muted playsinline preload="none"
     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
     <source src="sangeet.mp4" type="video/mp4">
   </video>
@@ -2681,7 +2681,7 @@ html, body {
      SCREEN HALDI
 ══════════════════════════════════════════ -->
 <div id="screen-haldi" class="screen event-screen" onclick="safeGoTo('screen-wedding')">
-  <video id="haldi-video" muted playsinline preload="auto"
+  <video id="haldi-video" muted playsinline preload="none"
     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
     <source src="haldi.mp4" type="video/mp4">
   </video>
@@ -2718,7 +2718,7 @@ html, body {
      SCREEN WEDDING
 ══════════════════════════════════════════ -->
 <div id="screen-wedding" class="screen event-screen" onclick="_videoPaused ? null : showWeddingInviteNow()">
-  <video id="wedding-video" muted playsinline preload="auto"
+  <video id="wedding-video" muted playsinline preload="none"
     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
     <source src="wedding.mp4" type="video/mp4">
   </video>
@@ -2762,7 +2762,7 @@ html, body {
      SCREEN RECEPTION (VIP only)
 ══════════════════════════════════════════ -->
 <div id="screen-reception" class="screen event-screen" onclick="safeGoTo('screen-rsvp')">
-  <video id="reception-video" muted playsinline preload="auto"
+  <video id="reception-video" muted playsinline preload="none"
     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
     <source src="reception.mp4" type="video/mp4">
   </video>
@@ -3039,6 +3039,14 @@ function goTo(id) {
   // Reset invite screen animation states when re-entering
   (function resetInviteAnim(sid){
     if(sid==='screen-invite'){
+      // Lazy-load all videos now that user has reached the invitation
+      if (!window._videosLoading) {
+        window._videosLoading = true;
+        ['mehendi-video','sangeet-video','haldi-video','wedding-video','reception-video'].forEach(function(vid) {
+          var v = document.getElementById(vid);
+          if (v && v.preload === 'none') { v.preload = 'auto'; v.load(); }
+        });
+      }
       var bg=document.getElementById('screen-invite-bg-zoom');
       if(bg){bg.classList.remove('zooming');}
       var orn=document.getElementById('invite-act1-ornament');
