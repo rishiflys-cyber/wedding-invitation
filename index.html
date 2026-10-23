@@ -1687,6 +1687,10 @@ html, body {
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
+  pointer-events: none;
+}
+.royal-frame svg * {
+  pointer-events: none;
 }
 
 /* ══════════════════════════════════════════
@@ -4404,6 +4408,7 @@ function _buildRoyalFrameSVG(div) {
   var svg = document.createElementNS(ns, 'svg');
   svg.setAttribute('viewBox', '0 0 '+w+' '+h);
   svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+  svg.style.pointerEvents = 'none';
 
   var pad1 = 14, pad2 = 20;
 
