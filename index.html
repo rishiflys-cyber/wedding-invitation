@@ -2724,41 +2724,54 @@ html, body {
      SCREEN WEDDING
 ══════════════════════════════════════════ -->
 <div id="screen-wedding" class="screen event-screen" onclick="_videoPaused ? null : showWeddingInviteNow()">
+  <!-- Video plays at full opacity during playback -->
   <video id="wedding-video" muted playsinline preload="none"
-    style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;opacity:0.75;">
+    style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;opacity:1;transition:opacity 1.5s ease;">
     <source src="wedding.mp4" type="video/mp4">
   </video>
-  <!-- Gradient to make bottom text readable over video -->
-  <div style="position:absolute;bottom:0;left:0;right:0;height:70%;z-index:2;background:linear-gradient(to bottom,transparent 0%,rgba(3,1,0,0.55) 35%,rgba(3,1,0,0.88) 65%,rgba(3,1,0,0.96) 85%);pointer-events:none;"></div>
   <div class="event-img-wrap" id="wedding-bg-img" style="z-index:0;display:none;">
     <img src="4-wedding_4k.jpg" alt="Wedding" loading="lazy">
   </div>
   <div class="event-particles" id="ep-wedding" style="z-index:2;"></div>
 
-  <!-- Invitation panel slides up after video ends -->
-  <div id="wedding-panel" style="position:absolute;bottom:0;left:0;right:0;height:100%;z-index:4;background:linear-gradient(to bottom,transparent 0%,rgba(4,1,0,0.6) 18%,rgba(4,1,0,0.97) 38%,#040100 55%);padding:0 24px 20px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;transform:translateY(100%);pointer-events:none;transition:transform 1.4s cubic-bezier(0.22,1,0.36,1);">
-    <div style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#e8c96a;font-family:'Cormorant Garamond',serif;margin-bottom:6px;">— You are requested to join —</div>
-    <div style="font-family:'Playfair Display',serif;font-size:32px;color:#ffffff;letter-spacing:1px;margin-bottom:6px;text-shadow:0 2px 24px rgba(0,0,0,0.8);">Rishabh &amp; Ananya</div>
-    <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:#f0e0b0;line-height:1.6;margin-bottom:14px;">
-      as they begin their journey together<br>under the sacred fire, with love &amp; joy
-    </div>
-    <div style="display:flex;align-items:center;gap:8px;margin:0 auto 14px;width:160px;">
+  <!-- STEP 2: Panel slides up from bottom after video ends -->
+  <div id="wedding-panel" style="position:absolute;inset:0;z-index:3;background:linear-gradient(to bottom,transparent 0%,transparent 25%,rgba(4,1,0,0.7) 50%,rgba(4,1,0,0.97) 72%);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:56px;transform:translateY(100%);pointer-events:none;transition:transform 1.6s cubic-bezier(0.22,1,0.36,1);">
+    <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:rgba(240,224,176,0.8);letter-spacing:1px;margin-bottom:10px;">Two families. One beautiful beginning.</div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;width:160px;">
       <div style="flex:1;height:1px;background:linear-gradient(to right,transparent,#c9a84c);"></div>
       <div style="font-size:10px;color:#c9a84c;">✦</div>
       <div style="flex:1;height:1px;background:linear-gradient(to left,transparent,#c9a84c);"></div>
     </div>
-    <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#e8c96a;margin-bottom:10px;">With the blessings of</div>
-    <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:#ffffff;line-height:1.55;margin-bottom:2px;">Partha Sarathi &amp; Soma Chattopadhyay</div>
-    <div style="font-size:9px;letter-spacing:2px;color:#c9a84c;margin-bottom:8px;">GROOM'S PARENTS</div>
-    <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:#ffffff;line-height:1.55;margin-bottom:2px;">Atanu Kumar Dash &amp; Aparna Dash</div>
-    <div style="font-size:9px;letter-spacing:2px;color:#c9a84c;margin-bottom:10px;">BRIDE'S PARENTS</div>
-    <div style="width:30px;height:1px;background:rgba(201,168,76,0.4);margin:0 auto 10px;"></div>
-    <div style="font-family:'Cormorant Garamond',serif;font-size:15px;color:#f0e0b0;line-height:1.55;margin-bottom:2px;">Sourish &amp; Somava Chattopadhyay</div>
-    <div style="font-size:9px;letter-spacing:2px;color:#c9a84c;margin-bottom:6px;">BHAI &amp; BHABHI</div>
-    <div style="font-family:'Playfair Display',serif;font-size:18px;color:#ffffff;letter-spacing:1px;margin-bottom:2px;">Didu</div>
-    <div style="font-size:9px;letter-spacing:2px;color:#c9a84c;margin-bottom:16px;">GRANDMOTHER</div>
-    <div class="screen-tap-hint" style="font-weight:500;opacity:0.65;font-size:13px;letter-spacing:2px;">tap to continue ✦</div>
-  </div><!-- end wedding-panel -->
+    <div style="font-size:11px;letter-spacing:5px;text-transform:uppercase;color:#e8c96a;font-family:'Cormorant Garamond',serif;margin-bottom:10px;">With joy, we invite you</div>
+    <div style="font-family:'Playfair Display',serif;font-size:36px;color:#ffffff;letter-spacing:2px;text-shadow:0 4px 30px rgba(0,0,0,0.9);">Rishabh &amp; Ananya</div>
+  </div>
+
+  <!-- STEP 3: Full invitation card fades in over entire screen, video at 30% behind -->
+  <div id="wedding-fullcard" style="position:absolute;inset:0;z-index:4;background:rgba(4,1,0,0.7);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 28px 24px;opacity:0;pointer-events:none;transition:opacity 1.8s ease;">
+    <div style="font-size:11px;letter-spacing:5px;text-transform:uppercase;color:#e8c96a;font-family:'Cormorant Garamond',serif;margin-bottom:10px;">— You are requested to join —</div>
+    <div style="font-family:'Playfair Display',serif;font-size:36px;color:#ffffff;letter-spacing:2px;margin-bottom:8px;text-shadow:0 2px 20px rgba(201,168,76,0.3);">Rishabh &amp; Ananya</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;color:#f0e0b0;line-height:1.7;margin-bottom:20px;">
+      as they begin their journey together<br>under the sacred fire, with love &amp; joy
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;width:180px;">
+      <div style="flex:1;height:1px;background:linear-gradient(to right,transparent,#c9a84c);"></div>
+      <div style="font-size:12px;color:#c9a84c;">✦</div>
+      <div style="flex:1;height:1px;background:linear-gradient(to left,transparent,#c9a84c);"></div>
+    </div>
+    <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#e8c96a;margin-bottom:14px;">With the blessings of</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:17px;color:#ffffff;line-height:1.6;text-align:center;margin-bottom:2px;">Partha Sarathi &amp; Soma Chattopadhyay</div>
+    <div style="font-size:10px;letter-spacing:2px;color:#c9a84c;margin-bottom:10px;">GROOM'S PARENTS</div>
+    <div style="font-size:14px;color:rgba(201,168,76,0.5);margin-bottom:10px;">✦</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:17px;color:#ffffff;line-height:1.6;text-align:center;margin-bottom:2px;">Atanu Kumar Dash &amp; Aparna Dash</div>
+    <div style="font-size:10px;letter-spacing:2px;color:#c9a84c;margin-bottom:16px;">BRIDE'S PARENTS</div>
+    <div style="width:32px;height:1px;background:rgba(201,168,76,0.35);margin:0 auto 16px;"></div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:#f0e0b0;line-height:1.6;text-align:center;margin-bottom:2px;">Sourish &amp; Somava Chattopadhyay</div>
+    <div style="font-size:10px;letter-spacing:2px;color:#c9a84c;margin-bottom:10px;">BHAI &amp; BHABHI</div>
+    <div style="font-size:12px;color:rgba(201,168,76,0.4);margin-bottom:10px;">·</div>
+    <div style="font-family:'Playfair Display',serif;font-size:22px;color:#ffffff;letter-spacing:2px;margin-bottom:3px;">Didu</div>
+    <div style="font-size:10px;letter-spacing:2px;color:#c9a84c;margin-bottom:24px;">GRANDMOTHER</div>
+    <div class="screen-tap-hint" style="font-weight:500;opacity:0.7;font-size:14px;letter-spacing:2px;">tap to continue ✦</div>
+  </div><!-- end wedding-fullcard -->
 </div>
 
 <!-- ══════════════════════════════════════════
@@ -3765,31 +3778,44 @@ document.addEventListener('DOMContentLoaded', function() {
 /* ── Wedding video logic ── */
 (function(){
   var wv = document.getElementById('wedding-video');
-  var wp = document.getElementById('wedding-panel');
+  var wp = document.getElementById('wedding-panel');      // slide-up gradient + "Join Us"
+  var wfc = document.getElementById('wedding-fullcard');  // full invitation card
   var weddingShown = false;
-  var weddingTapped = false;
   var weddingTimer = null;
+  var weddingTimer2 = null;
 
   function showWeddingInvite() {
     if (weddingShown) return;
     weddingShown = true;
-    weddingTapped = true;
     if (weddingTimer) { clearTimeout(weddingTimer); weddingTimer = null; }
+
+    // STEP 2: fade video to 30%, slide panel up
+    if (wv) wv.style.opacity = '0.3';
     if (wp) { wp.style.transform = 'translateY(0)'; wp.style.pointerEvents = 'auto'; }
+
+    // STEP 3: after 2s, full card fades in over entire screen
+    weddingTimer2 = setTimeout(function() {
+      if (wfc) { wfc.style.opacity = '1'; wfc.style.pointerEvents = 'auto'; }
+    }, 2000);
   }
 
-  // Exposed globally so onclick on screen div can skip the video
-  window.showWeddingInviteNow = showWeddingInvite;
+  // Tap to skip video — jump straight to full card
+  window.showWeddingInviteNow = function() {
+    if (!weddingShown) {
+      showWeddingInvite();
+    }
+  };
 
   function resetWedding() {
     weddingShown = false;
-    weddingTapped = false;
     if (weddingTimer) { clearTimeout(weddingTimer); weddingTimer = null; }
+    if (weddingTimer2) { clearTimeout(weddingTimer2); weddingTimer2 = null; }
+    if (wv) { wv.style.transition = 'none'; wv.style.opacity = '1'; safeVideoPause(wv); wv.ontimeupdate = null; wv.onended = null; wv.currentTime = 0; wv._forcePaused = false; }
+    setTimeout(function() { if (wv) wv.style.transition = 'opacity 1.5s ease'; }, 50);
     if (wp) { wp.style.transition = 'none'; wp.style.transform = 'translateY(100%)'; wp.style.pointerEvents = 'none'; }
-    setTimeout(function() { if (wp) wp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; }, 50);
-    if (wv) { safeVideoPause(wv); wv.ontimeupdate = null; wv.onended = null; wv.currentTime = 0; wv._forcePaused = false; }
-    var hint = document.getElementById('wedding-press-hint');
-    if (hint) hint.style.opacity = '0';
+    setTimeout(function() { if (wp) wp.style.transition = 'transform 1.6s cubic-bezier(0.22,1,0.36,1)'; }, 50);
+    if (wfc) { wfc.style.transition = 'none'; wfc.style.opacity = '0'; wfc.style.pointerEvents = 'none'; }
+    setTimeout(function() { if (wfc) wfc.style.transition = 'opacity 1.8s ease'; }, 50);
   }
 
   if (wv) {
@@ -3807,10 +3833,15 @@ document.addEventListener('DOMContentLoaded', function() {
     if (id === 'screen-wedding') {
       weddingShown = false;
       if (weddingTimer) { clearTimeout(weddingTimer); weddingTimer = null; }
-      if (wp) { wp.style.transition = 'none'; wp.style.transform = 'translateY(100%)'; wp.style.opacity = '1'; wp.style.pointerEvents = 'none'; }
+      if (weddingTimer2) { clearTimeout(weddingTimer2); weddingTimer2 = null; }
+      if (wv) { wv.style.transition = 'none'; wv.style.opacity = '1'; }
+      setTimeout(function() { if (wv) wv.style.transition = 'opacity 1.5s ease'; }, 50);
+      if (wp) { wp.style.transition = 'none'; wp.style.transform = 'translateY(100%)'; wp.style.pointerEvents = 'none'; }
+      setTimeout(function() { if (wp) wp.style.transition = 'transform 1.6s cubic-bezier(0.22,1,0.36,1)'; }, 50);
+      if (wfc) { wfc.style.transition = 'none'; wfc.style.opacity = '0'; wfc.style.pointerEvents = 'none'; }
+      setTimeout(function() { if (wfc) wfc.style.transition = 'opacity 1.8s ease'; }, 50);
       if (wv) {
         wv.currentTime = 0;
-        // Show panel after video ends
         wv.onended = function() { safeVideoPause(wv); showWeddingInvite(); };
         wv.ontimeupdate = function() {
           if (wv.duration && wv.currentTime >= wv.duration - 0.3) {
@@ -3822,7 +3853,6 @@ document.addEventListener('DOMContentLoaded', function() {
       } else {
         weddingTimer = setTimeout(showWeddingInvite, 500);
       }
-      setTimeout(function() { if (wp) wp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; }, 50);
     }
   };
 })();
