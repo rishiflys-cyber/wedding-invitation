@@ -3229,7 +3229,7 @@ function goTo(id) {
       var div=document.getElementById('invite-act1-divider');
       if(div){ div.style.opacity='1'; }
     }, 680);
-    var _inv1Delay = _navigatingBack ? 5000 : 7500;
+    var _inv1Delay = _navigatingBack ? 6000 : 12000;
     window._advanceCallback = function(){ if(current==='screen-invite'){ _navigating=false; _lastNavTime=0; goTo('screen-invite2'); } };
     window._advanceTimer = setTimeout(window._advanceCallback, _inv1Delay);
     window._advanceStart = Date.now(); window._advanceDelay = _inv1Delay; window._advanceRemaining = _inv1Delay;
@@ -3272,17 +3272,17 @@ function goTo(id) {
         })(i);
       }
     }, 200);
-    var _inv2Delay = _navigatingBack ? 5000 : 3500;
+    var _inv2Delay = _navigatingBack ? 5000 : 8000;
     window._advanceCallback = function(){ if(current==='screen-invite2'){ _navigating=false; _lastNavTime=0; goTo('screen-invite3'); } };
     window._advanceTimer = setTimeout(window._advanceCallback, _inv2Delay);
     window._advanceStart = Date.now(); window._advanceDelay = _inv2Delay; window._advanceRemaining = _inv2Delay;
   }
   if (id === 'screen-invite3') {
-    // Show control bar but hide pause btn — not a video screen
+    // Show control bar AND pause btn so guests can pause to read
     var _cb3 = document.getElementById('ctrl-bar');
     if (_cb3) _cb3.style.display = 'flex';
     var _pb3 = document.getElementById('pause-btn');
-    if (_pb3) _pb3.style.display = 'none';
+    if (_pb3) _pb3.style.display = 'inline-flex';
     // Always ensure timer runs — reset pause state
     _videoPaused = false;
     
@@ -3324,7 +3324,7 @@ function goTo(id) {
       if(par){ par.style.opacity='1'; }
     }, 2800);
     // Auto-advance after everything is visible
-    var _inv3Delay = _navigatingBack ? 4000 : 5000;
+    var _inv3Delay = _navigatingBack ? 8000 : 15000;
     window._advanceCallback = function(){
       if (current !== 'screen-invite3') return;
       _navigating = false;
