@@ -4478,9 +4478,8 @@ function _buildRoyalFrameSVG(div) {
   svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
   svg.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;';
 
-  var p = 12; // padding from edge
-  var p2 = 18; // inner line padding
-  var gold = '#c9a84c', goldL = '#f0c840';
+  var e1 = 6, e2 = 11, e3 = 17; // three frame lines from edge
+  var gold = '#c9a84c', goldB = '#f0c840', goldD = '#a07830', cream = '#f5e6c0';
 
   function el(tag, attrs) {
     var e = document.createElementNS(ns, tag);
@@ -4488,114 +4487,204 @@ function _buildRoyalFrameSVG(div) {
     return e;
   }
 
-  // Outer rect (animated draw)
-  var outer = el('rect', {x:p, y:p, width:w-p*2, height:h-p*2, fill:'none', stroke:'rgba(201,168,76,0.65)', 'stroke-width':'1'});
-  var op = 2*(w-p*2 + h-p*2);
-  outer.setAttribute('stroke-dasharray', op);
-  outer.setAttribute('stroke-dashoffset', op);
-  outer.classList.add('rf-outer');
-  svg.appendChild(outer);
+  // ── Triple frame lines ──
+  // Outermost bold line
+  var r1 = el('rect', {x:e1, y:e1, width:w-e1*2, height:h-e1*2, fill:'none', stroke:'rgba(201,168,76,0.85)', 'stroke-width':'1.4'});
+  var r1p = 2*(w-e1*2 + h-e1*2);
+  r1.setAttribute('stroke-dasharray', r1p); r1.setAttribute('stroke-dashoffset', r1p);
+  r1.classList.add('rf-outer'); svg.appendChild(r1);
 
-  // Inner rect (animated draw)
-  var inner = el('rect', {x:p2, y:p2, width:w-p2*2, height:h-p2*2, fill:'none', stroke:'rgba(201,168,76,0.3)', 'stroke-width':'0.6'});
-  var ip = 2*(w-p2*2 + h-p2*2);
-  inner.setAttribute('stroke-dasharray', ip);
-  inner.setAttribute('stroke-dashoffset', ip);
-  inner.classList.add('rf-inner');
-  svg.appendChild(inner);
+  // Middle hairline
+  var r2 = el('rect', {x:e2, y:e2, width:w-e2*2, height:h-e2*2, fill:'none', stroke:'rgba(240,200,64,0.35)', 'stroke-width':'0.5'});
+  var r2p = 2*(w-e2*2 + h-e2*2);
+  r2.setAttribute('stroke-dasharray', r2p); r2.setAttribute('stroke-dashoffset', r2p);
+  r2.classList.add('rf-inner'); svg.appendChild(r2);
 
-  // Corner flourish function — draws ornate scrollwork at each corner
-  // cx,cy = corner point; sx,sy = sign for direction (+1 or -1)
+  // Inner bold line
+  var r3 = el('rect', {x:e3, y:e3, width:w-e3*2, height:h-e3*2, fill:'none', stroke:'rgba(201,168,76,0.55)', 'stroke-width':'0.9'});
+  var r3p = 2*(w-e3*2 + h-e3*2);
+  r3.setAttribute('stroke-dasharray', r3p); r3.setAttribute('stroke-dashoffset', r3p);
+  r3.classList.add('rf-inner3'); svg.appendChild(r3);
+
+  // ── Midpoint ornaments on all four sides ──
+  // Top & bottom centre diamond cluster
+  [h*0, h].forEach(function(yc, yi) {
+    var sy = yi===0 ? 1 : -1;
+    var mx = w/2, my = yc + sy*e1;
+    // diamond
+    var dm = el('path', {d:'M'+mx+','+(my-sy*7)+' L'+(mx+5)+','+my+' L'+mx+','+(my+sy*7)+' L'+(mx-5)+','+my+' Z',
+      fill:'none', stroke:gold, 'stroke-width':'0.9', opacity:'0.85'});
+    svg.appendChild(dm);
+    var dmi = el('path', {d:'M'+mx+','+(my-sy*4)+' L'+(mx+2.5)+','+my+' L'+mx+','+(my+sy*4)+' L'+(mx-2.5)+','+my+' Z',
+      fill:goldB, stroke:'none', opacity:'0.6'});
+    svg.appendChild(dmi);
+    // flanking scrolls
+    [-28, 28].forEach(function(dx) {
+      var fx = mx+dx;
+      var sc = el('path', {
+        d:'M'+fx+','+my+' Q'+(fx+dx*0.25)+','+(my-sy*5)+' '+(fx+dx*0.5)+','+my+' Q'+(fx+dx*0.75)+','+(my+sy*5)+' '+(fx+dx)+','+my,
+        fill:'none', stroke:gold, 'stroke-width':'0.7', opacity:'0.55'});
+      svg.appendChild(sc);
+      var dot = el('circle', {cx:fx, cy:my, r:'1.5', fill:gold, opacity:'0.5'});
+      svg.appendChild(dot);
+    });
+  });
+
+  // Left & right centre diamond cluster
+  [0, w].forEach(function(xc, xi) {
+    var sx = xi===0 ? 1 : -1;
+    var mx = xc + sx*e1, my = h/2;
+    var dm = el('path', {d:'M'+(mx-sx*7)+','+my+' L'+mx+','+(my-5)+' L'+(mx+sx*7)+','+my+' L'+mx+','+(my+5)+' Z',
+      fill:'none', stroke:gold, 'stroke-width':'0.9', opacity:'0.85'});
+    svg.appendChild(dm);
+    var dmi = el('path', {d:'M'+(mx-sx*4)+','+my+' L'+mx+','+(my-2.5)+' L'+(mx+sx*4)+','+my+' L'+mx+','+(my+2.5)+' Z',
+      fill:goldB, stroke:'none', opacity:'0.6'});
+    svg.appendChild(dmi);
+    [-28, 28].forEach(function(dy) {
+      var fy = my+dy;
+      var sc = el('path', {
+        d:'M'+mx+','+fy+' Q'+(mx-sx*5)+','+(fy+dy*0.25)+' '+mx+','+(fy+dy*0.5)+' Q'+(mx+sx*5)+','+(fy+dy*0.75)+' '+mx+','+(fy+dy),
+        fill:'none', stroke:gold, 'stroke-width':'0.7', opacity:'0.55'});
+      svg.appendChild(sc);
+      var dot = el('circle', {cx:mx, cy:fy, r:'1.5', fill:gold, opacity:'0.5'});
+      svg.appendChild(dot);
+    });
+  });
+
+  // ── Corner medallion function ──
   function drawCorner(cx, cy, sx, sy) {
     var g = document.createElementNS(ns, 'g');
-    var arm = 52; // how far arms extend
+    var A = e1; // anchor on frame line
 
-    // Main spiral swirl at corner
-    var swirl = el('path', {
-      d: 'M'+(cx+sx*p)+','+(cy+sy*p)+
-         ' Q'+(cx+sx*p)+','+(cy+sy*(p+14))+
-         ' '+(cx+sx*(p+10))+','+(cy+sy*(p+14))+
-         ' Q'+(cx+sx*(p+18))+','+(cy+sy*(p+14))+
-         ' '+(cx+sx*(p+18))+','+(cy+sy*(p+7))+
-         ' Q'+(cx+sx*(p+18))+','+(cy+sy*(p+2))+
-         ' '+(cx+sx*(p+13))+','+(cy+sy*(p+2))+
-         ' Q'+(cx+sx*(p+9))+','+(cy+sy*(p+2))+
-         ' '+(cx+sx*(p+9))+','+(cy+sy*(p+6))+
-         ' Q'+(cx+sx*(p+9))+','+(cy+sy*(p+9))+
-         ' '+(cx+sx*(p+12))+','+(cy+sy*(p+9)),
-      stroke: gold, 'stroke-width': '1.3', fill: 'none', opacity: '0.9'
+    // ── Outer corner L-bracket accent ──
+    var brk = el('path', {
+      d:'M'+(cx+sx*(A+28))+','+(cy+sy*A)+' L'+(cx+sx*A)+','+(cy+sy*A)+' L'+(cx+sx*A)+','+(cy+sy*(A+28)),
+      fill:'none', stroke:goldB, 'stroke-width':'2', opacity:'0.22', 'stroke-linecap':'round'
     });
-    g.appendChild(swirl);
+    g.appendChild(brk);
 
-    // Second outer curl
-    var curl = el('path', {
-      d: 'M'+(cx+sx*p)+','+(cy+sy*p)+
-         ' Q'+(cx+sx*(p+28))+','+(cy+sy*p)+
-         ' '+(cx+sx*(p+28))+','+(cy+sy*(p+28)),
-      stroke: goldL, 'stroke-width': '0.65', fill: 'none', opacity: '0.3'
+    // ── Large corner swirl medallion ──
+    // Big outer spiral (clockwise from frame corner)
+    var S = el('path', {
+      d:'M'+(cx+sx*A)+','+(cy+sy*(A+35))+
+         ' C'+(cx+sx*(A-2))+','+(cy+sy*(A+20))+' '+(cx+sx*(A+5))+','+(cy+sy*(A+8))+' '+(cx+sx*(A+14))+','+(cy+sy*(A+8))+
+         ' C'+(cx+sx*(A+24))+','+(cy+sy*(A+8))+' '+(cx+sx*(A+28))+','+(cy+sy*(A+16))+' '+(cx+sx*(A+22))+','+(cy+sy*(A+22))+
+         ' C'+(cx+sx*(A+18))+','+(cy+sy*(A+26))+' '+(cx+sx*(A+13))+','+(cy+sy*(A+24))+' '+(cx+sx*(A+14))+','+(cy+sy*(A+20))+
+         ' C'+(cx+sx*(A+15))+','+(cy+sy*(A+17))+' '+(cx+sx*(A+18))+','+(cy+sy*(A+18))+' '+(cx+sx*(A+17))+','+(cy+sy*(A+21)),
+      fill:'none', stroke:gold, 'stroke-width':'1.5', opacity:'0.95', 'stroke-linecap':'round'
     });
-    g.appendChild(curl);
+    g.appendChild(S);
 
-    // Horizontal vine with undulating curve
-    var hx1 = cx+sx*(p+24), hy = cy+sy*p;
-    var hx2 = cx+sx*(p+arm);
-    var hvine = el('path', {
-      d: 'M'+hx1+','+hy+
-         ' Q'+(cx+sx*(p+32))+','+(cy+sy*(p-4))+
-         ' '+(cx+sx*(p+38))+','+hy+
-         ' Q'+(cx+sx*(p+44))+','+(cy+sy*(p+4))+
-         ' '+hx2+','+hy,
-      stroke: gold, 'stroke-width': '0.85', fill: 'none', opacity: '0.6'
+    // Mirror swirl on horizontal arm
+    var S2 = el('path', {
+      d:'M'+(cx+sx*(A+35))+','+(cy+sy*A)+
+         ' C'+(cx+sx*(A+20))+','+(cy+sy*(A-2))+' '+(cx+sx*(A+8))+','+(cy+sy*(A+5))+' '+(cx+sx*(A+8))+','+(cy+sy*(A+14))+
+         ' C'+(cx+sx*(A+8))+','+(cy+sy*(A+24))+' '+(cx+sx*(A+16))+','+(cy+sy*(A+28))+' '+(cx+sx*(A+22))+','+(cy+sy*(A+22))+
+         ' C'+(cx+sx*(A+26))+','+(cy+sy*(A+18))+' '+(cx+sx*(A+24))+','+(cy+sy*(A+13))+' '+(cx+sx*(A+20))+','+(cy+sy*(A+14))+
+         ' C'+(cx+sx*(A+17))+','+(cy+sy*(A+15))+' '+(cx+sx*(A+18))+','+(cy+sy*(A+18))+' '+(cx+sx*(A+21))+','+(cy+sy*(A+17)),
+      fill:'none', stroke:gold, 'stroke-width':'1.5', opacity:'0.95', 'stroke-linecap':'round'
     });
-    g.appendChild(hvine);
+    g.appendChild(S2);
 
-    // Horizontal leaf accents
-    [[p+31, -5],[p+44, 5]].forEach(function(lf){
-      var lx = cx+sx*lf[0], ly = cy+sy*(p+lf[1]);
-      var leaf = el('path', {
-        d: 'M'+lx+','+ly+' Q'+(lx+sx*3)+','+(ly-sy*6)+' '+(lx+sx*6)+','+(ly-sy*2)+' Q'+(lx+sx*3)+','+(ly+sy*4)+' '+lx+','+ly+' Z',
-        fill: gold, opacity: '0.5'
+    // ── Petite inner spiral at corner vertex ──
+    var sv = el('path', {
+      d:'M'+(cx+sx*(A+6))+','+(cy+sy*(A+4))+
+         ' Q'+(cx+sx*(A+4))+','+(cy+sy*(A+8))+' '+(cx+sx*(A+8))+','+(cy+sy*(A+10))+
+         ' Q'+(cx+sx*(A+12))+','+(cy+sy*(A+12))+' '+(cx+sx*(A+12))+','+(cy+sy*(A+8))+
+         ' Q'+(cx+sx*(A+12))+','+(cy+sy*(A+5))+' '+(cx+sx*(A+9))+','+(cy+sy*(A+5)),
+      fill:'none', stroke:goldB, 'stroke-width':'0.9', opacity:'0.75'
+    });
+    g.appendChild(sv);
+
+    // ── Horizontal decorative bar extending along top/bottom ──
+    var hEnd = cx + sx*(A+72);
+    var hMid = cx + sx*(A+53);
+    var hy   = cy + sy*A;
+    // main bar
+    var hbar = el('line', {x1:cx+sx*(A+36), y1:hy, x2:hEnd, y2:hy,
+      stroke:gold, 'stroke-width':'1', opacity:'0.7'});
+    g.appendChild(hbar);
+    // secondary bar offset inward
+    var hbar2 = el('line', {x1:cx+sx*(A+36), y1:cy+sy*(A+4), x2:cx+sx*(A+64), y2:cy+sy*(A+4),
+      stroke:gold, 'stroke-width':'0.5', opacity:'0.3'});
+    g.appendChild(hbar2);
+    // undulating vine above/below bar
+    var hv = el('path', {
+      d:'M'+(cx+sx*(A+38))+','+hy+
+         ' Q'+(cx+sx*(A+44))+','+(cy+sy*(A-5))+' '+(cx+sx*(A+50))+','+hy+
+         ' Q'+(cx+sx*(A+56))+','+(cy+sy*(A+5))+' '+(cx+sx*(A+62))+','+hy,
+      fill:'none', stroke:goldB, 'stroke-width':'0.75', opacity:'0.5'
+    });
+    g.appendChild(hv);
+    // leaf at vine peaks
+    [[A+44,-6],[A+56,6]].forEach(function(lp){
+      var lx = cx+sx*lp[0], ly = cy+sy*(A+lp[1]);
+      var lf = el('path', {
+        d:'M'+lx+','+ly+' Q'+(lx+sx*4)+','+(ly-sy*7)+' '+(lx+sx*8)+','+(ly-sy*2)+' Q'+(lx+sx*4)+','+(ly+sy*5)+' '+lx+','+ly+' Z',
+        fill:gold, opacity:'0.55'
       });
-      g.appendChild(leaf);
+      g.appendChild(lf);
+    });
+    // small dot accents
+    [A+42, A+52, A+62].forEach(function(dx) {
+      var dot = el('circle', {cx:cx+sx*dx, cy:hy, r:'1.2', fill:gold, opacity:'0.4'});
+      g.appendChild(dot);
     });
 
-    // Vertical vine
-    var vx = cx+sx*p, vy1 = cy+sy*(p+24), vy2 = cy+sy*(p+arm);
-    var vvine = el('path', {
-      d: 'M'+vx+','+vy1+
-         ' Q'+(cx+sx*(p-4))+','+(cy+sy*(p+32))+
-         ' '+vx+','+(cy+sy*(p+38))+
-         ' Q'+(cx+sx*(p+4))+','+(cy+sy*(p+44))+
-         ' '+vx+','+vy2,
-      stroke: gold, 'stroke-width': '0.85', fill: 'none', opacity: '0.6'
+    // ── Vertical decorative bar extending down sides ──
+    var vEnd = cy + sy*(A+72);
+    var vx   = cx + sx*A;
+    var vbar = el('line', {x1:vx, y1:cy+sy*(A+36), x2:vx, y2:vEnd,
+      stroke:gold, 'stroke-width':'1', opacity:'0.7'});
+    g.appendChild(vbar);
+    var vbar2 = el('line', {x1:cx+sx*(A+4), y1:cy+sy*(A+36), x2:cx+sx*(A+4), y2:cy+sy*(A+64),
+      stroke:gold, 'stroke-width':'0.5', opacity:'0.3'});
+    g.appendChild(vbar2);
+    var vv = el('path', {
+      d:'M'+vx+','+(cy+sy*(A+38))+
+         ' Q'+(cx+sx*(A-5))+','+(cy+sy*(A+44))+' '+vx+','+(cy+sy*(A+50))+
+         ' Q'+(cx+sx*(A+5))+','+(cy+sy*(A+56))+' '+vx+','+(cy+sy*(A+62)),
+      fill:'none', stroke:goldB, 'stroke-width':'0.75', opacity:'0.5'
     });
-    g.appendChild(vvine);
-
-    // Vertical leaf accents
-    [[-5, p+31],[5, p+44]].forEach(function(lf){
-      var lx = cx+sx*(p+lf[0]), ly = cy+sy*lf[1];
-      var leaf = el('path', {
-        d: 'M'+lx+','+ly+' Q'+(lx-sx*6)+','+(ly+sy*3)+' '+(lx-sx*2)+','+(ly+sy*6)+' Q'+(lx+sx*4)+','+(ly+sy*3)+' '+lx+','+ly+' Z',
-        fill: gold, opacity: '0.5'
+    g.appendChild(vv);
+    [[-6,A+44],[6,A+56]].forEach(function(lp){
+      var lx = cx+sx*(A+lp[0]), ly = cy+sy*lp[1];
+      var lf = el('path', {
+        d:'M'+lx+','+ly+' Q'+(lx-sx*7)+','+(ly+sy*4)+' '+(lx-sx*2)+','+(ly+sy*8)+' Q'+(lx+sx*5)+','+(ly+sy*4)+' '+lx+','+ly+' Z',
+        fill:gold, opacity:'0.55'
       });
-      g.appendChild(leaf);
+      g.appendChild(lf);
+    });
+    [A+42, A+52, A+62].forEach(function(dy) {
+      var dot = el('circle', {cx:vx, cy:cy+sy*dy, r:'1.2', fill:gold, opacity:'0.4'});
+      g.appendChild(dot);
     });
 
-    // Corner dot
-    var dot = el('circle', {cx:cx+sx*p, cy:cy+sy*p, r:'3', fill:goldL, opacity:'0'});
-    dot.classList.add('rf-dot');
-    g.appendChild(dot);
-    var dot2 = el('circle', {cx:cx+sx*p, cy:cy+sy*p, r:'1.5', fill:'#ffffff', opacity:'0'});
-    dot2.classList.add('rf-dot');
-    g.appendChild(dot2);
+    // ── Corner vertex jewel ──
+    var jx = cx+sx*A, jy = cy+sy*A;
+    // halo ring
+    g.appendChild(el('circle', {cx:jx, cy:jy, r:'6.5', fill:'none', stroke:gold, 'stroke-width':'0.8', opacity:'0.45'}));
+    // outer dot
+    var jd = el('circle', {cx:jx, cy:jy, r:'4.5', fill:goldD, opacity:'0'}); jd.classList.add('rf-dot'); g.appendChild(jd);
+    // inner bright
+    var jd2 = el('circle', {cx:jx, cy:jy, r:'2.5', fill:goldB, opacity:'0'}); jd2.classList.add('rf-dot'); g.appendChild(jd2);
+    // centre sparkle
+    var jd3 = el('circle', {cx:jx, cy:jy, r:'1', fill:cream, opacity:'0'}); jd3.classList.add('rf-dot'); g.appendChild(jd3);
+    // 4-point star rays
+    var star = el('path', {
+      d:'M'+jx+','+(jy-9)+' L'+(jx+1.2)+','+(jy-2)+' L'+(jx+9)+','+jy+' L'+(jx+1.2)+','+(jy+2)+
+         ' L'+jx+','+(jy+9)+' L'+(jx-1.2)+','+(jy+2)+' L'+(jx-9)+','+jy+' L'+(jx-1.2)+','+(jy-2)+' Z',
+      fill:goldB, opacity:'0', 'stroke-width':'0'
+    });
+    star.classList.add('rf-dot'); g.appendChild(star);
 
     svg.appendChild(g);
   }
 
-  drawCorner(0,   0,   1,  1);  // top-left
-  drawCorner(w,   0,  -1,  1);  // top-right
-  drawCorner(0,   h,   1, -1);  // bottom-left
-  drawCorner(w,   h,  -1, -1);  // bottom-right
+  drawCorner(0, 0,  1,  1);
+  drawCorner(w, 0, -1,  1);
+  drawCorner(0, h,  1, -1);
+  drawCorner(w, h, -1, -1);
 
   div.innerHTML = '';
   div.appendChild(svg);
@@ -4603,43 +4692,38 @@ function _buildRoyalFrameSVG(div) {
 
 function animateRoyalFrame(div) {
   if (!div) return;
-  // Build SVG if needed
   if (!div.querySelector('svg')) _buildRoyalFrameSVG(div);
   var svg = div.querySelector('svg');
   if (!svg) return;
 
-  // Reset all elements
-  var outer = svg.querySelector('.rf-outer');
-  var inner = svg.querySelector('.rf-inner');
-  var dots  = svg.querySelectorAll('.rf-dot');
+  var outer  = svg.querySelector('.rf-outer');
+  var inner  = svg.querySelector('.rf-inner');
+  var inner3 = svg.querySelector('.rf-inner3');
+  var dots   = svg.querySelectorAll('.rf-dot');
 
-  if (outer) {
-    var op = parseFloat(outer.getAttribute('stroke-dasharray'));
-    outer.setAttribute('stroke-dashoffset', op);
-    outer.style.opacity = '1';
-    outer.style.transition = 'none';
-    // Force reflow
-    outer.getBoundingClientRect();
-    outer.style.transition = 'stroke-dashoffset 1.4s cubic-bezier(0.4,0,0.2,1) 0.05s';
-    setTimeout(function(){ outer.setAttribute('stroke-dashoffset', '0'); }, 20);
+  function animateDash(el, delay, dur) {
+    if (!el) return;
+    var len = parseFloat(el.getAttribute('stroke-dasharray'));
+    el.setAttribute('stroke-dashoffset', len);
+    el.style.opacity = '1';
+    el.style.transition = 'none';
+    el.getBoundingClientRect();
+    el.style.transition = 'stroke-dashoffset '+dur+'s cubic-bezier(0.4,0,0.2,1) '+delay+'s';
+    setTimeout(function(){ el.setAttribute('stroke-dashoffset','0'); }, 20);
   }
-  if (inner) {
-    var ip = parseFloat(inner.getAttribute('stroke-dasharray'));
-    inner.setAttribute('stroke-dashoffset', ip);
-    inner.style.opacity = '0';
-    inner.style.transition = 'none';
-    inner.getBoundingClientRect();
-    inner.style.transition = 'stroke-dashoffset 1.6s cubic-bezier(0.4,0,0.2,1) 0.25s, opacity 0.4s ease 0.25s';
-    setTimeout(function(){ inner.setAttribute('stroke-dashoffset','0'); inner.style.opacity='0.8'; }, 20);
-  }
+
+  animateDash(outer,  0.05, 1.4);
+  animateDash(inner,  0.3,  1.6);
+  animateDash(inner3, 0.5,  1.6);
+
   dots.forEach(function(dot, i) {
     dot.style.opacity = '0';
     dot.style.transition = 'none';
     dot.getBoundingClientRect();
     setTimeout(function(){
-      dot.style.transition = 'opacity 0.4s ease';
+      dot.style.transition = 'opacity 0.5s ease';
       dot.style.opacity = '1';
-    }, 1000 + i * 80);
+    }, 1100 + i * 60);
   });
 }
 
