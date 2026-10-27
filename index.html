@@ -3540,7 +3540,7 @@ function openEnvelope() {
     document.getElementById('screen-envelope').classList.add('opening');
   }, 380);
 
-  // Step 4 (4800ms): Ganesh — flaps have fully parted like a veil
+  // Step 4 (1200ms): Ganesh — quick reveal
   setTimeout(function() {
     goTo('screen-ganesh');
     document.getElementById('screen-envelope').classList.remove('opening');
@@ -3558,7 +3558,7 @@ function openEnvelope() {
       lotusLayer.style.top = '';
     }
     opened = false;
-  }, 4800);
+  }, 1200);
 }
 
 
