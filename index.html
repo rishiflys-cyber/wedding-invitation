@@ -2491,6 +2491,18 @@ html, body {
   <div id="act3-parents" style="display:none;"></div>
 </div>
 <!-- ══════════════════════════════════════════
+     SCREEN BRIDGE (Invite 3 → Wedding)
+══════════════════════════════════════════ -->
+<div id="screen-bridge" class="screen">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%, rgba(255,200,80,0.12) 0%, transparent 60%), linear-gradient(180deg,#050108 0%,#0d0215 50%,#050108 100%);"></div>
+  <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 48px;z-index:1;">
+    <div id="bridge-line" style="opacity:0;transform:translateY(20px);transition:opacity 2s ease,transform 2s cubic-bezier(0.16,1,0.3,1);">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:400;letter-spacing:0.3em;text-transform:uppercase;color:#c9a84c;opacity:0.7;margin-bottom:24px;">— and so it begins —</div>
+      <div style="font-family:'Playfair Display',serif;font-size:clamp(28px,7vw,38px);font-style:italic;font-weight:700;color:#f9e8b0;line-height:1.5;text-shadow:0 0 80px rgba(249,224,96,0.5),0 0 140px rgba(255,160,0,0.3);">Some moments are written<br>long before they happen.</div>
+    </div>
+  </div>
+</div>
+<!-- ══════════════════════════════════════════
      SCREEN RSVP
 ══════════════════════════════════════════ -->
 <div id="screen-rsvp" class="screen">
@@ -3361,6 +3373,24 @@ function goTo(id) {
     window._advanceTimer = setTimeout(window._advanceCallback, _inv2Delay);
     window._advanceStart = Date.now(); window._advanceDelay = _inv2Delay; window._advanceRemaining = _inv2Delay;
   }
+  if (id === 'screen-bridge') {
+    // Animate line in
+    setTimeout(function(){
+      var bl = document.getElementById('bridge-line');
+      if (bl) { bl.style.opacity='1'; bl.style.transform='translateY(0)'; }
+    }, 300);
+    // Auto-advance to Wedding after 4s
+    window._advanceCallback = function(){
+      if (current !== 'screen-bridge') return;
+      _navigating = false; _lastNavTime = 0;
+      goTo(_isVIP ? 'screen-reception' : 'screen-wedding');
+    };
+    window._advanceTimer = setTimeout(window._advanceCallback, 4000);
+    window._advanceStart = Date.now(); window._advanceDelay = 4000; window._advanceRemaining = 4000;
+    // Reset on leave
+    var bl2 = document.getElementById('bridge-line');
+    if (bl2) { bl2.style.transition='none'; bl2.style.opacity='0'; bl2.style.transform='translateY(20px)'; setTimeout(function(){ if(bl2) bl2.style.transition='opacity 2s ease,transform 2s cubic-bezier(0.16,1,0.3,1)'; },50); }
+  }
   if (id === 'screen-invite3') {
     // Show control bar AND pause btn so guests can pause to read
     var _cb3 = document.getElementById('ctrl-bar');
@@ -3413,7 +3443,7 @@ function goTo(id) {
       if (current !== 'screen-invite3') return;
       _navigating = false;
       _lastNavTime = 0;
-      goTo(_isVIP ? 'screen-reception' : 'screen-wedding');
+      goTo('screen-bridge');
     };
     window._advanceTimer = setTimeout(window._advanceCallback, _inv3Delay);
     window._advanceStart = Date.now(); window._advanceDelay = _inv3Delay; window._advanceRemaining = _inv3Delay;
@@ -4839,7 +4869,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (window._advanceTimer) { clearTimeout(window._advanceTimer); window._advanceTimer = null; }
       // Force reset navigating flag so debounce can't block
       _navigating = false;
-      goTo(_isVIP ? 'screen-reception' : 'screen-wedding');
+      goTo('screen-bridge');
       setTimeout(function(){ _i3tapped = false; }, 1200);
     }
     i3.addEventListener('touchend', function(e){ e.preventDefault(); _doInvite3Nav(e); }, {passive:false});
