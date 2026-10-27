@@ -614,6 +614,35 @@ html, body {
 }
 
 /* ══════════════════════════════════════════
+   FLOWER SHOWER — Ganesh screen
+══════════════════════════════════════════ */
+.flower-petal {
+  position: absolute;
+  top: -40px;
+  width: 14px;
+  height: 18px;
+  border-radius: 50% 50% 40% 40% / 60% 60% 40% 40%;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 10;
+  animation: petal-fall linear forwards;
+}
+@keyframes petal-fall {
+  0%   { opacity: 0;   transform: translateY(0)    translateX(0)              rotate(0deg)   scale(0.7); }
+  8%   { opacity: 0.9; }
+  50%  { transform: translateY(55vh)   translateX(calc(var(--drift,0px) * 0.5)) rotate(260deg) scale(1.0); }
+  85%  { opacity: 0.7; }
+  100% { opacity: 0;   transform: translateY(112vh) translateX(var(--drift,0px)) rotate(520deg) scale(1.1); }
+}
+#flower-shower {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+  overflow: hidden;
+}
+
+/* ══════════════════════════════════════════
    SCREEN 2 — GANESH (full screen after reveal)
 ══════════════════════════════════════════ */
 #screen-ganesh {
@@ -2158,6 +2187,9 @@ html, body {
 ══════════════════════════════════════════ -->
 <div id="screen-ganesh" class="screen" onclick="safeGoTo('screen-invite')">
 
+  <!-- Flower shower overlay -->
+  <div id="flower-shower"></div>
+
   <!-- Hanging diya — left corner -->
   <div class="diya-left">
     <div class="diya-glow"></div>
@@ -3210,6 +3242,9 @@ function goTo(id) {
         }, 80);
       }).catch(function(){});
     }
+    // Flower shower on Ganesh screen
+    startFlowerShower();
+
     var _ganeshDelay = _navigatingBack ? 5000 : 5500;
     window._advanceCallback = function(){
       if (current !== 'screen-ganesh') return;
@@ -3465,6 +3500,43 @@ function updateBackBtn() {
     btn.classList.remove('visible');
   } else {
     btn.classList.add('visible');
+  }
+}
+
+function startFlowerShower() {
+  var container = document.getElementById('flower-shower');
+  if (!container) return;
+  // Clear any previous petals
+  container.innerHTML = '';
+  var colors = [
+    '#ffb3c6','#ff85a1','#ffc8dd',  // pinks
+    '#ffef99','#ffd700','#ffe066',  // golds
+    '#ff6b6b','#ff8fab',            // reds
+    '#fff0a0','#ffcf77'             // warm yellows
+  ];
+  var total = 55;
+  for (var i = 0; i < total; i++) {
+    (function(idx) {
+      var p = document.createElement('div');
+      p.className = 'flower-petal';
+      var size = 10 + Math.random() * 12;
+      var left = Math.random() * 100;
+      var delay = Math.random() * 3.2;
+      var dur = 3.5 + Math.random() * 2.5;
+      var color = colors[Math.floor(Math.random() * colors.length)];
+      var drift = (Math.random() - 0.5) * 120;
+      p.style.cssText = [
+        'left:' + left + '%',
+        'width:' + size + 'px',
+        'height:' + (size * 1.3) + 'px',
+        'background:' + color,
+        'animation-duration:' + dur + 's',
+        'animation-delay:' + delay + 's',
+        'transform:rotate(' + (Math.random()*360) + 'deg)',
+        '--drift:' + drift + 'px'
+      ].join(';');
+      container.appendChild(p);
+    })(i);
   }
 }
 
