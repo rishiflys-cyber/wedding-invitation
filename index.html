@@ -3019,7 +3019,8 @@ var _navigatingBack = false;
     var earlyScreens = ['screen-envelope','screen-ganesh'];
     if (earlyScreens.indexOf(current) !== -1) return;
     // If music should be on (_musicMuted flag false) and it's paused unexpectedly, resume
-    if (!window._musicMuted && !window._musicMutedByUser && music.paused && !_musicPausedByHide && music.currentTime > 0) {
+    // Do NOT resume if user has manually paused via the pause button
+    if (!window._musicMuted && !window._musicMutedByUser && !window._videoPaused && music.paused && !_musicPausedByHide && music.currentTime > 0) {
       music.play().catch(function(){});
     }
   }
@@ -4035,6 +4036,7 @@ function toggleVideoPause() {
     if (_videoPaused) {
       vid._forcePaused = true;
       vid.pause();
+      if (music && !music.paused) music.pause();
       // Cancel the auto-advance timer and save remaining time
       if (window._advanceTimer) {
         var elapsed = Date.now() - (window._advanceStart || Date.now());
@@ -4045,6 +4047,7 @@ function toggleVideoPause() {
     } else {
       vid._forcePaused = false;
       vid.play().catch(function(){});
+      if (music && !window._musicMutedByUser) music.play().catch(function(){});
       // Resume auto-advance with remaining time
       if (window._advanceRemaining > 0 && window._advanceCallback) {
         var cb = window._advanceCallback;
