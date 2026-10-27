@@ -3940,18 +3940,11 @@ document.addEventListener('DOMContentLoaded', function() {
     weddingShown = true;
     if (weddingTimer) { clearTimeout(weddingTimer); weddingTimer = null; }
 
-    // STEP 2: fade video to 30%, slide panel up — with 0.5s delay
-    setTimeout(function() {
-      if (wv) wv.style.opacity = '0.3';
-      if (wp) { wp.style.transform = 'translateY(0)'; wp.style.pointerEvents = 'auto'; }
-    }, 500);
-
-    // STEP 3: after 6s, full card fades in over entire screen; hide panel underneath
+    // Option C: video ends → 1.5s pause → full card fades in directly, no panel
     weddingTimer2 = setTimeout(function() {
+      if (wv) wv.style.opacity = '0.18';
       if (wfc) { wfc.style.opacity = '1'; wfc.style.pointerEvents = 'auto'; }
-      // Slide panel back out so it doesn't bleed through fullcard
-      if (wp) { wp.style.transform = 'translateY(100%)'; wp.style.pointerEvents = 'none'; }
-    }, 6500);
+    }, 1500);
   }
 
   // Tap to skip video — jump straight to full card
@@ -3991,7 +3984,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (weddingTimer2) { clearTimeout(weddingTimer2); weddingTimer2 = null; }
       if (wv) { wv.style.transition = 'none'; wv.style.opacity = '1'; }
       setTimeout(function() { if (wv) wv.style.transition = 'opacity 1.5s ease'; }, 50);
-      if (wp) { wp.style.transition = 'none'; wp.style.transform = 'translateY(100%)'; wp.style.pointerEvents = 'none'; }
+      if (wp) { wp.style.transition = 'none'; wp.style.transform = 'translateY(110%)'; wp.style.pointerEvents = 'none'; }
       setTimeout(function() { if (wp) wp.style.transition = 'transform 1.6s cubic-bezier(0.22,1,0.36,1)'; }, 50);
       if (wfc) { wfc.style.transition = 'none'; wfc.style.opacity = '0'; wfc.style.pointerEvents = 'none'; }
       setTimeout(function() { if (wfc) wfc.style.transition = 'opacity 1.8s ease'; }, 50);
