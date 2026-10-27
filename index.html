@@ -261,8 +261,8 @@ html, body {
 /* The 4 envelope flaps */
 .env-flap {
   position: absolute;
-  transition: transform 2.8s cubic-bezier(0.16, 1, 0.3, 1),
-              opacity 2.2s ease 0.6s;
+  transition: transform 4.5s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 3.5s ease 1.2s;
   z-index: 5;
   will-change: transform;
 }
@@ -3540,7 +3540,7 @@ function openEnvelope() {
     document.getElementById('screen-envelope').classList.add('opening');
   }, 380);
 
-  // Step 4 (3000ms): Ganesh — flaps have fully parted like a veil
+  // Step 4 (4800ms): Ganesh — flaps have fully parted like a veil
   setTimeout(function() {
     goTo('screen-ganesh');
     document.getElementById('screen-envelope').classList.remove('opening');
@@ -3558,7 +3558,7 @@ function openEnvelope() {
       lotusLayer.style.top = '';
     }
     opened = false;
-  }, 2200);
+  }, 4800);
 }
 
 
