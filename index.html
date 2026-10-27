@@ -2325,7 +2325,11 @@ html, body {
     <div id="invite-act1-text" style="text-align:center;transform:translateY(36px);font-family:'Playfair Display','Cormorant Garamond',Georgia,serif;font-size:27px;font-weight:400;line-height:1.85;letter-spacing:0.02em;color:#e8cfa0;opacity:0;will-change:transform,opacity;">
       <span style="font-size:17px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;opacity:0.9;font-family:'Playfair Display',serif;display:block;margin-bottom:48px;margin-top:-160px;">— a letter to you —</span>
       <span style="font-family:'Playfair Display',serif;font-size:clamp(34px,9vw,46px);font-style:italic;font-weight:900;color:#f9e060;letter-spacing:-0.01em;line-height:1.6;display:block;width:100%;text-shadow:0 0 80px rgba(249,224,96,0.7),0 0 140px rgba(255,160,0,0.4),0 3px 0 rgba(0,0,0,0.6);">A wedding is only as beautiful<br>as the people who fill it.</span>
-      <span style="font-family:'Cormorant Garamond',serif;font-size:clamp(18px,4.5vw,24px);font-style:italic;font-weight:400;color:#e8cfa0;letter-spacing:0.03em;line-height:1.6;display:block;margin-top:28px;opacity:0.88;">We would be honoured<br>by your presence.</span>
+    </div>
+
+    <!-- Honour line — fades in separately after headline settles -->
+    <div id="invite-act1-honour" style="opacity:0;transform:translateY(18px);transition:opacity 1.4s ease,transform 1.4s cubic-bezier(0.16,1,0.3,1);text-align:center;pointer-events:none;">
+      <span style="font-family:'Cormorant Garamond',serif;font-size:clamp(18px,4.5vw,24px);font-style:italic;font-weight:400;color:#e8cfa0;letter-spacing:0.03em;line-height:1.6;display:block;">We would be honoured<br>by your presence.</span>
     </div>
 
     <!-- Tap hint -->
@@ -3194,6 +3198,8 @@ function goTo(id) {
       if(el){el.style.animation='none';el.style.opacity='0';el.style.transform='translateY(36px)';}
       var div=document.getElementById('invite-act1-divider');
       if(div){div.style.transition='none';div.style.opacity='0';}
+      var hon=document.getElementById('invite-act1-honour');
+      if(hon){hon.style.transition='none';hon.style.opacity='0';hon.style.transform='translateY(18px)';}
     } else if(sid==='screen-invite2'){
       var bg2=document.getElementById('screen-invite2-bg-zoom');
       if(bg2){bg2.classList.remove('zooming');}
@@ -3334,7 +3340,44 @@ function goTo(id) {
       var div=document.getElementById('invite-act1-divider');
       if(div){ div.style.opacity='1'; }
     }, 680);
-    var _inv1Delay = _navigatingBack ? 6000 : 12000;
+    // Honour line + confetti burst after headline settles
+    setTimeout(function(){
+      if (current !== 'screen-invite') return;
+      // Fade in honour line
+      var hon=document.getElementById('invite-act1-honour');
+      if(hon){
+        hon.style.transition='opacity 1.4s ease,transform 1.4s cubic-bezier(0.16,1,0.3,1)';
+        hon.style.opacity='1';
+        hon.style.transform='translateY(0)';
+      }
+      // Golden confetti burst
+      var shapes=['✦','✧','·','⋆','❋','◆','✿','❀'];
+      var colors=['#f0c840','#ffe580','#ffd700','#c9a84c','#fff8dc','#ffec6e','#ffe4a0'];
+      for(var ci=0;ci<60;ci++){
+        (function(ci){
+          setTimeout(function(){
+            var p=document.createElement('div');
+            p.textContent=shapes[Math.floor(Math.random()*shapes.length)];
+            var x=15+Math.random()*70;
+            var startY=45+Math.random()*15;
+            var vx=(Math.random()-0.5)*240;
+            var vy=-(120+Math.random()*260);
+            var rot=(Math.random()-0.5)*720;
+            var size=8+Math.random()*14;
+            var dur=1.0+Math.random()*1.1;
+            p.style.cssText='position:fixed;left:'+x+'%;top:'+startY+'%;font-size:'+size+'px;color:'+colors[Math.floor(Math.random()*colors.length)]+';z-index:9999;pointer-events:none;opacity:1;will-change:transform,opacity;';
+            document.body.appendChild(p);
+            requestAnimationFrame(function(){requestAnimationFrame(function(){
+              p.style.transition='transform '+dur+'s cubic-bezier(.15,.85,.35,1),opacity '+dur+'s ease-in';
+              p.style.transform='translate('+vx+'px,'+vy+'px) rotate('+rot+'deg)';
+              p.style.opacity='0';
+            });});
+            setTimeout(function(){if(p.parentNode)p.parentNode.removeChild(p);},(dur+0.1)*1000);
+          },ci*18);
+        })(ci);
+      }
+    }, 3500);
+    var _inv1Delay = _navigatingBack ? 8000 : 16000;
     window._advanceCallback = function(){ if(current==='screen-invite'){ _navigating=false; _lastNavTime=0; goTo('screen-bridge'); } };
     window._advanceTimer = setTimeout(window._advanceCallback, _inv1Delay);
     window._advanceStart = Date.now(); window._advanceDelay = _inv1Delay; window._advanceRemaining = _inv1Delay;
