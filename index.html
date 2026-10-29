@@ -3629,21 +3629,56 @@ function goTo(id) {
     // Always ensure timer runs — reset pause state
     _videoPaused = false;
 
-    // Start background video (looping, dimmed)
     var i3v = document.getElementById('invite3-video');
-    if (i3v) {
-      i3v.style.opacity = '0';
-      i3v.currentTime = 0;
-      var i3vPlay = i3v.play();
-      if (i3vPlay && i3vPlay.catch) i3vPlay.catch(function(){});
-      setTimeout(function(){ if(i3v) i3v.style.opacity = '0.22'; }, 100);
+    var tz = document.getElementById('invite3-tap-zone');
+
+    if (_navigatingBack) {
+      // Coming back from RSVP — skip video, show card immediately
+      // Video stays hidden; tapping the screen will restart from video-first
+      if (i3v) { i3v.pause(); i3v.style.opacity = '0'; i3v.currentTime = 0; }
+      if (tz) { tz.style.transition = 'none'; tz.style.opacity = '1'; setTimeout(function(){ if(tz) tz.style.transition = ''; }, 50); }
+
+      // Tapping the card replays the full video-first sequence
+      var _i3tapReplay = function() {
+        var tzEl = document.getElementById('invite3-tap-zone');
+        var vidEl = document.getElementById('invite3-video');
+        if (tzEl) { tzEl.style.transition = 'opacity 1s ease'; tzEl.style.opacity = '0'; }
+        setTimeout(function() {
+          if (vidEl) {
+            vidEl.style.opacity = '0';
+            vidEl.currentTime = 0;
+            var vp = vidEl.play();
+            if (vp && vp.catch) vp.catch(function(){});
+            setTimeout(function(){ if(vidEl) vidEl.style.opacity = '0.22'; }, 100);
+          }
+          setTimeout(function(){
+            if (tzEl) { tzEl.style.transition = 'opacity 1.2s ease'; tzEl.style.opacity = '1'; }
+          }, 800);
+        }, 600);
+        // Remove listener after one tap
+        var i3scr = document.getElementById('screen-invite3');
+        if (i3scr) i3scr.removeEventListener('click', _i3tapReplay);
+      };
+      var _i3scr = document.getElementById('screen-invite3');
+      if (_i3scr) {
+        _i3scr.removeEventListener('click', _i3tapReplay); // clear any stale
+        _i3scr.addEventListener('click', _i3tapReplay, {once: true});
+      }
+    } else {
+      // Forward navigation — normal video-first flow
+      if (i3v) {
+        i3v.style.opacity = '0';
+        i3v.currentTime = 0;
+        var i3vPlay = i3v.play();
+        if (i3vPlay && i3vPlay.catch) i3vPlay.catch(function(){});
+        setTimeout(function(){ if(i3v) i3v.style.opacity = '0.22'; }, 100);
+      }
+      // Card content fades in after a cinematic pause
+      setTimeout(function(){
+        if (tz) tz.style.opacity = '1';
+      }, 800);
     }
 
-    // Card content fades in after a cinematic pause
-    setTimeout(function(){
-      var tz = document.getElementById('invite3-tap-zone');
-      if (tz) tz.style.opacity = '1';
-    }, 800);
     // Auto-advance after everything is visible
     var _inv3Delay = _navigatingBack ? 8000 : 15000;
     window._advanceCallback = function(){
