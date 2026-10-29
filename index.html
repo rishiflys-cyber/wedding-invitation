@@ -2973,7 +2973,7 @@ html, body {
 <!-- ══════════════════════════════════════════
      SCREEN RECEPTION (VIP only)
 ══════════════════════════════════════════ -->
-<div id="screen-reception" class="screen event-screen" onclick="_videoPaused ? null : (function(){var rfc2=document.getElementById('reception-fullcard');var cardVisible=rfc2&&parseFloat(rfc2.style.opacity)>0.5;if(cardVisible){if(!_isVIP)goTo('screen-rsvp');}else{if(window.showReceptionInviteNow)showReceptionInviteNow();}})()">
+<div id="screen-reception" class="screen event-screen" onclick="_videoPaused ? null : showReceptionInviteNow()">
   <!-- Poster shown immediately as background while video loads -->
   <div style="position:absolute;inset:0;z-index:0;background:url('reception_poster.jpg') center/cover no-repeat;"></div>
   <video id="reception-video" muted playsinline preload="auto"
@@ -4443,28 +4443,38 @@ document.addEventListener('DOMContentLoaded', function() {
   var rfc = document.getElementById('reception-fullcard');
   var receptionShown = false;
   var receptionTimer = null;
+  var receptionTimer2 = null;
 
   function showReceptionInvite() {
     if (receptionShown) return;
     receptionShown = true;
-    // Dim video like wedding screen
-    if (rv) rv.style.opacity = '0.18';
-    // Fade in the full-screen card overlay
-    if (rfc) { rfc.style.opacity = '1'; rfc.style.pointerEvents = 'auto'; }
-    // VIP only: auto-advance to RSVP after 12s of showing the reception card
-    if (_isVIP) {
-      setTimeout(function() {
-        if (current === 'screen-reception') goTo('screen-rsvp');
-      }, 12000);
-    }
+    if (receptionTimer) { clearTimeout(receptionTimer); receptionTimer = null; }
+
+    // video ends → 0.8s → card fades in over dimmed video (identical to wedding)
+    receptionTimer2 = setTimeout(function() {
+      if (rv) rv.style.opacity = '0.18';
+      if (rfc) { rfc.style.opacity = '1'; rfc.style.pointerEvents = 'auto'; }
+      var cb = document.getElementById('ctrl-bar');
+      if (cb) cb.classList.add('ctrl-compact');
+      // VIP only: auto-advance to RSVP after 12s
+      if (_isVIP) {
+        setTimeout(function() {
+          if (current === 'screen-reception') goTo('screen-rsvp');
+        }, 12000);
+      }
+    }, 800);
   }
 
   function resetReception() {
     receptionShown = false;
     if (receptionTimer) { clearTimeout(receptionTimer); receptionTimer = null; }
-    if (rv) rv.style.opacity = '1';
-    if (rfc) { rfc.style.opacity = '0'; rfc.style.pointerEvents = 'none'; }
-    if (rv) { safeVideoPause(rv); rv.ontimeupdate = null; rv.onended = null; rv.currentTime = 0; rv._forcePaused = false; }
+    if (receptionTimer2) { clearTimeout(receptionTimer2); receptionTimer2 = null; }
+    if (rv) { rv.style.transition = 'none'; rv.style.opacity = '1'; safeVideoPause(rv); rv.ontimeupdate = null; rv.onended = null; rv.currentTime = 0; rv._forcePaused = false; }
+    setTimeout(function() { if (rv) rv.style.transition = 'opacity 1.5s ease'; }, 50);
+    if (rfc) { rfc.style.transition = 'none'; rfc.style.opacity = '0'; rfc.style.pointerEvents = 'none'; }
+    setTimeout(function() { if (rfc) rfc.style.transition = 'opacity 1.8s ease'; }, 50);
+    var cb = document.getElementById('ctrl-bar');
+    if (cb) cb.classList.remove('ctrl-compact');
   }
 
   if (rv) {
@@ -4483,24 +4493,39 @@ document.addEventListener('DOMContentLoaded', function() {
       requestWakeLock();
       receptionShown = false;
       if (receptionTimer) { clearTimeout(receptionTimer); receptionTimer = null; }
-      if (rv) rv.style.opacity = '1';
-      if (rfc) { rfc.style.opacity = '0'; rfc.style.pointerEvents = 'none'; }
-      if (rv) {
-        rv.onended = function() { safeVideoPause(rv); showReceptionInvite(); };
-        rv.ontimeupdate = function() {
-          if (rv.duration && rv.currentTime >= rv.duration - 0.3) {
-            rv.ontimeupdate = null; safeVideoPause(rv); showReceptionInvite();
-          }
-        };
-        safeVideoPlay(rv, showReceptionInvite);
-        receptionTimer = setTimeout(showReceptionInvite, 60000);
+      if (receptionTimer2) { clearTimeout(receptionTimer2); receptionTimer2 = null; }
+
+      if (_navigatingBack && from === 'screen-rsvp') {
+        // Back from RSVP: skip video, show full card immediately
+        if (rv) { safeVideoPause(rv); rv.ontimeupdate = null; rv.onended = null; rv.currentTime = 0; rv.style.transition = 'none'; rv.style.opacity = '0.18'; setTimeout(function(){ if(rv) rv.style.transition = 'opacity 1.5s ease'; }, 50); }
+        if (rfc) { rfc.style.transition = 'none'; rfc.style.opacity = '1'; rfc.style.pointerEvents = 'auto'; }
+        var cb3 = document.getElementById('ctrl-bar');
+        if (cb3) cb3.classList.add('ctrl-compact');
+        receptionShown = true;
       } else {
-        receptionTimer = setTimeout(showReceptionInvite, 1000);
+        // Forward nav: play video from start, card fades in after
+        if (rv) { rv.style.transition = 'none'; rv.style.opacity = '1'; }
+        setTimeout(function() { if (rv) rv.style.transition = 'opacity 1.5s ease'; }, 50);
+        if (rfc) { rfc.style.transition = 'none'; rfc.style.opacity = '0'; rfc.style.pointerEvents = 'none'; }
+        setTimeout(function() { if (rfc) rfc.style.transition = 'opacity 1.8s ease'; }, 50);
+        if (rv) {
+          rv.currentTime = 0;
+          rv.onended = function() { safeVideoPause(rv); showReceptionInvite(); };
+          rv.ontimeupdate = function() {
+            if (rv.duration && rv.currentTime >= rv.duration - 0.3) {
+              rv.ontimeupdate = null; safeVideoPause(rv); showReceptionInvite();
+            }
+          };
+          safeVideoPlay(rv, showReceptionInvite);
+          receptionTimer = setTimeout(showReceptionInvite, 60000);
+        } else {
+          receptionTimer = setTimeout(showReceptionInvite, 500);
+        }
       }
     }
   };
 
-  // Tap to skip video — jump straight to full card (same pattern as wedding)
+  // Tap to skip video — jump straight to full card (identical to wedding)
   window.showReceptionInviteNow = function() {
     if (!receptionShown) {
       showReceptionInvite();
