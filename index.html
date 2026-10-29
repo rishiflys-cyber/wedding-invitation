@@ -3178,6 +3178,14 @@ var _navigatingBack = false;
     if (music && music.paused && window._musicStarted && !window._musicMutedByUser) {
       music.play().catch(function(){});
     }
+    // Retry any video that was blocked by autoplay policy
+    var vids = document.querySelectorAll('video');
+    vids.forEach(function(v) {
+      if (v._pendingPlay && v.paused && !v._forcePaused) {
+        v._pendingPlay = false;
+        v.play().catch(function(){});
+      }
+    });
   }
   document.addEventListener('touchstart', _unlockAudio, {once: true, passive: true, capture: true});
   document.addEventListener('click', _unlockAudio, {once: true, capture: true});
@@ -3893,19 +3901,35 @@ function safeVideoPlay(video, onSkip) {
   video.onended = null;
 
   function doPlay() {
-    try { video.pause(); } catch(e) {}
-    video.currentTime = 0;
     var started = false;
     function play() {
       if (started) return;
       started = true;
       if (video._forcePaused) return; // respect manual pause
       var p = video.play();
-      if (p !== undefined) { p.catch(function(){}); }
+      if (p !== undefined) {
+        p.catch(function(err) {
+          // NotAllowedError = autoplay blocked; retry once on next user gesture
+          if (err && err.name === 'NotAllowedError') {
+            video._pendingPlay = true;
+          }
+        });
+      }
     }
-    video.addEventListener('seeked', function() { play(); }, { once: true });
-    // Fallback in case seeked doesn't fire (already at 0)
-    setTimeout(play, 80);
+    // If video is already at/near 0 and paused, just play directly
+    if (video.paused && video.currentTime < 0.1) {
+      play();
+    } else if (video.seeking) {
+      // Already in the middle of a seek — wait for it to complete
+      video.addEventListener('seeked', function() { play(); }, { once: true });
+      setTimeout(play, 200); // fallback
+    } else {
+      // Need to seek back to start first
+      video.currentTime = 0;
+      video.addEventListener('seeked', function() { play(); }, { once: true });
+      // Fallback in case seeked doesn't fire
+      setTimeout(play, 200);
+    }
   }
 
   if (video.readyState === 0) {
