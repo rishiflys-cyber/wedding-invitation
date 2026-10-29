@@ -3945,7 +3945,15 @@ document.addEventListener('DOMContentLoaded', function() {
   var weddingScreen = document.getElementById('screen-wedding');
   if (weddingScreen) {
     weddingScreen.onclick = function() {
-      goTo(_isVIP ? 'screen-reception' : 'screen-rsvp');
+      var wfc2 = document.getElementById('wedding-fullcard');
+      var cardVisible = wfc2 && parseFloat(wfc2.style.opacity) > 0.5;
+      if (cardVisible) {
+        // Card is showing — tap advances (for non-VIP; VIP auto-advances)
+        if (!_isVIP) goTo('screen-rsvp');
+      } else {
+        // Video still playing — tap skips to card
+        if (window.showWeddingInviteNow) showWeddingInviteNow();
+      }
     };
   }
 
