@@ -2734,7 +2734,7 @@ html, body {
   </div>
 
   <!-- STEP 3: Full invitation card fades in over entire screen, video at 30% behind -->
-  <div id="wedding-fullcard" style="position:absolute;inset:0;z-index:4;background:rgba(4,1,0,0.92);display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;padding:clamp(24px,6vh,48px) 28px clamp(16px,3vh,28px);opacity:0;pointer-events:none;transition:opacity 1.8s ease;overflow-y:auto;">
+  <div id="wedding-fullcard" style="position:absolute;inset:0;z-index:4;background:rgba(4,1,0,0.78);display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;padding:clamp(24px,6vh,48px) 28px clamp(16px,3vh,28px);opacity:0;pointer-events:none;transition:opacity 1.8s ease;overflow-y:auto;">
     <!-- Ornamental border SVG — corner flourishes + lines -->
     <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;" viewBox="0 0 360 700" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -3970,11 +3970,11 @@ document.addEventListener('DOMContentLoaded', function() {
     weddingShown = true;
     if (weddingTimer) { clearTimeout(weddingTimer); weddingTimer = null; }
 
-    // Option C: video ends → 1.5s pause → full card fades in directly, no panel
+    // video ends → 0.8s → card fades in over dimmed video
     weddingTimer2 = setTimeout(function() {
       if (wv) wv.style.opacity = '0.18';
       if (wfc) { wfc.style.opacity = '1'; wfc.style.pointerEvents = 'auto'; }
-    }, 1500);
+    }, 800);
   }
 
   // Tap to skip video — jump straight to full card
