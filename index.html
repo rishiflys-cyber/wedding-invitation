@@ -4230,24 +4230,35 @@ document.addEventListener('DOMContentLoaded', function() {
       weddingShown = false;
       if (weddingTimer) { clearTimeout(weddingTimer); weddingTimer = null; }
       if (weddingTimer2) { clearTimeout(weddingTimer2); weddingTimer2 = null; }
-      if (wv) { wv.style.transition = 'none'; wv.style.opacity = '1'; }
-      setTimeout(function() { if (wv) wv.style.transition = 'opacity 1.5s ease'; }, 50);
       if (wp) { wp.style.transition = 'none'; wp.style.transform = 'translateY(110%)'; wp.style.pointerEvents = 'none'; }
       setTimeout(function() { if (wp) wp.style.transition = 'transform 1.6s cubic-bezier(0.22,1,0.36,1)'; }, 50);
-      if (wfc) { wfc.style.transition = 'none'; wfc.style.opacity = '0'; wfc.style.pointerEvents = 'none'; }
-      setTimeout(function() { if (wfc) wfc.style.transition = 'opacity 1.8s ease'; }, 50);
-      if (wv) {
-        wv.currentTime = 0;
-        wv.onended = function() { safeVideoPause(wv); showWeddingInvite(); };
-        wv.ontimeupdate = function() {
-          if (wv.duration && wv.currentTime >= wv.duration - 0.3) {
-            wv.ontimeupdate = null; safeVideoPause(wv); showWeddingInvite();
-          }
-        };
-        safeVideoPlay(wv, showWeddingInvite);
-        weddingTimer = setTimeout(showWeddingInvite, 60000);
+
+      if (_navigatingBack) {
+        // Back nav (from RSVP): skip video, show full card immediately
+        if (wv) { safeVideoPause(wv); wv.ontimeupdate = null; wv.onended = null; wv.currentTime = 0; wv.style.transition = 'none'; wv.style.opacity = '0.18'; setTimeout(function(){ if(wv) wv.style.transition = 'opacity 1.5s ease'; }, 50); }
+        if (wfc) { wfc.style.transition = 'none'; wfc.style.opacity = '1'; wfc.style.pointerEvents = 'auto'; }
+        var cb2 = document.getElementById('ctrl-bar');
+        if (cb2) cb2.classList.add('ctrl-compact');
+        weddingShown = true;
       } else {
-        weddingTimer = setTimeout(showWeddingInvite, 500);
+        // Forward nav: play video first, full card fades in after
+        if (wv) { wv.style.transition = 'none'; wv.style.opacity = '1'; }
+        setTimeout(function() { if (wv) wv.style.transition = 'opacity 1.5s ease'; }, 50);
+        if (wfc) { wfc.style.transition = 'none'; wfc.style.opacity = '0'; wfc.style.pointerEvents = 'none'; }
+        setTimeout(function() { if (wfc) wfc.style.transition = 'opacity 1.8s ease'; }, 50);
+        if (wv) {
+          wv.currentTime = 0;
+          wv.onended = function() { safeVideoPause(wv); showWeddingInvite(); };
+          wv.ontimeupdate = function() {
+            if (wv.duration && wv.currentTime >= wv.duration - 0.3) {
+              wv.ontimeupdate = null; safeVideoPause(wv); showWeddingInvite();
+            }
+          };
+          safeVideoPlay(wv, showWeddingInvite);
+          weddingTimer = setTimeout(showWeddingInvite, 60000);
+        } else {
+          weddingTimer = setTimeout(showWeddingInvite, 500);
+        }
       }
     }
   };
