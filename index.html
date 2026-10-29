@@ -2503,12 +2503,51 @@ html, body {
      SCREEN BRIDGE (Invite 3 → Wedding)
 ══════════════════════════════════════════ -->
 <div id="screen-bridge" class="screen">
-  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%, rgba(255,200,80,0.12) 0%, transparent 60%), linear-gradient(180deg,#050108 0%,#0d0215 50%,#050108 100%);"></div>
-  <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 48px;z-index:1;">
-    <div id="bridge-line" style="opacity:0;transform:translateY(20px);transition:opacity 2s ease,transform 2s cubic-bezier(0.16,1,0.3,1);">
-      <div style="font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:400;letter-spacing:0.3em;text-transform:uppercase;color:#c9a84c;opacity:0.7;margin-bottom:24px;">— and so it begins —</div>
-      <div style="font-family:'Playfair Display',serif;font-size:clamp(28px,7vw,38px);font-style:italic;font-weight:700;color:#f9e8b0;line-height:1.5;text-shadow:0 0 80px rgba(249,224,96,0.5),0 0 140px rgba(255,160,0,0.3);">Some moments are written<br>long before they happen.</div>
+  <!-- Warm royal background — lighter than before -->
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 20%, rgba(255,210,80,0.32) 0%, transparent 50%), radial-gradient(ellipse at 20% 70%, rgba(180,30,50,0.45) 0%, transparent 55%), radial-gradient(ellipse at 80% 70%, rgba(180,30,50,0.45) 0%, transparent 55%), radial-gradient(ellipse at 50% 100%, rgba(200,80,10,0.35) 0%, transparent 50%), linear-gradient(180deg,#1a0608 0%,#2e0d14 35%,#261009 65%,#160506 100%);"></div>
+  <!-- Subtle gold shimmer vignette -->
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%, rgba(255,215,80,0.07) 0%, transparent 70%);pointer-events:none;"></div>
+  <!-- Royal frame -->
+  <div class="royal-frame"></div>
+
+  <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:clamp(60px,12vh,100px) 44px;z-index:1;gap:clamp(18px,4vh,32px);">
+
+    <!-- Top ornament -->
+    <div id="bridge-top-orn" style="opacity:0;transition:opacity 1.6s ease;">
+      <svg width="240" height="44" viewBox="0 0 240 44" xmlns="http://www.w3.org/2000/svg">
+        <line x1="0" y1="22" x2="84" y2="22" stroke="#c9a84c" stroke-width="0.9" opacity="0.55"/>
+        <line x1="156" y1="22" x2="240" y2="22" stroke="#c9a84c" stroke-width="0.9" opacity="0.55"/>
+        <path d="M84 22 Q97 6 110 22 M130 22 Q143 6 156 22" stroke="#c9a84c" stroke-width="1.1" fill="none" opacity="0.6"/>
+        <circle cx="120" cy="22" r="9" fill="none" stroke="#f0c840" stroke-width="1.4" opacity="0.9"/>
+        <circle cx="120" cy="22" r="4" fill="#f0c840" opacity="0.7"/>
+        <circle cx="108" cy="22" r="4.5" fill="none" stroke="#c9a84c" stroke-width="0.9" opacity="0.55"/>
+        <circle cx="132" cy="22" r="4.5" fill="none" stroke="#c9a84c" stroke-width="0.9" opacity="0.55"/>
+        <path d="M44 22 Q56 10 68 22 M172 22 Q184 10 196 22" stroke="#c9a84c" stroke-width="0.7" fill="none" opacity="0.3"/>
+        <text x="120" y="10" text-anchor="middle" fill="#f0c840" font-size="10" opacity="0.65" font-family="serif">✦</text>
+      </svg>
     </div>
+
+    <!-- Label -->
+    <div id="bridge-label" style="opacity:0;transition:opacity 1.4s ease 0.2s;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:5px;text-transform:uppercase;color:rgba(245,200,66,0.6);">— and so it begins —</div>
+    </div>
+
+    <!-- Main text — staggered -->
+    <div id="bridge-line" style="opacity:0;transform:translateY(24px);transition:opacity 1.6s ease 0.4s,transform 1.6s cubic-bezier(0.16,1,0.3,1) 0.4s;">
+      <div style="font-family:'Playfair Display',serif;font-size:clamp(28px,7.5vw,42px);font-style:italic;font-weight:700;color:#f9e060;line-height:1.45;text-shadow:0 0 60px rgba(249,224,96,0.8),0 0 120px rgba(255,160,0,0.5),0 2px 0 rgba(0,0,0,0.5);">Some moments are written<br>long before they happen.</div>
+    </div>
+
+    <!-- Bottom ornament -->
+    <div id="bridge-bot-orn" style="opacity:0;transition:opacity 1.6s ease 0.6s;">
+      <svg width="160" height="28" viewBox="0 0 160 28" xmlns="http://www.w3.org/2000/svg">
+        <line x1="0" y1="14" x2="58" y2="14" stroke="#c9a84c" stroke-width="0.8" opacity="0.45"/>
+        <line x1="102" y1="14" x2="160" y2="14" stroke="#c9a84c" stroke-width="0.8" opacity="0.45"/>
+        <path d="M58 14 Q70 24 80 14 Q90 24 102 14" stroke="#c9a84c" stroke-width="1" fill="none" opacity="0.5"/>
+        <circle cx="80" cy="14" r="4" fill="none" stroke="#f0c840" stroke-width="1" opacity="0.7"/>
+        <text x="80" y="26" text-anchor="middle" fill="#f0c840" font-size="8" opacity="0.55" font-family="serif">✦</text>
+      </svg>
+    </div>
+
   </div>
 </div>
 <!-- ══════════════════════════════════════════
@@ -3484,12 +3523,28 @@ function goTo(id) {
     window._advanceStart = Date.now(); window._advanceDelay = _inv2Delay; window._advanceRemaining = _inv2Delay;
   }
   if (id === 'screen-bridge') {
-    // Animate line in
+    // Reset all bridge elements instantly
+    var _bReset = ['bridge-top-orn','bridge-label','bridge-line','bridge-bot-orn'];
+    _bReset.forEach(function(eid){
+      var el = document.getElementById(eid);
+      if (el) { el.style.transition='none'; el.style.opacity='0'; if(eid==='bridge-line'){ el.style.transform='translateY(24px)'; } }
+    });
+    // Staggered entrance: ornament + label together, then main text, then bottom ornament
+    setTimeout(function(){
+      var bTop = document.getElementById('bridge-top-orn');
+      var bLbl = document.getElementById('bridge-label');
+      if (bTop) { bTop.style.transition='opacity 1.6s ease'; bTop.style.opacity='1'; }
+      if (bLbl) { bLbl.style.transition='opacity 1.4s ease 0.2s'; bLbl.style.opacity='1'; }
+    }, 200);
     setTimeout(function(){
       var bl = document.getElementById('bridge-line');
-      if (bl) { bl.style.opacity='1'; bl.style.transform='translateY(0)'; }
-    }, 300);
-    // Auto-advance to Wedding after 4s
+      if (bl) { bl.style.transition='opacity 1.6s ease,transform 1.6s cubic-bezier(0.16,1,0.3,1)'; bl.style.opacity='1'; bl.style.transform='translateY(0)'; }
+    }, 500);
+    setTimeout(function(){
+      var bBot = document.getElementById('bridge-bot-orn');
+      if (bBot) { bBot.style.transition='opacity 1.6s ease'; bBot.style.opacity='1'; }
+    }, 900);
+    // Auto-advance to Wedding after 8s
     window._advanceCallback = function(){
       if (current !== 'screen-bridge') return;
       _navigating = false; _lastNavTime = 0;
@@ -3497,9 +3552,6 @@ function goTo(id) {
     };
     window._advanceTimer = setTimeout(window._advanceCallback, 8000);
     window._advanceStart = Date.now(); window._advanceDelay = 8000; window._advanceRemaining = 8000;
-    // Reset on leave
-    var bl2 = document.getElementById('bridge-line');
-    if (bl2) { bl2.style.transition='none'; bl2.style.opacity='0'; bl2.style.transform='translateY(20px)'; setTimeout(function(){ if(bl2) bl2.style.transition='opacity 2s ease,transform 2s cubic-bezier(0.16,1,0.3,1)'; },50); }
   }
   if (id === 'screen-invite3') {
     // Show control bar AND pause btn so guests can pause to read
