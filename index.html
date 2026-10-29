@@ -2768,7 +2768,7 @@ html, body {
 ══════════════════════════════════════════ -->
 <div id="screen-wedding" class="screen event-screen" onclick="_videoPaused ? null : showWeddingInviteNow()">
   <!-- Video plays at full opacity during playback -->
-  <video id="wedding-video" muted playsinline preload="none"
+  <video id="wedding-video" muted playsinline preload="auto"
     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;opacity:1;transition:opacity 1.5s ease;">
     <source src="wedding.mp4" type="video/mp4">
   </video>
@@ -2972,7 +2972,7 @@ html, body {
      SCREEN RECEPTION (VIP only)
 ══════════════════════════════════════════ -->
 <div id="screen-reception" class="screen event-screen">
-  <video id="reception-video" muted playsinline preload="none"
+  <video id="reception-video" muted playsinline preload="auto"
     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;opacity:1;transition:opacity 1.5s ease;">
     <source src="reception.mp4" type="video/mp4">
   </video>
@@ -3963,8 +3963,8 @@ function safeVideoPlay(video, onSkip) {
       video.removeEventListener('error', onError);
       if (onSkip) onSkip();
     }
-    // Give 5s on slow connections (India 4G can be slow)
-    var skipTimer = setTimeout(doSkip, 5000);
+    // Give 15s on slow connections (16MB video on India 4G needs time)
+    var skipTimer = setTimeout(doSkip, 15000);
     function onCanPlay() {
       if (skipped) return;
       clearTimeout(skipTimer);
@@ -3972,6 +3972,7 @@ function safeVideoPlay(video, onSkip) {
     }
     function onError() { clearTimeout(skipTimer); doSkip(); }
     video.addEventListener('canplay', onCanPlay, { once: true });
+    video.addEventListener('canplaythrough', onCanPlay, { once: true });
     video.addEventListener('error', onError, { once: true });
     video.load();
   } else {
