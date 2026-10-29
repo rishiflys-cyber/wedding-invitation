@@ -2971,41 +2971,156 @@ html, body {
 <!-- ══════════════════════════════════════════
      SCREEN RECEPTION (VIP only)
 ══════════════════════════════════════════ -->
-<div id="screen-reception" class="screen event-screen" onclick="safeGoTo('screen-rsvp')">
-  <video id="reception-video" muted playsinline preload="none"
-    style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
+<div id="screen-reception" class="screen event-screen" onclick="_videoPaused ? null : showReceptionInviteNow()">
+  <!-- CSS poster so no black screen while video loads -->
+  <div style="position:absolute;inset:0;z-index:0;background:url('reception_poster.jpg') center/cover no-repeat;"></div>
+  <video id="reception-video" muted playsinline preload="auto"
+    style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;opacity:1;transition:opacity 1.5s ease;">
     <source src="reception.mp4" type="video/mp4">
   </video>
-  <div class="event-img-wrap" id="reception-bg-img" style="z-index:0;">
-    <img src="5-reception_4k.jpg" alt="Reception" loading="lazy">
-  </div>
   <div class="event-particles" id="ep-reception" style="z-index:2;"></div>
-  <div id="reception-panel" style="position:absolute;bottom:0;left:0;right:0;height:38%;z-index:3;background:linear-gradient(to bottom,transparent 0%,rgba(20,4,12,0.98) 18%,#14030d 38%);padding-top:8px;transform:translateY(100%);transition:transform 1.4s cubic-bezier(0.22,1,0.36,1);pointer-events:none;overflow:hidden;">
-  <div class="event-wrap" id="reception-invite" style="position:relative;opacity:0;transform:translateY(20px);transition:opacity 0.8s ease 0.5s,transform 0.8s ease 0.5s;pointer-events:none;">
-    <div class="event-icon-big">🥂</div>
-    <div class="event-tag" style="background:rgba(255,100,180,0.2);border-color:rgba(255,100,180,0.55);color:#ff70c0">Reception</div>
-    <div class="event-title">An Evening to Remember</div>
-    <div class="event-subtitle">A celebration for our nearest &amp; dearest</div>
-    <div class="event-divider-line"></div>
-    <div class="event-detail-row">
-      <div class="event-detail">
-        <div class="event-detail-label">Date</div>
-        <div class="event-detail-value">14th December 2026</div>
+
+  <!-- Full invitation card — identical to wedding-fullcard -->
+  <div id="reception-fullcard" style="position:absolute;inset:0;z-index:4;background:rgba(4,1,0,0.58);display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:52px 24px 14px;opacity:0;pointer-events:none;transition:opacity 1.8s ease;overflow:hidden;">
+    <!-- Ornamental border SVG — identical to wedding -->
+    <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;" viewBox="0 0 360 700" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <style>.ob{fill:none;stroke:#c9a84c;stroke-width:0.8;opacity:0.7}.of{fill:#c9a84c;opacity:0.75}</style>
+      </defs>
+      <rect x="10" y="10" width="340" height="680" class="ob" stroke-width="0.6"/>
+      <rect x="14" y="14" width="332" height="672" class="ob" stroke-width="0.3"/>
+      <g transform="translate(10,10)">
+        <line x1="28" y1="0" x2="166" y2="0" class="ob" stroke-width="0.7"/>
+        <line x1="0" y1="28" x2="0" y2="336" class="ob" stroke-width="0.7"/>
+        <path d="M4,4 Q8,2 12,4 Q18,8 14,14 Q10,20 4,18 Q-1,14 2,9 Q5,5 10,6 Q14,8 12,13" class="ob" stroke-width="1.1" fill="none"/>
+        <path d="M0,0 Q6,0 10,4 Q16,10 10,16 Q4,22 0,16" class="ob" stroke-width="0.9"/>
+        <path d="M16,0 Q20,4 18,8 Q24,6 26,2" class="ob" stroke-width="0.8"/>
+        <path d="M0,16 Q4,20 8,22 Q4,26 2,26" class="ob" stroke-width="0.8"/>
+        <circle cx="10" cy="10" r="1.2" class="of"/><circle cx="18" cy="4" r="0.7" class="of"/><circle cx="4" cy="18" r="0.7" class="of"/>
+        <path d="M20,0 Q28,0 30,4 Q28,2 24,2" class="ob" stroke-width="0.6"/>
+        <path d="M0,20 Q0,28 4,30 Q2,28 2,24" class="ob" stroke-width="0.6"/>
+      </g>
+      <g transform="translate(350,10) scale(-1,1)">
+        <line x1="28" y1="0" x2="166" y2="0" class="ob" stroke-width="0.7"/>
+        <line x1="0" y1="28" x2="0" y2="336" class="ob" stroke-width="0.7"/>
+        <path d="M4,4 Q8,2 12,4 Q18,8 14,14 Q10,20 4,18 Q-1,14 2,9 Q5,5 10,6 Q14,8 12,13" class="ob" stroke-width="1.1" fill="none"/>
+        <path d="M0,0 Q6,0 10,4 Q16,10 10,16 Q4,22 0,16" class="ob" stroke-width="0.9"/>
+        <path d="M16,0 Q20,4 18,8 Q24,6 26,2" class="ob" stroke-width="0.8"/>
+        <path d="M0,16 Q4,20 8,22 Q4,26 2,26" class="ob" stroke-width="0.8"/>
+        <circle cx="10" cy="10" r="1.2" class="of"/><circle cx="18" cy="4" r="0.7" class="of"/><circle cx="4" cy="18" r="0.7" class="of"/>
+        <path d="M20,0 Q28,0 30,4 Q28,2 24,2" class="ob" stroke-width="0.6"/>
+        <path d="M0,20 Q0,28 4,30 Q2,28 2,24" class="ob" stroke-width="0.6"/>
+      </g>
+      <g transform="translate(10,690) scale(1,-1)">
+        <line x1="28" y1="0" x2="166" y2="0" class="ob" stroke-width="0.7"/>
+        <line x1="0" y1="28" x2="0" y2="336" class="ob" stroke-width="0.7"/>
+        <path d="M4,4 Q8,2 12,4 Q18,8 14,14 Q10,20 4,18 Q-1,14 2,9 Q5,5 10,6 Q14,8 12,13" class="ob" stroke-width="1.1" fill="none"/>
+        <path d="M0,0 Q6,0 10,4 Q16,10 10,16 Q4,22 0,16" class="ob" stroke-width="0.9"/>
+        <path d="M16,0 Q20,4 18,8 Q24,6 26,2" class="ob" stroke-width="0.8"/>
+        <path d="M0,16 Q4,20 8,22 Q4,26 2,26" class="ob" stroke-width="0.8"/>
+        <circle cx="10" cy="10" r="1.2" class="of"/><circle cx="18" cy="4" r="0.7" class="of"/><circle cx="4" cy="18" r="0.7" class="of"/>
+        <path d="M20,0 Q28,0 30,4 Q28,2 24,2" class="ob" stroke-width="0.6"/>
+        <path d="M0,20 Q0,28 4,30 Q2,28 2,24" class="ob" stroke-width="0.6"/>
+      </g>
+      <g transform="translate(350,690) scale(-1,-1)">
+        <line x1="28" y1="0" x2="166" y2="0" class="ob" stroke-width="0.7"/>
+        <line x1="0" y1="28" x2="0" y2="336" class="ob" stroke-width="0.7"/>
+        <path d="M4,4 Q8,2 12,4 Q18,8 14,14 Q10,20 4,18 Q-1,14 2,9 Q5,5 10,6 Q14,8 12,13" class="ob" stroke-width="1.1" fill="none"/>
+        <path d="M0,0 Q6,0 10,4 Q16,10 10,16 Q4,22 0,16" class="ob" stroke-width="0.9"/>
+        <path d="M16,0 Q20,4 18,8 Q24,6 26,2" class="ob" stroke-width="0.8"/>
+        <path d="M0,16 Q4,20 8,22 Q4,26 2,26" class="ob" stroke-width="0.8"/>
+        <circle cx="10" cy="10" r="1.2" class="of"/><circle cx="18" cy="4" r="0.7" class="of"/><circle cx="4" cy="18" r="0.7" class="of"/>
+        <path d="M20,0 Q28,0 30,4 Q28,2 24,2" class="ob" stroke-width="0.6"/>
+        <path d="M0,20 Q0,28 4,30 Q2,28 2,24" class="ob" stroke-width="0.6"/>
+      </g>
+      <path d="M180,11 l3,4 l-3,4 l-3,-4 Z" class="of" opacity="0.6"/>
+      <path d="M180,681 l3,4 l-3,4 l-3,-4 Z" class="of" opacity="0.6"/>
+      <path d="M11,350 l4,3 l4,-3 l-4,-3 Z" class="of" opacity="0.6"/>
+      <path d="M341,350 l4,3 l4,-3 l-4,-3 Z" class="of" opacity="0.6"/>
+    </svg>
+
+    <!-- TOP GROUP -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;width:100%;">
+      <div style="text-align:center;padding:0 8px;">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:5px;text-transform:uppercase;color:rgba(245,200,66,0.5);margin-bottom:2px;">Blessed by</div>
+        <div style="font-family:'Playfair Display',serif;font-size:20px;font-style:italic;font-weight:600;color:rgba(255,242,200,0.95);letter-spacing:2px;text-shadow:0 0 30px rgba(245,200,66,0.3);">Didu</div>
+        <div style="margin-top:3px;width:70px;height:1px;background:linear-gradient(90deg,transparent,rgba(245,200,66,0.4),transparent);margin-left:auto;margin-right:auto;"></div>
+        <div style="margin-top:3px;font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:5px;text-transform:uppercase;color:rgba(245,200,66,0.45);">Love from</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:rgba(255,255,255,0.85);margin-top:2px;letter-spacing:0.3px;">Sourish &amp; Somava Chattopadhyay</div>
       </div>
-      <div class="event-detail-sep"></div>
-      <div class="event-detail">
-        <div class="event-detail-label">Time</div>
-        <div class="event-detail-value">7:30 PM onwards</div>
+      <div style="text-align:center;">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(17px,5vw,24px);font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#f9e060;text-shadow:0 0 28px rgba(249,224,96,0.65);white-space:nowrap;">✦ &nbsp;Reception Invitation&nbsp; ✦</div>
+      </div>
+      <div style="display:flex;align-items:flex-start;justify-content:center;gap:10px;width:100%;max-width:340px;padding:0 4px;">
+        <div style="flex:1;text-align:center;">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,200,66,0.6);margin-bottom:5px;">Groom's Family</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:rgba(255,255,255,0.88);line-height:1.35;font-style:italic;">
+            Partha Sarathi<br>Chattopadhyay<br>
+            <span style="color:rgba(245,200,66,0.4);font-size:14px;font-style:normal;">&amp;</span><br>
+            Soma Chattopadhyay
+          </div>
+        </div>
+        <div style="width:1px;background:linear-gradient(180deg,transparent,rgba(245,200,66,0.35) 15%,rgba(245,200,66,0.35) 85%,transparent);align-self:stretch;"></div>
+        <div style="flex:1;text-align:center;">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,200,66,0.6);margin-bottom:5px;">Bride's Family</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:rgba(255,255,255,0.88);line-height:1.35;font-style:italic;">
+            Atanu Kumar Dash<br>
+            <span style="font-size:12px;color:rgba(255,255,255,0.38);font-style:normal;">(Acharya)</span><br>
+            <span style="color:rgba(245,200,66,0.4);font-size:14px;font-style:normal;">&amp;</span><br>
+            Aparna Dash<br>
+            <span style="font-size:12px;color:rgba(255,255,255,0.38);font-style:normal;">(Acharya)</span>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="event-venue">📍 <a href="https://maps.google.com/?q=The+Citi+Residenci,+Shahid+Khudiram+Sarani,+City+Centre,+Durgapur+713216" target="_blank" style="color:#f0a870;text-decoration:none;">The Citi Residenci, City Centre, Durgapur</a></div>
-    <div class="event-poem">
-      You are amongst the few<br>
-      who hold a special place in our hearts —<br>
-      <span class="event-poem-em">this evening is for you.</span>
+
+    <!-- Names centrepiece -->
+    <div style="display:flex;align-items:flex-start;justify-content:center;gap:8px;width:100%;">
+      <div style="text-align:center;flex:1;">
+        <div style="font-family:'Playfair Display',serif;font-size:clamp(28px,8vw,40px);font-weight:700;font-style:italic;color:#ffe84d;text-shadow:0 0 50px rgba(255,232,77,0.5),0 0 100px rgba(255,160,0,0.2);letter-spacing:-0.01em;line-height:1;">Rishabh</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;color:rgba(255,232,77,0.5);letter-spacing:1px;margin-top:2px;">Chattopadhyay</div>
+      </div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:rgba(255,255,255,0.28);padding-top:6px;flex-shrink:0;">&amp;</div>
+      <div style="text-align:center;flex:1;">
+        <div style="font-family:'Playfair Display',serif;font-size:clamp(28px,8vw,40px);font-weight:700;font-style:italic;color:#ffe84d;text-shadow:0 0 50px rgba(255,232,77,0.5),0 0 100px rgba(255,160,0,0.2);letter-spacing:-0.01em;line-height:1;">Ananya</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;color:rgba(255,232,77,0.5);letter-spacing:1px;margin-top:2px;">Dash <span style="font-size:11px;opacity:0.7;">(Acharya)</span></div>
+      </div>
     </div>
-  </div>
-  </div>
+
+    <!-- Date & Venue -->
+    <div style="text-align:center;">
+      <div style="font-family:'Playfair Display',serif;font-size:40px;font-weight:700;color:#fff;line-height:1.1;">
+        14 <span style="font-size:0.52em;font-weight:400;font-style:italic;color:rgba(255,255,255,0.55);letter-spacing:2px;">December</span> 2026
+      </div>
+      <div style="margin-top:7px;font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:rgba(255,255,255,0.85);letter-spacing:0.5px;">The Citi Residenci, Durgapur</div>
+      <div style="margin-top:4px;font-family:'Cormorant Garamond',serif;font-size:18px;color:rgba(245,200,66,0.75);letter-spacing:4px;text-transform:uppercase;">7 : 30 PM onwards</div>
+    </div>
+
+    <!-- Reception Countdown -->
+    <div style="display:flex;align-items:flex-start;gap:2px;width:100%;max-width:300px;justify-content:center;">
+      <div style="flex:1;text-align:center;background:rgba(245,200,66,0.06);border:1px solid rgba(245,200,66,0.15);border-radius:5px;padding:4px 2px;">
+        <div id="rfc-days" style="font-family:'Playfair Display',serif;font-size:clamp(18px,5vw,26px);font-weight:700;color:#ffe84d;line-height:1;text-shadow:0 0 18px rgba(255,232,77,0.6);">--</div>
+        <div style="font-size:7px;letter-spacing:2px;color:rgba(245,200,66,0.5);text-transform:uppercase;margin-top:2px;">Days</div>
+      </div>
+      <div style="font-size:14px;color:rgba(245,200,66,0.25);padding-top:4px;flex-shrink:0;">:</div>
+      <div style="flex:1;text-align:center;background:rgba(245,200,66,0.06);border:1px solid rgba(245,200,66,0.15);border-radius:5px;padding:4px 2px;">
+        <div id="rfc-hours" style="font-family:'Playfair Display',serif;font-size:clamp(18px,5vw,26px);font-weight:700;color:#ffe84d;line-height:1;text-shadow:0 0 18px rgba(255,232,77,0.6);">--</div>
+        <div style="font-size:7px;letter-spacing:2px;color:rgba(245,200,66,0.5);text-transform:uppercase;margin-top:2px;">Hours</div>
+      </div>
+      <div style="font-size:14px;color:rgba(245,200,66,0.25);padding-top:4px;flex-shrink:0;">:</div>
+      <div style="flex:1;text-align:center;background:rgba(245,200,66,0.06);border:1px solid rgba(245,200,66,0.15);border-radius:5px;padding:4px 2px;">
+        <div id="rfc-mins" style="font-family:'Playfair Display',serif;font-size:clamp(18px,5vw,26px);font-weight:700;color:#ffe84d;line-height:1;text-shadow:0 0 18px rgba(255,232,77,0.6);">--</div>
+        <div style="font-size:7px;letter-spacing:2px;color:rgba(245,200,66,0.5);text-transform:uppercase;margin-top:2px;">Mins</div>
+      </div>
+      <div style="font-size:14px;color:rgba(245,200,66,0.25);padding-top:4px;flex-shrink:0;">:</div>
+      <div style="flex:1;text-align:center;background:rgba(245,200,66,0.06);border:1px solid rgba(245,200,66,0.15);border-radius:5px;padding:4px 2px;">
+        <div id="rfc-secs" style="font-family:'Playfair Display',serif;font-size:clamp(18px,5vw,26px);font-weight:700;color:#ffe84d;line-height:1;text-shadow:0 0 18px rgba(255,232,77,0.6);">--</div>
+        <div style="font-size:7px;letter-spacing:2px;color:rgba(245,200,66,0.5);text-transform:uppercase;margin-top:2px;">Secs</div>
+      </div>
+    </div>
+
+    <div style="font-family:'Cormorant Garamond',serif;font-size:20px;letter-spacing:4px;color:rgba(245,200,66,0.55);text-transform:uppercase;">tap to continue &nbsp;✦</div>
+  </div><!-- end reception-fullcard -->
 </div>
 
 <div id="screen-hero" class="screen">
@@ -3148,7 +3263,7 @@ html, body {
 <script>
 let current = 'screen-envelope';
 let opened = false;
-var _isVIP = false; // true = guest sees reception screen after wedding
+var _isVIP = /[?&]r=1/.test(location.search); // true = guest sees reception screen after wedding
 var _guestRaw = '';
 var _guestFull = '';
 
@@ -3593,7 +3708,7 @@ function goTo(id) {
     window._advanceCallback = function(){
       if (current !== 'screen-bridge') return;
       _navigating = false; _lastNavTime = 0;
-      goTo(_isVIP ? 'screen-reception' : 'screen-wedding');
+      goTo('screen-wedding');
     };
     window._advanceTimer = setTimeout(window._advanceCallback, 8000);
     window._advanceStart = Date.now(); window._advanceDelay = 8000; window._advanceRemaining = 8000;
@@ -4172,6 +4287,12 @@ document.addEventListener('DOMContentLoaded', function() {
       // Compact nav bar so it takes less room on the invite card
       var cb = document.getElementById('ctrl-bar');
       if (cb) cb.classList.add('ctrl-compact');
+      // VIP: auto-advance to reception after 12s
+      if (_isVIP) {
+        setTimeout(function() {
+          if (current === 'screen-wedding') goTo('screen-reception');
+        }, 12000);
+      }
     }, 800);
   }
 
@@ -4248,26 +4369,44 @@ document.addEventListener('DOMContentLoaded', function() {
 })();
 
 /* ── Reception video logic ── */
+/* ── Reception video + fullcard logic (mirrors wedding exactly) ── */
 (function(){
   var rv = document.getElementById('reception-video');
-  var ri = document.getElementById('reception-invite');
-  var rp = document.getElementById('reception-panel');
+  var rfc = document.getElementById('reception-fullcard');
   var receptionShown = false;
   var receptionTimer = null;
+  var receptionTimer2 = null;
 
   function showReceptionInvite() {
     if (receptionShown) return;
     receptionShown = true;
-    if (rp) { rp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; rp.style.transform = 'translateY(0)'; rp.style.pointerEvents = 'auto'; }
-    if (ri) { ri.style.opacity = '1'; ri.style.transform = 'translateY(0)'; ri.style.pointerEvents = 'auto'; }
+    if (receptionTimer) { clearTimeout(receptionTimer); receptionTimer = null; }
+    receptionTimer2 = setTimeout(function() {
+      if (rv) rv.style.opacity = '0.18';
+      if (rfc) { rfc.style.opacity = '1'; rfc.style.pointerEvents = 'auto'; }
+      var cb = document.getElementById('ctrl-bar');
+      if (cb) cb.classList.add('ctrl-compact');
+      // Auto-advance to RSVP after 12s
+      setTimeout(function() {
+        if (current === 'screen-reception') goTo('screen-rsvp');
+      }, 12000);
+    }, 800);
   }
+
+  window.showReceptionInviteNow = function() {
+    if (!receptionShown) { showReceptionInvite(); }
+  };
 
   function resetReception() {
     receptionShown = false;
     if (receptionTimer) { clearTimeout(receptionTimer); receptionTimer = null; }
-    if (rp) { rp.style.transition = 'none'; rp.style.transform = 'translateY(100%)'; rp.style.pointerEvents = 'none'; }
-    if (ri) { ri.style.opacity = '0'; ri.style.transform = 'translateY(20px)'; ri.style.pointerEvents = 'none'; }
-    if (rv) { safeVideoPause(rv); rv.ontimeupdate = null; rv.onended = null; rv.currentTime = 0; rv._forcePaused = false; }
+    if (receptionTimer2) { clearTimeout(receptionTimer2); receptionTimer2 = null; }
+    if (rv) { rv.style.transition = 'none'; rv.style.opacity = '1'; safeVideoPause(rv); rv.ontimeupdate = null; rv.onended = null; rv.currentTime = 0; rv._forcePaused = false; }
+    setTimeout(function() { if (rv) rv.style.transition = 'opacity 1.5s ease'; }, 50);
+    if (rfc) { rfc.style.transition = 'none'; rfc.style.opacity = '0'; rfc.style.pointerEvents = 'none'; }
+    setTimeout(function() { if (rfc) rfc.style.transition = 'opacity 1.8s ease'; }, 50);
+    var cb = document.getElementById('ctrl-bar');
+    if (cb) cb.classList.remove('ctrl-compact');
   }
 
   if (rv) {
@@ -4286,9 +4425,13 @@ document.addEventListener('DOMContentLoaded', function() {
       requestWakeLock();
       receptionShown = false;
       if (receptionTimer) { clearTimeout(receptionTimer); receptionTimer = null; }
-      if (rp) { rp.style.transition = 'none'; rp.style.transform = 'translateY(100%)'; rp.style.pointerEvents = 'none'; }
-      if (ri) { ri.style.opacity = '0'; ri.style.transform = 'translateY(20px)'; ri.style.pointerEvents = 'none'; }
+      if (receptionTimer2) { clearTimeout(receptionTimer2); receptionTimer2 = null; }
+      if (rv) { rv.style.transition = 'none'; rv.style.opacity = '1'; }
+      setTimeout(function() { if (rv) rv.style.transition = 'opacity 1.5s ease'; }, 50);
+      if (rfc) { rfc.style.transition = 'none'; rfc.style.opacity = '0'; rfc.style.pointerEvents = 'none'; }
+      setTimeout(function() { if (rfc) rfc.style.transition = 'opacity 1.8s ease'; }, 50);
       if (rv) {
+        rv.currentTime = 0;
         rv.onended = function() { safeVideoPause(rv); showReceptionInvite(); };
         rv.ontimeupdate = function() {
           if (rv.duration && rv.currentTime >= rv.duration - 0.3) {
@@ -4778,6 +4921,20 @@ function launchConfetti() {
       document.getElementById('wfc-hours').textContent = String(h).padStart(2,'0');
       document.getElementById('wfc-mins').textContent  = String(m).padStart(2,'0');
       document.getElementById('wfc-secs').textContent  = String(s).padStart(2,'0');
+    }
+    // Update reception fullcard countdown (14 Dec 2026 7:30 PM IST)
+    var _rfc = document.getElementById('rfc-days');
+    if (_rfc) {
+      var _rTarget = new Date('2026-12-14T19:30:00+05:30').getTime();
+      var _rDiff = Math.max(0, _rTarget - Date.now());
+      var _rd = Math.floor(_rDiff / 86400000);
+      var _rh = Math.floor((_rDiff % 86400000) / 3600000);
+      var _rm = Math.floor((_rDiff % 3600000) / 60000);
+      var _rs = Math.floor((_rDiff % 60000) / 1000);
+      _rfc.textContent = String(_rd).padStart(2,'0');
+      document.getElementById('rfc-hours').textContent = String(_rh).padStart(2,'0');
+      document.getElementById('rfc-mins').textContent  = String(_rm).padStart(2,'0');
+      document.getElementById('rfc-secs').textContent  = String(_rs).padStart(2,'0');
     }
   }
   tick();
