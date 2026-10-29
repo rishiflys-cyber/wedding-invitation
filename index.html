@@ -4172,6 +4172,12 @@ document.addEventListener('DOMContentLoaded', function() {
       // Compact nav bar so it takes less room on the invite card
       var cb = document.getElementById('ctrl-bar');
       if (cb) cb.classList.add('ctrl-compact');
+      // VIP: auto-advance to reception after 4s of showing the card
+      if (_isVIP) {
+        setTimeout(function() {
+          goTo('screen-reception');
+        }, 4000);
+      }
     }, 800);
   }
 
@@ -4260,6 +4266,10 @@ document.addEventListener('DOMContentLoaded', function() {
     receptionShown = true;
     if (rp) { rp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; rp.style.transform = 'translateY(0)'; rp.style.pointerEvents = 'auto'; }
     if (ri) { ri.style.opacity = '1'; ri.style.transform = 'translateY(0)'; ri.style.pointerEvents = 'auto'; }
+    // Auto-advance to RSVP after 4s of showing the reception card
+    setTimeout(function() {
+      if (current === 'screen-reception') goTo('screen-rsvp');
+    }, 4000);
   }
 
   function resetReception() {
