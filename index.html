@@ -3148,7 +3148,7 @@ html, body {
 <script>
 let current = 'screen-envelope';
 let opened = false;
-var _isVIP = false; // true = guest sees reception screen after wedding
+var _isVIP = /[?&]r=1/.test(location.search); // true = guest sees reception screen after wedding
 var _guestRaw = '';
 var _guestFull = '';
 
