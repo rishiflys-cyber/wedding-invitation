@@ -71,6 +71,9 @@
 <style>
 /* Font fallback — ensures serifs display on Android even before Google Fonts load */
 body { font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, 'Times New Roman', serif; }
+/* Force swap so text is always visible even on slow connections */
+@font-face { font-family: 'Playfair Display'; font-display: swap; src: local('Georgia'); }
+@font-face { font-family: 'Cormorant Garamond'; font-display: swap; src: local('Georgia'); }
 </style>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -3893,17 +3896,23 @@ function safeVideoPlay(video, onSkip) {
   if (video.readyState === 0) {
     // Blob not assigned yet — wait for canplay
     var skipped = false;
-    var skipTimer = setTimeout(function() {
+    function doSkip() {
+      if (skipped) return;
       skipped = true;
       video.removeEventListener('canplay', onCanPlay);
+      video.removeEventListener('error', onError);
       if (onSkip) onSkip();
-    }, 2500);
+    }
+    // Give 5s on slow connections (India 4G can be slow)
+    var skipTimer = setTimeout(doSkip, 5000);
     function onCanPlay() {
       if (skipped) return;
       clearTimeout(skipTimer);
       doPlay();
     }
+    function onError() { clearTimeout(skipTimer); doSkip(); }
     video.addEventListener('canplay', onCanPlay, { once: true });
+    video.addEventListener('error', onError, { once: true });
     video.load();
   } else {
     doPlay();
