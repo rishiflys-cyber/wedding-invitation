@@ -4337,10 +4337,12 @@ document.addEventListener('DOMContentLoaded', function() {
     if (rv) rv.style.opacity = '0.18';
     // Fade in the full-screen card overlay
     if (rfc) { rfc.style.opacity = '1'; rfc.style.pointerEvents = 'auto'; }
-    // Auto-advance to RSVP after 12s of showing the reception card
-    setTimeout(function() {
-      if (current === 'screen-reception') goTo('screen-rsvp');
-    }, 12000);
+    // VIP only: auto-advance to RSVP after 12s of showing the reception card
+    if (_isVIP) {
+      setTimeout(function() {
+        if (current === 'screen-reception') goTo('screen-rsvp');
+      }, 12000);
+    }
   }
 
   function resetReception() {
