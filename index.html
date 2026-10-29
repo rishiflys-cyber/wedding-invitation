@@ -3709,6 +3709,7 @@ function returnToSeal() {
   // Stop music and videos, then go back to RA seal screen
   var music = document.getElementById('bgmusic');
   if (music) { music.pause(); music.currentTime = 0; }
+  window._musicStarted = false; // allow music to restart fresh on next seal tap
   ['mehendi','sangeet','haldi','wedding','reception'].forEach(function(n) {
     var v = document.getElementById(n + '-video');
     if (v) { try { v.pause(); v.currentTime = 0; } catch(e) {} }
