@@ -2588,7 +2588,7 @@ html, body {
 
     <!-- Main text — staggered -->
     <div id="bridge-line" style="opacity:0;transform:translateY(24px);transition:opacity 1.6s ease 0.4s,transform 1.6s cubic-bezier(0.16,1,0.3,1) 0.4s;">
-      <div style="font-family:'Playfair Display',serif;font-size:clamp(28px,7.5vw,42px);font-style:italic;font-weight:700;color:#f9e060;line-height:1.45;text-shadow:0 0 60px rgba(249,224,96,0.8),0 0 120px rgba(255,160,0,0.5),0 2px 0 rgba(0,0,0,0.5);">Some moments are written<br>long before they happen.</div>
+      <div style="font-family:'Playfair Display',serif;font-size:clamp(28px,7.5vw,42px);font-style:italic;font-weight:700;color:#f9e060;line-height:1.45;text-shadow:0 0 60px rgba(249,224,96,0.8),0 0 120px rgba(255,160,0,0.5),0 2px 0 rgba(0,0,0,0.5);">Some moments are written<br>long before they happen<span id="typing-dots"></span></div>
     </div>
 
     <!-- Bottom ornament -->
@@ -3268,6 +3268,27 @@ function forceGoTo(id) {
   goTo(id);
 }
 
+// Typing dots animation for "happen..."
+var _typingDotsInterval = null;
+function startTypingDots() {
+  var el = document.getElementById('typing-dots');
+  if (!el) return;
+  clearInterval(_typingDotsInterval);
+  var dots = ['.', '..', '...'];
+  var i = 0;
+  el.textContent = '';
+  _typingDotsInterval = setInterval(function() {
+    if (!document.getElementById('typing-dots')) { clearInterval(_typingDotsInterval); return; }
+    el.textContent = dots[i % dots.length];
+    i++;
+  }, 500);
+}
+function stopTypingDots() {
+  clearInterval(_typingDotsInterval);
+  var el = document.getElementById('typing-dots');
+  if (el) el.textContent = '';
+}
+
 function goTo(id) {
   var now = Date.now();
   if (_navigating) return;
@@ -3545,6 +3566,7 @@ function goTo(id) {
     window._advanceStart = Date.now(); window._advanceDelay = _inv2Delay; window._advanceRemaining = _inv2Delay;
   }
   if (id === 'screen-bridge') {
+    stopTypingDots();
     // Reset all bridge elements instantly
     var _bReset = ['bridge-top-orn','bridge-label','bridge-line','bridge-bot-orn'];
     _bReset.forEach(function(eid){
@@ -3561,6 +3583,8 @@ function goTo(id) {
     setTimeout(function(){
       var bl = document.getElementById('bridge-line');
       if (bl) { bl.style.transition='opacity 1.6s ease,transform 1.6s cubic-bezier(0.16,1,0.3,1)'; bl.style.opacity='1'; bl.style.transform='translateY(0)'; }
+      // Start typing dots after text fades in
+      setTimeout(function(){ startTypingDots(); }, 1800);
     }, 500);
     setTimeout(function(){
       var bBot = document.getElementById('bridge-bot-orn');
