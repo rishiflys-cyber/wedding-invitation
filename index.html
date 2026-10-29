@@ -3893,19 +3893,22 @@ function safeVideoPlay(video, onSkip) {
   video.onended = null;
 
   function doPlay() {
-    try { video.pause(); } catch(e) {}
-    video.currentTime = 0;
     var started = false;
     function play() {
       if (started) return;
       started = true;
-      if (video._forcePaused) return; // respect manual pause
+      if (video._forcePaused) return;
       var p = video.play();
       if (p !== undefined) { p.catch(function(){}); }
     }
-    video.addEventListener('seeked', function() { play(); }, { once: true });
-    // Fallback in case seeked doesn't fire (already at 0)
-    setTimeout(play, 80);
+    if (video.currentTime < 0.05) {
+      // Already at start — play immediately, no seek needed
+      play();
+    } else {
+      video.currentTime = 0;
+      video.addEventListener('seeked', function() { play(); }, { once: true });
+      setTimeout(play, 500); // generous fallback for slow Android
+    }
   }
 
   if (video.readyState === 0) {
