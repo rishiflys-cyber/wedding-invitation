@@ -2365,7 +2365,7 @@ html, body {
 
 
 
-<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;position:absolute;inset:0;padding:clamp(60px,14vh,110px) 44px clamp(50px,10vh,90px);text-align:center;z-index:1;box-sizing:border-box;width:100%;gap:clamp(20px,5vh,40px);">
+<div style="display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;position:absolute;inset:0;padding:clamp(60px,14vh,110px) 64px clamp(50px,10vh,90px);text-align:center;z-index:1;box-sizing:border-box;width:100%;">
 
     <!-- Top ornament -->
     <div id="act2-top-orn" style="opacity:0;transition:opacity 1.8s ease;">
@@ -2382,17 +2382,8 @@ html, body {
       </svg>
     </div>
 
-    <!-- Label -->
-    <div id="act2-label" style="opacity:0;transition:opacity 1.4s ease 0.3s;">
-      <div style="font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:5px;text-transform:uppercase;color:rgba(245,200,66,0.5);">— with love &amp; gratitude —</div>
-    </div>
-
-    <!-- Main text — staggered lines -->
-    <div id="invite-act2-text" style="will-change:transform,opacity;">
-      <div id="act2-line1" style="font-family:'Playfair Display',serif;font-size:clamp(15px,4vw,20px);font-weight:400;font-style:italic;color:rgba(255,235,180,0.7);letter-spacing:0.04em;opacity:0;transform:translateY(22px);transition:opacity 1.2s ease,transform 1.2s cubic-bezier(0.16,1,0.3,1);">You have been a part of our story.</div>
-      <div id="act2-line2" style="margin-top:clamp(14px,3.5vh,24px);font-family:'Playfair Display',serif;font-size:clamp(26px,7vw,40px);font-weight:700;font-style:italic;color:#f9e060;text-shadow:0 0 60px rgba(249,224,96,0.6),0 0 120px rgba(255,160,0,0.3);letter-spacing:-0.01em;line-height:1.2;opacity:0;transform:translateY(22px);transition:opacity 1.4s ease 0.35s,transform 1.4s cubic-bezier(0.16,1,0.3,1) 0.35s;">Now be a part<br>of our forever.</div>
-      <div id="act2-line3" style="margin-top:clamp(14px,3.5vh,24px);font-family:'Cormorant Garamond',serif;font-size:clamp(14px,3.8vw,18px);font-weight:400;font-style:italic;color:rgba(255,242,200,0.65);letter-spacing:0.06em;opacity:0;transform:translateY(22px);transition:opacity 1.2s ease 0.7s,transform 1.2s cubic-bezier(0.16,1,0.3,1) 0.7s;">We would be honoured by your presence.</div>
-    </div>
+    <!-- Main text -->
+    <div id="invite-act2-text" class="you-are-one" style="font-family:'Playfair Display','Cormorant Garamond',Georgia,serif;font-size:clamp(20px,5vw,26px);font-weight:900;font-style:italic;letter-spacing:-0.01em;line-height:1.5;color:#f9e8b0;text-shadow:0 0 80px rgba(249,224,96,0.7),0 0 140px rgba(255,160,0,0.4),0 3px 0 rgba(0,0,0,0.6);opacity:0;transform:scale(0.68) translateY(28px);filter:blur(8px);will-change:transform,opacity,filter;">We would be honoured<br><span style="font-size:clamp(22px,5.5vw,28px);color:#f9e060;">by your presence.</span></div>
 
     <!-- Bottom ornament -->
     <div id="act2-bot-orn" style="opacity:0;transition:opacity 1.8s ease 0.5s;">
@@ -3263,8 +3254,8 @@ function goTo(id) {
       if(bg2){bg2.classList.remove('zooming');}
       var o1=document.getElementById('act2-top-orn');if(o1){o1.style.transition='none';o1.style.opacity='0';}
       var o2=document.getElementById('act2-bot-orn');if(o2){o2.style.transition='none';o2.style.opacity='0';}
-      var lbl2=document.getElementById('act2-label');if(lbl2){lbl2.style.transition='none';lbl2.style.opacity='0';}
-      ['act2-line1','act2-line2','act2-line3'].forEach(function(id){var el=document.getElementById(id);if(el){el.style.transition='none';el.style.opacity='0';el.style.transform='translateY(22px)';}});
+      var el2=document.getElementById('invite-act2-text');
+      if(el2){el2.style.animation='none';el2.style.opacity='0';el2.style.transform='scale(0.68) translateY(28px)';el2.style.filter='blur(8px)';}
     } else if(sid==='screen-invite3'){
       // Reset card fade and stop video
       var tz3=document.getElementById('invite3-tap-zone');
@@ -3447,16 +3438,12 @@ function goTo(id) {
     var bg2 = document.getElementById('screen-invite2-bg-zoom');
     if(bg2){ requestAnimationFrame(function(){ bg2.classList.add('zooming'); }); }
     setTimeout(function(){
-      var o1=document.getElementById('act2-top-orn'); if(o1){ o1.style.transition='opacity 1.8s ease'; o1.style.opacity='1'; }
-      var o2=document.getElementById('act2-bot-orn'); if(o2){ o2.style.transition='opacity 1.8s ease 0.5s'; o2.style.opacity='1'; }
-      var lbl2=document.getElementById('act2-label'); if(lbl2){ lbl2.style.transition='opacity 1.4s ease 0.3s'; lbl2.style.opacity='1'; }
+      var o1=document.getElementById('act2-top-orn'); if(o1) o1.style.opacity='1';
+      var o2=document.getElementById('act2-bot-orn'); if(o2) o2.style.opacity='1';
     }, 100);
     setTimeout(function(){
-      // Staggered line entrances
-      ['act2-line1','act2-line2','act2-line3'].forEach(function(id){
-        var el=document.getElementById(id);
-        if(el){ requestAnimationFrame(function(){ el.style.opacity='1'; el.style.transform='translateY(0)'; }); }
-      });
+      var el=document.getElementById('invite-act2-text');
+      if(el){ el.style.animation='act2-grand-enter 1.4s cubic-bezier(0.16,1,0.3,1) forwards'; }
       // Massive golden confetti burst + ambient golden rain
       var shapes = ['✦','✧','·','⋆','❋','◆','▲','✿','❀'];
       var colors = ['#f0c840','#ffe580','#ffd700','#c9a84c','#fff8dc','#ffec6e','#ffe4a0'];
