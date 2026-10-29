@@ -4623,7 +4623,7 @@ function _buildRoyalFrameSVG(div) {
   var ns = 'http://www.w3.org/2000/svg';
   var svg = document.createElementNS(ns, 'svg');
   svg.setAttribute('viewBox', '0 0 '+w+' '+h);
-  svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+  svg.setAttribute('preserveAspectRatio', 'none');
   svg.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;';
 
   var e1 = 6, e2 = 11, e3 = 17; // three frame lines from edge
@@ -4878,6 +4878,14 @@ function animateRoyalFrame(div) {
 document.addEventListener('DOMContentLoaded', function() {
   // Pre-build SVGs for all royal frames
   document.querySelectorAll('.royal-frame').forEach(_buildRoyalFrameSVG);
+  // Rebuild on resize/orientation change so frames always fill screen
+  window.addEventListener('resize', function() {
+    document.querySelectorAll('.royal-frame').forEach(function(div) {
+      var svg = div.querySelector('svg');
+      if (svg) svg.parentNode.removeChild(svg);
+      _buildRoyalFrameSVG(div);
+    });
+  });
 
   // Invite3 tap — dedicated touch + click handler, bypasses debounce
   var i3 = document.getElementById('invite3-tap-zone');
