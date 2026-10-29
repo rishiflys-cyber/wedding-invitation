@@ -2586,9 +2586,9 @@ html, body {
       </svg>
     </div>
 
-    <!-- Main text — staggered -->
-    <div id="bridge-line" style="opacity:0;transform:translateY(24px);transition:opacity 1.6s ease 0.4s,transform 1.6s cubic-bezier(0.16,1,0.3,1) 0.4s;">
-      <div style="font-family:'Playfair Display',serif;font-size:clamp(28px,7.5vw,42px);font-style:italic;font-weight:700;color:#f9e060;line-height:1.45;text-shadow:0 0 60px rgba(249,224,96,0.8),0 0 120px rgba(255,160,0,0.5),0 2px 0 rgba(0,0,0,0.5);">Some moments are written<br>long before they happen<span id="typing-dots"></span></div>
+    <!-- Main text — typed word by word -->
+    <div id="bridge-line" style="opacity:1;min-height:3.2em;">
+      <div id="bridge-typed" style="font-family:'Playfair Display',serif;font-size:clamp(28px,7.5vw,42px);font-style:italic;font-weight:700;color:#f9e060;line-height:1.45;text-shadow:0 0 60px rgba(249,224,96,0.8),0 0 120px rgba(255,160,0,0.5),0 2px 0 rgba(0,0,0,0.5);"></div>
     </div>
 
     <!-- Bottom ornament -->
@@ -3268,25 +3268,44 @@ function forceGoTo(id) {
   goTo(id);
 }
 
-// Typing dots animation for "happen..."
-var _typingDotsInterval = null;
-function startTypingDots() {
-  var el = document.getElementById('typing-dots');
+// Word-by-word typewriter for bridge screen
+var _typewriterTimer = null;
+function startTypewriter() {
+  var el = document.getElementById('bridge-typed');
   if (!el) return;
-  clearInterval(_typingDotsInterval);
-  var dots = ['.', '..', '...'];
+  clearTimeout(_typewriterTimer);
+  el.innerHTML = '';
+  // Line 1 words, then a line break marker, then line 2 words
+  var words = ['Some','moments','are','written','↵','long','before','they','happen...'];
   var i = 0;
-  el.textContent = '';
-  _typingDotsInterval = setInterval(function() {
-    if (!document.getElementById('typing-dots')) { clearInterval(_typingDotsInterval); return; }
-    el.textContent = dots[i % dots.length];
+  var line1 = document.createElement('span');
+  var line2 = document.createElement('span');
+  el.appendChild(line1);
+  var brAdded = false;
+  function typeNext() {
+    if (i >= words.length) return;
+    var w = words[i];
+    if (w === '↵') {
+      el.appendChild(document.createElement('br'));
+      el.appendChild(line2);
+      brAdded = true;
+      i++;
+      _typewriterTimer = setTimeout(typeNext, 180);
+      return;
+    }
+    var target = brAdded ? line2 : line1;
+    target.textContent += (target.textContent ? ' ' : '') + w;
     i++;
-  }, 500);
+    // Slightly longer pause before the second line for drama
+    var delay = w === 'written' ? 420 : 210;
+    _typewriterTimer = setTimeout(typeNext, delay);
+  }
+  typeNext();
 }
-function stopTypingDots() {
-  clearInterval(_typingDotsInterval);
-  var el = document.getElementById('typing-dots');
-  if (el) el.textContent = '';
+function stopTypewriter() {
+  clearTimeout(_typewriterTimer);
+  var el = document.getElementById('bridge-typed');
+  if (el) el.innerHTML = '';
 }
 
 function goTo(id) {
@@ -3566,12 +3585,12 @@ function goTo(id) {
     window._advanceStart = Date.now(); window._advanceDelay = _inv2Delay; window._advanceRemaining = _inv2Delay;
   }
   if (id === 'screen-bridge') {
-    stopTypingDots();
+    stopTypewriter();
     // Reset all bridge elements instantly
-    var _bReset = ['bridge-top-orn','bridge-label','bridge-line','bridge-bot-orn'];
+    var _bReset = ['bridge-top-orn','bridge-label','bridge-bot-orn'];
     _bReset.forEach(function(eid){
       var el = document.getElementById(eid);
-      if (el) { el.style.transition='none'; el.style.opacity='0'; if(eid==='bridge-line'){ el.style.transform='translateY(24px)'; } }
+      if (el) { el.style.transition='none'; el.style.opacity='0'; }
     });
     // Staggered entrance: ornament + label together, then main text, then bottom ornament
     setTimeout(function(){
@@ -3581,11 +3600,8 @@ function goTo(id) {
       if (bLbl) { bLbl.style.transition='opacity 1.4s ease 0.2s'; bLbl.style.opacity='1'; }
     }, 200);
     setTimeout(function(){
-      var bl = document.getElementById('bridge-line');
-      if (bl) { bl.style.transition='opacity 1.6s ease,transform 1.6s cubic-bezier(0.16,1,0.3,1)'; bl.style.opacity='1'; bl.style.transform='translateY(0)'; }
-      // Start typing dots after text fades in
-      setTimeout(function(){ startTypingDots(); }, 1800);
-    }, 500);
+      startTypewriter();
+    }, 600);
     setTimeout(function(){
       var bBot = document.getElementById('bridge-bot-orn');
       if (bBot) { bBot.style.transition='opacity 1.6s ease'; bBot.style.opacity='1'; }
