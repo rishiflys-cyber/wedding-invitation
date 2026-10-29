@@ -2972,7 +2972,7 @@ html, body {
      SCREEN RECEPTION (VIP only)
 ══════════════════════════════════════════ -->
 <div id="screen-reception" class="screen event-screen" onclick="_videoPaused ? null : showReceptionInviteNow()">
-  <video id="reception-video" muted playsinline preload="auto" poster="reception_poster.jpg"
+  <video id="reception-video" muted playsinline preload="none" poster="reception_poster.jpg"
     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;opacity:1;transition:opacity 1.5s ease;">
     <source src="reception.mp4" type="video/mp4">
   </video>
@@ -4369,7 +4369,6 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 })();
 
-/* ── Reception video logic ── */
 /* ── Reception video + fullcard logic (mirrors wedding exactly) ── */
 (function(){
   var rv = document.getElementById('reception-video');
@@ -4433,6 +4432,8 @@ document.addEventListener('DOMContentLoaded', function() {
       setTimeout(function() { if (rfc) rfc.style.transition = 'opacity 1.8s ease'; }, 50);
       if (rv) {
         rv.currentTime = 0;
+        rv.preload = 'auto';
+        rv.load();
         rv.onended = function() { safeVideoPause(rv); showReceptionInvite(); };
         rv.ontimeupdate = function() {
           if (rv.duration && rv.currentTime >= rv.duration - 0.3) {
