@@ -2323,13 +2323,13 @@ html, body {
     </div>
 
     <div id="invite-act1-text" style="text-align:center;transform:translateY(36px);font-family:'Playfair Display','Cormorant Garamond',Georgia,serif;font-size:27px;font-weight:400;line-height:1.85;letter-spacing:0.02em;color:#e8cfa0;opacity:0;will-change:transform,opacity;">
-      <span style="font-size:17px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;opacity:0.9;font-family:'Playfair Display',serif;display:block;margin-bottom:48px;margin-top:-160px;">— a letter to you —</span>
-      <span style="font-family:'Playfair Display',serif;font-size:clamp(34px,9vw,46px);font-style:italic;font-weight:900;color:#f9e060;letter-spacing:-0.01em;line-height:1.6;display:block;width:100%;text-shadow:0 0 80px rgba(249,224,96,0.7),0 0 140px rgba(255,160,0,0.4),0 3px 0 rgba(0,0,0,0.6);">A wedding is only as beautiful<br>as the people who fill it.</span>
+      <span style="font-size:13px;font-weight:400;letter-spacing:0.18em;text-transform:uppercase;opacity:0.5;font-family:'Playfair Display',serif;display:block;margin-bottom:32px;margin-top:-160px;">— a letter to you —</span>
+      <span style="font-family:'Playfair Display',serif;font-size:clamp(18px,4.8vw,26px);font-style:italic;font-weight:400;color:#c9a84c;letter-spacing:0.01em;line-height:1.7;display:block;width:100%;opacity:0.7;">A wedding is only as beautiful<br>as the people who fill it.</span>
     </div>
 
-    <!-- Honour line — fades in separately after headline settles -->
+    <!-- Honour line — HERO — fades in separately after headline settles -->
     <div id="invite-act1-honour" style="opacity:0;transform:translateY(18px);transition:opacity 1.4s ease,transform 1.4s cubic-bezier(0.16,1,0.3,1);text-align:center;pointer-events:none;">
-      <span style="font-family:'Cormorant Garamond',serif;font-size:clamp(18px,4.5vw,24px);font-style:italic;font-weight:400;color:#e8cfa0;letter-spacing:0.03em;line-height:1.6;display:block;">We would be honoured<br>by your presence.</span>
+      <span style="font-family:'Playfair Display',serif;font-size:clamp(36px,10vw,52px);font-style:italic;font-weight:700;color:#f9e060;letter-spacing:-0.01em;line-height:1.4;display:block;text-shadow:0 0 80px rgba(249,224,96,0.7),0 0 140px rgba(255,160,0,0.4),0 3px 0 rgba(0,0,0,0.6);">We would be honoured<br>by your presence.</span>
     </div>
 
     <!-- Tap hint -->
@@ -3353,18 +3353,18 @@ function goTo(id) {
       // Golden confetti burst
       var shapes=['✦','✧','·','⋆','❋','◆','✿','❀'];
       var colors=['#f0c840','#ffe580','#ffd700','#c9a84c','#fff8dc','#ffec6e','#ffe4a0'];
-      for(var ci=0;ci<60;ci++){
+      for(var ci=0;ci<140;ci++){
         (function(ci){
           setTimeout(function(){
             var p=document.createElement('div');
             p.textContent=shapes[Math.floor(Math.random()*shapes.length)];
-            var x=15+Math.random()*70;
-            var startY=45+Math.random()*15;
-            var vx=(Math.random()-0.5)*240;
-            var vy=-(120+Math.random()*260);
-            var rot=(Math.random()-0.5)*720;
-            var size=8+Math.random()*14;
-            var dur=1.0+Math.random()*1.1;
+            var x=5+Math.random()*90;
+            var startY=35+Math.random()*30;
+            var vx=(Math.random()-0.5)*340;
+            var vy=-(100+Math.random()*340);
+            var rot=(Math.random()-0.5)*900;
+            var size=7+Math.random()*16;
+            var dur=1.1+Math.random()*1.3;
             p.style.cssText='position:fixed;left:'+x+'%;top:'+startY+'%;font-size:'+size+'px;color:'+colors[Math.floor(Math.random()*colors.length)]+';z-index:9999;pointer-events:none;opacity:1;will-change:transform,opacity;';
             document.body.appendChild(p);
             requestAnimationFrame(function(){requestAnimationFrame(function(){
@@ -3377,7 +3377,7 @@ function goTo(id) {
         })(ci);
       }
     }, 3500);
-    var _inv1Delay = _navigatingBack ? 8000 : 16000;
+    var _inv1Delay = _navigatingBack ? 5000 : 6600;
     window._advanceCallback = function(){ if(current==='screen-invite'){ _navigating=false; _lastNavTime=0; goTo('screen-bridge'); } };
     window._advanceTimer = setTimeout(window._advanceCallback, _inv1Delay);
     window._advanceStart = Date.now(); window._advanceDelay = _inv1Delay; window._advanceRemaining = _inv1Delay;
