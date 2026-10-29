@@ -3275,30 +3275,13 @@ function startTypewriter() {
   if (!el) return;
   clearTimeout(_typewriterTimer);
   el.innerHTML = '';
-  // Line 1 words, then a line break marker, then line 2 words
-  var words = ['Some','moments','are','written','↵','long','before','they','happen...'];
+  var words = ['Some','moments','are','written','long','before','they','happen...'];
   var i = 0;
-  var line1 = document.createElement('span');
-  var line2 = document.createElement('span');
-  el.appendChild(line1);
-  var brAdded = false;
   function typeNext() {
     if (i >= words.length) return;
-    var w = words[i];
-    if (w === '↵') {
-      el.appendChild(document.createElement('br'));
-      el.appendChild(line2);
-      brAdded = true;
-      i++;
-      _typewriterTimer = setTimeout(typeNext, 180);
-      return;
-    }
-    var target = brAdded ? line2 : line1;
-    target.textContent += (target.textContent ? ' ' : '') + w;
+    el.textContent += (i === 0 ? '' : ' ') + words[i];
     i++;
-    // Slightly longer pause before the second line for drama
-    var delay = w === 'written' ? 420 : 210;
-    _typewriterTimer = setTimeout(typeNext, delay);
+    _typewriterTimer = setTimeout(typeNext, 220);
   }
   typeNext();
 }
