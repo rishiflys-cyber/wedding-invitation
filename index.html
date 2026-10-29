@@ -3422,8 +3422,8 @@ function goTo(id) {
       _ganeshBg.volume = 0;
       _ganeshBg.play().then(function(){
         var _gfi = setInterval(function(){
-          if (_ganeshBg.volume >= 0.5) { _ganeshBg.volume = 0.5; clearInterval(_gfi); return; }
-          _ganeshBg.volume = Math.min(0.5, _ganeshBg.volume + 0.05);
+          if (_ganeshBg.volume >= 0.55) { _ganeshBg.volume = 0.55; clearInterval(_gfi); return; }
+          _ganeshBg.volume = Math.min(0.55, _ganeshBg.volume + 0.05);
         }, 80);
       }).catch(function(){});
     }
@@ -3803,12 +3803,12 @@ function openEnvelope() {
   if (bgm && !window._musicStarted) {
     window._musicStarted = true;
     bgm.currentTime = 0;
-    bgm.volume = 0.5;
+    bgm.volume = 0.55;
     var playPromise = bgm.play();
     if (playPromise !== undefined) {
       playPromise.catch(function() {
         bgm.volume = 0;
-        bgm.play().then(function() { bgm.volume = 0.5; }).catch(function(){});
+        bgm.play().then(function() { bgm.volume = 0.55; }).catch(function(){});
       });
     }
   }
@@ -4402,7 +4402,7 @@ function toggleMusic() {
   if (!music) return;
   if (music.paused) {
     window._musicMutedByUser = false;
-    music.volume = 0.5;
+    music.volume = 0.55;
     music.play().catch(function(){});
     if (icon) icon.style.display = 'inline';
     if (iconMuted) iconMuted.style.display = 'none';
@@ -4416,7 +4416,7 @@ function toggleMusic() {
 
 function restartFromBeginning() {
   var music = document.getElementById('bgmusic');
-  if (music) { music.pause(); music.currentTime = 0; music.volume = 0.5; }
+  if (music) { music.pause(); music.currentTime = 0; music.volume = 0.55; }
   var icon = document.getElementById('music-icon');
   if (icon) icon.style.display = 'inline';
   var iconMuted = document.getElementById('music-icon-muted');
