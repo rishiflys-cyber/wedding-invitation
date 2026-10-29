@@ -3495,8 +3495,8 @@ function goTo(id) {
       _navigating = false; _lastNavTime = 0;
       goTo(_isVIP ? 'screen-reception' : 'screen-wedding');
     };
-    window._advanceTimer = setTimeout(window._advanceCallback, 4000);
-    window._advanceStart = Date.now(); window._advanceDelay = 4000; window._advanceRemaining = 4000;
+    window._advanceTimer = setTimeout(window._advanceCallback, 8000);
+    window._advanceStart = Date.now(); window._advanceDelay = 8000; window._advanceRemaining = 8000;
     // Reset on leave
     var bl2 = document.getElementById('bridge-line');
     if (bl2) { bl2.style.transition='none'; bl2.style.opacity='0'; bl2.style.transform='translateY(20px)'; setTimeout(function(){ if(bl2) bl2.style.transition='opacity 2s ease,transform 2s cubic-bezier(0.16,1,0.3,1)'; },50); }
