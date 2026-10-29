@@ -3408,15 +3408,15 @@ function goTo(id) {
       // Golden confetti burst
       var shapes=['✦','✧','·','⋆','❋','◆','✿','❀'];
       var colors=['#f0c840','#ffe580','#ffd700','#c9a84c','#fff8dc','#ffec6e','#ffe4a0'];
-      for(var ci=0;ci<140;ci++){
+      for(var ci=0;ci<220;ci++){
         (function(ci){
           setTimeout(function(){
             var p=document.createElement('div');
             p.textContent=shapes[Math.floor(Math.random()*shapes.length)];
-            var x=5+Math.random()*90;
-            var startY=68+Math.random()*20;
-            var vx=(Math.random()-0.5)*340;
-            var vy=-(80+Math.random()*200);
+            var x=2+Math.random()*96;
+            var startY=60+Math.random()*30;
+            var vx=(Math.random()-0.5)*480;
+            var vy=-(60+Math.random()*260);
             var rot=(Math.random()-0.5)*900;
             var size=7+Math.random()*16;
             var dur=1.1+Math.random()*1.3;
@@ -3432,7 +3432,7 @@ function goTo(id) {
         })(ci);
       }
     }, 3500);
-    var _inv1Delay = _navigatingBack ? 5000 : 9000;
+    var _inv1Delay = _navigatingBack ? 5000 : 10000;
     window._advanceCallback = function(){ if(current==='screen-invite'){ _navigating=false; _lastNavTime=0; goTo('screen-bridge'); } };
     window._advanceTimer = setTimeout(window._advanceCallback, _inv1Delay);
     window._advanceStart = Date.now(); window._advanceDelay = _inv1Delay; window._advanceRemaining = _inv1Delay;
@@ -3478,7 +3478,7 @@ function goTo(id) {
         })(i);
       }
     }, 200);
-    var _inv2Delay = _navigatingBack ? 4000 : 8000;
+    var _inv2Delay = _navigatingBack ? 4000 : 9000;
     window._advanceCallback = function(){ if(current==='screen-invite2'){ _navigating=false; _lastNavTime=0; goTo('screen-invite3'); } };
     window._advanceTimer = setTimeout(window._advanceCallback, _inv2Delay);
     window._advanceStart = Date.now(); window._advanceDelay = _inv2Delay; window._advanceRemaining = _inv2Delay;
