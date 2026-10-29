@@ -3432,7 +3432,7 @@ function goTo(id) {
         })(ci);
       }
     }, 3500);
-    var _inv1Delay = _navigatingBack ? 5000 : 8500;
+    var _inv1Delay = _navigatingBack ? 5000 : 9000;
     window._advanceCallback = function(){ if(current==='screen-invite'){ _navigating=false; _lastNavTime=0; goTo('screen-bridge'); } };
     window._advanceTimer = setTimeout(window._advanceCallback, _inv1Delay);
     window._advanceStart = Date.now(); window._advanceDelay = _inv1Delay; window._advanceRemaining = _inv1Delay;
@@ -3478,7 +3478,7 @@ function goTo(id) {
         })(i);
       }
     }, 200);
-    var _inv2Delay = _navigatingBack ? 4000 : 6500;
+    var _inv2Delay = _navigatingBack ? 4000 : 8000;
     window._advanceCallback = function(){ if(current==='screen-invite2'){ _navigating=false; _lastNavTime=0; goTo('screen-invite3'); } };
     window._advanceTimer = setTimeout(window._advanceCallback, _inv2Delay);
     window._advanceStart = Date.now(); window._advanceDelay = _inv2Delay; window._advanceRemaining = _inv2Delay;
