@@ -3635,7 +3635,7 @@ function goTo(id) {
     window._advanceCallback = function(){
       if (current !== 'screen-bridge') return;
       _navigating = false; _lastNavTime = 0;
-      goTo(_isVIP ? 'screen-reception' : 'screen-wedding');
+      goTo('screen-wedding');
     };
     window._advanceTimer = setTimeout(window._advanceCallback, 8000);
     window._advanceStart = Date.now(); window._advanceDelay = 8000; window._advanceRemaining = 8000;
