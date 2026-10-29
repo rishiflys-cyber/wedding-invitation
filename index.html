@@ -2790,7 +2790,7 @@ html, body {
   </div>
 
   <!-- STEP 3: Full invitation card fades in over entire screen, video at 30% behind -->
-  <div id="wedding-fullcard" style="position:absolute;inset:0;z-index:4;background:rgba(4,1,0,0.58);display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;padding:40px 24px 20px;opacity:0;pointer-events:none;transition:opacity 1.8s ease;overflow:hidden;">
+  <div id="wedding-fullcard" style="position:absolute;inset:0;z-index:4;background:rgba(4,1,0,0.58);display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:36px 24px 16px;opacity:0;pointer-events:none;transition:opacity 1.8s ease;overflow:hidden;">
     <!-- Ornamental border SVG — corner flourishes + lines -->
     <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;" viewBox="0 0 360 700" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -2874,7 +2874,10 @@ html, body {
     </svg>
     <!-- Fullcard content — luxury wedding invite -->
 
-    <!-- Top: Blessed by Didu + Love from -->
+    <!-- TOP GROUP: Blessed by + Wedding Invitation + Families — all tight together -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;width:100%;">
+
+    <!-- Blessed by Didu + Love from -->
     <div style="text-align:center;padding:0 8px;">
       <div style="font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:5px;text-transform:uppercase;color:rgba(245,200,66,0.5);margin-bottom:2px;">Blessed by</div>
       <div style="font-family:'Playfair Display',serif;font-size:22px;font-style:italic;font-weight:600;color:rgba(255,242,200,0.95);letter-spacing:2px;text-shadow:0 0 30px rgba(245,200,66,0.3);">Didu</div>
@@ -2910,6 +2913,7 @@ html, body {
         </div>
       </div>
     </div>
+    </div><!-- end top group -->
 
     <!-- Gold rule -->
     <div style="display:flex;align-items:center;gap:8px;width:75%;max-width:260px;">
@@ -2943,12 +2947,12 @@ html, body {
 
     <!-- Date & Venue -->
     <div style="text-align:center;">
-      <div style="font-family:'Playfair Display',serif;font-size:clamp(26px,7vw,36px);font-weight:700;color:#fff;line-height:1.1;">
+      <div style="font-family:'Playfair Display',serif;font-size:clamp(30px,8vw,42px);font-weight:700;color:#fff;line-height:1.1;">
         11 <span style="font-size:0.52em;font-weight:400;font-style:italic;color:rgba(255,255,255,0.55);letter-spacing:2px;">December</span> 2026
       </div>
-      <div style="margin-top:3px;font-family:'Cormorant Garamond',serif;font-size:11px;font-style:italic;color:rgba(245,200,66,0.6);">Auspicious moment at 2:30 AM · 12th December</div>
-      <div style="margin-top:5px;font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:rgba(255,255,255,0.78);letter-spacing:0.5px;">Circle Club Banquet, Kolkata</div>
-      <div style="margin-top:2px;font-family:'Cormorant Garamond',serif;font-size:11px;color:rgba(245,200,66,0.65);letter-spacing:4px;text-transform:uppercase;">7 : 30 PM onwards</div>
+      <div style="margin-top:5px;font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:rgba(245,200,66,0.7);">Auspicious moment at 2:30 AM · 12th December</div>
+      <div style="margin-top:6px;font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:rgba(255,255,255,0.78);letter-spacing:0.5px;">Circle Club Banquet, Kolkata</div>
+      <div style="margin-top:3px;font-family:'Cormorant Garamond',serif;font-size:13px;color:rgba(245,200,66,0.65);letter-spacing:4px;text-transform:uppercase;">7 : 30 PM onwards</div>
     </div>
 
     <!-- Countdown -->
