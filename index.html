@@ -3721,6 +3721,35 @@ function closeInvitation() {
 
 function goBack() {
   if (_history.length === 0) return;
+
+  // Special case: on wedding card with full card visible — replay video first,
+  // then a second back press actually navigates back
+  if (current === 'screen-wedding') {
+    var wfc2 = document.getElementById('wedding-fullcard');
+    var wv2  = document.getElementById('wedding-video');
+    var cardVisible = wfc2 && parseFloat(wfc2.style.opacity) > 0.5;
+    if (cardVisible && !window._weddingReplayingForBack) {
+      window._weddingReplayingForBack = true;
+      // Hide card, show video
+      if (wfc2) { wfc2.style.transition = 'opacity 0.8s ease'; wfc2.style.opacity = '0'; wfc2.style.pointerEvents = 'none'; }
+      var cb3 = document.getElementById('ctrl-bar');
+      if (cb3) cb3.classList.remove('ctrl-compact');
+      setTimeout(function() {
+        if (wv2) {
+          wv2.style.transition = 'none'; wv2.style.opacity = '1';
+          setTimeout(function(){ if(wv2) wv2.style.transition = 'opacity 1.5s ease'; }, 50);
+          wv2.currentTime = 0;
+          var vp = wv2.play ? wv2.play() : null;
+          if (vp && vp.catch) vp.catch(function(){});
+        }
+        // After video replay, reset flag so next back press navigates away
+        setTimeout(function() { window._weddingReplayingForBack = false; }, 2000);
+      }, 500);
+      return; // don't navigate yet
+    }
+    window._weddingReplayingForBack = false;
+  }
+
   const prevId = _history[_history.length - 1]; // peek without popping
   _navigatingBack = true;
   goTo(prevId);
