@@ -26,6 +26,30 @@
     });
   }
 })();
+
+// ── CSS `inset` polyfill for older Android / Samsung Internet ──
+// Chrome <87, Samsung Internet <14, older WebViews don't support inset shorthand
+(function(){
+  var testEl = document.createElement('div');
+  testEl.style.inset = '0px';
+  if (testEl.style.inset !== '0px') {
+    // Browser doesn't support inset — patch all elements with inset style after DOM load
+    document.addEventListener('DOMContentLoaded', function() {
+      var all = document.querySelectorAll('*');
+      for (var i = 0; i < all.length; i++) {
+        var s = all[i].getAttribute('style') || '';
+        if (s.indexOf('inset:') !== -1 || s.indexOf('inset: ') !== -1) {
+          // Replace inset:0 with explicit TRBL
+          var fixed = s.replace(/\binset\s*:\s*([^;]+);?/g, function(_, val) {
+            var v = val.trim();
+            return 'top:'+v+';right:'+v+';bottom:'+v+';left:'+v+';';
+          });
+          all[i].setAttribute('style', fixed);
+        }
+      }
+    });
+  }
+})();
 </script>
 <title>Rishabh & Ananya — Wedding Invitation</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -33,8 +57,18 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap" rel="stylesheet">
 <style>
+/* Font fallback — ensures serifs display on Android even before Google Fonts load */
+body { font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, 'Times New Roman', serif; }
+</style>
+<style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { touch-action: pan-y; overscroll-behavior: none; }
+html, body {
+  touch-action: pan-y;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch; /* older Android WebView */
+}
+/* Global user-select — prevent text highlight on tap across all Android browsers */
+* { -webkit-user-select: none; user-select: none; }
 
 :root {
   --gold: #f5c842;
@@ -48,9 +82,12 @@ html, body {
   width: 100%; height: 100%;
   overflow: hidden;
   background: #000;
-  font-family: 'Georgia', serif;
+  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
   -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%; /* prevent Android font scaling */
+  text-size-adjust: 100%;
   user-select: none;
+  -webkit-user-select: none;
 }
 
 /* ── LOADING SCREEN ── */
@@ -214,7 +251,7 @@ html, body {
 /* ── SCREEN SYSTEM ── */
 .screen {
   position: fixed;
-  inset: 0;
+  top: 0; right: 0; bottom: 0; left: 0; /* inset:0 fallback for older Android */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1669,9 +1706,9 @@ html, body {
   100% { opacity:1; letter-spacing: 0px; transform: translateY(0); }
 }
 @keyframes act2-grand-enter {
-  0%   { opacity:0; transform: scale(0.68) translateY(28px); filter: blur(8px); }
-  60%  { filter: blur(0px); }
-  100% { opacity:1; transform: scale(1) translateY(0); filter: blur(0px); }
+  0%   { opacity:0; transform: scale(0.68) translateY(28px); -webkit-filter: blur(8px); filter: blur(8px); }
+  60%  { -webkit-filter: blur(0px); filter: blur(0px); }
+  100% { opacity:1; transform: scale(1) translateY(0); -webkit-filter: blur(0px); filter: blur(0px); }
 }
 @keyframes act2-glow-pulse {
   0%,100% { text-shadow: 0 0 80px rgba(249,224,96,0.7), 0 0 140px rgba(255,160,0,0.4), 0 3px 0 rgba(0,0,0,0.6); }
@@ -1716,7 +1753,7 @@ html, body {
 /* Royal border frame — animated SVG drawing border */
 .royal-frame {
   position: absolute;
-  inset: 0;
+  top: 0; right: 0; bottom: 0; left: 0;
   pointer-events: none;
   z-index: 5;
 }
@@ -2049,13 +2086,14 @@ html, body {
   border:1px solid rgba(201,168,76,0.18);
   border-radius:16px;
   padding:3px 11px;
+  -webkit-backdrop-filter:blur(8px);
   backdrop-filter:blur(8px);
   pointer-events:none;
   animation:hint-fade 4s ease forwards;
 }
 </style>
 <div id="ctrl-hint">❚❚ pause to read &nbsp;·&nbsp; ✕ close</div>
-<div id="ctrl-bar" style="position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:9999;display:none;align-items:center;gap:8px;backdrop-filter:blur(10px) saturate(1.4);">
+<div id="ctrl-bar" style="position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:9999;display:none;align-items:center;gap:8px;-webkit-backdrop-filter:blur(10px) saturate(1.4);backdrop-filter:blur(10px) saturate(1.4);">
   <!-- back -->
   <div id="pill-back-btn" class="ctrl-btn" onclick="goBack()">
     <svg viewBox="0 0 24 24" width="16" height="16" stroke="#c9a84c" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
@@ -2447,7 +2485,7 @@ html, body {
     </div>
 
     <!-- Date + Venue box -->
-    <div style="display:flex;align-items:stretch;border:1px solid rgba(245,200,66,0.45);border-radius:8px;overflow:hidden;background:rgba(0,0,0,0.35);backdrop-filter:blur(6px);max-width:310px;width:100%;">
+    <div style="display:flex;align-items:stretch;border:1px solid rgba(245,200,66,0.45);border-radius:8px;overflow:hidden;background:rgba(0,0,0,0.35);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);max-width:310px;width:100%;">
       <div style="background:rgba(245,200,66,0.14);padding:12px 16px;display:flex;align-items:center;justify-content:center;min-width:50px;">
         <span style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:#f9e060;line-height:1;">11</span>
       </div>
@@ -3143,11 +3181,11 @@ html, body {
 <!-- Restart + Close buttons — fixed at bottom, shown only on kolkata screen -->
 <div id="restart-btn" style="display:none;position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:9999;flex-direction:row;align-items:center;gap:28px;">
   <div onclick="restartFromBeginning()" style="display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;opacity:0.85;">
-    <div style="width:52px;height:52px;border-radius:50%;border:1.5px solid rgba(255,210,100,0.5);display:flex;align-items:center;justify-content:center;font-size:22px;background:rgba(0,0,0,0.5);backdrop-filter:blur(6px);">🔄</div>
+    <div style="width:52px;height:52px;border-radius:50%;border:1.5px solid rgba(255,210,100,0.5);display:flex;align-items:center;justify-content:center;font-size:22px;background:rgba(0,0,0,0.5);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);">🔄</div>
     <div style="font-size:12px;color:rgba(255,210,120,0.7);letter-spacing:1.5px;text-transform:uppercase;">Start Again</div>
   </div>
   <div onclick="closeTab()" style="display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;opacity:0.85;">
-    <div style="width:52px;height:52px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:22px;background:rgba(0,0,0,0.5);backdrop-filter:blur(6px);">✕</div>
+    <div style="width:52px;height:52px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:22px;background:rgba(0,0,0,0.5);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);">✕</div>
     <div style="font-size:12px;color:rgba(255,255,255,0.4);letter-spacing:1.5px;text-transform:uppercase;">Close</div>
   </div>
 </div>
@@ -3161,6 +3199,34 @@ var _guestFull = '';
 
 var _history = [];
 var _navigatingBack = false;
+
+// ── Android AudioContext unlock ──────────────────────────────────────────
+// Android Chrome suspends AudioContext until user gesture. This silent unlock
+// fires once on first touch/click so any subsequent audio.play() succeeds.
+(function(){
+  var _audioUnlocked = false;
+  function _unlockAudio() {
+    if (_audioUnlocked) return;
+    _audioUnlocked = true;
+    // Create a silent buffer and play it — unlocks AudioContext on Android
+    try {
+      var ctx = new (window.AudioContext || window.webkitAudioContext)();
+      var buf = ctx.createBuffer(1, 1, 22050);
+      var src = ctx.createBufferSource();
+      src.buffer = buf;
+      src.connect(ctx.destination);
+      src.start(0);
+      ctx.close();
+    } catch(e) {}
+    // Also resume the bgmusic element if it got stuck loading
+    var music = document.getElementById('bgmusic');
+    if (music && music.paused && window._musicStarted && !window._musicMutedByUser) {
+      music.play().catch(function(){});
+    }
+  }
+  document.addEventListener('touchstart', _unlockAudio, {once: true, passive: true, capture: true});
+  document.addEventListener('click', _unlockAudio, {once: true, capture: true});
+})();
 
 // Global tap listener — resumes music if it should be playing but got suspended
 // (browser audio contexts can silently pause after tab switches, lock screen, etc.)
@@ -3298,7 +3364,7 @@ function goTo(id) {
       var o1=document.getElementById('act2-top-orn');if(o1){o1.style.transition='none';o1.style.opacity='0';}
       var o2=document.getElementById('act2-bot-orn');if(o2){o2.style.transition='none';o2.style.opacity='0';}
       var el2=document.getElementById('invite-act2-text');
-      if(el2){el2.style.animation='none';el2.style.opacity='0';el2.style.transform='scale(0.68) translateY(28px)';el2.style.filter='blur(8px)';}
+      if(el2){el2.style.animation='none';el2.style.opacity='0';el2.style.transform='scale(0.68) translateY(28px)';el2.style.webkitFilter='blur(8px)';el2.style.filter='blur(8px)';}
     } else if(sid==='screen-invite3'){
       // Reset card fade and stop video
       var tz3=document.getElementById('invite3-tap-zone');
@@ -3487,8 +3553,9 @@ function goTo(id) {
     setTimeout(function(){
       var el=document.getElementById('invite-act2-text');
       if(el){
+        el.style.webkitAnimation='act2-grand-enter 1.4s cubic-bezier(0.16,1,0.3,1) forwards';
         el.style.animation='act2-grand-enter 1.4s cubic-bezier(0.16,1,0.3,1) forwards';
-        setTimeout(function(){ if(el) el.style.animation='act2-grand-enter 1.4s cubic-bezier(0.16,1,0.3,1) forwards, act2-glow-pulse 3s ease-in-out 1.4s infinite'; }, 1400);
+        setTimeout(function(){ if(el){ el.style.webkitAnimation='act2-grand-enter 1.4s cubic-bezier(0.16,1,0.3,1) forwards, act2-glow-pulse 3s ease-in-out 1.4s infinite'; el.style.animation='act2-grand-enter 1.4s cubic-bezier(0.16,1,0.3,1) forwards, act2-glow-pulse 3s ease-in-out 1.4s infinite'; } }, 1400);
       }
       // Massive golden confetti burst + ambient golden rain
       var shapes = ['✦','✧','·','⋆','❋','◆','▲','✿','❀'];
