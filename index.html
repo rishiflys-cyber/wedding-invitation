@@ -2973,7 +2973,7 @@ html, body {
 <!-- ══════════════════════════════════════════
      SCREEN RECEPTION (VIP only)
 ══════════════════════════════════════════ -->
-<div id="screen-reception" class="screen event-screen">
+<div id="screen-reception" class="screen event-screen" onclick="_videoPaused ? null : (function(){var rfc2=document.getElementById('reception-fullcard');var cardVisible=rfc2&&parseFloat(rfc2.style.opacity)>0.5;if(cardVisible){if(!_isVIP)goTo('screen-rsvp');}else{if(window.showReceptionInviteNow)showReceptionInviteNow();}})()">
   <!-- Poster shown immediately as background while video loads -->
   <div style="position:absolute;inset:0;z-index:0;background:url('reception_poster.jpg') center/cover no-repeat;"></div>
   <video id="reception-video" muted playsinline preload="auto"
@@ -2985,73 +2985,178 @@ html, body {
   </div>
   <div class="event-particles" id="ep-reception" style="z-index:2;"></div>
 
-  <!-- Full invitation card — same style as wedding fullcard -->
+  <!-- STEP 3: Full invitation card — exact same as wedding-fullcard -->
   <div id="reception-fullcard" style="position:absolute;inset:0;z-index:4;background:rgba(4,1,0,0.58);display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:52px 24px 14px;opacity:0;pointer-events:none;transition:opacity 1.8s ease;overflow:hidden;">
-    <!-- Ornamental border SVG -->
+    <!-- Ornamental border SVG — corner flourishes + lines (identical to wedding) -->
     <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;" viewBox="0 0 360 700" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <defs><style>.rb{fill:none;stroke:#c9a84c;stroke-width:0.8;opacity:0.7;}.rf{fill:#c9a84c;opacity:0.75;}</style></defs>
+      <defs>
+        <style>
+          .rb { fill:none; stroke:#c9a84c; stroke-width:0.8; opacity:0.7; }
+          .rf { fill:#c9a84c; opacity:0.75; }
+        </style>
+      </defs>
       <rect x="10" y="10" width="340" height="680" class="rb" stroke-width="0.6"/>
       <rect x="14" y="14" width="332" height="672" class="rb" stroke-width="0.3"/>
-      <!-- corners -->
-      <g transform="translate(10,10)"><circle cx="10" cy="10" r="1.2" class="rf"/><path d="M4,4 Q8,2 12,4 Q18,8 14,14 Q10,20 4,18 Q-1,14 2,9 Q5,5 10,6 Q14,8 12,13" class="rb" stroke-width="1.1"/><line x1="28" y1="0" x2="166" y2="0" class="rb" stroke-width="0.7"/><line x1="0" y1="28" x2="0" y2="336" class="rb" stroke-width="0.7"/></g>
-      <g transform="translate(350,10) scale(-1,1)"><circle cx="10" cy="10" r="1.2" class="rf"/><path d="M4,4 Q8,2 12,4 Q18,8 14,14 Q10,20 4,18 Q-1,14 2,9 Q5,5 10,6 Q14,8 12,13" class="rb" stroke-width="1.1"/><line x1="28" y1="0" x2="166" y2="0" class="rb" stroke-width="0.7"/><line x1="0" y1="28" x2="0" y2="336" class="rb" stroke-width="0.7"/></g>
-      <g transform="translate(10,690) scale(1,-1)"><circle cx="10" cy="10" r="1.2" class="rf"/><path d="M4,4 Q8,2 12,4 Q18,8 14,14 Q10,20 4,18 Q-1,14 2,9 Q5,5 10,6 Q14,8 12,13" class="rb" stroke-width="1.1"/><line x1="28" y1="0" x2="166" y2="0" class="rb" stroke-width="0.7"/><line x1="0" y1="28" x2="0" y2="336" class="rb" stroke-width="0.7"/></g>
-      <g transform="translate(350,690) scale(-1,-1)"><circle cx="10" cy="10" r="1.2" class="rf"/><path d="M4,4 Q8,2 12,4 Q18,8 14,14 Q10,20 4,18 Q-1,14 2,9 Q5,5 10,6 Q14,8 12,13" class="rb" stroke-width="1.1"/><line x1="28" y1="0" x2="166" y2="0" class="rb" stroke-width="0.7"/><line x1="0" y1="28" x2="0" y2="336" class="rb" stroke-width="0.7"/></g>
+
+      <!-- TOP-LEFT corner flourish -->
+      <g transform="translate(10,10)">
+        <line x1="28" y1="0" x2="166" y2="0" class="rb" stroke-width="0.7"/>
+        <line x1="0" y1="28" x2="0" y2="336" class="rb" stroke-width="0.7"/>
+        <path d="M4,4 Q8,2 12,4 Q18,8 14,14 Q10,20 4,18 Q-1,14 2,9 Q5,5 10,6 Q14,8 12,13" class="rb" stroke-width="1.1" fill="none"/>
+        <path d="M0,0 Q6,0 10,4 Q16,10 10,16 Q4,22 0,16" class="rb" stroke-width="0.9"/>
+        <path d="M16,0 Q20,4 18,8 Q24,6 26,2" class="rb" stroke-width="0.8"/>
+        <path d="M0,16 Q4,20 8,22 Q4,26 2,26" class="rb" stroke-width="0.8"/>
+        <circle cx="10" cy="10" r="1.2" class="rf"/>
+        <circle cx="18" cy="4" r="0.7" class="rf"/>
+        <circle cx="4" cy="18" r="0.7" class="rf"/>
+        <path d="M20,0 Q28,0 30,4 Q28,2 24,2" class="rb" stroke-width="0.6"/>
+        <path d="M0,20 Q0,28 4,30 Q2,28 2,24" class="rb" stroke-width="0.6"/>
+      </g>
+
+      <!-- TOP-RIGHT corner flourish (mirror X) -->
+      <g transform="translate(350,10) scale(-1,1)">
+        <line x1="28" y1="0" x2="166" y2="0" class="rb" stroke-width="0.7"/>
+        <line x1="0" y1="28" x2="0" y2="336" class="rb" stroke-width="0.7"/>
+        <path d="M4,4 Q8,2 12,4 Q18,8 14,14 Q10,20 4,18 Q-1,14 2,9 Q5,5 10,6 Q14,8 12,13" class="rb" stroke-width="1.1" fill="none"/>
+        <path d="M0,0 Q6,0 10,4 Q16,10 10,16 Q4,22 0,16" class="rb" stroke-width="0.9"/>
+        <path d="M16,0 Q20,4 18,8 Q24,6 26,2" class="rb" stroke-width="0.8"/>
+        <path d="M0,16 Q4,20 8,22 Q4,26 2,26" class="rb" stroke-width="0.8"/>
+        <circle cx="10" cy="10" r="1.2" class="rf"/>
+        <circle cx="18" cy="4" r="0.7" class="rf"/>
+        <circle cx="4" cy="18" r="0.7" class="rf"/>
+        <path d="M20,0 Q28,0 30,4 Q28,2 24,2" class="rb" stroke-width="0.6"/>
+        <path d="M0,20 Q0,28 4,30 Q2,28 2,24" class="rb" stroke-width="0.6"/>
+      </g>
+
+      <!-- BOTTOM-LEFT corner flourish (mirror Y) -->
+      <g transform="translate(10,690) scale(1,-1)">
+        <line x1="28" y1="0" x2="166" y2="0" class="rb" stroke-width="0.7"/>
+        <line x1="0" y1="28" x2="0" y2="336" class="rb" stroke-width="0.7"/>
+        <path d="M4,4 Q8,2 12,4 Q18,8 14,14 Q10,20 4,18 Q-1,14 2,9 Q5,5 10,6 Q14,8 12,13" class="rb" stroke-width="1.1" fill="none"/>
+        <path d="M0,0 Q6,0 10,4 Q16,10 10,16 Q4,22 0,16" class="rb" stroke-width="0.9"/>
+        <path d="M16,0 Q20,4 18,8 Q24,6 26,2" class="rb" stroke-width="0.8"/>
+        <path d="M0,16 Q4,20 8,22 Q4,26 2,26" class="rb" stroke-width="0.8"/>
+        <circle cx="10" cy="10" r="1.2" class="rf"/>
+        <circle cx="18" cy="4" r="0.7" class="rf"/>
+        <circle cx="4" cy="18" r="0.7" class="rf"/>
+        <path d="M20,0 Q28,0 30,4 Q28,2 24,2" class="rb" stroke-width="0.6"/>
+        <path d="M0,20 Q0,28 4,30 Q2,28 2,24" class="rb" stroke-width="0.6"/>
+      </g>
+
+      <!-- BOTTOM-RIGHT corner flourish (mirror X+Y) -->
+      <g transform="translate(350,690) scale(-1,-1)">
+        <line x1="28" y1="0" x2="166" y2="0" class="rb" stroke-width="0.7"/>
+        <line x1="0" y1="28" x2="0" y2="336" class="rb" stroke-width="0.7"/>
+        <path d="M4,4 Q8,2 12,4 Q18,8 14,14 Q10,20 4,18 Q-1,14 2,9 Q5,5 10,6 Q14,8 12,13" class="rb" stroke-width="1.1" fill="none"/>
+        <path d="M0,0 Q6,0 10,4 Q16,10 10,16 Q4,22 0,16" class="rb" stroke-width="0.9"/>
+        <path d="M16,0 Q20,4 18,8 Q24,6 26,2" class="rb" stroke-width="0.8"/>
+        <path d="M0,16 Q4,20 8,22 Q4,26 2,26" class="rb" stroke-width="0.8"/>
+        <circle cx="10" cy="10" r="1.2" class="rf"/>
+        <circle cx="18" cy="4" r="0.7" class="rf"/>
+        <circle cx="4" cy="18" r="0.7" class="rf"/>
+        <path d="M20,0 Q28,0 30,4 Q28,2 24,2" class="rb" stroke-width="0.6"/>
+        <path d="M0,20 Q0,28 4,30 Q2,28 2,24" class="rb" stroke-width="0.6"/>
+      </g>
+
+      <!-- Small diamond accents at midpoints of each side -->
+      <path d="M180,11 l3,4 l-3,4 l-3,-4 Z" class="rf" opacity="0.6"/>
+      <path d="M180,681 l3,4 l-3,4 l-3,-4 Z" class="rf" opacity="0.6"/>
+      <path d="M11,350 l4,3 l4,-3 l-4,-3 Z" class="rf" opacity="0.6"/>
+      <path d="M341,350 l4,3 l4,-3 l-4,-3 Z" class="rf" opacity="0.6"/>
     </svg>
 
-    <!-- TOP: Blessed by + Reception Invitation + Families -->
+    <!-- TOP GROUP: Blessed by + Reception Invitation + Families -->
     <div style="display:flex;flex-direction:column;align-items:center;gap:6px;width:100%;">
-      <div style="text-align:center;padding:0 8px;">
-        <div style="font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:5px;text-transform:uppercase;color:rgba(245,200,66,0.5);margin-bottom:2px;">Blessed by</div>
-        <div style="font-family:'Playfair Display',serif;font-size:20px;font-style:italic;font-weight:600;color:rgba(255,242,200,0.95);letter-spacing:2px;">Didu</div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,200,66,0.4);margin:3px 0 1px;">& love from</div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:rgba(255,255,255,0.85);margin-top:2px;">Sourish &amp; Somava Chattopadhyay</div>
-      </div>
-      <div style="text-align:center;">
-        <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(17px,5vw,24px);font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#f9e060;text-shadow:0 0 20px rgba(249,224,96,0.4);">✦ &nbsp;Reception Invitation&nbsp; ✦</div>
-      </div>
-      <div style="display:flex;justify-content:center;gap:20px;width:100%;padding:0 8px;">
-        <div style="text-align:center;flex:1;">
-          <div style="font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,200,66,0.5);margin-bottom:3px;">Groom's family</div>
-          <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:rgba(255,242,200,0.92);line-height:1.35;">Sourish</div>
-          <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:rgba(255,242,200,0.92);line-height:1.35;">Somava</div>
-          <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:rgba(255,242,200,0.92);line-height:1.35;">Rupsha</div>
+
+    <!-- Blessed by Didu + Love from -->
+    <div style="text-align:center;padding:0 8px;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:5px;text-transform:uppercase;color:rgba(245,200,66,0.5);margin-bottom:2px;">Blessed by</div>
+      <div style="font-family:'Playfair Display',serif;font-size:20px;font-style:italic;font-weight:600;color:rgba(255,242,200,0.95);letter-spacing:2px;text-shadow:0 0 30px rgba(245,200,66,0.3);">Didu</div>
+      <div style="margin-top:3px;width:70px;height:1px;background:linear-gradient(90deg,transparent,rgba(245,200,66,0.4),transparent);margin-left:auto;margin-right:auto;"></div>
+      <div style="margin-top:3px;font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:5px;text-transform:uppercase;color:rgba(245,200,66,0.45);">Love from</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:rgba(255,255,255,0.85);margin-top:2px;letter-spacing:0.3px;">Sourish &amp; Somava Chattopadhyay</div>
+    </div>
+
+    <!-- Reception Invitation -->
+    <div style="text-align:center;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(17px,5vw,24px);font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#f9e060;text-shadow:0 0 28px rgba(249,224,96,0.65);white-space:nowrap;">✦ &nbsp;Reception Invitation&nbsp; ✦</div>
+    </div>
+
+    <!-- Family columns -->
+    <div style="display:flex;align-items:flex-start;justify-content:center;gap:10px;width:100%;max-width:340px;padding:0 4px;">
+      <div style="flex:1;text-align:center;">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,200,66,0.6);margin-bottom:5px;">Groom's Family</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:rgba(255,255,255,0.88);line-height:1.35;font-style:italic;">
+          Partha Sarathi<br>Chattopadhyay<br>
+          <span style="color:rgba(245,200,66,0.4);font-size:14px;font-style:normal;">&amp;</span><br>
+          Soma Chattopadhyay
         </div>
-        <div style="width:1px;background:rgba(245,200,66,0.2);margin:4px 0;"></div>
-        <div style="text-align:center;flex:1;">
-          <div style="font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,200,66,0.5);margin-bottom:3px;">Bride's family</div>
-          <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:rgba(255,242,200,0.92);line-height:1.35;">Biswanath</div>
-          <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:rgba(255,242,200,0.92);line-height:1.35;">Madhuchanda</div>
-          <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:rgba(255,242,200,0.92);line-height:1.35;">Ankan</div>
+      </div>
+      <div style="width:1px;background:linear-gradient(180deg,transparent,rgba(245,200,66,0.35) 15%,rgba(245,200,66,0.35) 85%,transparent);align-self:stretch;"></div>
+      <div style="flex:1;text-align:center;">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,200,66,0.6);margin-bottom:5px;">Bride's Family</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:rgba(255,255,255,0.88);line-height:1.35;font-style:italic;">
+          Atanu Kumar Dash<br>
+          <span style="font-size:12px;color:rgba(255,255,255,0.38);font-style:normal;">(Acharya)</span><br>
+          <span style="color:rgba(245,200,66,0.4);font-size:14px;font-style:normal;">&amp;</span><br>
+          Aparna Dash<br>
+          <span style="font-size:12px;color:rgba(255,255,255,0.38);font-style:normal;">(Acharya)</span>
         </div>
       </div>
     </div>
+    </div><!-- end top group -->
 
-    <!-- MIDDLE: Names -->
+    <!-- Names — centrepiece: side by side -->
     <div style="display:flex;align-items:flex-start;justify-content:center;gap:8px;width:100%;">
+      <!-- Rishabh -->
       <div style="text-align:center;flex:1;">
-        <div style="font-family:'Playfair Display',serif;font-size:clamp(28px,8vw,40px);font-weight:700;font-style:italic;color:#ffe84d;text-shadow:0 0 40px rgba(255,232,77,0.5);">Rishabh</div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:2px;color:rgba(255,242,200,0.6);text-transform:uppercase;">Chattopadhyay</div>
+        <div style="font-family:'Playfair Display',serif;font-size:clamp(28px,8vw,40px);font-weight:700;font-style:italic;color:#ffe84d;text-shadow:0 0 50px rgba(255,232,77,0.5),0 0 100px rgba(255,160,0,0.2);letter-spacing:-0.01em;line-height:1;">Rishabh</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;color:rgba(255,232,77,0.5);letter-spacing:1px;margin-top:2px;">Chattopadhyay</div>
       </div>
+      <!-- & divider -->
       <div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:rgba(255,255,255,0.28);padding-top:6px;flex-shrink:0;">&amp;</div>
+      <!-- Ananya -->
       <div style="text-align:center;flex:1;">
-        <div style="font-family:'Playfair Display',serif;font-size:clamp(28px,8vw,40px);font-weight:700;font-style:italic;color:#ffe84d;text-shadow:0 0 40px rgba(255,232,77,0.5);">Ananya</div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:2px;color:rgba(255,242,200,0.6);text-transform:uppercase;">Dash <span style="font-size:11px;opacity:0.7;">(Acharya)</span></div>
+        <div style="font-family:'Playfair Display',serif;font-size:clamp(28px,8vw,40px);font-weight:700;font-style:italic;color:#ffe84d;text-shadow:0 0 50px rgba(255,232,77,0.5),0 0 100px rgba(255,160,0,0.2);letter-spacing:-0.01em;line-height:1;">Ananya</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;color:rgba(255,232,77,0.5);letter-spacing:1px;margin-top:2px;">Dash <span style="font-size:11px;opacity:0.7;">(Acharya)</span></div>
       </div>
     </div>
 
-    <!-- BOTTOM: Date, venue, time -->
+    <!-- Date & Venue -->
     <div style="text-align:center;">
       <div style="font-family:'Playfair Display',serif;font-size:40px;font-weight:700;color:#fff;line-height:1.1;">
         14 <span style="font-size:0.52em;font-weight:400;font-style:italic;color:rgba(255,255,255,0.55);letter-spacing:2px;">December</span> 2026
       </div>
-      <div style="margin-top:7px;font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:rgba(255,255,255,0.85);">The Citi Residenci, Durgapur</div>
+      <div style="margin-top:6px;font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:rgba(245,200,66,0.85);">Reception & Celebration</div>
+      <div style="margin-top:7px;font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:rgba(255,255,255,0.85);letter-spacing:0.5px;">The Citi Residenci, Durgapur</div>
       <div style="margin-top:4px;font-family:'Cormorant Garamond',serif;font-size:18px;color:rgba(245,200,66,0.75);letter-spacing:4px;text-transform:uppercase;">7 : 30 PM onwards</div>
     </div>
 
-    <!-- TAP TO CONTINUE -->
+    <!-- Countdown -->
+    <div style="display:flex;align-items:flex-start;gap:2px;width:100%;max-width:300px;justify-content:center;">
+      <div style="flex:1;text-align:center;background:rgba(245,200,66,0.06);border:1px solid rgba(245,200,66,0.15);border-radius:5px;padding:4px 2px;">
+        <div id="rfc-days" style="font-family:'Playfair Display',serif;font-size:clamp(18px,5vw,26px);font-weight:700;color:#ffe84d;line-height:1;text-shadow:0 0 18px rgba(255,232,77,0.6);">--</div>
+        <div style="font-size:7px;letter-spacing:2px;color:rgba(245,200,66,0.5);text-transform:uppercase;margin-top:2px;">Days</div>
+      </div>
+      <div style="font-size:14px;color:rgba(245,200,66,0.25);padding-top:4px;flex-shrink:0;">:</div>
+      <div style="flex:1;text-align:center;background:rgba(245,200,66,0.06);border:1px solid rgba(245,200,66,0.15);border-radius:5px;padding:4px 2px;">
+        <div id="rfc-hours" style="font-family:'Playfair Display',serif;font-size:clamp(18px,5vw,26px);font-weight:700;color:#ffe84d;line-height:1;text-shadow:0 0 18px rgba(255,232,77,0.6);">--</div>
+        <div style="font-size:7px;letter-spacing:2px;color:rgba(245,200,66,0.5);text-transform:uppercase;margin-top:2px;">Hours</div>
+      </div>
+      <div style="font-size:14px;color:rgba(245,200,66,0.25);padding-top:4px;flex-shrink:0;">:</div>
+      <div style="flex:1;text-align:center;background:rgba(245,200,66,0.06);border:1px solid rgba(245,200,66,0.15);border-radius:5px;padding:4px 2px;">
+        <div id="rfc-mins" style="font-family:'Playfair Display',serif;font-size:clamp(18px,5vw,26px);font-weight:700;color:#ffe84d;line-height:1;text-shadow:0 0 18px rgba(255,232,77,0.6);">--</div>
+        <div style="font-size:7px;letter-spacing:2px;color:rgba(245,200,66,0.5);text-transform:uppercase;margin-top:2px;">Mins</div>
+      </div>
+      <div style="font-size:14px;color:rgba(245,200,66,0.25);padding-top:4px;flex-shrink:0;">:</div>
+      <div style="flex:1;text-align:center;background:rgba(245,200,66,0.06);border:1px solid rgba(245,200,66,0.15);border-radius:5px;padding:4px 2px;">
+        <div id="rfc-secs" style="font-family:'Playfair Display',serif;font-size:clamp(18px,5vw,26px);font-weight:700;color:#ffe84d;line-height:1;text-shadow:0 0 18px rgba(255,232,77,0.6);">--</div>
+        <div style="font-size:7px;letter-spacing:2px;color:rgba(245,200,66,0.5);text-transform:uppercase;margin-top:2px;">Secs</div>
+      </div>
+    </div>
+
     <div style="font-family:'Cormorant Garamond',serif;font-size:20px;letter-spacing:4px;color:rgba(245,200,66,0.55);text-transform:uppercase;">tap to continue &nbsp;✦</div>
-  </div>
+  </div><!-- end reception-fullcard -->
 </div>
 
 <div id="screen-hero" class="screen">
@@ -3988,6 +4093,30 @@ function safeVideoPause(video) {
   try { video.pause(); } catch(e) {}
 }
 
+// Mobile autoplay unlock: on first user interaction, retry any video that should be playing
+(function() {
+  var _unlocked = false;
+  function _unlockAutoplay() {
+    if (_unlocked) return;
+    _unlocked = true;
+    // Try to play wedding and reception videos if they're on screen and paused
+    var wv = document.getElementById('wedding-video');
+    var rv = document.getElementById('reception-video');
+    [wv, rv].forEach(function(v) {
+      if (!v || v._forcePaused) return;
+      var scr = v.closest ? v.closest('.screen') : v.parentElement;
+      while (scr && !scr.classList.contains('screen')) scr = scr.parentElement;
+      if (scr && scr.classList.contains('active') && v.paused && v.readyState >= 2) {
+        v.play().catch(function(){});
+      }
+    });
+    document.removeEventListener('touchstart', _unlockAutoplay);
+    document.removeEventListener('click', _unlockAutoplay);
+  }
+  document.addEventListener('touchstart', _unlockAutoplay, { passive: true, once: true });
+  document.addEventListener('click', _unlockAutoplay, { once: true });
+})();
+
 document.addEventListener('DOMContentLoaded', function() {
   var weddingScreen = document.getElementById('screen-wedding');
   if (weddingScreen) {
@@ -4000,21 +4129,6 @@ document.addEventListener('DOMContentLoaded', function() {
       } else {
         // Video still playing — tap skips to card
         if (window.showWeddingInviteNow) showWeddingInviteNow();
-      }
-    };
-  }
-
-  var receptionScreen = document.getElementById('screen-reception');
-  if (receptionScreen) {
-    receptionScreen.onclick = function() {
-      var rfc2 = document.getElementById('reception-fullcard');
-      var cardVisible = rfc2 && parseFloat(rfc2.style.opacity) > 0.5;
-      if (cardVisible) {
-        // Card is showing — tap advances (for non-VIP; VIP auto-advances)
-        if (!_isVIP) goTo('screen-rsvp');
-      } else {
-        // Video still playing — tap skips to card
-        if (window.showReceptionInviteNow) showReceptionInviteNow();
       }
     };
   }
@@ -4868,6 +4982,21 @@ function launchConfetti() {
       document.getElementById('wfc-hours').textContent = String(h).padStart(2,'0');
       document.getElementById('wfc-mins').textContent  = String(m).padStart(2,'0');
       document.getElementById('wfc-secs').textContent  = String(s).padStart(2,'0');
+    }
+    // Also update reception fullcard countdown (Dec 14)
+    var _rfc = document.getElementById('rfc-days');
+    if (_rfc) {
+      var _rTarget = new Date('2026-12-14T19:30:00+05:30');
+      var _rNow = Date.now();
+      var _rDiff = Math.max(0, _rTarget - _rNow);
+      var _rd = Math.floor(_rDiff / 86400000);
+      var _rh = Math.floor((_rDiff % 86400000) / 3600000);
+      var _rm = Math.floor((_rDiff % 3600000) / 60000);
+      var _rs = Math.floor((_rDiff % 60000) / 1000);
+      _rfc.textContent = String(_rd).padStart(2,'0');
+      document.getElementById('rfc-hours').textContent = String(_rh).padStart(2,'0');
+      document.getElementById('rfc-mins').textContent  = String(_rm).padStart(2,'0');
+      document.getElementById('rfc-secs').textContent  = String(_rs).padStart(2,'0');
     }
   }
   tick();
