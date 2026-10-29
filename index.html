@@ -3183,7 +3183,15 @@ var _navigatingBack = false;
     vids.forEach(function(v) {
       if (v._pendingPlay && v.paused && !v._forcePaused) {
         v._pendingPlay = false;
-        v.play().catch(function(){});
+        var skip = v._pendingOnSkip;
+        v._pendingOnSkip = null;
+        var p2 = v.play();
+        if (p2 !== undefined) {
+          p2.catch(function() {
+            // Still blocked — skip the video
+            if (skip) skip();
+          });
+        }
       }
     });
   }
@@ -3900,50 +3908,55 @@ function safeVideoPlay(video, onSkip) {
   // Clear any previously stacked onended to prevent double-firing on revisit
   video.onended = null;
 
-  function doPlay() {
-    var started = false;
-    function play() {
-      if (started) return;
-      started = true;
-      if (video._forcePaused) return; // respect manual pause
-      var p = video.play();
-      if (p !== undefined) {
-        p.catch(function(err) {
-          // NotAllowedError = autoplay blocked; retry once on next user gesture
-          if (err && err.name === 'NotAllowedError') {
-            video._pendingPlay = true;
-          }
-        });
-      }
+  function attemptPlay() {
+    if (video._forcePaused) return; // respect manual pause
+    var p = video.play();
+    if (p !== undefined) {
+      p.catch(function(err) {
+        if (err && err.name === 'NotAllowedError') {
+          // Autoplay blocked — store callback so first user touch retries it
+          video._pendingPlay = true;
+          video._pendingOnSkip = onSkip;
+        } else if (err && err.name === 'AbortError') {
+          // Browser aborted play() — usually because load() was called mid-play
+          // Wait briefly then retry
+          setTimeout(function() {
+            if (!video._forcePaused && video.paused) {
+              video.play().catch(function(){});
+            }
+          }, 300);
+        }
+      });
     }
-    // If video is already at/near 0 and paused, just play directly
-    if (video.paused && video.currentTime < 0.1) {
-      play();
-    } else if (video.seeking) {
-      // Already in the middle of a seek — wait for it to complete
-      video.addEventListener('seeked', function() { play(); }, { once: true });
-      setTimeout(play, 200); // fallback
-    } else {
-      // Need to seek back to start first
+  }
+
+  function doPlay() {
+    // If video is not at start, seek first
+    if (video.currentTime > 0.1 && !video.seeking) {
       video.currentTime = 0;
-      video.addEventListener('seeked', function() { play(); }, { once: true });
-      // Fallback in case seeked doesn't fire
-      setTimeout(play, 200);
+      video.addEventListener('seeked', function() { attemptPlay(); }, { once: true });
+      setTimeout(attemptPlay, 300); // fallback if seeked never fires
+    } else if (video.seeking) {
+      video.addEventListener('seeked', function() { attemptPlay(); }, { once: true });
+      setTimeout(attemptPlay, 300);
+    } else {
+      attemptPlay();
     }
   }
 
   if (video.readyState === 0) {
-    // Blob not assigned yet — wait for canplay
+    // Not loaded yet — trigger load then wait for enough data to play
     var skipped = false;
     function doSkip() {
       if (skipped) return;
       skipped = true;
       video.removeEventListener('canplay', onCanPlay);
+      video.removeEventListener('loadeddata', onCanPlay);
       video.removeEventListener('error', onError);
       if (onSkip) onSkip();
     }
-    // Give 5s on slow connections (India 4G can be slow)
-    var skipTimer = setTimeout(doSkip, 5000);
+    // Give 8s on slow connections (India 4G can be slow)
+    var skipTimer = setTimeout(doSkip, 8000);
     function onCanPlay() {
       if (skipped) return;
       clearTimeout(skipTimer);
@@ -3951,6 +3964,7 @@ function safeVideoPlay(video, onSkip) {
     }
     function onError() { clearTimeout(skipTimer); doSkip(); }
     video.addEventListener('canplay', onCanPlay, { once: true });
+    video.addEventListener('loadeddata', onCanPlay, { once: true });
     video.addEventListener('error', onError, { once: true });
     video.load();
   } else {
@@ -4258,7 +4272,14 @@ document.addEventListener('DOMContentLoaded', function() {
               wv.ontimeupdate = null; safeVideoPause(wv); showWeddingInvite();
             }
           };
+          // On Android, play() can silently stall. Fire play immediately,
+          // then check after 2s — if video is still at 0 and paused, retry.
           safeVideoPlay(wv, showWeddingInvite);
+          setTimeout(function() {
+            if (wv && wv.paused && !wv._forcePaused && wv.currentTime < 0.1) {
+              wv.play().catch(function(){});
+            }
+          }, 2000);
           weddingTimer = setTimeout(showWeddingInvite, 60000);
         } else {
           weddingTimer = setTimeout(showWeddingInvite, 500);
