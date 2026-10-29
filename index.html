@@ -2768,9 +2768,7 @@ html, body {
 ══════════════════════════════════════════ -->
 <div id="screen-wedding" class="screen event-screen" onclick="_videoPaused ? null : showWeddingInviteNow()">
   <!-- Video plays at full opacity during playback -->
-  <!-- Poster shown immediately as background while video loads -->
-  <div style="position:absolute;inset:0;z-index:0;background:url('wedding_poster.jpg') center/cover no-repeat;"></div>
-  <video id="wedding-video" muted playsinline preload="auto"
+  <video id="wedding-video" muted playsinline preload="auto" poster="wedding_poster.jpg"
     style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;opacity:1;transition:opacity 1.5s ease;">
     <source src="wedding.mp4" type="video/mp4">
   </video>
@@ -4072,8 +4070,7 @@ function safeVideoPlay(video, onSkip) {
       video.removeEventListener('error', onError);
       if (onSkip) onSkip();
     }
-    // Give 6s to load; poster div shows behind video so no black screen
-    var skipTimer = setTimeout(doSkip, 6000);
+    var skipTimer = setTimeout(doSkip, 15000);
     function onCanPlay() {
       if (skipped) return;
       clearTimeout(skipTimer);
@@ -4092,30 +4089,6 @@ function safeVideoPause(video) {
   if (!video) return;
   try { video.pause(); } catch(e) {}
 }
-
-// Mobile autoplay unlock: on first user interaction, retry any video that should be playing
-(function() {
-  var _unlocked = false;
-  function _unlockAutoplay() {
-    if (_unlocked) return;
-    _unlocked = true;
-    // Try to play wedding and reception videos if they're on screen and paused
-    var wv = document.getElementById('wedding-video');
-    var rv = document.getElementById('reception-video');
-    [wv, rv].forEach(function(v) {
-      if (!v || v._forcePaused) return;
-      var scr = v.closest ? v.closest('.screen') : v.parentElement;
-      while (scr && !scr.classList.contains('screen')) scr = scr.parentElement;
-      if (scr && scr.classList.contains('active') && v.paused && v.readyState >= 2) {
-        v.play().catch(function(){});
-      }
-    });
-    document.removeEventListener('touchstart', _unlockAutoplay);
-    document.removeEventListener('click', _unlockAutoplay);
-  }
-  document.addEventListener('touchstart', _unlockAutoplay, { passive: true, once: true });
-  document.addEventListener('click', _unlockAutoplay, { once: true });
-})();
 
 document.addEventListener('DOMContentLoaded', function() {
   var weddingScreen = document.getElementById('screen-wedding');
