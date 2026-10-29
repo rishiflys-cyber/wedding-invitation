@@ -2971,40 +2971,82 @@ html, body {
 <!-- ══════════════════════════════════════════
      SCREEN RECEPTION (VIP only)
 ══════════════════════════════════════════ -->
-<div id="screen-reception" class="screen event-screen" onclick="safeGoTo('screen-rsvp')">
+<div id="screen-reception" class="screen event-screen">
   <video id="reception-video" muted playsinline preload="none"
-    style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
+    style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;opacity:1;transition:opacity 1.5s ease;">
     <source src="reception.mp4" type="video/mp4">
   </video>
-  <div class="event-img-wrap" id="reception-bg-img" style="z-index:0;">
+  <div class="event-img-wrap" id="reception-bg-img" style="z-index:0;display:none;">
     <img src="5-reception_4k.jpg" alt="Reception" loading="lazy">
   </div>
   <div class="event-particles" id="ep-reception" style="z-index:2;"></div>
-  <div id="reception-panel" style="position:absolute;bottom:0;left:0;right:0;height:38%;z-index:3;background:linear-gradient(to bottom,transparent 0%,rgba(20,4,12,0.98) 18%,#14030d 38%);padding-top:8px;transform:translateY(100%);transition:transform 1.4s cubic-bezier(0.22,1,0.36,1);pointer-events:none;overflow:hidden;">
-  <div class="event-wrap" id="reception-invite" style="position:relative;opacity:0;transform:translateY(20px);transition:opacity 0.8s ease 0.5s,transform 0.8s ease 0.5s;pointer-events:none;">
-    <div class="event-icon-big">🥂</div>
-    <div class="event-tag" style="background:rgba(255,100,180,0.2);border-color:rgba(255,100,180,0.55);color:#ff70c0">Reception</div>
-    <div class="event-title">An Evening to Remember</div>
-    <div class="event-subtitle">A celebration for our nearest &amp; dearest</div>
-    <div class="event-divider-line"></div>
-    <div class="event-detail-row">
-      <div class="event-detail">
-        <div class="event-detail-label">Date</div>
-        <div class="event-detail-value">14th December 2026</div>
+
+  <!-- Full invitation card — same style as wedding fullcard -->
+  <div id="reception-fullcard" style="position:absolute;inset:0;z-index:4;background:rgba(4,1,0,0.58);display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:52px 24px 14px;opacity:0;pointer-events:none;transition:opacity 1.8s ease;overflow:hidden;">
+    <!-- Ornamental border SVG -->
+    <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;" viewBox="0 0 360 700" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs><style>.rb{fill:none;stroke:#c9a84c;stroke-width:0.8;opacity:0.7;}.rf{fill:#c9a84c;opacity:0.75;}</style></defs>
+      <rect x="10" y="10" width="340" height="680" class="rb" stroke-width="0.6"/>
+      <rect x="14" y="14" width="332" height="672" class="rb" stroke-width="0.3"/>
+      <!-- corners -->
+      <g transform="translate(10,10)"><circle cx="10" cy="10" r="1.2" class="rf"/><path d="M4,4 Q8,2 12,4 Q18,8 14,14 Q10,20 4,18 Q-1,14 2,9 Q5,5 10,6 Q14,8 12,13" class="rb" stroke-width="1.1"/><line x1="28" y1="0" x2="166" y2="0" class="rb" stroke-width="0.7"/><line x1="0" y1="28" x2="0" y2="336" class="rb" stroke-width="0.7"/></g>
+      <g transform="translate(350,10) scale(-1,1)"><circle cx="10" cy="10" r="1.2" class="rf"/><path d="M4,4 Q8,2 12,4 Q18,8 14,14 Q10,20 4,18 Q-1,14 2,9 Q5,5 10,6 Q14,8 12,13" class="rb" stroke-width="1.1"/><line x1="28" y1="0" x2="166" y2="0" class="rb" stroke-width="0.7"/><line x1="0" y1="28" x2="0" y2="336" class="rb" stroke-width="0.7"/></g>
+      <g transform="translate(10,690) scale(1,-1)"><circle cx="10" cy="10" r="1.2" class="rf"/><path d="M4,4 Q8,2 12,4 Q18,8 14,14 Q10,20 4,18 Q-1,14 2,9 Q5,5 10,6 Q14,8 12,13" class="rb" stroke-width="1.1"/><line x1="28" y1="0" x2="166" y2="0" class="rb" stroke-width="0.7"/><line x1="0" y1="28" x2="0" y2="336" class="rb" stroke-width="0.7"/></g>
+      <g transform="translate(350,690) scale(-1,-1)"><circle cx="10" cy="10" r="1.2" class="rf"/><path d="M4,4 Q8,2 12,4 Q18,8 14,14 Q10,20 4,18 Q-1,14 2,9 Q5,5 10,6 Q14,8 12,13" class="rb" stroke-width="1.1"/><line x1="28" y1="0" x2="166" y2="0" class="rb" stroke-width="0.7"/><line x1="0" y1="28" x2="0" y2="336" class="rb" stroke-width="0.7"/></g>
+    </svg>
+
+    <!-- TOP: Blessed by + Reception Invitation + Families -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;width:100%;">
+      <div style="text-align:center;padding:0 8px;">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:5px;text-transform:uppercase;color:rgba(245,200,66,0.5);margin-bottom:2px;">Blessed by</div>
+        <div style="font-family:'Playfair Display',serif;font-size:20px;font-style:italic;font-weight:600;color:rgba(255,242,200,0.95);letter-spacing:2px;">Didu</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,200,66,0.4);margin:3px 0 1px;">& love from</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:rgba(255,255,255,0.85);margin-top:2px;">Sourish &amp; Somava Chattopadhyay</div>
       </div>
-      <div class="event-detail-sep"></div>
-      <div class="event-detail">
-        <div class="event-detail-label">Time</div>
-        <div class="event-detail-value">7:30 PM onwards</div>
+      <div style="text-align:center;">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(17px,5vw,24px);font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#f9e060;text-shadow:0 0 20px rgba(249,224,96,0.4);">✦ &nbsp;Reception Invitation&nbsp; ✦</div>
+      </div>
+      <div style="display:flex;justify-content:center;gap:20px;width:100%;padding:0 8px;">
+        <div style="text-align:center;flex:1;">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,200,66,0.5);margin-bottom:3px;">Groom's family</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:rgba(255,242,200,0.92);line-height:1.35;">Sourish</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:rgba(255,242,200,0.92);line-height:1.35;">Somava</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:rgba(255,242,200,0.92);line-height:1.35;">Rupsha</div>
+        </div>
+        <div style="width:1px;background:rgba(245,200,66,0.2);margin:4px 0;"></div>
+        <div style="text-align:center;flex:1;">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(245,200,66,0.5);margin-bottom:3px;">Bride's family</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:rgba(255,242,200,0.92);line-height:1.35;">Biswanath</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:rgba(255,242,200,0.92);line-height:1.35;">Madhuchanda</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:rgba(255,242,200,0.92);line-height:1.35;">Ankan</div>
+        </div>
       </div>
     </div>
-    <div class="event-venue">📍 <a href="https://maps.google.com/?q=The+Citi+Residenci,+Shahid+Khudiram+Sarani,+City+Centre,+Durgapur+713216" target="_blank" style="color:#f0a870;text-decoration:none;">The Citi Residenci, City Centre, Durgapur</a></div>
-    <div class="event-poem">
-      You are amongst the few<br>
-      who hold a special place in our hearts —<br>
-      <span class="event-poem-em">this evening is for you.</span>
+
+    <!-- MIDDLE: Names -->
+    <div style="display:flex;align-items:flex-start;justify-content:center;gap:8px;width:100%;">
+      <div style="text-align:center;flex:1;">
+        <div style="font-family:'Playfair Display',serif;font-size:clamp(28px,8vw,40px);font-weight:700;font-style:italic;color:#ffe84d;text-shadow:0 0 40px rgba(255,232,77,0.5);">Rishabh</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:2px;color:rgba(255,242,200,0.6);text-transform:uppercase;">Chattopadhyay</div>
+      </div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:rgba(255,255,255,0.28);padding-top:6px;flex-shrink:0;">&amp;</div>
+      <div style="text-align:center;flex:1;">
+        <div style="font-family:'Playfair Display',serif;font-size:clamp(28px,8vw,40px);font-weight:700;font-style:italic;color:#ffe84d;text-shadow:0 0 40px rgba(255,232,77,0.5);">Ananya</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:2px;color:rgba(255,242,200,0.6);text-transform:uppercase;">Dash <span style="font-size:11px;opacity:0.7;">(Acharya)</span></div>
+      </div>
     </div>
-  </div>
+
+    <!-- BOTTOM: Date, venue, time -->
+    <div style="text-align:center;">
+      <div style="font-family:'Playfair Display',serif;font-size:40px;font-weight:700;color:#fff;line-height:1.1;">
+        14 <span style="font-size:0.52em;font-weight:400;font-style:italic;color:rgba(255,255,255,0.55);letter-spacing:2px;">December</span> 2026
+      </div>
+      <div style="margin-top:7px;font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:rgba(255,255,255,0.85);">The Citi Residenci, Durgapur</div>
+      <div style="margin-top:4px;font-family:'Cormorant Garamond',serif;font-size:18px;color:rgba(245,200,66,0.75);letter-spacing:4px;text-transform:uppercase;">7 : 30 PM onwards</div>
+    </div>
+
+    <!-- TAP TO CONTINUE -->
+    <div style="font-family:'Cormorant Garamond',serif;font-size:20px;letter-spacing:4px;color:rgba(245,200,66,0.55);text-transform:uppercase;">tap to continue &nbsp;✦</div>
   </div>
 </div>
 
@@ -3957,6 +3999,21 @@ document.addEventListener('DOMContentLoaded', function() {
     };
   }
 
+  var receptionScreen = document.getElementById('screen-reception');
+  if (receptionScreen) {
+    receptionScreen.onclick = function() {
+      var rfc2 = document.getElementById('reception-fullcard');
+      var cardVisible = rfc2 && parseFloat(rfc2.style.opacity) > 0.5;
+      if (cardVisible) {
+        // Card is showing — tap advances (for non-VIP; VIP auto-advances)
+        if (!_isVIP) goTo('screen-rsvp');
+      } else {
+        // Video still playing — tap skips to card
+        if (window.showReceptionInviteNow) showReceptionInviteNow();
+      }
+    };
+  }
+
   /* Mehendi: video plays once → dark panel slides up, invite fades in */
   var mv = document.getElementById('mehendi-video');
   var mi = document.getElementById('mehendi-invite');
@@ -4264,16 +4321,17 @@ document.addEventListener('DOMContentLoaded', function() {
 /* ── Reception video logic ── */
 (function(){
   var rv = document.getElementById('reception-video');
-  var ri = document.getElementById('reception-invite');
-  var rp = document.getElementById('reception-panel');
+  var rfc = document.getElementById('reception-fullcard');
   var receptionShown = false;
   var receptionTimer = null;
 
   function showReceptionInvite() {
     if (receptionShown) return;
     receptionShown = true;
-    if (rp) { rp.style.transition = 'transform 1.4s cubic-bezier(0.22,1,0.36,1)'; rp.style.transform = 'translateY(0)'; rp.style.pointerEvents = 'auto'; }
-    if (ri) { ri.style.opacity = '1'; ri.style.transform = 'translateY(0)'; ri.style.pointerEvents = 'auto'; }
+    // Dim video like wedding screen
+    if (rv) rv.style.opacity = '0.18';
+    // Fade in the full-screen card overlay
+    if (rfc) { rfc.style.opacity = '1'; rfc.style.pointerEvents = 'auto'; }
     // Auto-advance to RSVP after 12s of showing the reception card
     setTimeout(function() {
       if (current === 'screen-reception') goTo('screen-rsvp');
@@ -4283,8 +4341,8 @@ document.addEventListener('DOMContentLoaded', function() {
   function resetReception() {
     receptionShown = false;
     if (receptionTimer) { clearTimeout(receptionTimer); receptionTimer = null; }
-    if (rp) { rp.style.transition = 'none'; rp.style.transform = 'translateY(100%)'; rp.style.pointerEvents = 'none'; }
-    if (ri) { ri.style.opacity = '0'; ri.style.transform = 'translateY(20px)'; ri.style.pointerEvents = 'none'; }
+    if (rv) rv.style.opacity = '1';
+    if (rfc) { rfc.style.opacity = '0'; rfc.style.pointerEvents = 'none'; }
     if (rv) { safeVideoPause(rv); rv.ontimeupdate = null; rv.onended = null; rv.currentTime = 0; rv._forcePaused = false; }
   }
 
@@ -4304,8 +4362,8 @@ document.addEventListener('DOMContentLoaded', function() {
       requestWakeLock();
       receptionShown = false;
       if (receptionTimer) { clearTimeout(receptionTimer); receptionTimer = null; }
-      if (rp) { rp.style.transition = 'none'; rp.style.transform = 'translateY(100%)'; rp.style.pointerEvents = 'none'; }
-      if (ri) { ri.style.opacity = '0'; ri.style.transform = 'translateY(20px)'; ri.style.pointerEvents = 'none'; }
+      if (rv) rv.style.opacity = '1';
+      if (rfc) { rfc.style.opacity = '0'; rfc.style.pointerEvents = 'none'; }
       if (rv) {
         rv.onended = function() { safeVideoPause(rv); showReceptionInvite(); };
         rv.ontimeupdate = function() {
@@ -4318,6 +4376,13 @@ document.addEventListener('DOMContentLoaded', function() {
       } else {
         receptionTimer = setTimeout(showReceptionInvite, 1000);
       }
+    }
+  };
+
+  // Tap to skip video — jump straight to full card (same pattern as wedding)
+  window.showReceptionInviteNow = function() {
+    if (!receptionShown) {
+      showReceptionInvite();
     }
   };
 })();
