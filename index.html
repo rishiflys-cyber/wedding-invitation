@@ -2615,16 +2615,16 @@ html, body {
 
     <!-- Venue map buttons -->
     <div style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:2px;margin-bottom:24px;width:100%;max-width:300px;">
-      <!-- Marriage -->
+      <!-- Marriage (always shown) -->
       <div style="text-align:center;width:100%;">
-        <div style="font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:rgba(245,200,66,0.6);margin-bottom:7px;">Marriage</div>
+        <div id="rsvp-marriage-label" style="font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:rgba(245,200,66,0.6);margin-bottom:7px;">Marriage</div>
         <a href="https://maps.app.goo.gl/aZj5csMpd15mJYi39" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;padding:9px 20px;border:1.5px solid #c9a84c;border-radius:30px;background:linear-gradient(135deg,#c9a84c,#f0c840);color:#1a0a00;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:filter 0.2s,transform 0.15s;box-shadow:0 2px 18px rgba(201,168,76,0.45);" ontouchstart="" onmousedown="this.style.filter='brightness(1.12)';this.style.transform='scale(0.97)'" onmouseup="this.style.filter='';this.style.transform=''" onmouseleave="this.style.filter='';this.style.transform=''">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="#1a0a00"/></svg>
           Circle Club Banquet, Kolkata
         </a>
       </div>
-      <!-- Reception -->
-      <div style="text-align:center;width:100%;">
+      <!-- Reception (VIP only — hidden by JS if not VIP) -->
+      <div id="rsvp-reception-venue" style="text-align:center;width:100%;display:none;">
         <div style="font-family:'Cormorant Garamond',serif;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:rgba(245,200,66,0.6);margin-bottom:7px;">Reception</div>
         <a href="https://maps.app.goo.gl/6LxT1UEhiHfBW7Xs5" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;padding:9px 20px;border:1.5px solid #c9a84c;border-radius:30px;background:linear-gradient(135deg,#c9a84c,#f0c840);color:#1a0a00;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:filter 0.2s,transform 0.15s;box-shadow:0 2px 18px rgba(201,168,76,0.45);" ontouchstart="" onmousedown="this.style.filter='brightness(1.12)';this.style.transform='scale(0.97)'" onmouseup="this.style.filter='';this.style.transform=''" onmouseleave="this.style.filter='';this.style.transform=''">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="#1a0a00"/></svg>
@@ -2636,7 +2636,7 @@ html, body {
     <!-- 4 action circles -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;justify-items:center;max-width:240px;margin:0 auto 24px;">
       <!-- Send RSVP WhatsApp -->
-      <a id="rsvp-wa-link" href="https://wa.me/919673028654?text=Hi%20Rishabh%20%26%20Ananya%2C%20I%20will%20be%20joining%20your%20celebrations%21%20%F0%9F%8E%89%20%E2%80%94%20Wedding%20on%2011th%20December%20%26%20Reception%20on%2014th%20December%202026" target="_blank" rel="noopener" style="text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:7px;">
+      <a id="rsvp-wa-link" href="https://wa.me/919673028654?text=Hi%20Rishabh%20%26%20Ananya%2C%20I%20will%20be%20joining%20your%20wedding%20celebrations%21%20%F0%9F%8E%89%20%E2%80%94%20Wedding%20on%2011th%20December%202026" target="_blank" rel="noopener" style="text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:7px;">
         <div style="width:72px;height:72px;border-radius:50%;background:rgba(37,211,102,0.15);border:2px solid rgba(37,211,102,0.5);display:flex;align-items:center;justify-content:center;font-size:30px;">💬</div>
         <span style="color:#25d366;font-size:10px;letter-spacing:1px;text-transform:uppercase;">Send RSVP</span>
       </a>
@@ -3350,6 +3350,22 @@ let opened = false;
 var _isVIP = /[?&]r=1/.test(location.search); // true = guest sees reception screen after wedding
 var _guestRaw = '';
 var _guestFull = '';
+
+// ── Gate RSVP reception content for non-VIP ─────────────────────────────
+// The RSVP screen is shared HTML. Show reception venue + dual-event WhatsApp
+// only to VIP guests (?r=1). Non-VIP see wedding-only content.
+(function(){
+  if (_isVIP) {
+    // Show reception venue button
+    var rv = document.getElementById('rsvp-reception-venue');
+    if (rv) rv.style.display = 'block';
+    // Hide "Marriage" label (redundant when both show) — or keep it, both labelled is fine
+    // Update WhatsApp link to mention both events
+    var wa = document.getElementById('rsvp-wa-link');
+    if (wa) wa.href = 'https://wa.me/919673028654?text=Hi%20Rishabh%20%26%20Ananya%2C%20I%20will%20be%20joining%20your%20celebrations%21%20%F0%9F%8E%89%20%E2%80%94%20Wedding%20on%2011th%20December%20%26%20Reception%20on%2014th%20December%202026';
+  }
+  // Non-VIP: reception venue stays hidden (display:none), WhatsApp link already wedding-only
+})();
 
 var _history = [];
 var _navigatingBack = false;
@@ -4928,28 +4944,32 @@ function addToCalendar() {
   var r_end      = '20261214T200000Z';
 
   if (isIOS) {
-    // iOS: ICS with both events — Safari can open .ics files from blob links
     try {
-      var ics = [
-        'BEGIN:VCALENDAR',
-        'VERSION:2.0',
-        'PRODID:-//Wedding Invite//EN',
+      var icsEvents = [
         'BEGIN:VEVENT',
         'DTSTART:' + w_start,
         'DTEND:' + w_end,
         'SUMMARY:' + w_title,
         'LOCATION:' + w_location,
         'DESCRIPTION:' + w_details,
-        'END:VEVENT',
-        'BEGIN:VEVENT',
-        'DTSTART:' + r_start,
-        'DTEND:' + r_end,
-        'SUMMARY:' + r_title,
-        'LOCATION:' + r_location,
-        'DESCRIPTION:' + r_details,
-        'END:VEVENT',
-        'END:VCALENDAR'
-      ].join('\r\n');
+        'END:VEVENT'
+      ];
+      // VIP only: also add reception event to ICS
+      if (_isVIP) {
+        icsEvents = icsEvents.concat([
+          'BEGIN:VEVENT',
+          'DTSTART:' + r_start,
+          'DTEND:' + r_end,
+          'SUMMARY:' + r_title,
+          'LOCATION:' + r_location,
+          'DESCRIPTION:' + r_details,
+          'END:VEVENT'
+        ]);
+      }
+      var ics = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Wedding Invite//EN']
+        .concat(icsEvents)
+        .concat(['END:VCALENDAR'])
+        .join('\r\n');
       var blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
       var url = URL.createObjectURL(blob);
       var a = document.createElement('a');
@@ -4960,23 +4980,24 @@ function addToCalendar() {
       document.body.removeChild(a);
       setTimeout(function() { URL.revokeObjectURL(url); }, 2000);
     } catch(e) {
-      // fallback: open wedding in Google Calendar
       window.open('https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(w_title) + '&dates=' + w_start + '/' + w_end + '&details=' + encodeURIComponent(w_details) + '&location=' + encodeURIComponent(w_location), '_blank');
     }
   } else {
-    // Android / others: open both in Google Calendar sequentially
     var gcW = 'https://calendar.google.com/calendar/render?action=TEMPLATE' +
       '&text=' + encodeURIComponent(w_title) +
       '&dates=' + w_start + '/' + w_end +
       '&details=' + encodeURIComponent(w_details) +
       '&location=' + encodeURIComponent(w_location);
-    var gcR = 'https://calendar.google.com/calendar/render?action=TEMPLATE' +
-      '&text=' + encodeURIComponent(r_title) +
-      '&dates=' + r_start + '/' + r_end +
-      '&details=' + encodeURIComponent(r_details) +
-      '&location=' + encodeURIComponent(r_location);
     window.open(gcW, '_blank');
-    setTimeout(function() { window.open(gcR, '_blank'); }, 800);
+    // VIP only: also open reception calendar event
+    if (_isVIP) {
+      var gcR = 'https://calendar.google.com/calendar/render?action=TEMPLATE' +
+        '&text=' + encodeURIComponent(r_title) +
+        '&dates=' + r_start + '/' + r_end +
+        '&details=' + encodeURIComponent(r_details) +
+        '&location=' + encodeURIComponent(r_location);
+      setTimeout(function() { window.open(gcR, '_blank'); }, 800);
+    }
   }
 }
 
