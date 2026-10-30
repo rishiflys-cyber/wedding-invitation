@@ -4163,7 +4163,7 @@ document.addEventListener('DOMContentLoaded', function() {
           }
         };
         safeVideoPlay(mv, showMehendiInvite);
-        mehendiTimer = setTimeout(showMehendiInvite, 8000);
+        mehendiTimer = setTimeout(showMehendiInvite, 60000);
       }
     }
   };
@@ -4229,7 +4229,7 @@ document.addEventListener('DOMContentLoaded', function() {
           }
         };
         safeVideoPlay(sv, showSangeetInvite);
-        sangeetTimer = setTimeout(showSangeetInvite, 8000);
+        sangeetTimer = setTimeout(showSangeetInvite, 60000);
       } else {
         sangeetTimer = setTimeout(showSangeetInvite, 1000);
       }
@@ -4294,7 +4294,7 @@ document.addEventListener('DOMContentLoaded', function() {
           }
         };
         safeVideoPlay(hv, showHaldiInvite);
-        haldiTimer = setTimeout(showHaldiInvite, 8000);
+        haldiTimer = setTimeout(showHaldiInvite, 60000);
       } else {
         haldiTimer = setTimeout(showHaldiInvite, 1000);
       }
@@ -4411,7 +4411,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
           };
           safeVideoPlay(wv, showWeddingInvite);
-          weddingTimer = setTimeout(showWeddingInvite, 8000); // 8s fallback — if video stalls/fails on Android/iOS
+          weddingTimer = setTimeout(showWeddingInvite, 60000);
         } else {
           weddingTimer = setTimeout(showWeddingInvite, 500);
         }
@@ -4518,7 +4518,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
           };
           safeVideoPlay(rv, showReceptionInvite);
-          receptionTimer = setTimeout(showReceptionInvite, 8000); // 8s fallback — if video stalls/fails on Android/iOS
+          receptionTimer = setTimeout(showReceptionInvite, 60000);
         } else {
           receptionTimer = setTimeout(showReceptionInvite, 1000);
         }
