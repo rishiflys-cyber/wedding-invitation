@@ -4332,6 +4332,13 @@ document.addEventListener('DOMContentLoaded', function() {
   var _origGoTo4 = goTo;
   goTo = function(id) {
     var from = current;
+    // Pre-apply compact BEFORE base goTo renders the bar, so it's never full-size on back-nav
+    if (id === 'screen-wedding' && _navigatingBack && (from === 'screen-rsvp' || from === 'screen-reception')) {
+      var _preCb = document.getElementById('ctrl-bar');
+      if (_preCb) _preCb.classList.add('ctrl-compact');
+      var _preHint = document.getElementById('ctrl-hint');
+      if (_preHint) { _preHint.style.display = 'none'; _preHint.style.animation = 'none'; }
+    }
     _origGoTo4(id);
     if (from === 'screen-wedding' && id !== 'screen-wedding') {
       resetWedding();
@@ -4349,9 +4356,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (wfc) { wfc.style.transition = 'none'; wfc.style.opacity = '1'; wfc.style.pointerEvents = 'auto'; }
         var cb2 = document.getElementById('ctrl-bar');
         if (cb2) { cb2.classList.add('ctrl-compact'); }
-        // Hide hint — it shouldn't appear when card is already shown
-        var hint2 = document.getElementById('ctrl-hint');
-        if (hint2) { hint2.style.display = 'none'; hint2.style.animation = 'none'; }
         weddingShown = true;
       } else {
         // Forward nav: play video first, full card fades in after
@@ -4425,6 +4429,13 @@ document.addEventListener('DOMContentLoaded', function() {
   var _origGoTo5 = goTo;
   goTo = function(id) {
     var from = current;
+    // Pre-apply compact BEFORE base goTo renders the bar
+    if (id === 'screen-reception' && _navigatingBack && from === 'screen-rsvp') {
+      var _preRcb = document.getElementById('ctrl-bar');
+      if (_preRcb) _preRcb.classList.add('ctrl-compact');
+      var _preRhint = document.getElementById('ctrl-hint');
+      if (_preRhint) { _preRhint.style.display = 'none'; _preRhint.style.animation = 'none'; }
+    }
     _origGoTo5(id);
     if (from === 'screen-reception' && id !== 'screen-reception') {
       resetReception();
