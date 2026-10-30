@@ -4327,11 +4327,15 @@ document.addEventListener('DOMContentLoaded', function() {
       // Compact nav bar so it takes less room on the invite card
       var cb = document.getElementById('ctrl-bar');
       if (cb) cb.classList.add('ctrl-compact');
-      // VIP: auto-advance to reception after 12s
+      // VIP: auto-advance to reception after 12s (hooked into pauseable _advanceTimer system)
       if (_isVIP) {
-        setTimeout(function() {
+        window._advanceCallback = function() {
           if (current === 'screen-wedding') goTo('screen-reception');
-        }, 12000);
+        };
+        window._advanceTimer = setTimeout(window._advanceCallback, 12000);
+        window._advanceStart = Date.now();
+        window._advanceDelay = 12000;
+        window._advanceRemaining = 12000;
       }
     }, 800);
   }
@@ -4347,6 +4351,9 @@ document.addEventListener('DOMContentLoaded', function() {
     weddingShown = false;
     if (weddingTimer) { clearTimeout(weddingTimer); weddingTimer = null; }
     if (weddingTimer2) { clearTimeout(weddingTimer2); weddingTimer2 = null; }
+    // Clear VIP advance timer if we're navigating away from wedding card
+    if (window._advanceTimer) { clearTimeout(window._advanceTimer); window._advanceTimer = null; }
+    window._advanceCallback = null; window._advanceRemaining = 0;
     if (wv) { wv.style.transition = 'none'; wv.style.opacity = '1'; safeVideoPause(wv); wv.ontimeupdate = null; wv.onended = null; wv.currentTime = 0; wv._forcePaused = false; }
     setTimeout(function() { if (wv) wv.style.transition = 'opacity 1.5s ease'; }, 50);
     if (wp) { wp.style.transition = 'none'; wp.style.transform = 'translateY(100%)'; wp.style.pointerEvents = 'none'; }
@@ -4441,10 +4448,14 @@ document.addEventListener('DOMContentLoaded', function() {
       if (rfc) { rfc.style.opacity = '1'; rfc.style.pointerEvents = 'auto'; }
       var cb = document.getElementById('ctrl-bar');
       if (cb) cb.classList.add('ctrl-compact');
-      // Auto-advance to RSVP after 12s
-      setTimeout(function() {
+      // Auto-advance to RSVP after 12s (hooked into pauseable _advanceTimer system)
+      window._advanceCallback = function() {
         if (current === 'screen-reception') goTo('screen-rsvp');
-      }, 12000);
+      };
+      window._advanceTimer = setTimeout(window._advanceCallback, 12000);
+      window._advanceStart = Date.now();
+      window._advanceDelay = 12000;
+      window._advanceRemaining = 12000;
     }, 800);
   }
 
@@ -4456,6 +4467,9 @@ document.addEventListener('DOMContentLoaded', function() {
     receptionShown = false;
     if (receptionTimer) { clearTimeout(receptionTimer); receptionTimer = null; }
     if (receptionTimer2) { clearTimeout(receptionTimer2); receptionTimer2 = null; }
+    // Clear VIP advance timer if we're navigating away from reception card
+    if (window._advanceTimer) { clearTimeout(window._advanceTimer); window._advanceTimer = null; }
+    window._advanceCallback = null; window._advanceRemaining = 0;
     if (rv) { rv.style.transition = 'none'; rv.style.opacity = '1'; safeVideoPause(rv); rv.ontimeupdate = null; rv.onended = null; rv.currentTime = 0; rv._forcePaused = false; }
     setTimeout(function() { if (rv) rv.style.transition = 'opacity 1.5s ease'; }, 50);
     if (rfc) { rfc.style.transition = 'none'; rfc.style.opacity = '0'; rfc.style.pointerEvents = 'none'; }
