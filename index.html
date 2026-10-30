@@ -3206,15 +3206,15 @@ html, body {
       <div class="cd-message" id="cd-message" style="font-size:11px;margin-top:4px;">until the wedding ✨</div>
     </div>
 
-    <!-- Divider -->
-    <div style="display:flex;align-items:center;gap:8px;width:100%;max-width:280px;margin:4px 0;">
+    <!-- Divider (VIP only) -->
+    <div id="cd-reception-divider" style="display:none;align-items:center;gap:8px;width:100%;max-width:280px;margin:4px 0;">
       <div style="flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(245,200,66,0.25));"></div>
       <div style="font-family:'Cormorant Garamond',serif;font-size:11px;color:rgba(245,200,66,0.35);letter-spacing:6px;">✦ ✦ ✦</div>
       <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(245,200,66,0.25),transparent);"></div>
     </div>
 
-    <!-- Reception Countdown -->
-    <div style="width:100%;text-align:center;">
+    <!-- Reception Countdown (VIP only) -->
+    <div id="cd-reception-block" style="display:none;width:100%;text-align:center;">
       <div style="font-size:9px;letter-spacing:4px;text-transform:uppercase;color:rgba(245,200,66,0.55);margin-bottom:8px;">Reception · 14th December 2026</div>
       <div class="cd-units">
         <div class="cd-unit">
@@ -3356,15 +3356,19 @@ var _guestFull = '';
 // only to VIP guests (?r=1). Non-VIP see wedding-only content.
 (function(){
   if (_isVIP) {
-    // Show reception venue button
+    // Show reception venue button in RSVP
     var rv = document.getElementById('rsvp-reception-venue');
     if (rv) rv.style.display = 'block';
-    // Hide "Marriage" label (redundant when both show) — or keep it, both labelled is fine
     // Update WhatsApp link to mention both events
     var wa = document.getElementById('rsvp-wa-link');
     if (wa) wa.href = 'https://wa.me/919673028654?text=Hi%20Rishabh%20%26%20Ananya%2C%20I%20will%20be%20joining%20your%20celebrations%21%20%F0%9F%8E%89%20%E2%80%94%20Wedding%20on%2011th%20December%20%26%20Reception%20on%2014th%20December%202026';
+    // Show reception countdown + divider on countdown screen
+    var cdDiv = document.getElementById('cd-reception-divider');
+    if (cdDiv) cdDiv.style.display = 'flex';
+    var cdBlock = document.getElementById('cd-reception-block');
+    if (cdBlock) cdBlock.style.display = 'block';
   }
-  // Non-VIP: reception venue stays hidden (display:none), WhatsApp link already wedding-only
+  // Non-VIP: reception venue, reception countdown, divider all hidden
 })();
 
 var _history = [];
