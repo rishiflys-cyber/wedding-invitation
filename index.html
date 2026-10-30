@@ -2964,7 +2964,6 @@ html, body {
       </div>
     </div>
 
-    <div style="font-family:'Cormorant Garamond',serif;font-size:20px;letter-spacing:4px;color:rgba(245,200,66,0.55);text-transform:uppercase;">tap to continue &nbsp;✦</div>
   </div><!-- end wedding-fullcard -->
 </div>
 
@@ -3120,7 +3119,6 @@ html, body {
       </div>
     </div>
 
-    <div style="font-family:'Cormorant Garamond',serif;font-size:20px;letter-spacing:4px;color:rgba(245,200,66,0.55);text-transform:uppercase;">tap to continue &nbsp;✦</div>
   </div><!-- end reception-fullcard -->
 </div>
 
@@ -3384,20 +3382,27 @@ function forceGoTo(id) {
   goTo(id);
 }
 
-// Word-by-word typewriter for bridge screen
+// Letter-by-letter typewriter for bridge screen (natural keyboard feel)
 var _typewriterTimer = null;
 function startTypewriter() {
   var el = document.getElementById('bridge-typed');
   if (!el) return;
   clearTimeout(_typewriterTimer);
   el.innerHTML = '';
-  var words = ['Some','moments','are','written','long','before','they','happen...'];
+  var text = 'Some moments are written long before they happen...';
   var i = 0;
   function typeNext() {
-    if (i >= words.length) return;
-    el.textContent += (i === 0 ? '' : ' ') + words[i];
+    if (i >= text.length) return;
+    el.textContent += text[i];
     i++;
-    _typewriterTimer = setTimeout(typeNext, 220);
+    // Variable speed: pause longer after punctuation/spaces between words, fast within words
+    var ch = text[i - 1];
+    var delay = 55; // base typing speed
+    if (ch === '.') delay = 280;       // pause at each dot in "..."
+    else if (ch === ',') delay = 180;
+    else if (ch === ' ') delay = 90;   // brief pause between words
+    else delay = 45 + Math.random() * 40; // slight variation per letter
+    _typewriterTimer = setTimeout(typeNext, delay);
   }
   typeNext();
 }
