@@ -4348,7 +4348,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (wv) { safeVideoPause(wv); wv.ontimeupdate = null; wv.onended = null; wv.currentTime = 0; wv.style.transition = 'none'; wv.style.opacity = '0.18'; setTimeout(function(){ if(wv) wv.style.transition = 'opacity 1.5s ease'; }, 50); }
         if (wfc) { wfc.style.transition = 'none'; wfc.style.opacity = '1'; wfc.style.pointerEvents = 'auto'; }
         var cb2 = document.getElementById('ctrl-bar');
-        if (cb2) cb2.classList.add('ctrl-compact');
+        if (cb2) { cb2.classList.add('ctrl-compact'); }
+        // Hide hint — it shouldn't appear when card is already shown
+        var hint2 = document.getElementById('ctrl-hint');
+        if (hint2) { hint2.style.display = 'none'; hint2.style.animation = 'none'; }
         weddingShown = true;
       } else {
         // Forward nav: play video first, full card fades in after
@@ -4431,24 +4434,38 @@ document.addEventListener('DOMContentLoaded', function() {
       receptionShown = false;
       if (receptionTimer) { clearTimeout(receptionTimer); receptionTimer = null; }
       if (receptionTimer2) { clearTimeout(receptionTimer2); receptionTimer2 = null; }
-      if (rv) { rv.style.transition = 'none'; rv.style.opacity = '1'; }
-      setTimeout(function() { if (rv) rv.style.transition = 'opacity 1.5s ease'; }, 50);
-      if (rfc) { rfc.style.transition = 'none'; rfc.style.opacity = '0'; rfc.style.pointerEvents = 'none'; }
-      setTimeout(function() { if (rfc) rfc.style.transition = 'opacity 1.8s ease'; }, 50);
-      if (rv) {
-        rv.currentTime = 0;
-        rv.preload = 'auto';
-        rv.load();
-        rv.onended = function() { safeVideoPause(rv); showReceptionInvite(); };
-        rv.ontimeupdate = function() {
-          if (rv.duration && rv.currentTime >= rv.duration - 0.3) {
-            rv.ontimeupdate = null; safeVideoPause(rv); showReceptionInvite();
-          }
-        };
-        safeVideoPlay(rv, showReceptionInvite);
-        receptionTimer = setTimeout(showReceptionInvite, 60000);
+
+      if (_navigatingBack && from === 'screen-rsvp') {
+        // Back nav from RSVP: skip video, show reception card immediately
+        if (rv) { safeVideoPause(rv); rv.ontimeupdate = null; rv.onended = null; rv.currentTime = 0; rv.style.transition = 'none'; rv.style.opacity = '0.18'; setTimeout(function(){ if(rv) rv.style.transition = 'opacity 1.5s ease'; }, 50); }
+        if (rfc) { rfc.style.transition = 'none'; rfc.style.opacity = '1'; rfc.style.pointerEvents = 'auto'; }
+        var rcb = document.getElementById('ctrl-bar');
+        if (rcb) { rcb.classList.add('ctrl-compact'); }
+        // Hide hint
+        var rhint = document.getElementById('ctrl-hint');
+        if (rhint) { rhint.style.display = 'none'; rhint.style.animation = 'none'; }
+        receptionShown = true;
       } else {
-        receptionTimer = setTimeout(showReceptionInvite, 1000);
+        // Forward nav: play video first
+        if (rv) { rv.style.transition = 'none'; rv.style.opacity = '1'; }
+        setTimeout(function() { if (rv) rv.style.transition = 'opacity 1.5s ease'; }, 50);
+        if (rfc) { rfc.style.transition = 'none'; rfc.style.opacity = '0'; rfc.style.pointerEvents = 'none'; }
+        setTimeout(function() { if (rfc) rfc.style.transition = 'opacity 1.8s ease'; }, 50);
+        if (rv) {
+          rv.currentTime = 0;
+          rv.preload = 'auto';
+          rv.load();
+          rv.onended = function() { safeVideoPause(rv); showReceptionInvite(); };
+          rv.ontimeupdate = function() {
+            if (rv.duration && rv.currentTime >= rv.duration - 0.3) {
+              rv.ontimeupdate = null; safeVideoPause(rv); showReceptionInvite();
+            }
+          };
+          safeVideoPlay(rv, showReceptionInvite);
+          receptionTimer = setTimeout(showReceptionInvite, 60000);
+        } else {
+          receptionTimer = setTimeout(showReceptionInvite, 1000);
+        }
       }
     }
   };
