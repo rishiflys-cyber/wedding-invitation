@@ -4071,6 +4071,14 @@ document.addEventListener('DOMContentLoaded', function() {
         window._advanceStart = Date.now();
         window._advanceDelay = 12000;
         window._advanceRemaining = 12000;
+      } else {
+        window._advanceCallback = function() {
+          if (current === 'screen-wedding') goTo('screen-rsvp');
+        };
+        window._advanceTimer = setTimeout(window._advanceCallback, 10000);
+        window._advanceStart = Date.now();
+        window._advanceDelay = 10000;
+        window._advanceRemaining = 10000;
       }
     }, 800);
   }
