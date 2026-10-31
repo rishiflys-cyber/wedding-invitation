@@ -3866,6 +3866,17 @@ function startFlowerShower() {
   }
 }
 
+function startSealToast() {
+  var toast = document.getElementById('seal-toast');
+  if (!toast) return;
+  toast.style.display = 'flex';
+  setTimeout(function() { toast.style.opacity = '1'; }, 50);
+  setTimeout(function() {
+    toast.style.opacity = '0';
+    setTimeout(function() { toast.style.display = 'none'; }, 600);
+  }, 3000);
+}
+
 function openEnvelope() {
   try { window.navigator.vibrate([30, 50, 40]); } catch(e) {}
   if (opened) return;
