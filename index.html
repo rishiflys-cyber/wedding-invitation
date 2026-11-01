@@ -4195,6 +4195,13 @@ document.addEventListener('DOMContentLoaded', function() {
           if (h3) { h3.style.display = 'none'; h3.style.animation = 'none'; }
         });
         weddingShown = true;
+        // Restart auto-advance timer so card doesn't get stuck on back-nav
+        var _wBackDelay = _isVIP ? 12000 : 10000;
+        window._advanceCallback = function() {
+          if (current === 'screen-wedding') goTo(_isVIP ? 'screen-reception' : 'screen-rsvp');
+        };
+        window._advanceTimer = setTimeout(window._advanceCallback, _wBackDelay);
+        window._advanceStart = Date.now(); window._advanceDelay = _wBackDelay; window._advanceRemaining = _wBackDelay;
       } else {
         if (wv) { wv.style.transition = 'none'; wv.style.opacity = '1'; }
         setTimeout(function() { if (wv) wv.style.transition = 'opacity 1.5s ease'; }, 50);
@@ -4314,6 +4321,12 @@ document.addEventListener('DOMContentLoaded', function() {
           if (rh2) { rh2.style.display = 'none'; rh2.style.animation = 'none'; }
         });
         receptionShown = true;
+        // Restart auto-advance timer so card doesn't get stuck on back-nav
+        window._advanceCallback = function() {
+          if (current === 'screen-reception') goTo('screen-rsvp');
+        };
+        window._advanceTimer = setTimeout(window._advanceCallback, 12000);
+        window._advanceStart = Date.now(); window._advanceDelay = 12000; window._advanceRemaining = 12000;
       } else {
         if (rv) { rv.style.transition = 'none'; rv.style.opacity = '1'; }
         setTimeout(function() { if (rv) rv.style.transition = 'opacity 1.5s ease'; }, 50);
