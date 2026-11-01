@@ -4721,20 +4721,28 @@ function addToCalendar() {
   var r_start    = '20261214T140000Z';
   var r_end      = '20261214T200000Z';
 
-  // Google Calendar link works on all platforms — opens the app on iOS & Android
-  var gcW = 'https://calendar.google.com/calendar/render?action=TEMPLATE' +
-    '&text=' + encodeURIComponent(w_title) +
-    '&dates=' + w_start + '/' + w_end +
-    '&details=' + encodeURIComponent(w_details) +
-    '&location=' + encodeURIComponent(w_location);
-  window.open(gcW, '_blank');
-  if (_isVIP) {
-    var gcR = 'https://calendar.google.com/calendar/render?action=TEMPLATE' +
-      '&text=' + encodeURIComponent(r_title) +
-      '&dates=' + r_start + '/' + r_end +
-      '&details=' + encodeURIComponent(r_details) +
-      '&location=' + encodeURIComponent(r_location);
-    setTimeout(function() { window.open(gcR, '_blank'); }, 800);
+  if (isIOS) {
+    // iOS: open hosted .ics file — Safari prompts "Add to Calendar" natively
+    var icsUrl = _isVIP
+      ? 'https://wedding-invitation-two-peach.vercel.app/wedding-vip.ics'
+      : 'https://wedding-invitation-two-peach.vercel.app/wedding.ics';
+    window.location.href = icsUrl;
+  } else {
+    // Android / Desktop: open Google Calendar
+    var gcW = 'https://calendar.google.com/calendar/render?action=TEMPLATE' +
+      '&text=' + encodeURIComponent(w_title) +
+      '&dates=' + w_start + '/' + w_end +
+      '&details=' + encodeURIComponent(w_details) +
+      '&location=' + encodeURIComponent(w_location);
+    window.open(gcW, '_blank');
+    if (_isVIP) {
+      var gcR = 'https://calendar.google.com/calendar/render?action=TEMPLATE' +
+        '&text=' + encodeURIComponent(r_title) +
+        '&dates=' + r_start + '/' + r_end +
+        '&details=' + encodeURIComponent(r_details) +
+        '&location=' + encodeURIComponent(r_location);
+      setTimeout(function() { window.open(gcR, '_blank'); }, 800);
+    }
   }
 }
 
