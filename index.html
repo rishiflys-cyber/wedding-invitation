@@ -3913,6 +3913,18 @@ function openEnvelope() {
     }
   }
 
+  // Pre-unlock videos using this user gesture — iOS requires a tap to allow video.play()
+  // Silently play then immediately pause both videos so later autoplay works without stalling
+  ['wedding-video', 'reception-video'].forEach(function(vid) {
+    var v = document.getElementById(vid);
+    if (v) {
+      v.muted = true;
+      var p = v.play();
+      if (p && p.then) p.then(function() { v.pause(); v.currentTime = 0; }).catch(function(){});
+      else { v.pause(); v.currentTime = 0; }
+    }
+  });
+
   // Hide hint + label immediately
   var hint = document.querySelector('.tap-hint');
   if (hint) hint.style.display = 'none';
