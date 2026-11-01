@@ -3673,14 +3673,14 @@ function goTo(id) {
       if (bBot) { bBot.style.transition='opacity 1.6s ease'; bBot.style.opacity='1'; }
     }, 900);
     // Pre-prime wedding video silently so iOS allows play() when bridge auto-advances.
-    // Always do this — on back-nav too — so the video is always primed.
+    // Always reset + play — ensures the video is primed even on repeat visits.
     var _wvBridge = document.getElementById('wedding-video');
     if (_wvBridge) {
       _wvBridge.volume = 0;
-      if (_wvBridge.paused) {
-        var _wvp = _wvBridge.play();
-        if (_wvp && _wvp.catch) _wvp.catch(function(){});
-      }
+      _wvBridge._forcePaused = false;
+      _wvBridge.currentTime = 0;
+      var _wvp = _wvBridge.play();
+      if (_wvp && _wvp.catch) _wvp.catch(function(){});
     }
     // Auto-advance to Wedding after 8s — use forceGoTo so it always fires
     (function(){
@@ -3977,36 +3977,36 @@ function openEnvelope() {
 function safeVideoPlay(video, onSkip) {
   if (!video) { if (onSkip) onSkip(); return; }
 
-  // If still priming (Android decoder init), wait for it to finish first
-  if (video._priming) {
-    setTimeout(function() { safeVideoPlay(video, onSkip); }, 100);
-    return;
-  }
+  // Clear any stale priming flag — if we're explicitly playing now, priming is done
+  video._priming = false;
 
   // NOTE: do NOT clear video.onended here — the caller sets it before calling us.
-  // Clearing it here wiped out the handler and caused the card to never show.
 
   function doPlay() {
-    var started = false;
-    function play() {
-      if (started) return;
-      started = true;
-      if (video._forcePaused) return;
-      var p = video.play();
-      if (p !== undefined) { p.catch(function(){}); }
-    }
-    if (video.currentTime < 0.05) {
-      // Already at start — play immediately, no seek needed
-      play();
-    } else {
-      video.currentTime = 0;
-      video.addEventListener('seeked', function() { play(); }, { once: true });
-      setTimeout(play, 500); // generous fallback for slow Android
+    if (video._forcePaused) return;
+    // Always reset to start — caller already set currentTime=0 but do it again
+    // to be safe, then play immediately without waiting for seeked event
+    // (seeked listeners hang when a prior seek is still in flight).
+    video.currentTime = 0;
+    var p = video.play();
+    if (p !== undefined) { p.catch(function(){}); }
+    // Safety fallback: if video hasn't started within 4s, call onSkip
+    if (onSkip) {
+      var _skipTimer = setTimeout(function() {
+        if (video.paused || video.currentTime < 0.1) { onSkip(); }
+      }, 4000);
+      // Cancel the fallback once video is actually playing
+      video.addEventListener('timeupdate', function _cancelSkip() {
+        if (video.currentTime > 0.1) {
+          clearTimeout(_skipTimer);
+          video.removeEventListener('timeupdate', _cancelSkip);
+        }
+      });
     }
   }
 
   if (video.readyState === 0) {
-    // Blob not assigned yet — wait for canplay
+    // Not loaded yet — wait for canplay, skip after 5s
     var skipped = false;
     function doSkip() {
       if (skipped) return;
@@ -4015,13 +4015,8 @@ function safeVideoPlay(video, onSkip) {
       video.removeEventListener('error', onError);
       if (onSkip) onSkip();
     }
-    // Give 5s on slow connections (India 4G can be slow)
     var skipTimer = setTimeout(doSkip, 5000);
-    function onCanPlay() {
-      if (skipped) return;
-      clearTimeout(skipTimer);
-      doPlay();
-    }
+    function onCanPlay() { if (skipped) return; clearTimeout(skipTimer); doPlay(); }
     function onError() { clearTimeout(skipTimer); doSkip(); }
     video.addEventListener('canplay', onCanPlay, { once: true });
     video.addEventListener('error', onError, { once: true });
