@@ -4722,52 +4722,41 @@ function addToCalendar() {
   var r_end      = '20261214T200000Z';
 
   if (isIOS) {
-    try {
-      var icsEvents = [
+    // iOS Safari: navigate to data:text/calendar URI — Safari opens it directly
+    // in the Calendar app. <a download> is blocked on iOS so we never use it.
+    var icsEvents = [
+      'BEGIN:VEVENT',
+      'DTSTART:' + w_start,
+      'DTEND:' + w_end,
+      'SUMMARY:' + w_title,
+      'LOCATION:' + w_location,
+      'DESCRIPTION:' + w_details,
+      'END:VEVENT'
+    ];
+    if (_isVIP) {
+      icsEvents = icsEvents.concat([
         'BEGIN:VEVENT',
-        'DTSTART:' + w_start,
-        'DTEND:' + w_end,
-        'SUMMARY:' + w_title,
-        'LOCATION:' + w_location,
-        'DESCRIPTION:' + w_details,
+        'DTSTART:' + r_start,
+        'DTEND:' + r_end,
+        'SUMMARY:' + r_title,
+        'LOCATION:' + r_location,
+        'DESCRIPTION:' + r_details,
         'END:VEVENT'
-      ];
-      // VIP only: also add reception event to ICS
-      if (_isVIP) {
-        icsEvents = icsEvents.concat([
-          'BEGIN:VEVENT',
-          'DTSTART:' + r_start,
-          'DTEND:' + r_end,
-          'SUMMARY:' + r_title,
-          'LOCATION:' + r_location,
-          'DESCRIPTION:' + r_details,
-          'END:VEVENT'
-        ]);
-      }
-      var ics = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Wedding Invite//EN']
-        .concat(icsEvents)
-        .concat(['END:VCALENDAR'])
-        .join('\r\n');
-      var blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
-      var url = URL.createObjectURL(blob);
-      var a = document.createElement('a');
-      a.href = url;
-      a.download = 'wedding-events.ics';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      setTimeout(function() { URL.revokeObjectURL(url); }, 2000);
-    } catch(e) {
-      window.open('https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(w_title) + '&dates=' + w_start + '/' + w_end + '&details=' + encodeURIComponent(w_details) + '&location=' + encodeURIComponent(w_location), '_blank');
+      ]);
     }
+    var ics = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Wedding Invite//EN']
+      .concat(icsEvents)
+      .concat(['END:VCALENDAR'])
+      .join('\r\n');
+    window.location.href = 'data:text/calendar;charset=utf8,' + encodeURIComponent(ics);
   } else {
+    // Android / Desktop: open Google Calendar
     var gcW = 'https://calendar.google.com/calendar/render?action=TEMPLATE' +
       '&text=' + encodeURIComponent(w_title) +
       '&dates=' + w_start + '/' + w_end +
       '&details=' + encodeURIComponent(w_details) +
       '&location=' + encodeURIComponent(w_location);
     window.open(gcW, '_blank');
-    // VIP only: also open reception calendar event
     if (_isVIP) {
       var gcR = 'https://calendar.google.com/calendar/render?action=TEMPLATE' +
         '&text=' + encodeURIComponent(r_title) +
