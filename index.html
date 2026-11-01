@@ -1498,7 +1498,7 @@ html, body {
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  padding: 72px 28px 60px;
+  padding: 72px 28px 100px;
   width: 100%;
   max-width: 380px;
   box-sizing: border-box;
@@ -3773,29 +3773,15 @@ function returnToSeal() {
 }
 
 function closeInvitation() {
+  // Stop music and videos before closing
+  var music = document.getElementById('bgmusic');
+  if (music) { music.pause(); music.currentTime = 0; }
+  ['wedding','reception'].forEach(function(n) {
+    var v = document.getElementById(n + '-video');
+    if (v) { try { v.pause(); v.currentTime = 0; } catch(e) {} }
+  });
   closeTab();
-  // Fallback: if tab didn't close, go back to envelope after short delay
-  setTimeout(function() {
-    // Stop music and reset state
-    var music = document.getElementById('bgmusic');
-    if (music) { music.pause(); music.currentTime = 0; }
-    // Stop any playing event videos
-    ['wedding','reception'].forEach(function(n) {
-      var v = document.getElementById(n + '-video');
-      if (v) { try { v.pause(); v.currentTime = 0; } catch(e) {} }
-    });
-    var icon = document.getElementById('music-icon');
-    if (icon) icon.style.display = 'inline';
-    var iconMuted = document.getElementById('music-icon-muted');
-    if (iconMuted) iconMuted.style.display = 'none';
-    var ctrlBar3 = document.getElementById('ctrl-bar');
-    if (ctrlBar3) ctrlBar3.style.display = 'none';
-    // Reset envelope so seal is tappable again
-    var env = document.getElementById('screen-envelope');
-    if (env) env.classList.remove('opening');
-    _history = [];
-    goTo('screen-envelope');
-  }, 600);
+  // No fallback navigation — if tab won't close, just stay on RSVP screen
 }
 
 function goBack() {
