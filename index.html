@@ -3668,21 +3668,26 @@ function goTo(id) {
       if (bBot) { bBot.style.transition='opacity 1.6s ease'; bBot.style.opacity='1'; }
     }, 900);
     // Start wedding video silently in background while bridge plays —
-    // iOS requires play() to be called from a browser-driven event, not setTimeout.
-    // Bridge is entered from invite3 tap (user gesture) so play() works here.
+    // Only do this on forward navigation (not back-nav) to avoid disturbing
+    // a video that's already been played or is in a reset state.
     var _wvBridge = document.getElementById('wedding-video');
-    if (_wvBridge) {
+    if (_wvBridge && !_navigatingBack) {
       _wvBridge.currentTime = 0;
       _wvBridge.volume = 0;
       var _wvp = _wvBridge.play();
       if (_wvp && _wvp.catch) _wvp.catch(function(){});
     }
     // Auto-advance to Wedding after 8s
-    window._advanceCallback = function(){
-      if (current !== 'screen-bridge') return;
-      _navigating = false; _lastNavTime = 0;
-      goTo('screen-wedding');
-    };
+    (function(){
+      var myBridgeEpoch = (window._bridgeEpoch = (window._bridgeEpoch||0)+1);
+      window._advanceCallback = function(){
+        if (current !== 'screen-bridge') return;
+        if (window._bridgeEpoch !== myBridgeEpoch) return; // stale
+        _navigating = false; _lastNavTime = 0;
+        _videoPaused = false;
+        goTo('screen-wedding');
+      };
+    })();
     window._advanceTimer = setTimeout(window._advanceCallback, 8000);
     window._advanceStart = Date.now(); window._advanceDelay = 8000; window._advanceRemaining = 8000;
   }
