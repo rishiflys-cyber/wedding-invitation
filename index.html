@@ -4282,8 +4282,6 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(function() { if (rfc) rfc.style.transition = 'opacity 1.8s ease'; }, 50);
         if (rv) {
           rv.currentTime = 0;
-          rv.preload = 'auto';
-          rv.load();
           rv.onended = function() { safeVideoPause(rv); showReceptionInvite(myEpoch); };
           rv.ontimeupdate = function() {
             if (rv.duration && rv.currentTime >= rv.duration - 0.3) {
