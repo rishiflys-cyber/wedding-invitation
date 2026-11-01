@@ -3648,6 +3648,8 @@ function goTo(id) {
     window._advanceStart = Date.now(); window._advanceDelay = _inv2Delay; window._advanceRemaining = _inv2Delay;
   }
   if (id === 'screen-bridge') {
+    // Always reset pause state so stale _videoPaused can't block the advance timer
+    _videoPaused = false;
     stopTypewriter();
     // Reset all bridge elements instantly
     var _bReset = ['bridge-top-orn','bridge-label','bridge-bot-orn'];
