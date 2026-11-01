@@ -3328,7 +3328,10 @@ document.addEventListener('wheel', function(e) {
 function forceGoTo(id) {
   _navigating = false;
   _lastNavTime = 0;
-  goTo(id);
+  _videoPaused = false;
+  document.body.style.pointerEvents = '';
+  // Call through window.goTo so we get the latest wrapped version
+  window.goTo(id);
 }
 
 // Letter-by-letter typewriter for bridge screen (natural keyboard feel)
@@ -3490,8 +3493,7 @@ function goTo(id) {
     var _ganeshDelay = _navigatingBack ? 5000 : 5500;
     window._advanceCallback = function(){
       if (current !== 'screen-ganesh') return;
-      _navigating=false; _lastNavTime=0;
-      goTo('screen-invite');
+      forceGoTo('screen-invite');
     };
     window._advanceTimer = setTimeout(window._advanceCallback, _ganeshDelay);
     window._advanceStart = Date.now(); window._advanceDelay = _ganeshDelay; window._advanceRemaining = _ganeshDelay;
@@ -3595,7 +3597,7 @@ function goTo(id) {
       }
     }, 3500);
     var _inv1Delay = _navigatingBack ? 5000 : 10000;
-    window._advanceCallback = function(){ if(current==='screen-invite'){ _navigating=false; _lastNavTime=0; goTo('screen-bridge'); } };
+    window._advanceCallback = function(){ if(current==='screen-invite'){ forceGoTo('screen-bridge'); } };
     window._advanceTimer = setTimeout(window._advanceCallback, _inv1Delay);
     window._advanceStart = Date.now(); window._advanceDelay = _inv1Delay; window._advanceRemaining = _inv1Delay;
   }
@@ -3642,7 +3644,7 @@ function goTo(id) {
       }
     }, 200);
     var _inv2Delay = _navigatingBack ? 4000 : 9000;
-    window._advanceCallback = function(){ if(current==='screen-invite2'){ _navigating=false; _lastNavTime=0; goTo('screen-invite3'); } };
+    window._advanceCallback = function(){ if(current==='screen-invite2'){ forceGoTo('screen-invite3'); } };
     window._advanceTimer = setTimeout(window._advanceCallback, _inv2Delay);
     window._advanceStart = Date.now(); window._advanceDelay = _inv2Delay; window._advanceRemaining = _inv2Delay;
   }
@@ -3680,15 +3682,14 @@ function goTo(id) {
         if (_wvp && _wvp.catch) _wvp.catch(function(){});
       }
     }
-    // Auto-advance to Wedding after 8s
+    // Auto-advance to Wedding after 8s — use forceGoTo so it always fires
     (function(){
       var myBridgeEpoch = (window._bridgeEpoch = (window._bridgeEpoch||0)+1);
       window._advanceCallback = function(){
         if (current !== 'screen-bridge') return;
         if (window._bridgeEpoch !== myBridgeEpoch) return; // stale
-        _navigating = false; _lastNavTime = 0;
         _videoPaused = false;
-        goTo('screen-wedding');
+        forceGoTo('screen-wedding');
       };
     })();
     window._advanceTimer = setTimeout(window._advanceCallback, 8000);
@@ -3723,9 +3724,7 @@ function goTo(id) {
     var _inv3Delay = 15000;
     window._advanceCallback = function(){
       if (current !== 'screen-invite3') return;
-      _navigating = false;
-      _lastNavTime = 0;
-      goTo('screen-bridge');
+      forceGoTo('screen-bridge');
     };
     window._advanceTimer = setTimeout(window._advanceCallback, _inv3Delay);
     window._advanceStart = Date.now(); window._advanceDelay = _inv3Delay; window._advanceRemaining = _inv3Delay;
@@ -3795,40 +3794,13 @@ function closeInvitation() {
 
 function goBack() {
   if (_history.length === 0) return;
-
-  // Special case: on wedding card with full card visible — replay video first,
-  // then a second back press actually navigates back
-  if (current === 'screen-wedding') {
-    var wfc2 = document.getElementById('wedding-fullcard');
-    var wv2  = document.getElementById('wedding-video');
-    var cardVisible = wfc2 && parseFloat(wfc2.style.opacity) > 0.5;
-    if (cardVisible && !window._weddingReplayingForBack) {
-      window._weddingReplayingForBack = true;
-      // Hide card, show video
-      if (wfc2) { wfc2.style.transition = 'opacity 0.8s ease'; wfc2.style.opacity = '0'; wfc2.style.pointerEvents = 'none'; }
-      var cb3 = document.getElementById('ctrl-bar');
-      if (cb3) cb3.classList.remove('ctrl-compact');
-      setTimeout(function() {
-        if (wv2) {
-          wv2.style.transition = 'none'; wv2.style.opacity = '1';
-          setTimeout(function(){ if(wv2) wv2.style.transition = 'opacity 1.5s ease'; }, 50);
-          wv2.currentTime = 0;
-          var vp = wv2.play ? wv2.play() : null;
-          if (vp && vp.catch) vp.catch(function(){});
-        }
-        // After video replay, reset flag so next back press navigates away
-        setTimeout(function() { window._weddingReplayingForBack = false; }, 2000);
-      }, 500);
-      return; // don't navigate yet
-    }
-    window._weddingReplayingForBack = false;
-  }
-
-  const prevId = _history[_history.length - 1]; // peek without popping
+  // Force-clear any nav lock so back never gets blocked
+  _navigating = false;
+  _lastNavTime = 0;
+  document.body.style.pointerEvents = '';
+  const prevId = _history[_history.length - 1];
   _navigatingBack = true;
   goTo(prevId);
-  // goTo pushed the old current AND prevId is now current
-  // history now has [..., prevId, oldCurrent] — remove the last two and keep [...]
   _history.pop(); // remove oldCurrent (just pushed by goTo)
   _history.pop(); // remove prevId (the peek we left)
   _navigatingBack = false;
@@ -4118,7 +4090,7 @@ document.addEventListener('DOMContentLoaded', function() {
           if (rp1 && rp1.catch) rp1.catch(function(){});
         }
         window._advanceCallback = function() {
-          if (current === 'screen-wedding') goTo('screen-reception');
+          if (current === 'screen-wedding') forceGoTo('screen-reception');
         };
         window._advanceTimer = setTimeout(window._advanceCallback, 12000);
         window._advanceStart = Date.now();
@@ -4126,7 +4098,7 @@ document.addEventListener('DOMContentLoaded', function() {
         window._advanceRemaining = 12000;
       } else {
         window._advanceCallback = function() {
-          if (current === 'screen-wedding') goTo('screen-rsvp');
+          if (current === 'screen-wedding') forceGoTo('screen-rsvp');
         };
         window._advanceTimer = setTimeout(window._advanceCallback, 10000);
         window._advanceStart = Date.now();
@@ -4202,7 +4174,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Restart auto-advance timer so card doesn't get stuck on back-nav
         var _wBackDelay = _isVIP ? 12000 : 10000;
         window._advanceCallback = function() {
-          if (current === 'screen-wedding') goTo(_isVIP ? 'screen-reception' : 'screen-rsvp');
+          if (current === 'screen-wedding') forceGoTo(_isVIP ? 'screen-reception' : 'screen-rsvp');
         };
         window._advanceTimer = setTimeout(window._advanceCallback, _wBackDelay);
         window._advanceStart = Date.now(); window._advanceDelay = _wBackDelay; window._advanceRemaining = _wBackDelay;
@@ -4253,7 +4225,7 @@ document.addEventListener('DOMContentLoaded', function() {
       var cb = document.getElementById('ctrl-bar');
       if (cb) cb.classList.add('ctrl-compact');
       window._advanceCallback = function() {
-        if (current === 'screen-reception') goTo('screen-rsvp');
+        if (current === 'screen-reception') forceGoTo('screen-rsvp');
       };
       window._advanceTimer = setTimeout(window._advanceCallback, 12000);
       window._advanceStart = Date.now();
@@ -4324,7 +4296,7 @@ document.addEventListener('DOMContentLoaded', function() {
         receptionShown = true;
         // Restart auto-advance timer so card doesn't get stuck on back-nav
         window._advanceCallback = function() {
-          if (current === 'screen-reception') goTo('screen-rsvp');
+          if (current === 'screen-reception') forceGoTo('screen-rsvp');
         };
         window._advanceTimer = setTimeout(window._advanceCallback, 12000);
         window._advanceStart = Date.now(); window._advanceDelay = 12000; window._advanceRemaining = 12000;
