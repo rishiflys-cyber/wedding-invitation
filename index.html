@@ -3364,9 +3364,9 @@ function stopTypewriter() {
 function goTo(id) {
   var now = Date.now();
   if (_navigating) {
-    // Don't drop — retry once the lock clears so screens never get stuck
-    setTimeout(function(){ if(current!==id) goTo(id); }, 350);
-    return;
+    // Don't drop — force-clear the lock and proceed immediately
+    _navigating = false;
+    document.body.style.pointerEvents = '';
   }
   if (!_navigatingBack && now - _lastNavTime < 400) return; // debounce rapid taps (skip for back-nav)
   const prev = document.getElementById(current);
