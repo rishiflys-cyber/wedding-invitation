@@ -4459,10 +4459,9 @@ function toggleVideoPause() {
       }
     }
   }
-  if (music) {
-    if (_videoPaused) { music.pause(); }
-    else { music.play().catch(function(){}); }
-  }
+  // Music is handled above per-branch (respects _musicMutedByUser)
+  // Just ensure music is paused when entering pause mode
+  if (_videoPaused && music && !music.paused) { music.pause(); }
   if (icon) {
     if (_videoPaused) {
       icon.innerHTML = '<polygon points="5,3 19,12 5,21"/>';
@@ -4477,13 +4476,18 @@ function toggleMusic() {
   var icon = document.getElementById('music-icon');
   var iconMuted = document.getElementById('music-icon-muted');
   if (!music) return;
-  if (music.paused) {
+  if (window._musicMutedByUser) {
+    // User wants to un-mute — only actually play if NOT in pause mode
     window._musicMutedByUser = false;
-    music.volume = 0.55;
-    music.play().catch(function(){});
     if (icon) icon.style.display = 'inline';
     if (iconMuted) iconMuted.style.display = 'none';
+    if (!_videoPaused) {
+      music.volume = 0.55;
+      music.play().catch(function(){});
+    }
+    // If _videoPaused, music stays silent — will resume when user hits play
   } else {
+    // User wants to mute — stop music and mark muted
     window._musicMutedByUser = true;
     music.pause();
     if (icon) icon.style.display = 'none';
