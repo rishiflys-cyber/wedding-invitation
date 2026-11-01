@@ -4051,6 +4051,11 @@ document.addEventListener('DOMContentLoaded', function() {
   var weddingScreen = document.getElementById('screen-wedding');
   if (weddingScreen) {
     weddingScreen.onclick = function() {
+      // Re-unlock reception video within this user gesture before navigating
+      if (_isVIP) {
+        var rv0 = document.getElementById('reception-video');
+        if (rv0) { var p0 = rv0.play(); if (p0 && p0.then) p0.then(function(){ rv0.pause(); rv0.currentTime = 0; }).catch(function(){}); }
+      }
       goTo(_isVIP ? 'screen-reception' : 'screen-rsvp');
     };
   }
@@ -4079,6 +4084,9 @@ document.addEventListener('DOMContentLoaded', function() {
       var cb = document.getElementById('ctrl-bar');
       if (cb) cb.classList.add('ctrl-compact');
       if (_isVIP) {
+        // Pre-seek reception video to 0 so it starts instantly (no seek delay)
+        var rv1 = document.getElementById('reception-video');
+        if (rv1) { rv1.currentTime = 0; }
         window._advanceCallback = function() {
           if (current === 'screen-wedding') goTo('screen-reception');
         };
@@ -4290,6 +4298,28 @@ document.addEventListener('DOMContentLoaded', function() {
           };
           safeVideoPlay(rv, function() { showReceptionInvite(myEpoch); });
           receptionTimer = setTimeout(function() { showReceptionInvite(myEpoch); }, 60000);
+          // iOS stall guard: if video hasn't started after 2s, make the whole screen tappable to play
+          setTimeout(function() {
+            if (myEpoch !== _rEpoch) return;
+            if (!receptionShown && rv && rv.currentTime < 0.1) {
+              // Add a one-time tap handler on the reception screen to force play
+              var rScreen = document.getElementById('screen-reception');
+              if (rScreen && !rScreen._iosPlayBound) {
+                rScreen._iosPlayBound = true;
+                var hint = document.getElementById('ctrl-hint');
+                if (hint) { hint.textContent = 'Tap screen to play'; hint.style.display = 'block'; hint.style.animation = 'none'; hint.style.opacity = '1'; }
+                var pb = document.getElementById('pause-btn-icon');
+                if (pb) pb.innerHTML = '<polygon points="5,3 19,12 5,21"/>';
+                rScreen.addEventListener('click', function _iosPlay() {
+                  rScreen.removeEventListener('click', _iosPlay);
+                  rScreen._iosPlayBound = false;
+                  if (hint) { hint.style.opacity = '0'; setTimeout(function(){ hint.style.display='none'; hint.textContent=''; }, 400); }
+                  if (pb) pb.innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
+                  var p = rv.play(); if (p && p.catch) p.catch(function(){});
+                }, { once: true });
+              }
+            }
+          }, 2000);
         } else {
           receptionTimer = setTimeout(function() { showReceptionInvite(myEpoch); }, 1000);
         }
