@@ -3794,6 +3794,13 @@ function closeInvitation() {
 
 function goBack() {
   if (_history.length === 0) return;
+  // If wedding/reception card is showing, back = replay the video (don't navigate away)
+  if (current === 'screen-wedding' && window._weddingReplayVideo) {
+    window._weddingReplayVideo(); return;
+  }
+  if (current === 'screen-reception' && window._receptionReplayVideo) {
+    window._receptionReplayVideo(); return;
+  }
   // Force-clear any nav lock so back never gets blocked
   _navigating = false;
   _lastNavTime = 0;
@@ -3984,25 +3991,8 @@ function safeVideoPlay(video, onSkip) {
 
   function doPlay() {
     if (video._forcePaused) return;
-    // Always reset to start — caller already set currentTime=0 but do it again
-    // to be safe, then play immediately without waiting for seeked event
-    // (seeked listeners hang when a prior seek is still in flight).
-    video.currentTime = 0;
     var p = video.play();
     if (p !== undefined) { p.catch(function(){}); }
-    // Safety fallback: if video hasn't started within 4s, call onSkip
-    if (onSkip) {
-      var _skipTimer = setTimeout(function() {
-        if (video.paused || video.currentTime < 0.1) { onSkip(); }
-      }, 4000);
-      // Cancel the fallback once video is actually playing
-      video.addEventListener('timeupdate', function _cancelSkip() {
-        if (video.currentTime > 0.1) {
-          clearTimeout(_skipTimer);
-          video.removeEventListener('timeupdate', _cancelSkip);
-        }
-      });
-    }
   }
 
   if (video.readyState === 0) {
@@ -4105,6 +4095,36 @@ document.addEventListener('DOMContentLoaded', function() {
 
   window.showWeddingInviteNow = function() {
     if (!weddingShown) { showWeddingInvite(_wEpoch); }
+  };
+
+  // Called by goBack() when card is showing — replays the video instead of navigating away
+  window._weddingReplayVideo = function() {
+    if (!weddingShown) return; // card not showing, let normal back happen
+    // Reset to video state
+    _wEpoch++;
+    var myEpoch = _wEpoch;
+    weddingShown = false;
+    if (weddingTimer) { clearTimeout(weddingTimer); weddingTimer = null; }
+    if (weddingTimer2) { clearTimeout(weddingTimer2); weddingTimer2 = null; }
+    if (window._advanceTimer) { clearTimeout(window._advanceTimer); window._advanceTimer = null; }
+    window._advanceCallback = null; window._advanceRemaining = 0;
+    var cb = document.getElementById('ctrl-bar');
+    if (cb) cb.classList.remove('ctrl-compact');
+    if (wfc) { wfc.style.opacity = '0'; wfc.style.pointerEvents = 'none'; }
+    if (wv) {
+      wv.style.opacity = '1';
+      wv.volume = 1;
+      wv.currentTime = 0;
+      wv._forcePaused = false;
+      wv.onended = function() { safeVideoPause(wv); showWeddingInvite(myEpoch); };
+      wv.ontimeupdate = function() {
+        if (wv.duration && wv.currentTime >= wv.duration - 0.3) {
+          wv.ontimeupdate = null; safeVideoPause(wv); showWeddingInvite(myEpoch);
+        }
+      };
+      safeVideoPlay(wv, function() { showWeddingInvite(myEpoch); });
+      weddingTimer = setTimeout(function() { showWeddingInvite(myEpoch); }, 60000);
+    }
   };
 
   function resetWedding() {
@@ -4236,6 +4256,36 @@ document.addEventListener('DOMContentLoaded', function() {
 
   window.showReceptionInviteNow = function() {
     if (!receptionShown) { showReceptionInvite(_rEpoch); }
+  };
+
+  // Called by goBack() when reception card is showing — replays the video
+  window._receptionReplayVideo = function() {
+    if (!receptionShown) return;
+    _rEpoch++;
+    var myEpoch = _rEpoch;
+    receptionShown = false;
+    if (receptionTimer) { clearTimeout(receptionTimer); receptionTimer = null; }
+    if (receptionTimer2) { clearTimeout(receptionTimer2); receptionTimer2 = null; }
+    if (window._advanceTimer) { clearTimeout(window._advanceTimer); window._advanceTimer = null; }
+    window._advanceCallback = null; window._advanceRemaining = 0;
+    var cb = document.getElementById('ctrl-bar');
+    if (cb) cb.classList.remove('ctrl-compact');
+    var rfc = document.getElementById('reception-fullcard');
+    if (rfc) { rfc.style.opacity = '0'; rfc.style.pointerEvents = 'none'; }
+    if (rv) {
+      rv.style.opacity = '1';
+      rv.volume = 1;
+      rv.currentTime = 0;
+      rv._forcePaused = false;
+      rv.onended = function() { safeVideoPause(rv); showReceptionInvite(myEpoch); };
+      rv.ontimeupdate = function() {
+        if (rv.duration && rv.currentTime >= rv.duration - 0.3) {
+          rv.ontimeupdate = null; safeVideoPause(rv); showReceptionInvite(myEpoch);
+        }
+      };
+      safeVideoPlay(rv, function() { showReceptionInvite(myEpoch); });
+      receptionTimer = setTimeout(function() { showReceptionInvite(myEpoch); }, 60000);
+    }
   };
 
   function resetReception() {
