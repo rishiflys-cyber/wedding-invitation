@@ -3670,15 +3670,15 @@ function goTo(id) {
       var bBot = document.getElementById('bridge-bot-orn');
       if (bBot) { bBot.style.transition='opacity 1.6s ease'; bBot.style.opacity='1'; }
     }, 900);
-    // Start wedding video silently in background while bridge plays —
-    // Only do this on forward navigation (not back-nav) to avoid disturbing
-    // a video that's already been played or is in a reset state.
+    // Pre-prime wedding video silently so iOS allows play() when bridge auto-advances.
+    // Always do this — on back-nav too — so the video is always primed.
     var _wvBridge = document.getElementById('wedding-video');
-    if (_wvBridge && !_navigatingBack) {
-      _wvBridge.currentTime = 0;
+    if (_wvBridge) {
       _wvBridge.volume = 0;
-      var _wvp = _wvBridge.play();
-      if (_wvp && _wvp.catch) _wvp.catch(function(){});
+      if (_wvBridge.paused) {
+        var _wvp = _wvBridge.play();
+        if (_wvp && _wvp.catch) _wvp.catch(function(){});
+      }
     }
     // Auto-advance to Wedding after 8s
     (function(){
@@ -4212,19 +4212,16 @@ document.addEventListener('DOMContentLoaded', function() {
         if (wfc) { wfc.style.transition = 'none'; wfc.style.opacity = '0'; wfc.style.pointerEvents = 'none'; }
         setTimeout(function() { if (wfc) wfc.style.transition = 'opacity 1.8s ease'; }, 50);
         if (wv) {
-          // Restore volume — video was started silently behind bridge screen
           wv.volume = 1;
+          wv.currentTime = 0;
           wv.onended = function() { safeVideoPause(wv); showWeddingInvite(myEpoch); };
           wv.ontimeupdate = function() {
             if (wv.duration && wv.currentTime >= wv.duration - 0.3) {
               wv.ontimeupdate = null; safeVideoPause(wv); showWeddingInvite(myEpoch);
             }
           };
-          // If already playing (started silently behind bridge) — just let it run
-          // If paused for any reason — try to play now
-          if (wv.paused) {
-            safeVideoPlay(wv, function() { showWeddingInvite(myEpoch); });
-          }
+          // Always play — safeVideoPlay handles already-playing case gracefully
+          safeVideoPlay(wv, function() { showWeddingInvite(myEpoch); });
           weddingTimer = setTimeout(function() { showWeddingInvite(myEpoch); }, 60000);
         } else {
           weddingTimer = setTimeout(function() { showWeddingInvite(myEpoch); }, 500);
@@ -4337,19 +4334,16 @@ document.addEventListener('DOMContentLoaded', function() {
         if (rfc) { rfc.style.transition = 'none'; rfc.style.opacity = '0'; rfc.style.pointerEvents = 'none'; }
         setTimeout(function() { if (rfc) rfc.style.transition = 'opacity 1.8s ease'; }, 50);
         if (rv) {
-          // Restore volume (was set to 0 while playing behind wedding card)
           rv.volume = 1;
+          rv.currentTime = 0;
           rv.onended = function() { safeVideoPause(rv); showReceptionInvite(myEpoch); };
           rv.ontimeupdate = function() {
             if (rv.duration && rv.currentTime >= rv.duration - 0.3) {
               rv.ontimeupdate = null; safeVideoPause(rv); showReceptionInvite(myEpoch);
             }
           };
-          // If already playing (started behind wedding card) — just let it run
-          // If paused for any reason — try to play now
-          if (rv.paused) {
-            safeVideoPlay(rv, function() { showReceptionInvite(myEpoch); });
-          }
+          // Always play from start — safeVideoPlay handles iOS priming
+          safeVideoPlay(rv, function() { showReceptionInvite(myEpoch); });
           receptionTimer = setTimeout(function() { showReceptionInvite(myEpoch); }, 60000);
         } else {
           receptionTimer = setTimeout(function() { showReceptionInvite(myEpoch); }, 1000);
