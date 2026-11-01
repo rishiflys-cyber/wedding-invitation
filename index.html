@@ -4024,8 +4024,10 @@ document.addEventListener('DOMContentLoaded', function() {
   var weddingScreen = document.getElementById('screen-wedding');
   if (weddingScreen) {
     weddingScreen.onclick = function() {
+      // Only navigate when the invite card is showing — not while video is playing
+      if (!window._weddingCardShown || _videoPaused) return;
       if (_isVIP) {
-        // Start reception video within this user gesture — guaranteed to play on iOS
+        // Prime reception video inside this user gesture so iOS allows play()
         var rv0 = document.getElementById('reception-video');
         if (rv0 && rv0.paused) {
           rv0.currentTime = 0;
@@ -4034,7 +4036,7 @@ document.addEventListener('DOMContentLoaded', function() {
           if (p0 && p0.catch) p0.catch(function(){});
         }
       }
-      goTo(_isVIP ? 'screen-reception' : 'screen-rsvp');
+      forceGoTo(_isVIP ? 'screen-reception' : 'screen-rsvp');
     };
   }
 });
@@ -4053,6 +4055,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (weddingShown) return;
     if (epoch !== _wEpoch) return; // stale — we've already navigated away
     weddingShown = true;
+    window._weddingCardShown = true;
     if (weddingTimer) { clearTimeout(weddingTimer); weddingTimer = null; }
     var capturedEpoch = epoch;
     weddingTimer2 = setTimeout(function() {
@@ -4104,6 +4107,7 @@ document.addEventListener('DOMContentLoaded', function() {
     _wEpoch++;
     var myEpoch = _wEpoch;
     weddingShown = false;
+    window._weddingCardShown = false;
     if (weddingTimer) { clearTimeout(weddingTimer); weddingTimer = null; }
     if (weddingTimer2) { clearTimeout(weddingTimer2); weddingTimer2 = null; }
     if (window._advanceTimer) { clearTimeout(window._advanceTimer); window._advanceTimer = null; }
@@ -4131,6 +4135,7 @@ document.addEventListener('DOMContentLoaded', function() {
   function resetWedding() {
     _wEpoch++; // invalidate all pending timers for this visit
     weddingShown = false;
+    window._weddingCardShown = false;
     if (weddingTimer) { clearTimeout(weddingTimer); weddingTimer = null; }
     if (weddingTimer2) { clearTimeout(weddingTimer2); weddingTimer2 = null; }
     // Only clear the global advance timer if we're still on wedding — if we've already
