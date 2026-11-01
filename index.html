@@ -3669,6 +3669,16 @@ function goTo(id) {
       var bBot = document.getElementById('bridge-bot-orn');
       if (bBot) { bBot.style.transition='opacity 1.6s ease'; bBot.style.opacity='1'; }
     }, 900);
+    // Start wedding video silently in background while bridge plays —
+    // iOS requires play() to be called from a browser-driven event, not setTimeout.
+    // Bridge is entered from invite3 tap (user gesture) so play() works here.
+    var _wvBridge = document.getElementById('wedding-video');
+    if (_wvBridge) {
+      _wvBridge.currentTime = 0;
+      _wvBridge.volume = 0;
+      var _wvp = _wvBridge.play();
+      if (_wvp && _wvp.catch) _wvp.catch(function(){});
+    }
     // Auto-advance to Wedding after 8s
     window._advanceCallback = function(){
       if (current !== 'screen-bridge') return;
@@ -4189,14 +4199,19 @@ document.addEventListener('DOMContentLoaded', function() {
         if (wfc) { wfc.style.transition = 'none'; wfc.style.opacity = '0'; wfc.style.pointerEvents = 'none'; }
         setTimeout(function() { if (wfc) wfc.style.transition = 'opacity 1.8s ease'; }, 50);
         if (wv) {
-          wv.currentTime = 0;
+          // Restore volume — video was started silently behind bridge screen
+          wv.volume = 1;
           wv.onended = function() { safeVideoPause(wv); showWeddingInvite(myEpoch); };
           wv.ontimeupdate = function() {
             if (wv.duration && wv.currentTime >= wv.duration - 0.3) {
               wv.ontimeupdate = null; safeVideoPause(wv); showWeddingInvite(myEpoch);
             }
           };
-          safeVideoPlay(wv, function() { showWeddingInvite(myEpoch); });
+          // If already playing (started silently behind bridge) — just let it run
+          // If paused for any reason — try to play now
+          if (wv.paused) {
+            safeVideoPlay(wv, function() { showWeddingInvite(myEpoch); });
+          }
           weddingTimer = setTimeout(function() { showWeddingInvite(myEpoch); }, 60000);
         } else {
           weddingTimer = setTimeout(function() { showWeddingInvite(myEpoch); }, 500);
