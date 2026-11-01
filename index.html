@@ -4440,6 +4440,7 @@ function toggleVideoPause() {
   } else {
     // Non-video screens (invite slides) — just pause/resume the timer
     if (_videoPaused) {
+      if (music && !music.paused) music.pause();
       if (window._advanceTimer) {
         var elapsedNV = Date.now() - (window._advanceStart || Date.now());
         window._advanceRemaining = Math.max(0, (window._advanceDelay || 0) - elapsedNV);
@@ -4447,6 +4448,8 @@ function toggleVideoPause() {
         window._advanceTimer = null;
       }
     } else {
+      // Resume music on non-video screens too
+      if (music && !window._musicMutedByUser) music.play().catch(function(){});
       if (window._advanceRemaining > 0 && window._advanceCallback) {
         var cbNV = window._advanceCallback;
         window._advanceTimer = setTimeout(cbNV, window._advanceRemaining);
@@ -4455,7 +4458,6 @@ function toggleVideoPause() {
       }
     }
   }
-  // Music is handled above per-branch (respects _musicMutedByUser)
   // Just ensure music is paused when entering pause mode
   if (_videoPaused && music && !music.paused) { music.pause(); }
   if (icon) {
