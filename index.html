@@ -3914,11 +3914,14 @@ function openEnvelope() {
   }
 
   // Pre-unlock videos using this user gesture — iOS requires a tap to allow video.play()
-  // Silently play then immediately pause both videos so later autoplay works without stalling
+  // Also start loading now so videos are buffered by the time screens are reached
   ['wedding-video', 'reception-video'].forEach(function(vid) {
     var v = document.getElementById(vid);
     if (v) {
       v.muted = true;
+      // Start buffering immediately
+      if (v.preload === 'none') { v.preload = 'auto'; v.load(); }
+      // Unlock autoplay: play then pause within this gesture so later .play() calls succeed on iOS
       var p = v.play();
       if (p && p.then) p.then(function() { v.pause(); v.currentTime = 0; }).catch(function(){});
       else { v.pause(); v.currentTime = 0; }
@@ -4173,26 +4176,6 @@ document.addEventListener('DOMContentLoaded', function() {
           };
           safeVideoPlay(wv, function() { showWeddingInvite(myEpoch); });
           weddingTimer = setTimeout(function() { showWeddingInvite(myEpoch); }, 60000);
-          // iOS autoplay stall detection — if video hasn't moved after 2.5s, prompt user to tap play
-          setTimeout(function() {
-            if (myEpoch !== _wEpoch) return;
-            if (!weddingShown && wv && wv.currentTime < 0.2 && !wv._forcePaused) {
-              var pb = document.getElementById('pause-btn');
-              if (pb) {
-                pb.style.transition = 'transform 0.15s ease, box-shadow 0.15s ease';
-                pb.style.boxShadow = '0 0 0 6px rgba(255,220,50,0.7)';
-                pb.style.transform = 'scale(1.35)';
-                setTimeout(function(){ if(pb){ pb.style.boxShadow=''; pb.style.transform=''; } }, 1200);
-              }
-              var hint = document.getElementById('ctrl-hint');
-              if (hint) {
-                hint.textContent = 'Tap ▶ to play';
-                hint.style.display = 'block';
-                hint.style.animation = 'none';
-                hint.style.opacity = '1';
-              }
-            }
-          }, 2500);
         } else {
           weddingTimer = setTimeout(function() { showWeddingInvite(myEpoch); }, 500);
         }
@@ -4309,26 +4292,6 @@ document.addEventListener('DOMContentLoaded', function() {
           };
           safeVideoPlay(rv, function() { showReceptionInvite(myEpoch); });
           receptionTimer = setTimeout(function() { showReceptionInvite(myEpoch); }, 60000);
-          // iOS autoplay stall detection — if video hasn't moved after 2.5s, prompt user to tap play
-          setTimeout(function() {
-            if (myEpoch !== _rEpoch) return;
-            if (!receptionShown && rv && rv.currentTime < 0.2 && !rv._forcePaused) {
-              var pb = document.getElementById('pause-btn');
-              if (pb) {
-                pb.style.transition = 'transform 0.15s ease, box-shadow 0.15s ease';
-                pb.style.boxShadow = '0 0 0 6px rgba(255,220,50,0.7)';
-                pb.style.transform = 'scale(1.35)';
-                setTimeout(function(){ if(pb){ pb.style.boxShadow=''; pb.style.transform=''; } }, 1200);
-              }
-              var hint = document.getElementById('ctrl-hint');
-              if (hint) {
-                hint.textContent = 'Tap ▶ to play';
-                hint.style.display = 'block';
-                hint.style.animation = 'none';
-                hint.style.opacity = '1';
-              }
-            }
-          }, 2500);
         } else {
           receptionTimer = setTimeout(function() { showReceptionInvite(myEpoch); }, 1000);
         }
