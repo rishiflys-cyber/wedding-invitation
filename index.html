@@ -3782,8 +3782,14 @@ function closeInvitation() {
     var v = document.getElementById(n + '-video');
     if (v) { try { v.pause(); v.currentTime = 0; } catch(e) {} }
   });
-  closeTab();
-  // No fallback navigation — if tab won't close, just stay on RSVP screen
+  // Try to close the tab (works in WhatsApp in-app browser)
+  try { window.open('about:blank', '_self'); window.close(); } catch(e) {}
+  // Fallback: if tab didn't close within 400ms, go back to seal
+  setTimeout(function() {
+    if (!document.hidden) {
+      returnToSeal();
+    }
+  }, 400);
 }
 
 function goBack() {
